@@ -80,7 +80,7 @@ a.add(10,20);
 
 }
 
-Addition addNumbers =(a,b)->(a+b); Functional Programming
+Addition addNumbers =(a,b)-(a+b); Functional Programming
 
 System.out.println(addNumbers.add(1,2));
 
@@ -131,7 +131,7 @@ i.e Inner Class without Name , only one time use (instant use)
 
 - It is an anonymous function without name, return type and modifiers.
 - To enable functional programming
-- By using “-->”
+- By using “--”
 
 public int getSum(int a ,int b){
 
@@ -139,9 +139,9 @@ System.out.println(a+b);
 
 }
 
-()->System.out.println(“Java Programming”);
+()-System.out.println(“Java Programming”);
 
-(int a ,int b)-> System.out.println(a+b);
+(int a ,int b)- System.out.println(a+b);
 
 **Default Method in Interfaces:**
 
@@ -223,7 +223,7 @@ Boolean is return type.
 test()
 
 String[] res={**"vamsi"**,**"General"**,**"sai"**};
-Predicate<String> employeePredicate=e->e.length ()>4;**for**(String s1:res){**if**(employeePredicate.test (s1))
+Predicate<String employeePredicate=e-e.length ()4;**for**(String s1:res){**if**(employeePredicate.test (s1))
 {
 System.***out***.println (s1);
 }
@@ -237,7 +237,7 @@ Output type is return type.
 
 apply()
 
-Function<String,Integer> function=fn->fn.length ();
+Function<String,Integer function=fn-fn.length ();
 System.***out***.println(function.apply(**"durga"**));
 
 Consumer:
@@ -248,10 +248,10 @@ Void is return type
 
 Accept()
 
-Consumer<String> consumer=cn->System.***out***.println (cn);
+Consumer<String consumer=cn-System.***out***.println (cn);
 consumer.accept (**"Capgemini"**);
 
-Consumer<Employee> emp1=emp123->{
+Consumer<Employee emp1=emp123-{
 System.***out***.println (emp123.getEmpName ());
 System.***out***.println (emp123.getEmpId ());
 };**for**(Employee employee:employeeList){
@@ -264,12 +264,12 @@ It does not require any input , but returns output.
 
 get()
 
-Supplier<Date> date=()->**new** Date ();
+Supplier<Date date=()-**new** Date ();
 System.***out***.println (date.get ());
 
 //otp generation
 
-Supplier<String> otp=()->{
+Supplier<String otp=()-{
 String otp1=**""**;**for**(**int** i=0;i<=6;i++){
 otp1=otp1+(**int**)(Math.*random* ()*10);
 }**return** otp1;
@@ -281,15 +281,15 @@ System.***out***.println (otp.get ());
 - Method Reference and Constructor Reference is alternative to Lambda Expressions.
 - Method Reference is used for Code Reusability
 - A short end way of writing a lambda expression that will refer to the existing method.
-- ::---> Method Reference Operator
+- ::--- Method Reference Operator
 
 Types of Method References:
 
-1.Static Method Reference ---> className::method name
+1.Static Method Reference --- className::method name
 
-2.Instance Method Reference ---> object reference :: method name
+2.Instance Method Reference --- object reference :: method name
 
-3.Constructor Reference ---> className :: new
+3.Constructor Reference --- className :: new
 
 If the method returns object ,then we should use constructor reference.
 
@@ -326,7 +326,7 @@ Test s=f.get ();
 
 Wherever fn interface , we can use lambda expressions
 
-Function<String,Intgeger> f =s->s.length
+Function<String,Intgeger f =s-s.length
 
 Strings:
 
@@ -392,7 +392,7 @@ import java.util.List;
 public final class Immutable {
 private int id;
 private String name;
-private List<String> hobbies;
+private List<String hobbies;
 
     public int getId() {
         return id;
@@ -402,8 +402,8 @@ private List<String> hobbies;
         return name;
     }
     
-    public List<String> getHobbies() {
-       List<String> objects = new ArrayList<> ();
+    public List<String getHobbies() {
+       List<String objects = new ArrayList< ();
         for(String hobby:hobbies){
             objects.add(hobby);
         }
@@ -419,10 +419,10 @@ private List<String> hobbies;
                 '}';
     }
 
-    public Immutable(int id, String name, List<String> hobbyList) {
+    public Immutable(int id, String name, List<String hobbyList) {
         this.id = id;
         this.name = name;
-        this.hobbies = new ArrayList<> ();
+        this.hobbies = new ArrayList< ();
         for(String hobby: hobbyList){
             hobbies.add(hobby);
         }
@@ -430,7 +430,7 @@ private List<String> hobbies;
     }
 
     public static void main(String[] args) {
-        List<String>h=new ArrayList<> ();
+        List<Stringh=new ArrayList< ();
         h.add("cycling");
         h.add("music");
         Immutable immutable=new Immutable (1,"Sai",h);
@@ -486,7 +486,7 @@ Step 3: traverses through the nodes in the bucket
 
 So it takes time to traverse through all the nodes. Performance Degradation
 
-- > In java 8 , after reaching some threshold of nodes , linked list is converted to tree . the threshold is called Treefy thresholding
+-  In java 8 , after reaching some threshold of nodes , linked list is converted to tree . the threshold is called Treefy thresholding
 
 Uses Compare to for find the order.
 
@@ -652,8 +652,8 @@ close db connection ( i.e clean up code)
 
 }
 
-- --> The main objective of finally block is to maintain clean up code.
-- --> This block is executed always irrespective of whether exception is raised or not.
+- -- The main objective of finally block is to maintain clean up code.
+- -- This block is executed always irrespective of whether exception is raised or not.
 
 try{
 
@@ -704,9 +704,9 @@ Throw new ArithmeticException(“arithmetic exception”);
 
 final**:**
 
-- classes ---> when a class a declared with final , the class cannot be extended.
-- methods ---> method cannot be overridden when it is declared as final.
-- variables ---> cannot be reassigned.
+- classes --- when a class a declared with final , the class cannot be extended.
+- methods --- method cannot be overridden when it is declared as final.
+- variables --- cannot be reassigned.
 
 finally:
 
@@ -760,7 +760,7 @@ Student s1=new Student(“Sai”,1);
 
 Student s2=new Student(“Sai”,2);
 
-Set<Student>set=new HashSet<>();
+Set<Studentset=new HashSet<();
 
 set.add(s1);
 
@@ -849,7 +849,7 @@ int nextIndex();
 2. Performance is not up to the mark.
 3. While one thread is iterating a collection object , by mistake if other thread trying to modify the collection immediately iterator fails by raising Concurrent Modification Exception.
 
-ArrayList<String>al=new ArrayList<> ();
+ArrayList<Stringal=new ArrayList< ();
 
 al.add("CTS");
 
@@ -870,11 +870,11 @@ al.remove (hs);
 }
 Exception in thread "main" java.util.ConcurrentModificationException
 
-Map<String, Long> phoneBook = **new** HashMap<String, Long>();
+Map<String, Long phoneBook = **new** HashMap<String, Long();
 phoneBook.put(**"Vikram"**,8149101254L);
 phoneBook.put(**"Mike"**,9020341211L);
 phoneBook.put(**"Jim"**,7788111284L);
-Iterator<String> keyIterator1 = phoneBook.keySet().iterator();**while** (keyIterator1.hasNext()){
+Iterator<String keyIterator1 = phoneBook.keySet().iterator();**while** (keyIterator1.hasNext()){
 String key = keyIterator1.next();**if** (**"Vikram"**.equals(key)){
 phoneBook.put(**"John"**,9220341211L);
 }
@@ -895,7 +895,7 @@ phoneBook.put(**"John"**,9220341211L);
 - It never throws Concurrent Modified Exception.
 
    ![img_17.png](img_17.png)
-   16--> concurrency level.
+   16-- concurrency level.
 
 Difference Between Concurrent Hash Map and Concurrent HashMap
 
@@ -925,7 +925,7 @@ It is a thread safe version of ArrayList , As the name indicates CopyOnWriteArra
 - 
 ![img_19.png](img_19.png)
 
-CopyOnWriteArrayList<String> al=**new** CopyOnWriteArrayList<> ();
+CopyOnWriteArrayList<String al=**new** CopyOnWriteArrayList< ();
 al.add(**"CTS"**);
 al.add(**"TCS"**);
 al.add(**"CAPGEMINI"**);
@@ -936,8 +936,8 @@ al.remove (hs);
 System.***out***.println (al);
 }
 
-> CopyOnWriteArraySet:
->
+ CopyOnWriteArraySet:
+
 
 Collection(I)
 
@@ -954,221 +954,221 @@ It is a thread safe version of Set , As the name indicates CopyOnWriteArrayList 
 
 **MultiThreading**
 
-> Multitasking:
->
->
-> 1. Process Based Multitasking : Exceuting more than one task at a time where each independent of other.
->
-> 2.Thread Based Multitasking
->
-> Executing the several tasks where each task is part of the same program.
->
-> **What is Thread?**
->
-> Thread is a light weight process. A separate flow of exceution.
->
-> Thread is light weight because thread shared the same memory address space and It takes less memory and less time to execute the program.
->
-> **What is Daemon Thread?**
->
-> The thread which is executing in the background is called Daemon Thread.
->
-> Ex: Garbage Collector , Attach Listener.
->
-> Use of Daemon Thread:
->
-> - -> We can create Threads in 2 ways
->
-> 1.By extending Thread Class
->
-> public class MyThread extends Thread{
->
-> public void run(){
->
-> for(int i=0;i<10;i++){
->
-> System.out.println ("hello");
->
-> }
->
-> }
->
-> }
->
-> public class Demo {
->
-> public static void main(String[] args) {
->
-> MyThread thread=new MyThread ();
->
-> thread.start ();
->
-> for(int i=0;i<10;i++)
->
-> {
->
-> System.out.println ("hi");
->
-> }
->
-> }
->
-> }
->
-> 2.By using Runnable interface
->
-> class MyRunnable implements Runnable{
->
-> @Override
->
-> public void run() {
->
-> for (int i = 0; i < 10; i++) {
->
-> System.out.println ("child Thread");
->
-> }
->
-> }
->
-> }
->
-> public class ThreadDemo {
->
-> public static void main(String[] args) {
->
-> MyRunnable runnable=new MyRunnable ();
->
-> Thread thread=new Thread (runnable);
->
-> thread.start ();
->
-> for(int i=0;i<10;i++){
->
-> System.out.println ("parent thread");
->
-> }
->
-> }
->
-> }
->
-> **Thread Scheduler:**
->
-> 1.It is a part of JVM
->
-> 2.It is responsible to schedule threads. i.e if multiple threads are waiting to get chance of execution ,then in which order threads are ececuted will be decided by Thread Scheduler.
->
-> 3.We cannot expect the algorithm followed by Thread Scheduler , it is varied from jvm to jvm. Hence we cann ot expect thread exceution order and output.
->
-> Difference Between t.run() ,t.start()
->
-> In case of t.start() a new thread will be created which is responsible for exceution of run() method
->
-> But In case of t.run() a new thread wont be created and run() method will be executed as a normal method.
->
-> - --> After starting a thread if we are trying to restart the same thread then we will get run time exception , illegal thread state exception.
->
-> **Thread Priorities:**
->
-> Every thread in java has some priority. It may be default priority generated by JVM or customized priority given by programmer.
->
-> 1 is Minimum Priority(Thread.MIN_PRIORITY) , 10 is Maximum Priority(Thread.MAX_PRIORITY) and Normal Priority is 5 (Thread.NORM_PRIORITY)
->
-> - -> Thread Scheduler will use priorities while allocating processor. The thread which is having highest priority will get chance first.
-> - --> If two threads having same priority then we cannot expect exact execution order. It depends on thread scheduler.
-> - --> Thread class defines the following methods to get and set the thread priorities.
->
-> public final int getPriority();
->
-> public final void setPriority(int p) --> allowed values 1 to 10 , otherwise Illegal Argument Exception.
->
-> - --> The default priority only for main thread is 5. But for all remaining threads default priority will be inherited from parent to child.
-> - -> We can prevent a thread exceution by using the following methods.
->
-> yield()
->
-> join()
->
-> sleep()
->
-> yield()
->
-> It causes to pause current exceuting thread to give the chance for waiting threads of same priority.
->
-> If there is no waiting thread or all waiting threads have low priority then same thread can continue its exceution.
->
-> If multiple threads are waiting with same priority then which waiting thread will get the chance we cannot expect.It depends on thread Scheduler.
->
-> public staic native void yield();
->
-> join()
->
-> If a thread wants to wait until completing some other thread then we should go for join() method.
->
-> Foe ex: If a thread t1 wants to wait until completing t2, then t1 has to call t2.join() , if t1 executes t2.join() then immediately t1 will be entered into waiting stating until t2 completes.
->
-> public final void join() throws InterruptedException
->
+ Multitasking:
+
+
+ 1. Process Based Multitasking : Exceuting more than one task at a time where each independent of other.
+
+ 2.Thread Based Multitasking
+
+ Executing the several tasks where each task is part of the same program.
+
+ **What is Thread?**
+
+ Thread is a light weight process. A separate flow of exceution.
+
+ Thread is light weight because thread shared the same memory address space and It takes less memory and less time to execute the program.
+
+ **What is Daemon Thread?**
+
+ The thread which is executing in the background is called Daemon Thread.
+
+ Ex: Garbage Collector , Attach Listener.
+
+ Use of Daemon Thread:
+
+ - - We can create Threads in 2 ways
+
+ 1.By extending Thread Class
+
+ public class MyThread extends Thread{
+
+ public void run(){
+
+ for(int i=0;i<10;i++){
+
+ System.out.println ("hello");
+
+ }
+
+ }
+
+ }
+
+ public class Demo {
+
+ public static void main(String[] args) {
+
+ MyThread thread=new MyThread ();
+
+ thread.start ();
+
+ for(int i=0;i<10;i++)
+
+ {
+
+ System.out.println ("hi");
+
+ }
+
+ }
+
+ }
+
+ 2.By using Runnable interface
+
+ class MyRunnable implements Runnable{
+
+ @Override
+
+ public void run() {
+
+ for (int i = 0; i < 10; i++) {
+
+ System.out.println ("child Thread");
+
+ }
+
+ }
+
+ }
+
+ public class ThreadDemo {
+
+ public static void main(String[] args) {
+
+ MyRunnable runnable=new MyRunnable ();
+
+ Thread thread=new Thread (runnable);
+
+ thread.start ();
+
+ for(int i=0;i<10;i++){
+
+ System.out.println ("parent thread");
+
+ }
+
+ }
+
+ }
+
+ **Thread Scheduler:**
+
+ 1.It is a part of JVM
+
+ 2.It is responsible to schedule threads. i.e if multiple threads are waiting to get chance of execution ,then in which order threads are ececuted will be decided by Thread Scheduler.
+
+ 3.We cannot expect the algorithm followed by Thread Scheduler , it is varied from jvm to jvm. Hence we cann ot expect thread exceution order and output.
+
+ Difference Between t.run() ,t.start()
+
+ In case of t.start() a new thread will be created which is responsible for exceution of run() method
+
+ But In case of t.run() a new thread wont be created and run() method will be executed as a normal method.
+
+ - -- After starting a thread if we are trying to restart the same thread then we will get run time exception , illegal thread state exception.
+
+ **Thread Priorities:**
+
+ Every thread in java has some priority. It may be default priority generated by JVM or customized priority given by programmer.
+
+ 1 is Minimum Priority(Thread.MIN_PRIORITY) , 10 is Maximum Priority(Thread.MAX_PRIORITY) and Normal Priority is 5 (Thread.NORM_PRIORITY)
+
+ - - Thread Scheduler will use priorities while allocating processor. The thread which is having highest priority will get chance first.
+ - -- If two threads having same priority then we cannot expect exact execution order. It depends on thread scheduler.
+ - -- Thread class defines the following methods to get and set the thread priorities.
+
+ public final int getPriority();
+
+ public final void setPriority(int p) -- allowed values 1 to 10 , otherwise Illegal Argument Exception.
+
+ - -- The default priority only for main thread is 5. But for all remaining threads default priority will be inherited from parent to child.
+ - - We can prevent a thread exceution by using the following methods.
+
+ yield()
+
+ join()
+
+ sleep()
+
+ yield()
+
+ It causes to pause current exceuting thread to give the chance for waiting threads of same priority.
+
+ If there is no waiting thread or all waiting threads have low priority then same thread can continue its exceution.
+
+ If multiple threads are waiting with same priority then which waiting thread will get the chance we cannot expect.It depends on thread Scheduler.
+
+ public staic native void yield();
+
+ join()
+
+ If a thread wants to wait until completing some other thread then we should go for join() method.
+
+ Foe ex: If a thread t1 wants to wait until completing t2, then t1 has to call t2.join() , if t1 executes t2.join() then immediately t1 will be entered into waiting stating until t2 completes.
+
+ public final void join() throws InterruptedException
+
 
 ![img_20.png](img_20.png)
-> Synchronization:
->
->
-> Synchronized is the modifier applicable only for methods and blocks but not for classes and variables.
->
-> If multiple threads are trying to operate simulatenously on the same java object then there may be a chance of data inconsistency problem.
->
-> To overcome this problem we shoud use synchronized keyword
->
-> If a method is declared is synchronized then at a time only one thread is allowed to execute a method on an object.
->
-> Advantage is :we can resolve data inconsistency .
->
-> Disadvantage: it increases wait and time of threads. if there is no specific requirement .Then it is not recommended to use synchronized keyword.
->
-> - ->Internally Synchronization is implemented by using lock.Every object in java has a unique lock.
-> - -> Whenever we are using synchronized keyword lock concept will come into picture.
-> - -> If a thread wants to execute synchronized method on the given object, first it has to get lock of the object, once thread get lock, then it is allowed to
->
-> execute any synchronized method on that object.Once method exception completes automatically thread releases lock. Acquiring and releasing lock internally take cares by JVM ,programmer not responsible.
->
-> - -> While a thread is exceuting on a given object the remaining threads are not allowed to execute any synchronized method simulatenously on the same object but remaining threads are allowed to execute non synchronized methods simulatenously.
->
-> class ReservationSystem{
->
-> checkAvailability(){
->
-> }
->
-> synchronized bookTicket(){ ---> because this method is updating the tickets
->
-> }
->
-> }
->
-> **Inter Thread Communication:**
->
-> Two Threads can communicate with each other by using wait(), notify() and notifyAll() methods.
->
-> - -> The thread which is expecting updation is responsible to call wait() method then immediately the thread will enter into waiting state.
-> - -> The thread which is responsible for updation will call notify() method then waiting thread will get notification and continue its exceution with those updated items.
-> - -> wait(),notify() and notifyAll() are present in Object class but not in Thread class. because thread can call on any java object.
->
-> **Difference Between Wait and Sleep method:**
->
-> 1.wait() is called on an Object while sleep() is called on a Thread
->
-> 2.wait() method releases the lock when the thread is waiting till some other thread calls notify() method, while sleep() method keeps the lock even if the thread is waiting.
->
-> 3.wait() can only be called from synchronized block/method otherwise it will throw IllegalMonitorStateException. sleep() can called from any block of code.
->
-> 4.waiting thread can be awaken by using notify() and notifyAll() methods while sleeping thread cant be awaken.
->
-> 5.sleep method immediately goes to runnable state after waking up while in case of wait() , waiting thread first fights back for the lock and then goes to Runnable state.
->
-> What is CompletableFuture?
->
+ Synchronization:
+
+
+ Synchronized is the modifier applicable only for methods and blocks but not for classes and variables.
+
+ If multiple threads are trying to operate simulatenously on the same java object then there may be a chance of data inconsistency problem.
+
+ To overcome this problem we shoud use synchronized keyword
+
+ If a method is declared is synchronized then at a time only one thread is allowed to execute a method on an object.
+
+ Advantage is :we can resolve data inconsistency .
+
+ Disadvantage: it increases wait and time of threads. if there is no specific requirement .Then it is not recommended to use synchronized keyword.
+
+ - -Internally Synchronization is implemented by using lock.Every object in java has a unique lock.
+ - - Whenever we are using synchronized keyword lock concept will come into picture.
+ - - If a thread wants to execute synchronized method on the given object, first it has to get lock of the object, once thread get lock, then it is allowed to
+
+ execute any synchronized method on that object.Once method exception completes automatically thread releases lock. Acquiring and releasing lock internally take cares by JVM ,programmer not responsible.
+
+ - - While a thread is exceuting on a given object the remaining threads are not allowed to execute any synchronized method simulatenously on the same object but remaining threads are allowed to execute non synchronized methods simulatenously.
+
+ class ReservationSystem{
+
+ checkAvailability(){
+
+ }
+
+ synchronized bookTicket(){ --- because this method is updating the tickets
+
+ }
+
+ }
+
+ **Inter Thread Communication:**
+
+ Two Threads can communicate with each other by using wait(), notify() and notifyAll() methods.
+
+ - - The thread which is expecting updation is responsible to call wait() method then immediately the thread will enter into waiting state.
+ - - The thread which is responsible for updation will call notify() method then waiting thread will get notification and continue its exceution with those updated items.
+ - - wait(),notify() and notifyAll() are present in Object class but not in Thread class. because thread can call on any java object.
+
+ **Difference Between Wait and Sleep method:**
+
+ 1.wait() is called on an Object while sleep() is called on a Thread
+
+ 2.wait() method releases the lock when the thread is waiting till some other thread calls notify() method, while sleep() method keeps the lock even if the thread is waiting.
+
+ 3.wait() can only be called from synchronized block/method otherwise it will throw IllegalMonitorStateException. sleep() can called from any block of code.
+
+ 4.waiting thread can be awaken by using notify() and notifyAll() methods while sleeping thread cant be awaken.
+
+ 5.sleep method immediately goes to runnable state after waking up while in case of wait() , waiting thread first fights back for the lock and then goes to Runnable state.
+
+ What is CompletableFuture?
+
 
 A **CompeltableFuture** is used for asynchronous programming. Asynchronous programming means writing non-blocking code. It runs a task on a separate thread than the main application thread and notifies the main thread about its progress, completion or failure.
 
@@ -1236,11 +1236,11 @@ When the application starts those end points get registered with the dispatcher 
 | compareTo() | Compare and equals() |
 | Homogenous objects | Both Homogenous and Heterogenous Objects |
 
-void removeDuplicates(List<String> list) {
+void removeDuplicates(List<String list) {
 
 Set = new HashSet();
 
-Iterator<String> iterator = list.iterator();
+Iterator<String iterator = list.iterator();
 
 while (iterator.hasNext()) {
 
@@ -1272,8 +1272,8 @@ Spring:
 
 Differences b/w Spring and Spring Boot
 
-- Starter POMs ----> maven configuration will be simplified like spring boot starter web
-- Version Management ---> for each dependency version is important ,but in boot it is not required
+- Starter POMs ---- maven configuration will be simplified like spring boot starter web
+- Version Management --- for each dependency version is important ,but in boot it is not required
 - Auto Configuration (web.xml in spring , but not required in spring boot)
 - Component Scanning
 - Embedded Server
@@ -1286,43 +1286,43 @@ Differences b/w Spring and Spring Boot
 
 **ORDER BY** salary **LIMIT** 1;
 
->
->
->
-> import java.util.*;
->
-> public class MyClass {
->
-> public static void main(String args[]) {
->
-> String s="john doe";
->
-> char[] ch = s.toCharArray();
->
-> Map<Character,Integer> map=new HashMap();
->
-> for(Character c:ch){
->
-> if(map.get(c)==null){
->
-> map.put(c,1);
->
-> }
->
-> else{
->
-> map.put(c,map.get(c)+1);
->
-> }
->
-> }
->
-> map.entrySet().stream().filter(e->e.getValue()>1).limit(1).map(e->e.getKey()).forEach(System.out::println);
->
-> }
->
-> }
->
+
+
+
+ import java.util.*;
+
+ public class MyClass {
+
+ public static void main(String args[]) {
+
+ String s="john doe";
+
+ char[] ch = s.toCharArray();
+
+ Map<Character,Integer map=new HashMap();
+
+ for(Character c:ch){
+
+ if(map.get(c)==null){
+
+ map.put(c,1);
+
+ }
+
+ else{
+
+ map.put(c,map.get(c)+1);
+
+ }
+
+ }
+
+ map.entrySet().stream().filter(e-e.getValue()1).limit(1).map(e-e.getKey()).forEach(System.out::println);
+
+ }
+
+ }
+
 
 **Why we should override hash code and equals method??**
 
@@ -1334,8 +1334,8 @@ contract b/w hash code and equals: if the hashcodes are same , then only equals 
 
 1.if we don’t override hashcode
 
-- > it generates the hashcode based on the memory address and as we using new keyword , the address will be different and the hashcodes are different . so equals method won’t be called and the same objects will be inserted which results in duplicates.
+-  it generates the hashcode based on the memory address and as we using new keyword , the address will be different and the hashcodes are different . so equals method won’t be called and the same objects will be inserted which results in duplicates.
 
 2. if we don’t override equals
 
-- > if the hashcodes are same then equals method will be called , as we have not overridden equals method. Object class equal method compares the references and the references will be different , so it returns false , which results duplicates.
+-  if the hashcodes are same then equals method will be called , as we have not overridden equals method. Object class equal method compares the references and the references will be different , so it returns false , which results duplicates.
