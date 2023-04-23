@@ -382,25 +382,61 @@ Even if some thread modifies the value, an entirely new String is created withou
 
 4.only getters no setters
 
-**import** java.util.ArrayList;**import** java.util.List;**public final class** Immutable {**private int id**;**private** String **name**;**private** List<String> **hobbies**;**public int** getId() {**return id**;
-}**public** String getName() {**return name**;
-}**public** List<String> getHobbies() {
-List<String> objects = **new** ArrayList<> ();**for**(String hobby:**hobbies**){
-objects.add(hobby);
-}**return** objects;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class Immutable {
+private int id;
+private String name;
+private List<String> hobbies;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+    
+    public List<String> getHobbies() {
+       List<String> objects = new ArrayList<> ();
+        for(String hobby:hobbies){
+            objects.add(hobby);
+        }
+        return objects;
+    }
+
+    @Override
+    public String toString() {
+        return "Immutable{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", hobbies=" + hobbies +
+                '}';
+    }
+
+    public Immutable(int id, String name, List<String> hobbyList) {
+        this.id = id;
+        this.name = name;
+        this.hobbies = new ArrayList<> ();
+        for(String hobby: hobbyList){
+            hobbies.add(hobby);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        List<String>h=new ArrayList<> ();
+        h.add("cycling");
+        h.add("music");
+        Immutable immutable=new Immutable (1,"Sai",h);
+        h.add ("test");
+        System.out.println (immutable);
+
+    }
+
 }
-@Override**public** String toString() {**return "Immutable{"** +**"id="** + **id** +**", name='"** + **name** + **'\''** +**", hobbies="** + **hobbies** +**'}'**;
-}**public** Immutable(**int** id, String name, List<String> hobbyList) {**this**.**id** = id;**this**.**name** = name;**this**.**hobbies** = **new** ArrayList<> ();**for**(String hobby: hobbyList){**hobbies**.add(hobby);
-}
-}**public static void** main(String[] args) {
-List<String>h=**new** ArrayList<> ();
-h.add(**"cycling"**);
-h.add(**"music"**);
-Immutable immutable=**new** Immutable (1,**"Sai"**,h);
-h.add (**"test"**);
-System.***out***.println (immutable);
-}
-}
+
 
 ![img_4.png](img_4.png)
            
