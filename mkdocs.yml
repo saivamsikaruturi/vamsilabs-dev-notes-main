@@ -20,6 +20,8 @@ nav:
       - Ecosystem: java/ecosystem.md
       - Maven: java/maven.md
       - Gradle: java/gradle.md
+  - StreamApi:
+      - StreamApiExamples: streamapi/streamapi.md
   - SpringBoot:
       - Introduction: springboot/introduction.md
   - DevOps:
