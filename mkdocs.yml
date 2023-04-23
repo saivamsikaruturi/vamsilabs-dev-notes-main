@@ -1,0 +1,59 @@
+site_name: "Siva Tech Notes"
+site_description: "My Quick Reference Docs"
+site_author: "K Siva Prasad Reddy"
+site_url: "https://sivalabs-dev-notes.netlify.app/"
+
+# Repository
+repo_name: "sivaprasadreddy/sivalabs-dev-notes"
+repo_url: "https://github.com/sivaprasadreddy/sivalabs-dev-notes"
+
+# Copyright
+copyright: "Copyright &copy; 2020 - 2023 K Siva Prasad Reddy"
+
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Learning: learning.md
+  - Shortcuts: shortcuts.md
+  - Java:
+      - Ecosystem: java/ecosystem.md
+      - Maven: java/maven.md
+      - Gradle: java/gradle.md
+  - Kotlin:
+      - Introduction: kotlin/introduction.md
+  - SpringBoot:
+      - Introduction: springboot/introduction.md
+  - Python:
+      - Introduction: python/introduction.md
+      - Installation: python/installation.md
+  - Ruby:
+      - Introduction: ruby/introduction.md
+  - Go:
+      - Introduction: golang/introduction.md
+  - TypeScript:
+      - Introduction: typescript/introduction.md
+  - DevOps:
+      - Tools: devops/devops.md
+      - Linux: devops/linux.md
+      - Docker: devops/docker.md
+      - Ansible: devops/ansible.md
+      - AWS: devops/aws.md
+  - Misc:
+      - CleanArchitecture: misc/clean-architecture.md
+
+# Customization
+extra:
+  manifest: "manifest.webmanifest"
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: "https://github.com/sivaprasadreddy"
+    - icon: fontawesome/brands/twitter
+      link: "https://twitter.com/sivalabs"
+    - icon: fontawesome/brands/linkedin
+      link: "https://www.linkedin.com/in/siva-prasad-reddy-katamreddy/"
+
+# Extensions
+markdown_extensions:
+  - codehilite
+  - tables
