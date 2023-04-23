@@ -20,7 +20,7 @@ nav:
       - Ecosystem: java/ecosystem.md
       - Maven: java/maven.md
       - Gradle: java/gradle.md
-      - Java Basics: Java Basics.md
+      - Java Basics: java/Java Basics.md
   - StreamApi:
       - StreamApiQuestions: stream api/streamapi.md
   - SpringBoot:
