@@ -339,26 +339,30 @@ s1 = “javascript”; a new object javascript will be created and now s1 will p
 
 Prove Strings are Immutable:
 
-String s1=**"vamsi"**;
-System.***out***.println (s1.hashCode ());
-s1= s1.concat (**"krishna"**);
-System.***out***.println (s1);
-System.***out***.println (s1.hashCode ());
+String s1="vamsi";    
+System.out.println (s1.hashCode ());  
+s1= s1.concat ("krishna");   
+System.out.println (s1);  
+System.out.println (s1.hashCode ());
 
-String s1=**"Vamsi"**;
-System.***out***.println(s1.equals(**"Vamsi"**));
-System.***out***.println(s1==**"Vamsi"**);
-Integer a=1;
-Integer b=1;
-System.***out***.println( a==b);
-System.***out***.println(a.equals(b));
-String s=**"vamsi"**;
-String s2=**"vamsi"**;
-System.***out***.println (s.equals (s2));
-System.***out***.println (s==s2);
-String s3=**new** String (**"vamsi"**);
-System.***out***.println (s.equals (s3));
-System.***out***.println (s==s3);
+String s1="Vamsi";     
+System.out.println(s1.equals("Vamsi"));   
+System.out.println(s1=="Vamsi");  
+Integer a=1;  
+Integer b=1;   
+System.out.println( a==b);  
+System.out.println(a.equals(b));  
+String s="vamsi";  
+String s2="vamsi";  
+System.out.println (s.equals (s2));     
+System.out.println (s==s2);    
+String s3=new String ("vamsi");   
+System.out.println (s.equals (s3));   
+System.out.println (s==s3);
+
+
+
+
 
 **Why String is Immutable:**
 
