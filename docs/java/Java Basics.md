@@ -1,3 +1,5 @@
+JAVA BASICS:
+
 **High Level Language:** Man can understand these languages C++,Java
 
 **Low Level Language:** Machine only can understand
@@ -8,14 +10,12 @@
 
 **‘**
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/95e7b88d-c6b7-46a6-aaea-7c99cda15c9d/image1.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/95e7b88d-c6b7-46a6-aaea-7c99cda15c9d/image1.png)
-
+![img.png](img.png)
 Java is Platform Independent
 
 JVM is Platform Dependent
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0db85891-5599-48c3-9ffa-24ed5beb3df6/image2.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0db85891-5599-48c3-9ffa-24ed5beb3df6/image2.png)
-
+![img_1.png](img_1.png)
 JDK=JRE+DEV Tools
 
 JRE=JVM+ Library classes
@@ -330,8 +330,7 @@ Function<String,Intgeger> f =s->s.length
 
 Strings:
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c5886515-2f6e-4085-a6a3-a3582f426b64/image3.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c5886515-2f6e-4085-a6a3-a3582f426b64/image3.png)
-
+![img_3.png](img_3.png)
 String s1=”java”;
 
 String s2=”java”;
@@ -403,9 +402,9 @@ System.***out***.println (immutable);
 }
 }
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d46b9051-af2f-4428-88c6-9a3a9cd9c62a/image4.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d46b9051-af2f-4428-88c6-9a3a9cd9c62a/image4.png)
-
-Internal Working of Hash Map
+![img_4.png](img_4.png)
+           
+                    Internal Working of Hash Map
 
 Hash set underlying data structure is Hash table . Hash set works on principle of Hashing.
 
@@ -451,8 +450,7 @@ So it takes time to traverse through all the nodes. Performance Degradation
 
 Uses Compare to for find the order.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d4e607c5-ecd1-4336-95bf-a79bac4bc55c/image5.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d4e607c5-ecd1-4336-95bf-a79bac4bc55c/image5.png)
-
+![img_5.png](img_5.png)
 **Linked Hash Set:**
 
 - Child class of Hash Set
@@ -460,8 +458,7 @@ Uses Compare to for find the order.
 - Underlying data structure is Hash table and linked list.
 - For Cache based applications
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/02823421-a4b7-405f-a7f6-7f0fbbf4518c/image6.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/02823421-a4b7-405f-a7f6-7f0fbbf4518c/image6.png)
-
+![img_6.png](img_6.png)
 Upcasting means conversion from child to parent
 
 Parent p=(Parent) new Child;
@@ -510,24 +507,19 @@ There are 4 types of inheritance
 
 1.Single Inheritance
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9b9bbe95-e726-45e2-9140-64a60c9685cc/image7.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9b9bbe95-e726-45e2-9140-64a60c9685cc/image7.png)
-
+![img_7.png](img_7.png)
 2. Multiple Inheritance:
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/491660ca-fae3-44d7-9338-599097a03ac2/image8.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/491660ca-fae3-44d7-9338-599097a03ac2/image8.png)
-
+![img_8.png](img_8.png)
 3. Multi Level
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b77c4dcb-e459-4211-8230-8ec337e20e2e/image9.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b77c4dcb-e459-4211-8230-8ec337e20e2e/image9.png)
-
+![img_9.png](img_9.png)
 4.Hierarchial Inheritance:
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/510dd366-be63-4cea-8d46-2ecb79fd7e46/image10.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/510dd366-be63-4cea-8d46-2ecb79fd7e46/image10.png)
-
+![img_10.png](img_10.png)
 5.Hybrid Inheritance:
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2e34b4c3-c20f-4585-bc7f-6b9d9d3a753e/image11.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2e34b4c3-c20f-4585-bc7f-6b9d9d3a753e/image11.png)
-
+![img_12.png](img_12.png)
 **Association, Composition and Aggregation in Java:**
 
 Association: The relationship between two or more classes. It tell about has-a relationship.
@@ -540,8 +532,8 @@ Aggregation: Weak Relationship
 
 # What is marker interface?
 
-An [interface](https://www.javatpoint.com/interface-in-java) that does not contain methods, fields, and constants is known as marker interface. In other words, an empty interface is known as **marker interface** or **tag interface.** It delivers the run-time type information about an object. It is the reason that the [JVM](https://www.javatpoint.com/jvm-java-virtual-machine) and compiler have additional information about an object. The **Serializable** and **Cloneable** interfaces are the example of marker interface. In short, it indicates a signal or command to the JVM.
-
+An interface that does not contain methods, fields, and constants is known as marker interface. In other words, an empty interface is known as marker interface or tag interface. It delivers the run-time type information about an object. It is the reason that the JVM and compiler have additional information about an object. The Serializable and Cloneable interfaces are the example of marker interface. 
+In short, it indicates a signal or command to the JVM.
 The declaration of marker interface is the same as interface in Java but the interface must be empty. For example:
 
 1. **public** **interface** Serializable
@@ -557,11 +549,11 @@ It is used to logically divide the code and a good way to categorize code. It is
 
 ## Built-in Marker Interface
 
-In [Java](https://www.javatpoint.com/java-tutorial), built-in marker interfaces are the interfaces that are already present in the [JDK](https://www.javatpoint.com/difference-between-jdk-jre-and-jvm#jdk) and ready to use. There are many built-in marker interfaces some of them are:
+In Java, built-in marker interfaces are the interfaces that are already present in the JDK and ready to use. There are many built-in marker interfaces some of them are:
+o	Cloneable Interface
+o	Serializable Interface
+o	Remote Interface
 
-- Cloneable Interface
-- Serializable Interface
-- Remote Interface
 
 **EXCEPTION HANDLING**
 
@@ -597,8 +589,7 @@ Example: Out of memory error
 
 **Exception Hierarchy:**
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c11c31df-c9c1-4d00-a050-1ff172c6e42a/image12.jpeg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c11c31df-c9c1-4d00-a050-1ff172c6e42a/image12.jpeg)
-
+![img_15.png](img_15.png)
 Purpose and Speciality of Finally Block in Exception:
 
 try {
@@ -716,8 +707,7 @@ Following is the list of important methods available in the Throwable class.
 - If you want to represent a group of individual object as a single entity then use collection
 - Collections class has methods that can be performed on the collection like collections.sort(), min(), max (), reverseOrder(), emptylist(), addAll().
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ee0b2365-2f80-4131-ad56-7470c0faac01/image13.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ee0b2365-2f80-4131-ad56-7470c0faac01/image13.png)
-
+![img_16.png](img_16.png)
 **What is the contract between hashCode() and equals() method**
 
 - Whenever it is invoked on the same object more than once during execution of Java application the hashCode method must consistently return the same hashCode value
@@ -864,9 +854,8 @@ phoneBook.put(**"John"**,9220341211L);
 - So Concurrent Hash Map allows Simultaneous Read operations and 16 write/update operations.
 - It never throws Concurrent Modified Exception.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d4732171-eaf7-46fa-af75-ee523fd7b226/image14.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d4732171-eaf7-46fa-af75-ee523fd7b226/image14.png)
-
-16--> concurrency level.
+   ![img_17.png](img_17.png)
+   16--> concurrency level.
 
 Difference Between Concurrent Hash Map and Concurrent HashMap
 
@@ -885,6 +874,7 @@ Collection(I)
 List(I)
 
 CopyOnWriteArrayList (C)
+![img_18.png](img_18.png)
 
 It is a thread safe version of ArrayList , As the name indicates CopyOnWriteArrayList creates a cloned copy of underlying ArrayList for Every Update Operation. At Certain Point Both will Synchronized Automatically Which is taken care by JVM internally.
 
@@ -892,8 +882,8 @@ It is a thread safe version of ArrayList , As the name indicates CopyOnWriteArra
 - It is costly to use because for every update Operation a cloned copy will be created. Hence it is the best option if several Read operations and less Write operations. Because if more Write operations are there then more cloned copies are created. Then performance will be degraded.
 - Insertion Order is Preserved
 - Duplicates are Allowed.
-
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fb1af239-568a-4082-ba68-09912d298499/image15.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fb1af239-568a-4082-ba68-09912d298499/image15.png)
+- 
+![img_19.png](img_19.png)
 
 CopyOnWriteArrayList<String> al=**new** CopyOnWriteArrayList<> ();
 al.add(**"CTS"**);
@@ -1081,8 +1071,7 @@ It is a thread safe version of Set , As the name indicates CopyOnWriteArrayList 
 > public final void join() throws InterruptedException
 >
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8f9e497f-ef47-403f-aa20-e711df3e9b09/image16.jpeg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8f9e497f-ef47-403f-aa20-e711df3e9b09/image16.jpeg)
-
+![img_20.png](img_20.png)
 > Synchronization:
 >
 >
@@ -1169,9 +1158,6 @@ How @Request Mapping works?
 
 When the application starts those end points get registered with the dispatcher servelet . When the request comes from the client to the dispatcher servelet, it redirects to the end point.
 
-Garbage Collection Internal Working:
-
-heap
 
 | ArrayList | LinkedList |
 | --- | --- |
@@ -1181,7 +1167,6 @@ heap
 | 4) ArrayList is better for storing and accessing data. | LinkedList is better for manipulating data. |
 |  |  |
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a17d7f52-86d1-4238-8ff7-0f87772e8a4f/image17.jpeg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a17d7f52-86d1-4238-8ff7-0f87772e8a4f/image17.jpeg)
 
 | HashMap                                                                                                                             | Hashtable                                                                         |
 |-------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
@@ -1203,8 +1188,7 @@ heap
 | Thread safe | Thread safe | Not Thread safe |
 | Less performance | Less performance | Best Performance. Recommended while using Multi Threading |
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8557e6ca-2fbe-4ea5-a20f-b40e8eb3d296/image18.jpeg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8557e6ca-2fbe-4ea5-a20f-b40e8eb3d296/image18.jpeg)
-
+![img_23.png](img_23.png)
 | Comparable | Comparator |
 | --- | --- |
 | Natural Sorting Order | Customized Sorting |
@@ -1262,10 +1246,8 @@ Differences b/w Spring and Spring Boot
 
 **ORDER BY** salary **LIMIT** 1;
 
-> https://www.netjstech.com/2016/08/string-and-thread-safety-in-java.html
 >
 >
-> https://medium.com/@neilkrishna.kabara20/multithreading-in-java-22eaed760872
 >
 > import java.util.*;
 >
