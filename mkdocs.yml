@@ -21,7 +21,7 @@ nav:
       - Maven: java/maven.md
       - Gradle: java/gradle.md
   - StreamApi:
-      - StreamApiExamples: stream api/streamapi.md
+      - StreamApiQuestions: stream api/streamapi.md
   - SpringBoot:
       - Introduction: springboot/introduction.md
   - DevOps:
