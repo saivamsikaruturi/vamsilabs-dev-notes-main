@@ -25,6 +25,8 @@ nav:
       - StreamApiQuestions: stream api/streamapi.md
   - SpringBoot:
       - Introduction: springboot/introduction.md
+  - DataBases:
+      - Neo4j: databases/neo4j.md
   - DevOps:
       - Tools: devops/devops.md
       - Linux: devops/linux.md
