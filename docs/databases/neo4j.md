@@ -295,9 +295,8 @@ Call apoc.refactor.extractNode(r,[‘Role’] , ‘HAD_ROLE’,’IN_MOVIE’) y
 **Meta functions**:
 
 1.apoc.meta.graph() --- gives the relationships between all the nodes in the graph format
+![Picture1.png](Picture1.png)
 
-
-![Picture_1.png](Picture_1.png)
 2. apoc.meta.schema() – gives the details of all nodes in json format.
 
 3.apoc.meta.data() – gives the details of all nodes and its relationship in tabular format
