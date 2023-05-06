@@ -1229,6 +1229,7 @@ When the application starts those end points get registered with the dispatcher 
 | Less performance | Less performance | Best Performance. Recommended while using Multi Threading |
 
 ![img_23.png](img_23.png)
+
 | Comparable | Comparator |
 | --- | --- |
 | Natural Sorting Order | Customized Sorting |
