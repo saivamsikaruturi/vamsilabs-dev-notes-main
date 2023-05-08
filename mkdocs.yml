@@ -24,7 +24,7 @@ nav:
   - StreamApi:
       - StreamApiQuestions: stream api/streamapi.md
   - Design Patterns:
-      - Creational Design Patterns: CreationalDesignPatterns.md
+      - Creational Design Patterns: designpatterns/CreationalDesignPatterns.md
   - SpringBoot:
       - Introduction: springboot/introduction.md
   - DataBases:
