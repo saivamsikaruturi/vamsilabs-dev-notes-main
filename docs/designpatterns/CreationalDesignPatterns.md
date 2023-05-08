@@ -13,4 +13,4 @@ Types Of Creational Patterns:
 5. Prototype
 
 Prototype:
-Specifying the kind of objects to create usinfg
+Specifying the kind of objects to create using
