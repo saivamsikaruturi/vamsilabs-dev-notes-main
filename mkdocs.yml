@@ -23,6 +23,8 @@ nav:
       - Java Basics: java/Java Basics.md
   - StreamApi:
       - StreamApiQuestions: stream api/streamapi.md
+  - Design Patterns:
+      - Creational Design Patterns: CreationalDesignPatterns.md
   - SpringBoot:
       - Introduction: springboot/introduction.md
   - DataBases:
