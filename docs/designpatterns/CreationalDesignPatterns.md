@@ -49,6 +49,7 @@ Initialization Type:
         System.out.println(instance1);
     }  }
 
+
 2. Lazy Initialization:
 
  
