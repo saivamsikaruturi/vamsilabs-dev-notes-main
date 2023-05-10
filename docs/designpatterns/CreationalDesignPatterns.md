@@ -50,7 +50,7 @@ Initialization Type:
     }  }
 
 
-2. Lazy Initialization:
+
 
  
     public class Singleton{
