@@ -50,12 +50,11 @@ Initialization Type:
     }  }
 
 
- 2. Lazy Initialization:
+2.Lazy Initialization:
 
- 
+
     public class Singleton{
-
-    private static Singleton singleton;
+     private static Singleton singleton;
 
     private Singleton() {
     }
@@ -71,6 +70,8 @@ Initialization Type:
       Singleton instance1=Singleton.getInstance ();
        System.out.println(instance);
        System.out.println(instance1);  } }
+ 
+   
 
 
 
