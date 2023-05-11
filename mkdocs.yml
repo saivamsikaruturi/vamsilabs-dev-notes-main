@@ -26,7 +26,10 @@ nav:
   - Solid Principles:
       - Solid Principles: solidprinciples/solidprinciples.md
   - Design Patterns:
-      - Creational Design Patterns: designpatterns/CreationalDesignPatterns.md
+      - Creational Design Patterns: designpatterns/creationalDesignPatterns/CreationalDesignPatterns.md
+      - Singleton Design Pattern: designpatterns/creationalDesignPatterns/singletondesignpattern.md
+      - Factory Design Pattern: designpatterns/creationalDesignPatterns/FactoryDesignPattern.md
+
   - SpringBoot:
       - Introduction: springboot/introduction.md
   - DataBases:
