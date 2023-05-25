@@ -7,7 +7,7 @@
 * <https://github.com/spring-io/initializr>
 
 
-![Picture11.png](Picture`11.png)
+![Picture_11.png](Picture_11.png)
 
 **SPRING MVC FLOW**
 
