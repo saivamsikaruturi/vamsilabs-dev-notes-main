@@ -6,7 +6,8 @@
 * <https://github.com/spring-io/start.spring.io>
 * <https://github.com/spring-io/initializr>
 
-!https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3f28b7df-7244-4abe-be1e-63aba90b1a80/image1.png
+
+![Picture11.png](Picture`11.png)
 
 **SPRING MVC FLOW**
 

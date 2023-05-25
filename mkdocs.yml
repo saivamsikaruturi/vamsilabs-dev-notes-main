@@ -29,6 +29,7 @@ nav:
       - Creational Design Patterns: designpatterns/creationalDesignPatterns/CreationalDesignPatterns.md
       - Singleton Design Pattern: designpatterns/creationalDesignPatterns/singletondesignpattern.md
       - Factory Design Pattern: designpatterns/creationalDesignPatterns/FactoryDesignPattern.md
+      - Structural Design Pattern: designpatterns/structuralDesignPatterns/intro.md
 
   - SpringBoot:
       - Introduction: springboot/introduction.md
