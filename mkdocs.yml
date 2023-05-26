@@ -32,6 +32,7 @@ nav:
       - Factory Design Pattern: designpatterns/creationalDesignPatterns/FactoryDesignPattern.md
       - Structural Design Pattern: designpatterns/structuralDesignPatterns/intro.md
       - FlyWeight Deign Pattern: designpatterns/structuralDesignPatterns/flyweightdesignpattern.md
+      - Facade Design Pattern: designpatterns/structuralDesignPatterns/facadedesignpattern.md
 
   - SpringBoot:
       - Introduction: springboot/introduction.md
