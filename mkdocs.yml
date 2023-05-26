@@ -27,14 +27,33 @@ nav:
   - Solid Principles:
       - Solid Principles: solidprinciples/solidprinciples.md
   - Design Patterns:
-      - CreationalDesign Patterns:
+      - Creational Design Patterns:
           - Creational Design Patterns: designpatterns/creationalDesignPatterns/CreationalDesignPatterns.md
-          - Singleton Design Pattern: designpatterns/creationalDesignPatterns/singletondesignpattern.md
-          - Factory Design Pattern: designpatterns/creationalDesignPatterns/FactoryDesignPattern.md
+          - Singleton : designpatterns/creationalDesignPatterns/singletondesignpattern.md
+          - Factory : designpatterns/creationalDesignPatterns/FactoryDesignPattern.md
+          - Abstarct Factory : designpatterns/creationalDesignPatterns/AbstractFactoryDesignPattern.md
+          - Prototype : designpatterns/creationalDesignPatterns/PrototypeDesignPattern.md
       - Structural Design Patterns:
-          - Structural Design Pattern: designpatterns/structuralDesignPatterns/intro.md
-          - FlyWeight Deign Pattern: designpatterns/structuralDesignPatterns/flyweightdesignpattern.md
-          - Facade Design Pattern: designpatterns/structuralDesignPatterns/facadedesignpattern.md
+          - Structural : designpatterns/structuralDesignPatterns/intro.md
+          - FlyWeight : designpatterns/structuralDesignPatterns/flyweightdesignpattern.md
+          - Facade : designpatterns/structuralDesignPatterns/facadedesignpattern.md
+          - Decorator : designpatterns/structuralDesignPatterns/DecoratorDesignPattern.md
+          - Proxy : designpatterns/structuralDesignPatterns/Proxydesignpattern.md
+          - Composite : designpatterns/structuralDesignPatterns/CompositeDesignPattern.md
+          - Adapter: designpatterns/structuralDesignPatterns/AdapterDesignPattern.md
+      - Behavioural Design Patterns:
+          - Chain Of Responsibility: designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern.md
+          - Command: designpatterns/behaviouralDesignPatterns/CommandDp.md
+          - Iterator: designpatterns/behaviouralDesignPatterns/Iterator.md
+          - Mediator: designpatterns/behaviouralDesignPatterns/MediatorDp.md
+          - Memento: designpatterns/behaviouralDesignPatterns/MementoDP.md
+          - Observer: designpatterns/behaviouralDesignPatterns/ObserverDesignPattern.md
+          - State: designpatterns/behaviouralDesignPatterns/StateDp.md
+          - Strategy: designpatterns/behaviouralDesignPatterns/StrategyDp.md
+          - Template: designpatterns/behaviouralDesignPatterns/TemplateDp.md
+          - Visitor: designpatterns/behaviouralDesignPatterns/VisitorDp.md
+          - Interpreter: designpatterns/behaviouralDesignPatterns/Interpreter.md
+          - Null Object: designpatterns/behaviouralDesignPatterns/NullObject.md
 
   - SpringBoot:
       - Introduction: springboot/introduction.md
