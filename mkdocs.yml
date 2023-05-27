@@ -22,6 +22,7 @@ nav:
       - Gradle: java/gradle.md
       - Java Basics: java/Java Basics.md
       - Exception Handling: java/ExceptionHandling.md
+      - MulthThreading: java/MultiThreading.md
   - StreamApi:
       - StreamApiQuestions: stream api/streamapi.md
   - Solid Principles:
