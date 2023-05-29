@@ -77,7 +77,7 @@ Two ways of creating Functional Interface
 
 i.e Inner Class without Name , only one time use (instant use)
 
-**LAMBDA EXPRESSIONS:**
+## LAMBDA EXPRESSIONS
 
 - It is an anonymous function without name, return type and modifiers.
 - To enable functional programming
@@ -94,7 +94,7 @@ i.e Inner Class without Name , only one time use (instant use)
 
         (int a ,int b)- System.out.println(a+b);
 
-**Default Method in Interfaces:**
+## Default Method in Interfaces
 
 Default method came into picture for solving limitation of interfaces. For adding more functionality methods in interface without breaking the implementation classes functionality.
 
@@ -155,7 +155,7 @@ Yes,
 
 
  
-**Predefined Interfaces**
+## Predefined Interfaces
 
 1.Predicate
 
