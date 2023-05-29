@@ -23,6 +23,7 @@ nav:
       - Java Basics: java/Java Basics.md
       - Java 8: java/Java8.md
       - Exception Handling: java/ExceptionHandling.md
+      - Collections: java/Collections.md
       - MulthThreading: java/MultiThreading.md
   - StreamApi:
       - StreamApiQuestions: stream api/streamapi.md
