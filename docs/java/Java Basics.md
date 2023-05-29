@@ -159,7 +159,7 @@ private List<String hobbies;
 
     }
 }
-
+![img_6.png](img_6.png)
 Upcasting means conversion from child to parent
 
 Parent p=(Parent) new Child;

@@ -54,4 +54,3 @@ Uses Compare to for find the order.
 - Underlying data structure is Hash table and linked list.
 - For Cache based applications
 
-![img_6.png](img_6.png)
