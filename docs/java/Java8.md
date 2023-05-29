@@ -53,17 +53,10 @@ Callable
 - Functional Interface is used for enabling Functional Programming in Java.
 - Functional Interface is also used for defining Lambda Expressions to pass a function directly as an argument.
 
-
-
-
         @FunctionalInterface
-    
         interface Addition(){
-
         void add(int a ,int b);
-
         void add(int a, int b ,int c); ----- compiler will start throwing error , only one abstract method should be there
-
         }
 
 
