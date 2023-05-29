@@ -24,6 +24,7 @@ nav:
       - Java 8: java/Java8.md
       - Exception Handling: java/ExceptionHandling.md
       - Collections: java/Collections.md
+      - Concurrent Collections: java/ConcurrentCollections.md
       - MulthThreading: java/MultiThreading.md
   - StreamApi:
       - StreamApiQuestions: stream api/streamapi.md
