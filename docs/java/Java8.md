@@ -1,4 +1,4 @@
-**JAVA 8 Features**
+## JAVA 8 Features
 
 1.Functional Interfaces
 
@@ -18,7 +18,7 @@
 
 9.Optional Class
 
-**Functional Programming**
+## Functional Programming
 
 From Java 8 Version ,Using Functional Programming we can pass a function as an argument to a method
 
@@ -122,7 +122,7 @@ Since there is no implementation of m2() method in both classes ,compiler throws
     }
     }
 
-**Static Method in Interfaces:**
+## Static Method in Interfaces
 
 Q. What is the purpose of introducing static methods in java interface ?
 
@@ -241,7 +241,7 @@ get()
        };
        System.out.println (otp.get ());
 
-**Method and Constructor Reference:**
+## Method and Constructor Reference
 
 - Method Reference and Constructor Reference is alternative to Lambda Expressions.
 - Method Reference is used for Code Reusability
@@ -291,6 +291,6 @@ Constructor Reference:
         }
         }
 
-Wherever fn interface , we can use lambda expressions
+  Wherever fn interface , we can use lambda expressions
 
-Function<String,Intgeger f =s-s.length
+  Function<String,Intgeger f =s-s.length
