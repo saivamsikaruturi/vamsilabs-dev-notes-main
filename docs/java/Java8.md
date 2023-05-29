@@ -294,3 +294,9 @@ Constructor Reference:
   Wherever fn interface , we can use lambda expressions
 
   Function<String,Intgeger f =s-s.length
+  
+## STREAM API 
+https://master--vamsilabs-dev-notes.netlify.app/stream%20api/streamapi/
+
+## DATE AND TIME API
+  
