@@ -81,15 +81,15 @@ i.e Inner Class without Name , only one time use (instant use)
 - By using “--”
 
     
-     public int getSum(int a ,int b){
+        public int getSum(int a ,int b){
 
-     System.out.println(a+b);
+        System.out.println(a+b);
 
-    }
+        }
 
-    ()-System.out.println(“Java Programming”);
+        ()-System.out.println(“Java Programming”);
 
-    (int a ,int b)- System.out.println(a+b);
+        (int a ,int b)- System.out.println(a+b);
 
 **Default Method in Interfaces:**
 
