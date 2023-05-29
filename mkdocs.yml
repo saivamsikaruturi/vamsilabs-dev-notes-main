@@ -25,7 +25,7 @@ nav:
       - Exception Handling: java/ExceptionHandling.md
       - Collections: java/Collections.md
       - Concurrent Collections: java/ConcurrentCollections.md
-      - MulthThreading: java/MultiThreading.md
+      - MultiThreading: java/MultiThreading.md
   - StreamApi:
       - StreamApiQuestions: stream api/streamapi.md
   - Solid Principles:
