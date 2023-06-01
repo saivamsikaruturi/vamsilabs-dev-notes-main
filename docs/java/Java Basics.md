@@ -396,7 +396,7 @@ contract b/w hash code and equals: if the hashcodes are same , then only equals 
 
 -  if the hashcodes are same then equals method will be called , as we have not overridden equals method. Object class equal method compares the references and the references will be different , so it returns false , which results duplicates.
 
-## SERIALIZATION and DESERELIZATION , EXTERNALIZATION
+## SERIALIZATION and DESERIALIZATION , EXTERNALIZATION
 
  *  Serialization is the conversion of a Java Object into a static stream(sequence) of bytes, which we can then save to a 
     database or transfer over a network.
