@@ -367,7 +367,7 @@ System.out.println(optionalName.get());
    Optional<Date> emptyDate=Optional.empty();
    System.out.println(emptyDate.orElseGet()->new Date());
 
-8.orElseThrow (supplier)
+8. orElseThrow (supplier)
   Returns the contained value, if present, otherwise throws an exception to be created by the provided supplier.
   
   emptyDate.orElse(InvalidDateException:: new);
