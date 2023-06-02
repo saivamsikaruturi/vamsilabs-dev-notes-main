@@ -22,6 +22,53 @@ JRE=JVM+ Library classes
 
 JIT
 
+
+
+**OOPS**
+
+Abstraction
+
+Encapsulation
+
+Inheritance
+
+Polymorphism
+
+Abstraction: The process of hiding unwanted data and showing only the required functionality is known as Abstraction.
+
+Encapsulation: The process of wrapping of data into a single unit is known as Encapsulation.
+
+Inheritance : Acquiring the properties of Parent class to Child class
+
+Polymorphism: A method can exist in different format within the same class or Super and Sub Classes for doing same action in different ways or doing different action.
+
+Inheritance:
+
+There are 4 types of inheritance
+
+1.Single Inheritance
+
+![img_7.png](img_7.png)
+2. Multiple Inheritance:
+
+![img_8.png](img_8.png)
+3. Multi Level
+
+![img_9.png](img_9.png)
+4.Hierarchial Inheritance:
+
+![img_10.png](img_10.png)
+5.Hybrid Inheritance:
+
+![img_12.png](img_12.png)
+**Association, Composition and Aggregation in Java:**
+
+Association: The relationship between two or more classes. It tell about has-a relationship.
+
+Composition: Strong relationship
+
+Aggregation: Weak Relationship
+
 **Object Class:**
 
 There are 11 methods in object class.
@@ -59,26 +106,26 @@ s1 = “javascript”; a new object javascript will be created and now s1 will p
 
 Prove Strings are Immutable:
 
-String s1="vamsi";    
-System.out.println (s1.hashCode ());  
-s1= s1.concat ("krishna");   
-System.out.println (s1);  
-System.out.println (s1.hashCode ());
+    String s1="vamsi";    
+    System.out.println (s1.hashCode ());  
+    s1= s1.concat ("krishna");   
+    System.out.println (s1);  
+    System.out.println (s1.hashCode ());
 
-String s1="Vamsi";     
-System.out.println(s1.equals("Vamsi"));   
-System.out.println(s1=="Vamsi");  
-Integer a=1;  
-Integer b=1;   
-System.out.println( a==b);  
-System.out.println(a.equals(b));  
-String s="vamsi";  
-String s2="vamsi";  
-System.out.println (s.equals (s2));     
-System.out.println (s==s2);    
-String s3=new String ("vamsi");   
-System.out.println (s.equals (s3));   
-System.out.println (s==s3);
+    String s1="Vamsi";     
+    System.out.println(s1.equals("Vamsi"));   
+    System.out.println(s1=="Vamsi");  
+    Integer a=1;  
+    Integer b=1;   
+    System.out.println( a==b);  
+    System.out.println(a.equals(b));  
+    String s="vamsi";  
+    String s2="vamsi";  
+    System.out.println (s.equals (s2));     
+    System.out.println (s==s2);    
+    String s3=new String ("vamsi");   
+    System.out.println (s.equals (s3));   
+    System.out.println (s==s3);
 
 
 
@@ -174,60 +221,26 @@ Wrapper Classes:
 
 AutoBoxing and Auto UnBoxing:
 
-**int** autoBoxing=123;
-System.***out***.println(Integer.*valueOf* (autoBoxing));
-Integer autoUnBoxing=**new** Integer (23);
-System.***out***.println(autoUnBoxing.intValue ());
-String num=**"123"**;**int** i = Integer.*parseInt* (num);
-System.***out***.println (i);
-Integer num1=123;
-String s1 = num1.toString ();
-System.***out***.println (s1);
+    int autoBoxing=123;
 
-**OOPS**
+    System.out.println(Integer.valueOf(autoBoxing));
+    
+    Integer autoUnBoxing = new Integer (23);
+    
+    System.out.println(autoUnBoxing.intValue ());
+    
+    String num = "123";
+    
+    int i = Integer.parseInt(num);
 
-Abstraction
+    System.out.println(i);
 
-Encapsulation
+    Integer num1=123;
 
-Inheritance
+    String s1 = num1.toString ();
+    
+    System.out.println (s1);
 
-Polymorphism
-
-Abstraction: The process of hiding unwanted data and showing only the required functionality is known as Abstraction.
-
-Encapsulation: The process of wrapping of data into a single unit is known as Encapsulation.
-
-Inheritance : Acquiring the properties of Parent class to Child class
-
-Polymorphism: A method can exist in different format within the same class or Super and Sub Classes for doing same action in different ways or doing different action.
-
-Inheritance:
-
-There are 4 types of inheritance
-
-1.Single Inheritance
-
-![img_7.png](img_7.png)
-2. Multiple Inheritance:
-
-![img_8.png](img_8.png)
-3. Multi Level
-
-![img_9.png](img_9.png)
-4.Hierarchial Inheritance:
-
-![img_10.png](img_10.png)
-5.Hybrid Inheritance:
-
-![img_12.png](img_12.png)
-**Association, Composition and Aggregation in Java:**
-
-Association: The relationship between two or more classes. It tell about has-a relationship.
-
-Composition: Strong relationship
-
-Aggregation: Weak Relationship
 
 # Marker Interface in Java
 
