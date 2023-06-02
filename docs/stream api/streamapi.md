@@ -22,8 +22,7 @@ forEach(),toArray(),reduce(),collect(),min(),max(),count(),anyMatch(),allMatch()
 
 **1. get max and min value**
 
-      Integer maxValue = Arrays.asList(20, 10, 4, 5, 1000).stream ()
-      .max (Comparator.*comparing* (Integer::*valueOf*)).get ();
+      Integer maxValue = Arrays.asList(20, 10, 4, 5, 1000).stream ().max (Comparator.*comparing* (Integer::*valueOf*)).get ();
       System.out.println (maxValue);
 
       Integer minValue = Arrays.asList (20, 10, 4, 5, 1000).stream ().min (Comparator.*comparing* (Integer::*valueOf*)).get ();
