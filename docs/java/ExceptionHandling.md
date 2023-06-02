@@ -9,7 +9,7 @@
 
 Example FileNotFoundException
 
-- Most of the times errors are not caused by a program these are due to lack of system resources. Errors are not recoverable
+- Most of the time errors are not caused by a program these are due to lack of system resources. Errors are not recoverable
 
 Example: Out of memory error
 
@@ -35,58 +35,61 @@ Example: Out of memory error
 ![img_15.png](img_15.png)
 Purpose and Speciality of Finally Block in Exception:
 
-try {
+     try {
 
-open db connection
+     open db connection
 
-Read Data
+     Read Data
 
-}
+     }
 
-catch (Exception e){
+     catch (Exception e){
 
-handling code
+     handling code
 
-}
+     }
 
-finally {
+    finally {
 
-close db connection ( i.e clean up code)
+    close db connection ( i.e clean up code)
 
-}
+    }
 
 - -- The main objective of finally block is to maintain clean up code.
 - -- This block is executed always irrespective of whether exception is raised or not.
 
-try{
+      try{
 
-int a=10/00;
+      int a=10/00;
 
-System.out.println (a);
+      System.out.println (a);
 
-}
+      }
 
-catch (Exception e){
+      catch (Exception e){
 
-System.out.println (e);
+      System.out.println (e);
 
-}
+      }
 
-catch (ArithmeticException e1){
+      catch (ArithmeticException e1){
 
-System.out.println (e1);
+      System.out.println (e1);
 
-}
+      }
 
 ans: Compilation Fails because Arithmetic Exception has already been caught by Exception. So ,First Child Exception should be declared.
 
 **Try with Resources:**
 
-Data base connections or file resources or network related resources are actually closed in finally block .So when we open any resources that must be closed in finally block.
+Database connections or file resources or network related resources are actually closed in finally block .So when we open any resources that must be closed in finally block.
 
-**try**(BufferedReader br1=**new** BufferedReader (**new** FileReader (**"C:\\Users\\karukris\\Documents\\BLD API GATEWAY DETAILS.txt"**));){
-System.***out***.println (**"Try with resources"**);
-}
+    try(BufferedReader br1 = new BufferedReader (new FileReader ("C:\\Users\\karukris\\Documents\\file.txt"**)))
+    {
+    
+     System.***out***.println ("Try with resources");
+    
+     }
 
 **throw vs throws:**
 
@@ -99,7 +102,7 @@ System.***out***.println (**"Try with resources"**);
 | Checked exceptions can’t be propagated using throw.     | Both checked and unchecked exceptions.          |
 | Void m(){                                               |                                                 |
 
-Throw new ArithmeticException(“arithmetic exception”);
+throw new ArithmeticException(“arithmetic exception”);
 } | void m() throws ArithmeticException{
 } |
 
