@@ -55,9 +55,11 @@ Purpose and Speciality of Finally Block in Exception:
 
     }
 
-- -- The main objective of finally block is to maintain clean up code.
-- -- This block is executed always irrespective of whether exception is raised or not.
+-- The main objective of finally block is to maintain clean up code.
+-- This block is executed always irrespective of whether exception is raised or not.
 
+
+ 
       try{
 
       int a=10/00;
