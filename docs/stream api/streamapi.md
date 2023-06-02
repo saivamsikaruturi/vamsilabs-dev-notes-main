@@ -22,34 +22,34 @@ forEach(), toArray(), reduce(), collect(), min(), max(), count(), anyMatc
 
 **1. get max and min value**
 
-Integer maxValue = Arrays.*asList* (20, 10, 4, 5, 1000).stream ().max (Comparator.*comparing* (Integer::*valueOf*)).get ();
-System.*out*.println (maxValue);
+      Integer maxValue = Arrays.*asList* (20, 10, 4, 5, 1000).stream ().max (Comparator.*comparing* (Integer::*valueOf*)).get ();
+      System.*out*.println (maxValue);
 
-Integer minValue = Arrays.*asList* (20, 10, 4, 5, 1000).stream ().min (Comparator.*comparing* (Integer::*valueOf*)).get ();
-System.out.println (minValue);
+      Integer minValue = Arrays.*asList* (20, 10, 4, 5, 1000).stream ().min (Comparator.*comparing* (Integer::*valueOf*)).get ();
+      System.out.println (minValue);
 
-**2. ***Sorting in natural order***
+**2. Sorting in natural order**
 
-List<Integer> sortAsc = Arrays.*asList* (20, 10, 15, 40, 674, 455, 27, 14).stream ().sorted (Comparator.*naturalOrder* ()).collect (*toList* ());
-System.out.println (sortAsc);
+     List<Integer> sortAsc = Arrays.*asList* (20, 10, 15, 40, 674, 455, 27, 14).stream ().sorted (Comparator.*naturalOrder* ()).collect (*toList* ());
+     System.out.println (sortAsc);
 
-**3. **Sorting in reverse order**
+**3. Sorting in reverse order**
 
-List<Integer> sortDesc = Arrays.*asList* (20, 10, 15, 40, 674, 455, 27, 14).stream ().sorted (Comparator.*reverseOrder* ()).collect (*toList* ());
-System.out.println (sortDesc);
+    List<Integer> sortDesc = Arrays.*asList* (20, 10, 15, 40, 674, 455, 27, 14).stream ().sorted (Comparator.*reverseOrder* ()).collect (*toList* ());
+    System.out.println (sortDesc);
 
-**4. **Limit the given the list** 
+**4. Limit the given the list** 
 
-Arrays.*asList* (20, 10, 4, 5, 1000, 8, 9, 7).stream ().limit (5).forEach (System.*out*::println);
+    Arrays.*asList* (20, 10, 4, 5, 1000, 8, 9, 7).stream ().limit (5).forEach (System.*out*::println);
 
 1. count the no .of elements in a list
 
 **long** count = Arrays.*asList* (2018 - 05 - 31, 2022 - 05 - 30, 2026 - 05 - 29, 2030 - 05 - 27, 2033 - 03 - 07, 2018 - 06 - 10, 2022 - 06 - 11, 2026 - 06 - 11, 2030 - 06 - 12, 2033 - 03 - 13, 2018 - 03 - 19, 2022 - 02 - 18, 2026 - 01 - 01).stream ().count ();
 System.out.println (count);
 
-**6. **sum all the elements in the list**
+**6. sum all the elements in the list**
 
-List<Integer> numbersList = Arrays.*asList* (1, 7, 8, 9, 5, 2, 36, 4, 78, 222, 24, 9, 2);
+    List<Integer> numbersList = Arrays.*asList* (1, 7, 8, 9, 5, 2, 36, 4, 78, 222, 24, 9, 2);
 
 **int** sum = numbersList.stream ().mapToInt (number -> number.intValue ()).sum ();
 System.out.println (sum);
