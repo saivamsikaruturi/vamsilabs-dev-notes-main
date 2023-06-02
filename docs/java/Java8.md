@@ -319,8 +319,11 @@ java.util.time package , it is loosely based and the library is joda-time api.
 * To handle values as 'available' or 'not available' instead of checking null values.
 
 Different ways to create an optional object.
+
 1. Optional.empty()
+
 2. Optional.of()
+
 3. Optional.ofNullable()
 
 Optional.empty(): This method returns an empty optional object, indicating that it doesn't contain any value. It is often used to initialize an optional object when you know it should be empty. For example:
