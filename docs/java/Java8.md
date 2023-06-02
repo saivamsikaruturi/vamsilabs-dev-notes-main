@@ -329,25 +329,26 @@ Different ways to create an optional object.
 Optional.empty(): This method returns an empty optional object, indicating that it doesn't contain any value. It is often used to initialize an optional object when you know it should be empty. For example:
 
 
-Optional<String> emptyOptional = Optional.empty();
+    Optional<String> emptyOptional = Optional.empty();
 
 Optional.of(value): This method creates an optional object that contains a non-null value. It throws a NullPointerException if the provided value is null. For example:
 
-String name = "John";
-Optional<String> optionalName = Optional.of(name);
+     String name = "John";
+
+     Optional<String> optionalName = Optional.of(name);
 
 Optional.ofNullable(value): This method creates an optional object that contains a value, which can be null. If the provided value is null, it returns an empty optional. If the value is non-null, it creates an optional containing that value. This method is useful when you are not certain if the value can be null. For example:
 
 
-String city = null;
+      String city = null;
 
-Optional<String> optionalCity = Optional.ofNullable(city);
+      Optional<String> optionalCity = Optional.ofNullable(city);
 
 In summary, Optional.empty() creates an empty optional, Optional.of(value) creates an optional with a non-null value, and Optional.ofNullable(value) creates an optional that may or may not contain a value (even if the value is null).
 
 *To get value from optional object we can use get() method
 
-System.out.println(optionalName.get());
+    System.out.println(optionalName.get());
 
 
 4.ifPresent (consumer)
@@ -359,18 +360,20 @@ System.out.println(optionalName.get());
     Returns the value if present ,otherwise returns other value.
   
 6.Optional<String> empty = Optional.empty();
-    System.out.println(empty.orElse("default"));
+   
+     System.out.println(empty.orElse("default"));
 
 7.orElseGet (supplier)
    Returns the value if present , otherwise invokes the supplier.
    
-   Optional<Date> emptyDate=Optional.empty();
-   System.out.println(emptyDate.orElseGet()->new Date());
+     Optional<Date> emptyDate=Optional.empty();
+   
+     System.out.println(emptyDate.orElseGet()->new Date());
 
 8.orElseThrow (supplier)
   Returns the contained value, if present, otherwise throws an exception to be created by the provided supplier.
   
-  emptyDate.orElse(InvalidDateException:: new);
+     emptyDate.orElse(InvalidDateException:: new);
   
 
 
