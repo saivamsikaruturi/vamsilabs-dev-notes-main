@@ -130,7 +130,7 @@ Java interface static methods are good for providing utility methods, for exampl
 
 Q. What will happen if I override static method ?
 
-Try to add @Override annotation to the method, it will result in compiler time error.
+Try to add @Override annotation to the method, it will result in compiler time error.
 
 Q. Is it possible to have multiple static methods in an interface?
 
@@ -312,7 +312,35 @@ old and new java 8 existing date/time api's
 Local Date ,Local Time and LocalDateTime:
  java.util.date,java.util.timestamp, java.util.calender --> only for basic operations.
 java.util.time package , it is loosely based and the library is joda-time api.
-  
+
+
+    LocalDate date = LocalDate.now();  ---> 2023-06-02.
+    LocalDate date1 = LocalDate.of(2023,06,02);
+    LocalDate date2 = LocalDate.parse("2023-06-02");
+    LocalDate date3 =date2.plusDays(1);  --> 2023-06-03
+    boolean isBefore = LocalDate.parse("2023-06-02").isBefore(LocalDate.parse("2023-06-03");
+    boolean isAfter = LocalDate.parse("2023-06-02").isAfter(LocalDate.parse("2023-06-03");
+
+
+    LocalTime now = LocalTime.now();
+    LocalTime now1 = LocalTime.of(6,30);
+    LocalTime now2 = LocalTime.parse("6:30");
+
+    LocalDateTime time = LocalDateTime.now();
+    LocalDateTime time1 = LocalTime.parse(" 2023-06-02T6:30:45");
+    LocalDate date4 = LocalDateTime.now().toLocalDate();
+
+    ZoneId zoneId = ZoneId.of("Asia/Kolkatta");
+    ZonedDateTime dateTime =  ZonedDateTime.of(LocalDateTime.now(),zoneId);
+
+    int duration = Duration.between(LocalTime.of(6,30),LodalTime.of(6,29)).getSeconds();   
+
+    LocalDateTime dataTime = LocalDateTime.of(2015,Month.JANUARY,25,6,30);
+    String format = LocalDateTime.format(DateTimeFormatter.ISO_DATE);
+    LocalDateTime dateTime1 =  dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+
+
 ## Optional Class
 
 * Optional is final class in java 8.
@@ -359,18 +387,18 @@ In summary, Optional.empty() creates an empty optional, Optional.of(value) creat
 5.orElse()
     Returns the value if present ,otherwise returns other value.
   
-6.Optional<String> empty = Optional.empty();
+    Optional<String> empty = Optional.empty();
    
      System.out.println(empty.orElse("default"));
 
-7.orElseGet (supplier)
+6.orElseGet (supplier)
    Returns the value if present , otherwise invokes the supplier.
    
      Optional<Date> emptyDate=Optional.empty();
    
      System.out.println(emptyDate.orElseGet()->new Date());
 
-8.orElseThrow (supplier)
+7.orElseThrow (supplier)
   Returns the contained value, if present, otherwise throws an exception to be created by the provided supplier.
   
      emptyDate.orElse(InvalidDateException:: new);
