@@ -20,7 +20,7 @@ forEach(), toArray(), reduce(), collect(), min(), max(), count(), anyMatc
 
 **STREAM API CODING QUESTIONS :**
 
-**1. ***get max and min value***
+**1. get max and min value***
 
 Integer maxValue = Arrays.*asList* (20, 10, 4, 5, 1000).stream ().max (Comparator.*comparing* (Integer::*valueOf*)).get ();
 System.*out*.println (maxValue);
