@@ -112,15 +112,15 @@ It applies to inheritance in such a way that the derived classes must be complet
 
     }
 
-@Override
+    @Override
 
-public double calcualteBonus(flaot Salary){
+    public double calcualteBonus(flaot Salary){
 
-return salary*0.5;
+    return salary*0.5;
 
-}
+    }
 
-}
+    }
 
     Main method:
 
