@@ -312,7 +312,7 @@ old and new java 8 existing date/time api's
  * Timezone handling.
 
 
-Local Date ,Local Time and LocalDateTime:
+Local Date, Local Time and LocalDateTime:
 java.util.date,java.util.timestamp, java.util.calender only for basic operations.
 
 java.util.time package , it is loosely based and the library is joda-time api.
