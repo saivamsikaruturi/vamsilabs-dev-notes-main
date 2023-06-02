@@ -304,13 +304,17 @@ Constructor Reference:
  * LocalTime ,LocalDate,LocalDateTime ,ZonedDateTime, Period ,Duration.
 
 old and new java 8 existing date/time api's
- *Thread Safety
+
+ * Thread Safety
+
  * Api's design and understanding 
+
  * Timezone handling.
 
 
 Local Date ,Local Time and LocalDateTime:
- java.util.date,java.util.timestamp, java.util.calender --> only for basic operations.
+java.util.date,java.util.timestamp, java.util.calender only for basic operations.
+
 java.util.time package , it is loosely based and the library is joda-time api.
 
 
