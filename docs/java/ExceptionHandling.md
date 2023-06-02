@@ -3,7 +3,7 @@
 - An Unwanted , unexpected event that disturbs the normal flow of the program is called Exception.
 - The main purpose of Exception Handling is graceful termination of the program.
 
-**Difference Between Error and Exception:**
+## Difference Between Error and Exception
 
 - In most of the cases exceptions are caused by our program and these are recoverable
 
@@ -13,7 +13,7 @@ Example FileNotFoundException
 
 Example: Out of memory error
 
-**Difference Between Checked and Unchecked Exceptions:**
+## Difference Between Checked and Unchecked Exceptions
 
 - Every Exception occurs at Run Time only.
 - The Exceptions which are checked by compiler for smooth execution of program at Runtime are known as Checked Exceptions. These exceptions must be caught.
@@ -23,14 +23,14 @@ Example: Out of memory error
 - Compiler does not produce any error whether you handle or not during compile time.
 - Ex: Null Pointer Exception, Index Out of Bound Exception , Arithmetic Exception
 
-**Difference Between ClassNotFoundException and NoClassDefFoundError**
+## Difference Between ClassNotFoundException and NoClassDefFoundError
 
 | Class Not Found Exception | NoClassDefFound Error |
 | --- | --- |
 | It occurs when JVM tries to load a class which is not available in the class path | It occurs when class was present during the compile time and not present during run time. |
 | Checked Exception | Linkage Error. |
 
-**Exception Hierarchy:**
+## Exception Hierarchy
 
 ![img_15.png](img_15.png)
 Purpose and Speciality of Finally Block in Exception:
@@ -83,7 +83,7 @@ Purpose and Speciality of Finally Block in Exception:
 
 ans: Compilation Fails because Arithmetic Exception has already been caught by Exception. So ,First Child Exception should be declared.
 
-**Try with Resources:**
+## Try with Resources
 
 Database connections or file resources or network related resources are actually closed in finally block .So when we open any resources that must be closed in finally block.
 
@@ -94,7 +94,7 @@ Database connections or file resources or network related resources are actually
     
      }
 
-**throw vs throws:**
+## Throw vs Throws
 
 | throw                                                   | throws                                          |
 |---------------------------------------------------------|-------------------------------------------------|
@@ -109,7 +109,7 @@ throw new ArithmeticException(“arithmetic exception”);
 } | void m() throws ArithmeticException{
 } |
 
-**final , finally and finalize**
+## Final, Finally and Finalize
 
 final**:**
 
@@ -129,7 +129,7 @@ In order to destroy the objects in the code , Garbage Collector will call the fi
 
 Protected void finalize() throws Throwable
 
-## **Exceptions Methods**
+## Exceptions Methods
 
 Following is the list of important methods available in the Throwable class.
 
