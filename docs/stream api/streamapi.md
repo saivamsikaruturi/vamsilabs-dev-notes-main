@@ -20,7 +20,7 @@ forEach(), toArray(), reduce(), collect(), min(), max(), count(), anyMatc
 
 **STREAM API CODING QUESTIONS :**
 
-**1. **get max and min value**
+**1. **get max and min value***
 
 Integer maxValue = Arrays.*asList* (20, 10, 4, 5, 1000).stream ().max (Comparator.*comparing* (Integer::*valueOf*)).get ();
 System.*out*.println (maxValue);
@@ -28,7 +28,7 @@ System.*out*.println (maxValue);
 Integer minValue = Arrays.*asList* (20, 10, 4, 5, 1000).stream ().min (Comparator.*comparing* (Integer::*valueOf*)).get ();
 System.out.println (minValue);
 
-**2. **Sorting in natural order**
+**2. **Sorting in natural order***
 
 List<Integer> sortAsc = Arrays.*asList* (20, 10, 15, 40, 674, 455, 27, 14).stream ().sorted (Comparator.*naturalOrder* ()).collect (*toList* ());
 System.out.println (sortAsc);
