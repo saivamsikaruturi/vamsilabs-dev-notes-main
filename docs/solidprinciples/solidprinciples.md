@@ -20,97 +20,97 @@ It states that every java class must perform a single Functionality. Implementat
 
 It states that according to the new requirements the module should be open for extension but closed for new modification.
 
-class CashPayment{
+    class CashPayment{
 
-public void acceptPayment(){
+    public void acceptPayment(){
 
-s.out.pln(“cash”);
+    s.out.pln(“cash”);
 
-}
+    }
 
-}
+    }
 
-Class CreditCardPayment{
+    class CreditCardPayment{
 
-public void acceptPayment(){
+    public void acceptPayment(){
 
-s.out.pln(“card”);
+    s.out.pln(“card”);
 
-}
+    }
 
-}
+    }
 
-Public interface IPay{
+    public interface IPay{
 
-void acceptPayment();
+    void acceptPayment();
 
-}
+    }
 
-Public class PaymentProcessor{
+    public class PaymentProcessor{
 
-void processPayment(IPay pay){
+    void processPayment(IPay pay){
 
-pay.acceptPayment();
+    pay.acceptPayment();
 
-}
+    }
 
-}
+    }
 
-Main method(){
+    Main method(){
 
-PaymentProcessor processor=new PaymentProcessor();
+    PaymentProcessor processor=new PaymentProcessor();
 
-processor.processPayment(new CashPayment());
+    processor.processPayment(new CashPayment());
 
-}
+    }
 
 **Leskov's Substitution Principle**
 
 It applies to inheritance in such a way that the derived classes must be completely substitutable for this base classes. In other words Class A is a sub type of class B, then we should be able to replace B with A without interrupting the behaviour of the program.
 
-abstract class Employee{
+    abstract class Employee{
 
-id,
+    id,
 
-name,
+    name,
 
-setters and getters
+    setters and getters
 
-public abstract double calculateBonus(float Salary):
+    public abstract double calculateBonus(float Salary):
 
-public abstract boolean IsEligibleForInsurance();
+    public abstract boolean IsEligibleForInsurance();
 
-}
+    }
 
-public class PermanentEmployee extends Employee{
+    public class PermanentEmployee extends Employee{
 
-@Override
+    @Override
 
-public boolean IsEligibleForInsurance(){
+    public boolean IsEligibleForInsurance(){
 
-return true;
+    return true;
 
-}
+    }
 
-@Override
+    @Override
 
-public double calcualteBonus(flaot Salary){
+    public double calcualteBonus(flaot Salary){
 
-return salary*0.1;
+    return salary*0.1;
 
-}
+    }
 
-}
+    }
 
-public class TemporaryEmployee extends Employee{
+    public class TemporaryEmployee extends Employee{
 
-@Override
+    @Override
 
-public boolean IsEligibleForInsurance(){
+    public boolean IsEligibleForInsurance(){
 
-return false;
+    return false;
 
-}
+    }
 
 @Override
 
@@ -122,13 +122,13 @@ return salary*0.5;
 
 }
 
-Main method:
+    Main method:
 
-List<Employee> employee=new ArrayList<>();
+    List<Employee> employee=new ArrayList<>();
 
-employee.add(new PermanentEmployee(1,”Sai”));
+    employee.add(new PermanentEmployee(1,”Sai”));
 
-employee.add(new TemporaryEmployee(2,”Krishna”));
+    employee.add(new TemporaryEmployee(2,”Krishna”));
 
 **Interface Segregation Principle**
 
@@ -138,58 +138,58 @@ It states that the larger interfaces split into smaller ones. Because the implem
 
 It states that we must use abstraction (abstract classes and interfaces) instead of concrete implementations. High level modules should not depend on the low level module but should not depend on the abstraction.
 
-public class Book{
+    public class Book{
 
-void seeReviews(){
+    void seeReviews(){
 
-}
+    }
 
-void readSamples(){
+    void readSamples(){
 
-}
+    }
 
-}
+    }
 
-public class DVD{
+    public class DVD{
 
-void seeReviews(){
+    void seeReviews(){
 
-}
+    }
 
-void watchSamples(){
+    void watchSamples(){
 
-}
+    }
 
-}
+    }
 
-public class Shelf{
+    public class Shelf{
 
-Book book;
+    Book book;
 
-void addBook(Book book){
+    void addBook(Book book){
 
-}
+    }
 
-}
+    }
 
-- ------------creating an interface-----
+    - ------------creating an interface-----
 
-Public interface Product{
+    public interface Product{
 
-void seeReviews();
+    void seeReviews();
 
-void getSamples();
+    void getSamples();
 
-}
+    }
 
-Book and DVD class implements Product interface
+    Book and DVD class implements Product interface
 
-public class Shelf{
+    public class Shelf{
 
-Product product
+    Product product
 
-Void addProduct(Product product){
+    void addProduct(Product product){
 
-}
+    }
 
-}
+    }
