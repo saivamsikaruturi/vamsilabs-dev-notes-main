@@ -320,11 +320,11 @@ java.util.time package , it is loosely based and the library is joda-time api.
 
 Different ways to create an optional object.
 
-1. Optional.empty()
+1.Optional.empty()
 
-2. Optional.of()
+2.Optional.of()
 
-3. Optional.ofNullable()
+3.Optional.ofNullable()
 
 Optional.empty(): This method returns an empty optional object, indicating that it doesn't contain any value. It is often used to initialize an optional object when you know it should be empty. For example:
 
@@ -350,24 +350,24 @@ In summary, Optional.empty() creates an empty optional, Optional.of(value) creat
 System.out.println(optionalName.get());
 
 
-4. ifPresent (consumer)
+4.ifPresent (consumer)
    If a value is present , it invokes the specified consumer with the value, otherwise does nothing.
     
      optionalName.ifPresent(s-> System.out.println(s.toUpperCase());
 
-5. .orElse()
+5.orElse()
     Returns the value if present ,otherwise returns other value.
   
-6. Optional<String> empty = Optional.empty();
+6.Optional<String> empty = Optional.empty();
     System.out.println(empty.orElse("default"));
 
-7. orElseGet (supplier)
+7.orElseGet (supplier)
    Returns the value if present , otherwise invokes the supplier.
    
    Optional<Date> emptyDate=Optional.empty();
    System.out.println(emptyDate.orElseGet()->new Date());
 
-8. orElseThrow (supplier)
+8.orElseThrow (supplier)
   Returns the contained value, if present, otherwise throws an exception to be created by the provided supplier.
   
   emptyDate.orElse(InvalidDateException:: new);
