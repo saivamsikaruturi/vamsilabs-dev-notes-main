@@ -330,15 +330,19 @@ Optional.empty(): This method returns an empty optional object, indicating that 
 
 
 Optional<String> emptyOptional = Optional.empty();
+
 Optional.of(value): This method creates an optional object that contains a non-null value. It throws a NullPointerException if the provided value is null. For example:
 
 String name = "John";
 Optional<String> optionalName = Optional.of(name);
+
 Optional.ofNullable(value): This method creates an optional object that contains a value, which can be null. If the provided value is null, it returns an empty optional. If the value is non-null, it creates an optional containing that value. This method is useful when you are not certain if the value can be null. For example:
 
 
 String city = null;
+
 Optional<String> optionalCity = Optional.ofNullable(city);
+
 In summary, Optional.empty() creates an empty optional, Optional.of(value) creates an optional with a non-null value, and Optional.ofNullable(value) creates an optional that may or may not contain a value (even if the value is null).
 
 *To get value from optional object we can use get() method
