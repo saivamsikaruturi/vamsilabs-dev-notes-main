@@ -45,6 +45,8 @@ nav:
           - Composite : designpatterns/structuralDesignPatterns/CompositeDesignPattern.md
           - Adapter: designpatterns/structuralDesignPatterns/AdapterDesignPattern.md
           - Bridge:  designpatterns/structuralDesignPatterns/BridgeDesignPattern.md
+
+
       - Behavioural Design Patterns:
           - Chain Of Responsibility: designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern.md
           - Command: designpatterns/behaviouralDesignPatterns/CommandDp.md
