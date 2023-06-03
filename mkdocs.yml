@@ -38,13 +38,13 @@ nav:
           - Abstarct Factory : designpatterns/creationalDesignPatterns/AbstractFactoryDesignPattern.md
           - Prototype : designpatterns/creationalDesignPatterns/PrototypeDesignPattern.md
       - Structural Design Patterns:
-          - Structural : designpatterns/structuralDesignPatterns/intro.md
           - FlyWeight : designpatterns/structuralDesignPatterns/flyweightdesignpattern.md
           - Facade : designpatterns/structuralDesignPatterns/facadedesignpattern.md
           - Decorator : designpatterns/structuralDesignPatterns/DecoratorDesignPattern.md
           - Proxy : designpatterns/structuralDesignPatterns/Proxydesignpattern.md
           - Composite : designpatterns/structuralDesignPatterns/CompositeDesignPattern.md
           - Adapter: designpatterns/structuralDesignPatterns/AdapterDesignPattern.md
+          - Bridge:  designpatterns/structuralDesignPatterns/BridgeDesignPattern.md
       - Behavioural Design Patterns:
           - Chain Of Responsibility: designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern.md
           - Command: designpatterns/behaviouralDesignPatterns/CommandDp.md
