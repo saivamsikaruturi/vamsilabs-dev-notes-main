@@ -43,8 +43,8 @@ nav:
           - Decorator : designpatterns/structuralDesignPatterns/DecoratorDesignPattern.md
           - Proxy : designpatterns/structuralDesignPatterns/Proxydesignpattern.md
           - Composite : designpatterns/structuralDesignPatterns/CompositeDesignPattern.md
-          - Adapter: designpatterns/structuralDesignPatterns/AdapterDesignPattern.md
-          - Bridge:  designpatterns/structuralDesignPatterns/BridgeDesignPattern.md
+          - Adapter : designpatterns/structuralDesignPatterns/AdapterDesignPattern.md
+          - Bridge :  designpatterns/structuralDesignPatterns/BridgeDesignPattern.md
 
 
       - Behavioural Design Patterns:
