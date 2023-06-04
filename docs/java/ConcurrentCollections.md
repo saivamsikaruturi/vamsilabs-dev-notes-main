@@ -1,4 +1,3 @@
-## Concurrent Collections
 
 ## Need of Concurrent Collections:
 
