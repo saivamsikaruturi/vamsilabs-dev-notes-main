@@ -32,7 +32,7 @@ git push origin <branch-name>
 
 git checkout -- <file-path>
 
->> If you want to back up your changes
+** If you want to back up your changes
 
 git stash:
 
@@ -54,7 +54,7 @@ when the local branch is behind the master branch , the branch needs the new cha
 
 Basically git rebase does not create a new commit , all the commits will be shown in the new branch , so unnecessary history.
 
-!https://s3-us-west-2.amazonaws.com/secure.notion-static.com/907052c1-a685-4ca4-9388-438a2bbff6ee/image1.jpeg
+![image1.jpeg](image1.jpeg)
 
 **GIT FETCH:**
 
