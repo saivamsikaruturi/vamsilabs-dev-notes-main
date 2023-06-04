@@ -141,7 +141,8 @@ Prove Strings are Immutable:
 Even if some thread modifies the value, an entirely new String is created without affecting the original one.
 
 
-** why char[] is preferred more than String while storing passwords?
+**why char[] is preferred more than String while storing passwords?**
+
 In Java, using char[] is often considered a better practice than using String for storing passwords because String objects are immutable, meaning they cannot be changed once created. This immutability poses a security risk when it comes to storing sensitive information like passwords.
 
 When a password is stored as a String, it remains in memory until it is garbage collected, and during this time, it can be accessed by other parts of the program. This makes it potentially vulnerable to unauthorized access and increases the chances of the password being inadvertently leaked.
