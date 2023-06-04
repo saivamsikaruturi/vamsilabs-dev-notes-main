@@ -1,14 +1,14 @@
 
-**COLLECTIONS**
 
-**Difference between Collection and Collections:**
+## Difference between Collection and Collections
 
 - Collection is an interface whereas collections is an utility class
 - If you want to represent a group of individual object as a single entity then use collection
 - Collections class has methods that can be performed on the collection like collections.sort(), min(), max (), reverseOrder(), emptylist(), addAll().
 
+## Collection Hierarchy 
 ![img_16.png](img_16.png)
-**What is the contract between hashCode() and equals() method**
+## What is the contract between hashCode() and equals() method
 
 - Whenever it is invoked on the same object more than once during execution of Java application the hashCode method must consistently return the same hashCode value
 - if 2 objects are equal according to equals method then hashCode method return the same hash code for the 2 objects
@@ -31,7 +31,7 @@ set.add(s2);
 - Because the references are different and points to 2 separate objects in heap memory .This is a bad behaviour in an application and which is cause for few side effects like memory data redundancy etc.
 - You overcome this issue it's always best practice to override equals and hashCode in custom classes.
 
-Cursors in Java:
+## Cursors in Java
 
 To retrieve elements one by one from collection.
 
@@ -103,7 +103,7 @@ int nextIndex();
 
 
 
-
+## Working of HashMap
 
 
 ![img_4.png](img_4.png)
@@ -155,14 +155,15 @@ So it takes time to traverse through all the nodes. Performance Degradation
 Uses Compare to for find the order.
 
 ![img_5.png](img_5.png)
-**Linked Hash Set:**
+
+## Linked Hash Set
 
 - Child class of Hash Set
 - It is used when duplicates are not allowed and insertion order should be preserved.
 - Underlying data structure is Hash table and linked list.
 - For Cache based applications
 
-
+## Difference between ArrayList & LinkedList
 | ArrayList                                                                                                                                                 | LinkedList                                                                                                                            |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
 | 1) ArrayList internally uses a dynamic array to store the elements.                                                                                       | LinkedList internally uses a doubly linked list to store the elements.                                                                |
@@ -170,6 +171,7 @@ Uses Compare to for find the order.
 | 3) An ArrayList class can act as a list nly because it implements List only.                                                                              | LinkedList class can act as a list and queue oth because it implements List and Deque interfaces.                                     |
 | 4) ArrayList is better for storing and accessing data.                                                                                                    | LinkedList is better for manipulating data.                                                                                           ||                                                                                                                                       |
 
+## Difference between HashMap & HashTable
 
 | HashMap                                                                                                                             | Hashtable                                                                         |
 |-------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
@@ -182,6 +184,8 @@ Uses Compare to for find the order.
 | 6) HashMap is traversed by Iterator.                                                                                                | Hashtable is traversed by Enumerator and Iterator.                                |
 | 7) Iterator in HashMap is fail-fast.                                                                                                | Enumerator in Hashtable is not fail-fast.                                         |
 | 8) HashMap inherits AbstractMap class.                                                                                              |                                                                                   |
+
+## Difference between HashMap ,HashTable ,SynchronizedHashMap and Concurrent HashMap
 
 | Collection Type       | Synchronization                        | Locking            | No.Of Threads                                             | Null Key & Values                       | Iterator  | When To Use                       |
 |-----------------------|----------------------------------------|--------------------|-----------------------------------------------------------|-----------------------------------------|-----------|-----------------------------------|
