@@ -47,7 +47,7 @@ Polymorphism: A method can exist in different format within the same class or Su
 Inheritance:
 
 There are 4 types of inheritance
-
+![MergedImages.png](MergedImages.png)
 1.Single Inheritance
 
 ![single.png](single.png)
