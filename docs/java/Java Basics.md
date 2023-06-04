@@ -265,12 +265,6 @@ o	Serializable Interface
 o	Remote Interface
 
 
-
-
-
-
-                                                                                                                                     |
-
 | String | String Buffer | String Builder |
 | --- | --- | --- |
 | Immutable | Mutable | Mutable |
