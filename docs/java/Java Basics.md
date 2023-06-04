@@ -26,6 +26,13 @@ JIT
 # Data Types
 
 
+
+**Why Pointers are not used in Java?**
+
+1. Security : pointers allows user to access memory locations , which may lead hackers to access any file in your application.
+2. Simplicity: The pointers are complex, so in order to make java simple , pointers are not used in java.
+
+
 **OOPS**
 
 Abstraction

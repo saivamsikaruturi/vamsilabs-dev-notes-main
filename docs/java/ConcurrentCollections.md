@@ -54,7 +54,7 @@ Exception in thread "main" java.util.ConcurrentModificationException
 - So Concurrent Hash Map allows Simultaneous Read operations and 16 write/update operations.
 - It never throws Concurrent Modified Exception.
 
-  ![img_17.png](img_17.png)
+  ![Image-Concurrent-Hashmap.png](Image-Concurrent-Hashmap.png)
   16-- concurrency level.
 
 Difference Between Concurrent Hash Map and Concurrent HashMap
