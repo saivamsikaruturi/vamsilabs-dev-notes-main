@@ -6,36 +6,37 @@
 2. Performance is not up to the mark.
 3. While one thread is iterating a collection object , by mistake if other thread trying to modify the collection immediately iterator fails by raising Concurrent Modification Exception.
 
-ArrayList<Stringal=new ArrayList< ();
+       ArrayList<Stringal=new ArrayList< ();
 
-al.add("CTS");
+       al.add("CTS");
 
-al.add("TCS");
+       al.add("TCS");
 
-al.add("CAPGEMINI");
+       al.add("CAPGEMINI");
 
-al.add("Infosys");
+       al.add("Infosys");
 
-for(String hs:al){
+       for(String hs:al){
 
-if(hs.equals ("Infosys")){
+       if(hs.equals ("Infosys")){
 
-al.remove (hs);
+       al.remove (hs);
 
-}
+       }
+       }
+Exception in thread "main" java.util.ConcurrentModificationException
 
-}
-Exception in thread "main" java.util.ConcurrentModificationException
-
-Map<String, Long phoneBook = **new** HashMap<String, Long();
-phoneBook.put(**"Vikram"**,8149101254L);
-phoneBook.put(**"Mike"**,9020341211L);
-phoneBook.put(**"Jim"**,7788111284L);
-Iterator<String keyIterator1 = phoneBook.keySet().iterator();**while** (keyIterator1.hasNext()){
-String key = keyIterator1.next();**if** (**"Vikram"**.equals(key)){
-phoneBook.put(**"John"**,9220341211L);
-}
-}
+    Map<String, Long phoneBook = new HashMap<String, Long();
+    phoneBook.put("Vikram",8149101254L);
+    phoneBook.put("Mike",9020341211L);
+    phoneBook.put("Jim",7788111284L);
+    Iterator<String keyIterator1 = phoneBook.keySet().iterator();
+    while (keyIterator1.hasNext()){
+    String key = keyIterator1.next();
+    if("Vikram".equals(key)){
+    phoneBook.put("John",9220341211L);
+    }
+    }
 
 1. Concurrent Hash Map
 2. CopyOnWriteArrayList
@@ -82,16 +83,18 @@ It is a thread safe version of ArrayList , As the name indicates CopyOnWriteArra
 -
 ![img_19.png](img_19.png)
 
-CopyOnWriteArrayList<String al=**new** CopyOnWriteArrayList< ();
-al.add(**"CTS"**);
-al.add(**"TCS"**);
-al.add(**"CAPGEMINI"**);
-al.add(**"Infosys"**);**for**(String hs:al){**if**(hs.equals (**"Infosys"**)){
-al.remove (hs);
-}
-}
-System.***out***.println (al);
-}
+    CopyOnWriteArrayList<String al = new CopyOnWriteArrayList< ();
+    al.add("CTS");
+    al.add("TCS");
+    al.add("CAPGEMINI");
+    al.add("Infosys");
+    for(String hs:al){
+    if(hs.equals ("Infosys")){
+    al.remove (hs);
+    }
+    }
+    System.out.println (al);   
+    }
 
 CopyOnWriteArraySet:
 
