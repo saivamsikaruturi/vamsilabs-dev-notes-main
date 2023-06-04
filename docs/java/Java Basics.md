@@ -51,12 +51,15 @@ There are 4 types of inheritance
 1.Single Inheritance
 
 ![single.png](single.png)
+
 2. Multiple Inheritance:
 
 ![multiple.PNG](multiple.PNG)
+
 3. Multi Level
 
 ![multilevel.png](multilevel.png)
+
 4.Hierarchial Inheritance:
 
 ![hierarchial1.PNG](hierarcial1.PNG)
@@ -65,6 +68,7 @@ There are 4 types of inheritance
 5.Hybrid Inheritance:
 
 ![hybrid.png](hybrid.png)
+
 **Association, Composition and Aggregation in Java:**
 
 Association: The relationship between two or more classes. It tell about has-a relationship.
