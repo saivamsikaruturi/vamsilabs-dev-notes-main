@@ -48,7 +48,7 @@ Inheritance:
 
 There are 4 types of inheritance
 
-1.Single Inheritance 2. Multiple Inheritance 3. Multi Level 4.Hierarchial Inheritance 5.Hybrid Inheritance:
+1.Single Inheritance 2. Multiple Inheritance 3. Multi Level 4.Hierarchial Inheritance 5.Hybrid Inheritance
 ![MergedImages.png](MergedImages.png)
 
 **Association, Composition and Aggregation in Java:**
