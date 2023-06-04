@@ -58,7 +58,8 @@ There are 4 types of inheritance
 
 3. Multi Level
 
-![multilevel.png](multilevel.png)
+![multilevel.PNG](multilevel.PNG)
+
 
 4.Hierarchial Inheritance:
 
@@ -67,7 +68,9 @@ There are 4 types of inheritance
 
 5.Hybrid Inheritance:
 
-![hybrid.png](hybrid.png)
+
+![hybrid.PNG](hybrid.PNG)
+
 
 **Association, Composition and Aggregation in Java:**
 
