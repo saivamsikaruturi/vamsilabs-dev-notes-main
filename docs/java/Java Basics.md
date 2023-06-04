@@ -47,31 +47,9 @@ Polymorphism: A method can exist in different format within the same class or Su
 Inheritance:
 
 There are 4 types of inheritance
+
+1.Single Inheritance 2. Multiple Inheritance 3. Multi Level 4.Hierarchial Inheritance 5.Hybrid Inheritance:
 ![MergedImages.png](MergedImages.png)
-![imgonline-com-ua-BrightContr-4bXQ8OttBvofqO.jpg](imgonline-com-ua-BrightContr-4bXQ8OttBvofqO.jpg)
-1.Single Inheritance
-
-![single.png](single.png)
-
-2. Multiple Inheritance:
-
-![multiple.PNG](multiple.PNG)
-
-3. Multi Level
-
-![multilevel.PNG](multilevel.PNG)
-
-
-4.Hierarchial Inheritance:
-
-![hierarchial1.PNG](hierarcial1.PNG)
-
-
-5.Hybrid Inheritance:
-
-
-![hybrid.PNG](hybrid.PNG)
-
 
 **Association, Composition and Aggregation in Java:**
 
