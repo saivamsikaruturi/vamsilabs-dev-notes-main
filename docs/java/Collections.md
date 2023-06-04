@@ -14,7 +14,7 @@
 - if 2 objects are equal according to equals method then hashCode method return the same hash code for the 2 objects
 - if the hash code value is same for both the object that doesn't mean that both objects are equal.
 
-****Why we should override hash code and equals method??**
+**Why we should override hash code and equals method??**
 
 hashcode -based on memory address
 
