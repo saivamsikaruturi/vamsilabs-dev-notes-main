@@ -7,7 +7,7 @@
 3. While one thread is iterating a collection object , by mistake if other thread trying to modify the collection immediately iterator fails by raising Concurrent Modification Exception.
 
         
-         ArrayList<Stringal=new ArrayList< ();
+         ArrayList<String> al = new ArrayList< ();
 
         al.add("CTS");
 
@@ -85,18 +85,18 @@ It is a thread safe version of ArrayList , As the name indicates CopyOnWriteArra
 -
 ![img_19.png](img_19.png)
 
-      CopyOnWriteArrayList<String al = new CopyOnWriteArrayList< ();
-      al.add("CTS");
-      al.add("TCS");
-      al.add("CAPGEMINI");
-      al.add("Infosys");
-      for(String hs:al){
-      if(hs.equals ("Infosys")){
-      al.remove (hs);
-      }
-     }
-     System.out.println (al);   
-     }
+        CopyOnWriteArrayList<String al = new CopyOnWriteArrayList< ();
+        al.add("CTS");
+        al.add("TCS");
+        al.add("CAPGEMINI");
+        al.add("Infosys");
+        for(String hs:al){
+        if(hs.equals ("Infosys")){
+        al.remove (hs);
+        }
+        }
+        System.out.println (al);   
+        }
 
 CopyOnWriteArraySet:
 
