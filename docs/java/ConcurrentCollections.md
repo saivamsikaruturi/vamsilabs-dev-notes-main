@@ -82,7 +82,7 @@ It is a thread safe version of ArrayList , As the name indicates CopyOnWriteArra
 - It is costly to use because for every update Operation a cloned copy will be created. Hence it is the best option if several Read operations and less Write operations. Because if more Write operations are there then more cloned copies are created. Then performance will be degraded.
 - Insertion Order is Preserved
 - Duplicates are Allowed.
--
+
 ![img_19.png](img_19.png)
 
         CopyOnWriteArrayList<String al = new CopyOnWriteArrayList< ();
