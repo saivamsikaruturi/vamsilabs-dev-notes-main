@@ -32,9 +32,10 @@ git push origin <branch-name>
 
 git checkout -- <file-path>
 
-** If you want to back up your changes
 
 git stash:
+
+**If you want to back up your changes**
 
 git has an area called stash where you can temporarily store a snapshot of your changes without committing to the git repository.
 
