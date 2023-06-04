@@ -1,6 +1,6 @@
 Intent:
 -------
-*Facade is a behavioral design pattern that provides a simplified interface to a library, a framework, or any
+*Facade is a structural design pattern that provides a simplified interface to a library, a framework, or any
 other complex set of classes.*
 1. It encapsulates a complex subsystem behind a simple interface. It hides much of the complexity and makes the subsystem easy to use.
 2. It decouples a client implementation from the complex subsystem
