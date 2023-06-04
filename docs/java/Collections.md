@@ -182,3 +182,12 @@ Uses Compare to for find the order.
 | 6) HashMap is traversed by Iterator.                                                                                                | Hashtable is traversed by Enumerator and Iterator.                                |
 | 7) Iterator in HashMap is fail-fast.                                                                                                | Enumerator in Hashtable is not fail-fast.                                         |
 | 8) HashMap inherits AbstractMap class.                                                                                              |                                                                                   |
+
+| Collection Type       | Synchronization                        | Locking            | No.Of Threads                                             | Null Key & Values                       | Iterator  | When To Use                  |
+|-----------------------|----------------------------------------|--------------------|-----------------------------------------------------------|-----------------------------------------|-----------|------------------------------|
+| HashMap               | Not Synchronous                        | No lock            | Multiple threads                                          | One null key ,N no.of null values       | Fail fast | Single Thread                |
+| HashTable             | Synchronous                            | Object level lock  | Single thread                                             | Does not allow null key and null values | Fail Safe | Legacy class not recommended |
+| Synchronized HashMap  | Synchronous                            | Object level lock  | Single thread                                             | One null key , N no.of null values      | Fail Safe | Multi Thread                 |
+| (Low Performance)     |                                        |                    |                                                           |                                         |           |                              |
+| ConcurrentHashMap     | Only write operations are synchronized | Segment level lock | 16 threads perform write and ‘N’ threads can perform read | Does not allow null key & values.       | Fail Safe | Multi Thread                 |
+| (Better Performance). |                                        |                    |                                                           |                                         |           |                              |
