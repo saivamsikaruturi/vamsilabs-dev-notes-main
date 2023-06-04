@@ -1,6 +1,10 @@
-Factory Design Pattern:
+**Intent**
+----------
+Define an interface for creating an object, but let subclasses decide which class to
+instantiate. Factory Method lets a class defer instantiation to subclasses.
 
-* Creational design pattern.
-* Used when we have multiple subclasses of a Super class and based on input we want to return one class instance.
-* It provides abstarction between implementation and client classes.
-* Remove the instantiation of client classes from client code.
+Also called  - *Virtual Constructor*
+
+It promotes the loose-coupling by eliminating the need to bind application-specific classes into the code.
+
+![factory.png](factory.png)

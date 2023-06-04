@@ -36,7 +36,7 @@ nav:
           - Creational Design Patterns: designpatterns/creationalDesignPatterns/CreationalDesignPatterns.md
           - Singleton : designpatterns/creationalDesignPatterns/singletondesignpattern.md
           - Factory : designpatterns/creationalDesignPatterns/FactoryDesignPattern.md
-          - Abstarct Factory : designpatterns/creationalDesignPatterns/AbstractFactoryDesignPattern.md
+          - Abstract Factory : designpatterns/creationalDesignPatterns/AbstractFactoryDesignPattern.md
           - Prototype : designpatterns/creationalDesignPatterns/PrototypeDesignPattern.md
       - Structural Design Patterns:
           - FlyWeight : designpatterns/structuralDesignPatterns/flyweightdesignpattern.md
