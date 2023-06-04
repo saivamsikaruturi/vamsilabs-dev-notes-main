@@ -153,7 +153,7 @@ Foe ex: If a thread t1 wants to wait until completing t2, then t1 has to call t2
 public final void join() throws InterruptedException
 
 
-![img_20.png](img_20.png)
+![lifecycle.PNG](lifecycle.png)
 Synchronization:
 
 
