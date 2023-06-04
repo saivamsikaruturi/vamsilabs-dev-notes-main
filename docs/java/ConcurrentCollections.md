@@ -1,6 +1,6 @@
-**Concurrent Collections:**
+## Concurrent Collections
 
-**Need of Concurrent Collections:**
+## Need of Concurrent Collections:
 
 1. Multiple threads can operate simultaneously , there may be data inconsistency
 2. Performance is not up to the mark.
@@ -44,7 +44,7 @@ Exception in thread "main" java.util.ConcurrentModificationException
 2. CopyOnWriteArrayList
 3. CopyOnWrite HashSet
 
-**Concurrent HashMap:**
+## Concurrent HashMap
 
 - Underlying Data Structure is Hash table
 - Concurrent HashMap allows concurrent Read and Thread Safe Update Operation
@@ -57,7 +57,7 @@ Exception in thread "main" java.util.ConcurrentModificationException
   ![Image-Concurrent-Hashmap.png](Image-Concurrent-Hashmap.png)
   16-- concurrency level.
 
-Difference Between Concurrent Hash Map and Concurrent HashMap
+## Difference Between Concurrent Hash Map and Concurrent HashMap
 
 | HashMap | Concurrent Hash Map |
 | --- | --- |
@@ -67,7 +67,7 @@ Difference Between Concurrent Hash Map and Concurrent HashMap
 | Iterator of Hash map is fail fast | Iterator of `Concurrent Hash map is fail safe. |
 | Null values are allowed | Null values |
 
-**CopyOnWriteArrayList:**
+## CopyOnWriteArrayList
 
 Collection(I)
 
@@ -98,7 +98,7 @@ It is a thread safe version of ArrayList , As the name indicates CopyOnWriteArra
         System.out.println (al);   
         }
 
-CopyOnWriteArraySet:
+## CopyOnWriteArraySet
 
 
 Collection(I)
