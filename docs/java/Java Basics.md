@@ -48,6 +48,7 @@ Inheritance:
 
 There are 4 types of inheritance
 ![MergedImages.png](MergedImages.png)
+![imgonline-com-ua-BrightContr-4bXQ8OttBvofqO.jpg](imgonline-com-ua-BrightContr-4bXQ8OttBvofqO.jpg)
 1.Single Inheritance
 
 ![single.png](single.png)
