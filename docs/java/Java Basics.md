@@ -8,7 +8,7 @@ JAVA BASICS:
 
 2.Machine level Language(0’s and 1’s)
 
-**‘**
+
 
 ![img.png](img.png)
 Java is Platform Independent
@@ -33,7 +33,7 @@ JIT
 2. Simplicity: The pointers are complex, so in order to make java simple , pointers are not used in java.
 
 
-**OOPS**
+## OOPS
 
 Abstraction
 
@@ -58,7 +58,7 @@ There are 4 types of inheritance
 1.Single Inheritance 2. Multiple Inheritance 3. Multi Level 4.Hierarchial Inheritance 5.Hybrid Inheritance
 ![MergedImages.png](MergedImages.png)
 
-**Association, Composition and Aggregation in Java:**
+## Association, Composition and Aggregation 
 
 Association: The relationship between two or more classes. It tell about has-a relationship.
 
@@ -66,7 +66,7 @@ Composition: Strong relationship
 
 Aggregation: Weak Relationship
 
-**Object Class:**
+## Object Class
 
 There are 11 methods in object class.
 
@@ -92,7 +92,7 @@ There are 11 methods in object class.
 
 11.public native final void notifyAll()
 
-Strings:
+## Strings
 
 ![img_3.png](img_3.png)
 String s1=”java”;
@@ -150,13 +150,13 @@ Even if some thread modifies the value, an entirely new String is created withou
 
 4.only getters no setters
 
-import java.util.ArrayList;
-import java.util.List;
+    import java.util.ArrayList;
+    import java.util.List;
 
-public final class Immutable {
-private int id;
-private String name;
-private List<String hobbies;
+    public final class Immutable {
+    private int id;
+    private String name;
+    private List<String hobbies;
 
     public int getId() {
         return id;
@@ -214,9 +214,9 @@ ParenT p = new Child();
 
 Child c = (Child)p;
 
-Wrapper Classes:
+## Wrapper Classes
 
-AutoBoxing and Auto UnBoxing:
+**AutoBoxing and Auto UnBoxing:**
 
     int autoBoxing=123;
 
@@ -241,24 +241,23 @@ AutoBoxing and Auto UnBoxing:
 
 # Marker Interface in Java
 
-# What is marker interface?
+**What is marker interface?**
 
 An interface that does not contain methods, fields, and constants is known as marker interface. In other words, an empty interface is known as marker interface or tag interface. It delivers the run-time type information about an object. It is the reason that the JVM and compiler have additional information about an object. The Serializable and Cloneable interfaces are the example of marker interface. 
 In short, it indicates a signal or command to the JVM.
 The declaration of marker interface is the same as interface in Java but the interface must be empty. For example:
 
-1. **public** **interface** Serializable
-2. {
-3.
-4. }
+     public interface Serializable
+    {
+    }
 
-## Uses of Marker Interface
+**Uses of Marker Interface**
 
 Marker interface is used as a tag that inform the Java compiler by a message so that it can add some special behavior to the class implementing it. Java marker interface are useful if we have information about the class and that information never changes, in such cases, we use marker interface represent to represent the same. Implementing an empty interface tells the compiler to do some operations.
 
 It is used to logically divide the code and a good way to categorize code. It is more useful for developing API and in frameworks like Spring.
 
-## Built-in Marker Interface
+**Built-in Marker Interface**
 
 In Java, built-in marker interfaces are the interfaces that are already present in the JDK and ready to use. There are many built-in marker interfaces some of them are:
 o	Cloneable Interface
@@ -269,21 +268,8 @@ o	Remote Interface
 
 
 
-How @Request Mapping works?
 
-@RequestMapping(value =””)
-
-@PutMapping
-
-@DeleteMapping
-
-@GetMapping
-
-@PostMapping
-
-When the application starts those end points get registered with the dispatcher servelet . When the request comes from the client to the dispatcher servelet, it redirects to the end point.
-
-                                                                                           | Hashtable inherits Dictionary class.                                              |
+                                                                                                                                     |
 
 | String | String Buffer | String Builder |
 | --- | --- | --- |
@@ -302,109 +288,6 @@ When the application starts those end points get registered with the dispatcher 
 | compareTo() | Compare and equals() |
 | Homogenous objects | Both Homogenous and Heterogenous Objects |
 
-void removeDuplicates(List<String list) {
-
-Set = new HashSet();
-
-Iterator<String iterator = list.iterator();
-
-while (iterator.hasNext()) {
-
-Object element = iterator.next();
-
-if (!set.add(element)){
-
-iterator.remove();
-
-}
-
-}
-
-}
-
-Spring:
-
-- It is a java EE framework for building applications.
-- Simplify development that makes developers more productive.
-- Dependency Injection.
-- Loose coupling
-
-  Spring Boot:
-
-- It is designed upon Spring framework
-- Mainly used for Rest Apis development.
-- Primary feature of spring boot is Auto Configuration. It automatically configures the classes based on Requirement.
-- Inbuild servers like tomcat and Jetty etc
-
-Differences b/w Spring and Spring Boot
-
-- Starter POMs ---- maven configuration will be simplified like spring boot starter web
-- Version Management --- for each dependency version is important ,but in boot it is not required
-- Auto Configuration (web.xml in spring , but not required in spring boot)
-- Component Scanning
-- Embedded Server
-- In Memory DB
-- Actuators
-
-**SELECT** Salary **FROM**
-
-(**SELECT** Salary **FROM** Employee **ORDER BY** salary **DESC** **LIMIT** 2) **AS** Emp
-
-**ORDER BY** salary **LIMIT** 1;
-
-
-
-
- import java.util.*;
-
- public class MyClass {
-
- public static void main(String args[]) {
-
- String s="john doe";
-
- char[] ch = s.toCharArray();
-
- Map<Character,Integer map=new HashMap();
-
- for(Character c:ch){
-
- if(map.get(c)==null){
-
- map.put(c,1);
-
- }
-
- else{
-
- map.put(c,map.get(c)+1);
-
- }
-
- }
-
- map.entrySet().stream().filter(e-e.getValue()1).limit(1).map(e-e.getKey()).forEach(System.out::println);
-
- }
-
- }
-
-
-**Why we should override hash code and equals method??**
-
-hashcode -based on memory address
-
-equals—based on references
-
-contract b/w hash code and equals: if the hashcodes are same , then only equals method will be called.
-
-1.if we don’t override hashcode
-
--  it generates the hashcode based on the memory address and as we using new keyword , the address will be different and the hashcodes are different . so equals method won’t be called and the same objects will be inserted which results in duplicates.
-
-2. if we don’t override equals
-
--  if the hashcodes are same then equals method will be called , as we have not overridden equals method. Object class equal method compares the references and the references will be different , so it returns false , which results duplicates.
 
 ## SERIALIZATION and DESERIALIZATION , EXTERNALIZATION
 

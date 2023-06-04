@@ -6,10 +6,33 @@
 * <https://github.com/spring-io/start.spring.io>
 * <https://github.com/spring-io/initializr>
 
+Spring:
+
+- It is a java EE framework for building applications.
+- Simplify development that makes developers more productive.
+- Dependency Injection.
+- Loose coupling
+
+  Spring Boot:
+
+- It is designed upon Spring framework
+- Mainly used for Rest Apis development.
+- Primary feature of spring boot is Auto Configuration. It automatically configures the classes based on Requirement.
+- Inbuild servers like tomcat and Jetty etc
+
+Differences b/w Spring and Spring Boot
+
+- Starter POMs ---- maven configuration will be simplified like spring boot starter web
+- Version Management --- for each dependency version is important ,but in boot it is not required
+- Auto Configuration (web.xml in spring , but not required in spring boot)
+- Component Scanning
+- Embedded Server
+- In Memory DB
+- Actuators
 
 ![Picture_11.png](Picture_11.png)
 
-**SPRING MVC FLOW**
+SPRING MVC FLOW
 
 1. Client(Browser) requests for a Resource in the web Application.
 2. The Spring front controller i.e, DispatcherServlet first receives the request.
@@ -28,15 +51,15 @@
 15. View executes and returns HTML output to the DispatcherServlet.
 16. DispatcherServlet will sends the output to the Browser.
 
-**HTTP Methods:**
+HTTP Methods:
 
-**PUT Vs Post:**
+PUT Vs Post:
 
 1. To update each and every detail of a record the go for Put Request. To create a new record go for Post Request.
 2. Post is not idempotent. Whereas Put is idempotent.
 3. When we hit the same data for multiple times using Post Request , multiple records are inserted in Db. Whereas using Put the record is updated , new record is not created.
 
-**Get vs Post :**
+Get vs Post :
 
 | GET                                                                                                         | POST |
 |-------------------------------------------------------------------------------------------------------------| --- |
@@ -53,7 +76,7 @@ Put vs Patch:
 1. To Update a single or some parameters in a record then go For Patch , To update a all values in a record go for Put request.
 2. If we use Put request for updating some parameters then remaining parameters will be updated as null.
 
-**SPRING BOOT ACTUATORS:**
+SPRING BOOT ACTUATORS:
 
 Actuators is one of the feature available in Spring Boot
 
@@ -75,225 +98,239 @@ How many url mappings available ?
 
 We need a need dependency in pom.xml
 
-<**dependency**>
+<dependency>
 
-<**groupId**>org.springframework.boot</**groupId**>
+<groupId>org.springframework.boot</groupId>
 
-<**artifactId**>**spring-boot-starter-actuator**</**artifactId**>
+<artifactId>spring-boot-starter-actuator</artifactId>
 
-</**dependency**>
+</dependency>
 
-**management**:
+management:
 
-**endpoints**:
+endpoints:
 
-**web**:
+web:
 
-**exposure**:
+exposure:
 
-**include**: **'*'
-endpoint**:**health**:**show-details**: always**beans**:**enabled**: true
+include: '*'
+endpoint:health:show-details: alwaysbeans:enabled: true
 
 - -> Once our application started we can use below URL to see actuator endpoints which are exposed
 
-**http://localhost:8090/actuator**
+http://localhost:8090/actuator
 
-**{**
+{
 
-**"_links":{**
+"_links":{
 
-**"self":{**
+"self":{
 
-**"href":"http://localhost:8090/actuator",**
+"href":"http://localhost:8090/actuator",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"auditevents":{**
+"auditevents":{
 
-**"href":"http://localhost:8090/actuator/auditevents",**
+"href":"http://localhost:8090/actuator/auditevents",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"beans":{**
+"beans":{
 
-**"href":"http://localhost:8090/actuator/beans",**
+"href":"http://localhost:8090/actuator/beans",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"caches-cache":{**
+"caches-cache":{
 
-**"href":"http://localhost:8090/actuator/caches/{cache}",**
+"href":"http://localhost:8090/actuator/caches/{cache}",
 
-**"templated":true**
+"templated":true
 
-**},**
+},
 
-**"caches":{**
+"caches":{
 
-**"href":"http://localhost:8090/actuator/caches",**
+"href":"http://localhost:8090/actuator/caches",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"health-component":{**
+"health-component":{
 
-**"href":"http://localhost:8090/actuator/health/{component}",**
+"href":"http://localhost:8090/actuator/health/{component}",
 
-**"templated":true**
+"templated":true
 
-**},**
+},
 
-**"health":{**
+"health":{
 
-**"href":"http://localhost:8090/actuator/health",**
+"href":"http://localhost:8090/actuator/health",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"health-component-instance":{**
+"health-component-instance":{
 
-**"href":"http://localhost:8090/actuator/health/{component}/{instance}",**
+"href":"http://localhost:8090/actuator/health/{component}/{instance}",
 
-**"templated":true**
+"templated":true
 
-**},**
+},
 
-**"conditions":{**
+"conditions":{
 
-**"href":"http://localhost:8090/actuator/conditions",**
+"href":"http://localhost:8090/actuator/conditions",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"configprops":{**
+"configprops":{
 
-**"href":"http://localhost:8090/actuator/configprops",**
+"href":"http://localhost:8090/actuator/configprops",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"env":{**
+"env":{
 
-**"href":"http://localhost:8090/actuator/env",**
+"href":"http://localhost:8090/actuator/env",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"env-toMatch":{**
+"env-toMatch":{
 
-**"href":"http://localhost:8090/actuator/env/{toMatch}",**
+"href":"http://localhost:8090/actuator/env/{toMatch}",
 
-**"templated":true**
+"templated":true
 
-**},**
+},
 
-**"flyway":{**
+"flyway":{
 
-**"href":"http://localhost:8090/actuator/flyway",**
+"href":"http://localhost:8090/actuator/flyway",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"info":{**
+"info":{
 
-**"href":"http://localhost:8090/actuator/info",**
+"href":"http://localhost:8090/actuator/info",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"logfile":{**
+"logfile":{
 
-**"href":"http://localhost:8090/actuator/logfile",**
+"href":"http://localhost:8090/actuator/logfile",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"loggers":{**
+"loggers":{
 
-**"href":"http://localhost:8090/actuator/loggers",**
+"href":"http://localhost:8090/actuator/loggers",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"loggers-name":{**
+"loggers-name":{
 
-**"href":"http://localhost:8090/actuator/loggers/{name}",**
+"href":"http://localhost:8090/actuator/loggers/{name}",
 
-**"templated":true**
+"templated":true
 
-**},**
+},
 
-**"heapdump":{**
+"heapdump":{
 
-**"href":"http://localhost:8090/actuator/heapdump",**
+"href":"http://localhost:8090/actuator/heapdump",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"threaddump":{**
+"threaddump":{
 
-**"href":"http://localhost:8090/actuator/threaddump",**
+"href":"http://localhost:8090/actuator/threaddump",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"metrics-requiredMetricName":{**
+"metrics-requiredMetricName":{
 
-**"href":"http://localhost:8090/actuator/metrics/{requiredMetricName}",**
+"href":"http://localhost:8090/actuator/metrics/{requiredMetricName}",
 
-**"templated":true**
+"templated":true
 
-**},**
+},
 
-**"metrics":{**
+"metrics":{
 
-**"href":"http://localhost:8090/actuator/metrics",**
+"href":"http://localhost:8090/actuator/metrics",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"scheduledtasks":{**
+"scheduledtasks":{
 
-**"href":"http://localhost:8090/actuator/scheduledtasks",**
+"href":"http://localhost:8090/actuator/scheduledtasks",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"httptrace":{**
+"httptrace":{
 
-**"href":"http://localhost:8090/actuator/httptrace",**
+"href":"http://localhost:8090/actuator/httptrace",
 
-**"templated":false**
+"templated":false
 
-**},**
+},
 
-**"mappings":{**
+"mappings":{
 
-**"href":"http://localhost:8090/actuator/mappings",**
+"href":"http://localhost:8090/actuator/mappings",
 
-**"templated":false**
+"templated":false
 
-**}**
+}
 
-**}**
+}
 
-**}**
+}
+
+How @Request Mapping works?
+
+@RequestMapping(value =””)
+
+@PutMapping
+
+@DeleteMapping
+
+@GetMapping
+
+@PostMapping
+
+When the application starts those end points get registered with the dispatcher servelet . When the request comes from the client to the dispatcher servelet, it redirects to the end point.

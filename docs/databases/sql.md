@@ -145,3 +145,12 @@ Using common type element
 With CTE as (Select * ROW NUMBER() OVER(Partition BY first name, last name order by first name, last name) rn from table_name );
 
 delete from CTE where rn>1;
+
+
+## 2nd Highest Salary
+
+SELECT Salary FROM
+
+(SELECT Salary FROM Employee ORDER BY salary DESC LIMIT 2) AS Emp
+
+ORDER BY salary LIMIT 1;

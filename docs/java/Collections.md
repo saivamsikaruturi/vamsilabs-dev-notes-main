@@ -14,6 +14,24 @@
 - if 2 objects are equal according to equals method then hashCode method return the same hash code for the 2 objects
 - if the hash code value is same for both the object that doesn't mean that both objects are equal.
 
+****Why we should override hash code and equals method??**
+
+hashcode -based on memory address
+
+equals—based on references
+
+contract b/w hash code and equals: if the hashcodes are same , then only equals method will be called.
+
+1.if we don’t override hashcode
+
+-  it generates the hashcode based on the memory address and as we using new keyword , the address will be different and the hashcodes are different . so equals method won’t be called and the same objects will be inserted which results in duplicates.
+
+2. if we don’t override equals
+
+-  if the hashcodes are same then equals method will be called , as we have not overridden equals method. Object class equal method compares the references and the references will be different , so it returns false , which results duplicates.
+
+
+
 Why we should override and equals method?
 
 Student s1=new Student(“Sai”,1);
@@ -185,7 +203,7 @@ Uses Compare to for find the order.
 | 7) Iterator in HashMap is fail-fast.                                                                                                | Enumerator in Hashtable is not fail-fast.                                         |
 | 8) HashMap inherits AbstractMap class.                                                                                              |                                                                                   |
 
-## Difference between HashMap ,HashTable ,SynchronizedHashMap and Concurrent HashMap
+## Difference between HashMap,HashTable,SynchronizedHashMap and Concurrent HashMap
 
 | Collection Type       | Synchronization                        | Locking            | No.Of Threads                                             | Null Key & Values                       | Iterator  | When To Use                       |
 |-----------------------|----------------------------------------|--------------------|-----------------------------------------------------------|-----------------------------------------|-----------|-----------------------------------|
