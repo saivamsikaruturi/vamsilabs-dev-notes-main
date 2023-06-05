@@ -1,6 +1,6 @@
 **MultiThreading**
 
-Multitasking:
+## Multitasking
 
 
 1. Process Based Multitasking : Exceuting more than one task at a time where each independent of other.
@@ -22,6 +22,8 @@ The thread which is executing in the background is called Daemon Thread.
 Ex: Garbage Collector , Attach Listener.
 
 Use of Daemon Thread:
+
+## Thread Creation
 
 - - We can create Threads in 2 ways
 
@@ -95,7 +97,7 @@ Use of Daemon Thread:
 
     }
 
-**Thread Scheduler:**
+## Thread Scheduler
 
 1.It is a part of JVM
 
@@ -153,9 +155,11 @@ Foe ex: If a thread t1 wants to wait until completing t2, then t1 has to call t2
 public final void join() throws InterruptedException
 
 
+## Life Cycle Of a Thread
+
 ![lifecycle.PNG](lifecycle.PNG)
 
-Synchronization:
+## Synchronization
 
 
 Synchronized is the modifier applicable only for methods and blocks but not for classes and variables.
@@ -190,7 +194,7 @@ execute any synchronized method on that object.Once method exception completes a
 
         }
 
-**Inter Thread Communication:**
+## Inter Thread Communication:
 
 Two Threads can communicate with each other by using wait(), notify() and notifyAll() methods.
 
