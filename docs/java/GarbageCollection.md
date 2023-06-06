@@ -8,6 +8,7 @@
 * References from old objects to young objects only exists in small number.
 
 **Basics:**
+
 * Objects are allocated (ex: using new kwyword) in the heap of java memory.
 
 * Static members, class definitions (metadata) are stored in permGen/Metaspace.
