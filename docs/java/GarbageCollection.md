@@ -20,6 +20,7 @@
 * When new allocations cannot happen due to full heap you end up with **java.lang.OutOfMemoryError**. heap spaceand a lot of headaches.
 
 **Involves:**
+
 Mark:starts from root node ,walks the object graph and marks reachable as live.
 
 Delete: delete unreachable objects.
