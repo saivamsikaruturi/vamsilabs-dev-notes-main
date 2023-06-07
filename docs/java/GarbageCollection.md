@@ -57,6 +57,7 @@ Compacting: compact the memory by moving around the objects and making the alloc
 **2. Concurrent Collector:**
 
 * A thread that performs GC along with the application execution as the application runs doesn't wait for the old generation to be full.
+ 
   Use when:
   * There is more memory.
   * There is high number of CPU's.
@@ -67,6 +68,7 @@ Compacting: compact the memory by moving around the objects and making the alloc
 * Uses multiple CPU's to perform GC. 
 * Multiple threads does mark/sweep.
 * Doesn't kick in until heap is full/near-full.
+
   Use when:
   * Less memory.
   * Application demands high throughout and can withstand pauses.
@@ -78,6 +80,7 @@ Compacting: compact the memory by moving around the objects and making the alloc
 * It straddles the young-tenured generation boundary as it divides heap in to different regions and during a GC it can collect a sub-set of regions.
 * It dynamically selects a set of region to act as young generation in next GC cycle.
 * Regions with most unreachable will be collected first.
+
   Use when:
   * More predictable GC pause.
   * Low Pauses with fragmentation.
