@@ -32,6 +32,7 @@ Compacting: compact the memory by moving around the objects and making the alloc
 
 **Generational Collectors:**
                ![gc.PNG](gc.PNG)
+
 * Intially the new objects are created in the young generation space i.e when a new HashMap is created it is created in eden space.
 * When the eden space is full , small/minor GC kicks up and cleans up the eden space of all unreachable objects.
 * All the reachable objects will reach the survivor S0 and then the eden space is free. So, then new objects can be created in eden space.
