@@ -168,7 +168,6 @@ By using char[] instead of String, you have more control over the lifespan of th
 | Cannot take constructor                                                                                                               | Can take constructor                                                                                                                                                                                                                                                     |
 
 
-
 **Rules For Creating Immutable Class:**
 
 1.Make the class as final.
