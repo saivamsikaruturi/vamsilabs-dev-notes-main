@@ -50,10 +50,12 @@ Compacting: compact the memory by moving around the objects and making the alloc
 ![typesofgc.jpg](typesofgc.jpg)
 
 **1. Serial Collector:**
+
 * Basic Garbage Collector that runs in single thread.
 * Use for Basic Applications.
 
 **2. Concurrent Collector:**
+
 * A thread that performs GC along with the application execution as the application runs doesn't wait for the old generation to be full.
   Use when:
   * There is more memory.
@@ -61,14 +63,16 @@ Compacting: compact the memory by moving around the objects and making the alloc
   * Application demands- short pause.
 
 **3. Parallel Collector:**
+
 * Uses multiple CPU's to perform GC. 
 * Multiple threads does mark/sweep.
-* Doesn't kicks in until heap is full/near-full.
+* Doesn't kick in until heap is full/near-full.
   Use when:
   * Less memory.
   * Application demands high throughout and can withstand pauses.
   
 **4. G1 Garbage Collector:**
+
 * Introduced in 1.7 version.
 * It straddles the young-tenured generation boundary as it divides heap in to different regions and during a GC it can collect a sub-set of regions.
 * It dynamically selects a set of region to act as young generation in next GC cycle.
