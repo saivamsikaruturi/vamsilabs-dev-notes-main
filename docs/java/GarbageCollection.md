@@ -73,6 +73,7 @@ Compacting: compact the memory by moving around the objects and making the alloc
   
 **4. G1 Garbage Collector:**
 
+
 * Introduced in 1.7 version.
 * It straddles the young-tenured generation boundary as it divides heap in to different regions and during a GC it can collect a sub-set of regions.
 * It dynamically selects a set of region to act as young generation in next GC cycle.
