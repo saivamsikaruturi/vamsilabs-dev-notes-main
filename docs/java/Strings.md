@@ -45,7 +45,7 @@
 
 4.good for multiple thread operation , Thread safe.
 
-Even if some thread modifies the value, an entirely new String is created without affecting the original one.
+  Even if some thread modifies the value, an entirely new String is created without affecting the original one.
 
 
 **why char[] is preferred more than String while storing passwords?**
@@ -56,14 +56,16 @@ Even if some thread modifies the value, an entirely new String is created withou
 
 * On the other hand, char[] arrays are mutable, and you can manually overwrite the contents of the array after using it, ensuring that the password is no longer present in memory. By explicitly clearing the array after using the password, you reduce the window of opportunity for an attacker to retrieve the password from memory.
 
-    char[] password = {'s', 'e', 'c', 'r', 'e', 't'};
+      char[] password = {'s', 'e', 'c', 'r', 'e', 't'};
 
-    // Use the password...
+      // Use the password...
 
-    // Clear the password from memory
-    Arrays.fill(password, '\0');
+      // Clear the password from memory
+      
+      Arrays.fill(password, '\0');
 
 * By using char[] instead of String, you have more control over the lifespan of the password in memory, minimizing the chances of it being exposed to potential attackers. 
+
 * However, it's worth noting that this approach does not completely eliminate the risks associated with password storage, and it's essential to follow other security best practices such as hashing and salting passwords before storing them.
 
 **Rules For Creating Immutable Class:**
