@@ -56,13 +56,13 @@
 
 * On the other hand, char[] arrays are mutable, and you can manually overwrite the contents of the array after using it, ensuring that the password is no longer present in memory. By explicitly clearing the array after using the password, you reduce the window of opportunity for an attacker to retrieve the password from memory.
 
-      char[] password = {'s', 'e', 'c', 'r', 'e', 't'};
+        char[] password = {'s', 'e', 'c', 'r', 'e', 't'};
 
-      // Use the password...
-
-      // Clear the password from memory
+        // Use the password...
+ 
+        // Clear the password from memory
       
-      Arrays.fill(password, '\0');
+        Arrays.fill(password, '\0');
 
 * By using char[] instead of String, you have more control over the lifespan of the password in memory, minimizing the chances of it being exposed to potential attackers. 
 
