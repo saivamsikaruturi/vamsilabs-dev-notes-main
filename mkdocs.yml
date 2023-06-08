@@ -22,6 +22,7 @@ nav:
       - Maven: java/maven.md
       - Gradle: java/gradle.md
       - Java Basics: java/Java Basics.md
+      - Strings: java/Strings.md
       - Garbage Collection: java/GarbageCollection.md
       - Java 8: java/Java8.md
       - Exception Handling: java/ExceptionHandling.md
