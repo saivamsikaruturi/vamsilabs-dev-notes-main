@@ -27,6 +27,18 @@ JIT
 
 
 
+
+## Ways Of Creating an Object in Java:
+
+1. New keyword.
+2. New Instance method of a class
+3. New Instance method of constructor.
+4. clone method
+5. object deserialization
+6. java Reflection
+
+
+
 **Why Pointers are not used in Java?**
 
 1. Security : pointers allows user to access memory locations , which may lead hackers to access any file in your application.
@@ -65,6 +77,9 @@ Association: The relationship between two or more classes. It tell about has-a r
 Composition: Strong relationship
 
 Aggregation: Weak Relationship
+
+
+
 
 ## Object Class
 
