@@ -48,6 +48,16 @@
   Even if some thread modifies the value, an entirely new String is created without affecting the original one.
 
 
+
+| String | String Buffer | String Builder |
+| --- | --- | --- |
+| Immutable | Mutable | Mutable |
+| Intialization is mandatory | Not mandatory | Not mandatory |
+| Synchronized | Synchronized | Not Synchronized |
+| Thread safe | Thread safe | Not Thread safe |
+| Less performance | Less performance | Best Performance. Recommended while using Multi Threading |
+
+
 **why char[] is preferred more than String while storing passwords?**
 
 * In Java, using char[] is often considered a better practice than using String for storing passwords because String objects are immutable, meaning they cannot be changed once created. This immutability poses a security risk when it comes to storing sensitive information like passwords.

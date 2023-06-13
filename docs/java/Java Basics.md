@@ -23,6 +23,9 @@ JRE=JVM+ Library classes
 JIT
 
 
+## What is class?
+  * It's a blueprint or a template for creating objects, which are instances of the class.
+
 # Data Types
 
 
@@ -181,13 +184,6 @@ o	Serializable Interface
 o	Remote Interface
 
 
-| String | String Buffer | String Builder |
-| --- | --- | --- |
-| Immutable | Mutable | Mutable |
-| Intialization is mandatory | Not mandatory | Not mandatory |
-| Synchronized | Synchronized | Not Synchronized |
-| Thread safe | Thread safe | Not Thread safe |
-| Less performance | Less performance | Best Performance. Recommended while using Multi Threading |
 
 
 
