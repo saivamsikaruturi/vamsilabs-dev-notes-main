@@ -17,6 +17,7 @@ nav:
   - Learning: learning.md
   - Shortcuts: shortcuts.md
   - Git: git.md
+  - Interview Questions: interviewquestions.md
   - Java:
       - Ecosystem: java/ecosystem.md
       - Maven: java/maven.md
