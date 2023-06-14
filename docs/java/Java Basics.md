@@ -28,6 +28,26 @@ JIT
 
 # Data Types
 
+* Variables are nothing but reserved memory locations to store values.This means that when you create a variable you reserve some space in memory.
+* There are two data types available in java
+   * Primitive Data Types
+   * Reference/Object Data Types
+
+Boolean --- true , false(default)
+byte
+char
+short
+int 
+long
+float 
+double
+
+Non-Primitive 
+* String
+* Array
+* Class
+
+
 
 
 

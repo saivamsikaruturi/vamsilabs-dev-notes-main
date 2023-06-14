@@ -50,8 +50,6 @@ nav:
           - Composite : designpatterns/structuralDesignPatterns/CompositeDesignPattern.md
           - Adapter : designpatterns/structuralDesignPatterns/AdapterDesignPattern.md
           - Bridge :  designpatterns/structuralDesignPatterns/BridgeDesignPattern.md
-
-
       - Behavioural Design Patterns:
           - Chain Of Responsibility: designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern.md
           - Command: designpatterns/behaviouralDesignPatterns/CommandDp.md
@@ -65,9 +63,9 @@ nav:
           - Visitor: designpatterns/behaviouralDesignPatterns/VisitorDp.md
           - Interpreter: designpatterns/behaviouralDesignPatterns/Interpreter.md
           - Null Object: designpatterns/behaviouralDesignPatterns/NullObject.md
-
   - SpringBoot:
       - Introduction: springboot/introduction.md
+      - Annotations: springboot/Annotations.md
   - DataBases:
       - Neo4j: databases/neo4j.md
       - SQL: databases/sql.md
