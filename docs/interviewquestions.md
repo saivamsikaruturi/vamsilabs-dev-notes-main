@@ -1,4 +1,13 @@
-## System.out.println()
+**public static void main(String[] args)**
+
+  public - to call by jvm from anywhere
+  static - without existing object also JVM has to call this method and main method has no way related to any object.
+  void   - main() method won't return anything to JVM.
+  main   - this is the name which is configured in JVM.
+  String[] args- command line arguments
+
+
+**System.out.println()**
  
   example: 
              
@@ -53,13 +62,13 @@ int i = 9;: This assigns the decimal value 9 to the variable i. The number 9 is 
 int i = 09;: This is not a valid integer initialization in Java. In Java, if a numeric literal starts with a leading zero (0), it is interpreted as an octal (base 8) number. However, octal numbers can only include digits from 0 to 7. Since 9 is not a valid octal digit, the code int i = 09; will result in a compilation error.
 
 
-# ReHashing
+**ReHashing**
 
 
 
 
 
-## why we can't use primitive as key in hashmap
+**why we can't use primitive as key in hashmap**
 
 * n Java, primitive types such as int, char, boolean, etc., cannot be used directly as keys in a HashMap or any other Map implementation. This is because HashMap requires keys to be objects, and primitive types are not objects in Java.
 
@@ -75,7 +84,7 @@ int i = 09;: This is not a valid integer initialization in Java. In Java, if a n
 
 
 
-## I have stringbuilder as key in hashmap ,  in first case  hashmap.put(str); in 2nd case hashmap.put(str.append("kumar") , what will happen
+**I have stringbuilder as key in hashmap ,  in first case  hashmap.put(str); in 2nd case hashmap.put(str.append("kumar") , what will happen**
 
 * When using StringBuilder as a key in a HashMap, the behavior will depend on whether you modify the StringBuilder after adding it to the HashMap. Let's consider the two cases you mentioned: hashmap.put(str);
 
