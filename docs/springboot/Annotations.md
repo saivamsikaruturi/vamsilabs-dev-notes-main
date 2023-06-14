@@ -5,12 +5,12 @@
 
 **@Autowired**
 
-*The @Autowired annotation is used to inject the bean automatically.
-*The @Autowired annotation is used in constructor injection,setter injection and field injection.
+* The @Autowired annotation is used to inject the bean automatically.
+* The @Autowired annotation is used in constructor injection,setter injection and field injection.
 
 **@Qualifier**
 
-*This annotation is used in conjunction with Autowired annotation to avaoid confusion when we have two or more beans configured for the same type.
+* This annotation is used in conjunction with Autowired annotation to avaoid confusion when we have two or more beans configured for the same type.
 
 **@Bean**
 
