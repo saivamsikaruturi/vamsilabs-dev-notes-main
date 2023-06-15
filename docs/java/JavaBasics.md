@@ -6,8 +6,6 @@
 ## Difference Between Error and Exception
 
 
-## Test
-
 ## Java Basics
 
 **High Level Language:** Man can understand these languages C++,Java
@@ -17,6 +15,21 @@
 1.Assembly level Language (Mnemonics)
 
 2.Machine level Language(0’s and 1’s)
+
+![flow.PNG](flow.PNG)
+
+Java is Platform Independent
+
+JVM is Platform Dependent
+
+JDK=JRE+DEV Tools
+
+JRE=JVM+ Library classes
+
+JIT
+
+
+## What Is the JVM?
 
 
 
