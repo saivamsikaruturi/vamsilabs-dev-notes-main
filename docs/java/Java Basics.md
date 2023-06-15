@@ -10,7 +10,8 @@ JAVA BASICS:
 
 
 
-![img.png](img.png)
+![flow.PNG](flow.png)
+
 Java is Platform Independent
 
 JVM is Platform Dependent
