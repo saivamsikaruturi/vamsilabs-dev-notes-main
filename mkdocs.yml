@@ -26,6 +26,7 @@ nav:
       - Strings: java/Strings.md
       - Garbage Collection: java/GarbageCollection.md
       - Java 8: java/Java8.md
+  - Advanced Java:
       - Exception Handling: java/ExceptionHandling.md
       - Collections: java/Collections.md
       - Concurrent Collections: java/ConcurrentCollections.md
