@@ -6,7 +6,7 @@
 ## Difference Between Error and Exception
 
 
-# Java Basics
+## Java Basics
 
 **High Level Language:** Man can understand these languages C++,Java
 
