@@ -24,9 +24,9 @@
 * These annotations are used to create Spring beans automatically in the application context (Spring IOC container)
 * The main stereotype annotation is @Component.
 * By using this annotation, Spring provides more Stereotype meta annotations such as **@Service ,@Repository and @Controller**
-* @Service annotation is used to create Spring beans at the Service layer.
-* @Repository is used to create Spring beans for the Repositories at the DAO layer.
-* @Controller is used to create Spring beans at the controller layer.
+* **@Service** annotation is used to create Spring beans at the Service layer.
+* **@Repository** is used to create Spring beans for the Repositories at the DAO layer.
+* **@Controller** is used to create Spring beans at the controller layer.
 
 ![sterotype.png](sterotype.png)
 
