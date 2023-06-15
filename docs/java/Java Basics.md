@@ -1,4 +1,4 @@
-JAVA BASICS:
+## JAVA BASICS:
 
 **High Level Language:** Man can understand these languages C++,Java
 
@@ -23,7 +23,7 @@ JRE=JVM+ Library classes
 JIT
 
 
-What Is the JVM?
+## What Is the JVM?
 A Virtual Machine is a software implementation of a physical machine. Java was developed with the concept of WORA (Write Once Run Anywhere), which runs on a VM. The compiler compiles the Java file into a Java .class file, then that .class file is input into the JVM, which loads and executes the class file. Below is a diagram of the Architecture of the JVM.
 
 ![JVM-Architecture.png](JVM-Architecture.png)
@@ -82,7 +82,7 @@ Native Method Libraries: This is a collection of the Native Libraries, which is 
 ## What is class?
   * It's a blueprint or a template for creating objects, which are instances of the class.
 
-# Data Types
+## Data Types
 
 * Variables are nothing but reserved memory locations to store values.This means that when you create a variable you reserve some space in memory.
 * There are two data types available in java
