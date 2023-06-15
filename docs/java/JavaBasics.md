@@ -83,3 +83,41 @@ Native Method Libraries: This is a collection of the Native Libraries, which is 
 
 ## What is class?
 * It's a blueprint or a template for creating objects, which are instances of the class.
+
+## Data Types
+
+* Variables are nothing but reserved memory locations to store values.This means that when you create a variable you reserve some space in memory.
+* There are two data types available in java
+    * Primitive Data Types
+    * Reference/Object Data Types
+
+Boolean --- true , false(default)
+byte
+char
+short
+int
+long
+float
+double
+
+Non-Primitive
+* String
+* Array
+* Class
+
+
+
+
+
+## Ways Of Creating an Object in Java:
+
+1. New keyword.
+2. New Instance method of a class
+3. New Instance method of constructor.
+4. clone method
+5. object deserialization
+6. java Reflection
+
+
+
+**Why Pointers are not used in Java?**
