@@ -283,7 +283,7 @@ o	Remote Interface
 | Homogenous objects | Both Homogenous and Heterogenous Objects |
 
 
-## SERIALIZATION and DESERIALIZATION , EXTERNALIZATION
+## Serialization, Deserialization, Externalization
 
 *  Serialization is the conversion of a Java Object into a static stream(sequence) of bytes, which we can then save to a
    database or transfer over a network.
