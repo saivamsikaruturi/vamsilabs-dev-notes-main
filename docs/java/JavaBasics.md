@@ -249,3 +249,28 @@ Child c = (Child)p;
     String s1 = num1.toString ();
     
     System.out.println (s1);
+
+## Marker Interface in Java
+
+**What is marker interface?**
+
+An interface that does not contain methods, fields, and constants is known as marker interface. In other words, an empty interface is known as marker interface or tag interface. It delivers the run-time type information about an object. It is the reason that the JVM and compiler have additional information about an object. The Serializable and Cloneable interfaces are the example of marker interface.
+In short, it indicates a signal or command to the JVM.
+The declaration of marker interface is the same as interface in Java but the interface must be empty. For example:
+
+     public interface Serializable
+    {
+    }
+
+**Uses of Marker Interface**
+
+Marker interface is used as a tag that inform the Java compiler by a message so that it can add some special behavior to the class implementing it. Java marker interface are useful if we have information about the class and that information never changes, in such cases, we use marker interface represent to represent the same. Implementing an empty interface tells the compiler to do some operations.
+
+It is used to logically divide the code and a good way to categorize code. It is more useful for developing API and in frameworks like Spring.
+
+**Built-in Marker Interface**
+
+In Java, built-in marker interfaces are the interfaces that are already present in the JDK and ready to use. There are many built-in marker interfaces some of them are:
+o	Cloneable Interface
+o	Serializable Interface
+o	Remote Interface
