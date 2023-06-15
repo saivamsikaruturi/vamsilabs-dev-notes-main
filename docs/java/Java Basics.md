@@ -10,7 +10,7 @@ JAVA BASICS:
 
 
 
-![flow.PNG](flow.png)
+![flow.PNG](flow.PNG)
 
 Java is Platform Independent
 
