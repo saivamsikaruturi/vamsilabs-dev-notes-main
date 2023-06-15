@@ -215,3 +215,37 @@ There are 11 methods in object class.
 
 
 ![img_6.png](img_6.png)
+
+Upcasting means conversion from child to parent
+
+Parent p=(Parent) new Child;
+
+Downcasting means conversion from parent to child.
+
+ParenT p = new Child();
+
+Child c = (Child)p;
+
+## Wrapper Classes
+
+**AutoBoxing and Auto UnBoxing:**
+
+    int autoBoxing=123;
+
+    System.out.println(Integer.valueOf(autoBoxing));
+    
+    Integer autoUnBoxing = new Integer (23);
+    
+    System.out.println(autoUnBoxing.intValue ());
+    
+    String num = "123";
+    
+    int i = Integer.parseInt(num);
+
+    System.out.println(i);
+
+    Integer num1=123;
+
+    String s1 = num1.toString ();
+    
+    System.out.println (s1);
