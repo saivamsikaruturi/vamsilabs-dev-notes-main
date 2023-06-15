@@ -42,7 +42,7 @@ Execution Engine
 
 1.1 Loading
 
-  Classes will be loaded by this component. BootStrap ClassLoader, Extension ClassLoader, and Application ClassLoader are the three ClassLoaders that will help in achieving it.
+* Classes will be loaded by this component. BootStrap ClassLoader, Extension ClassLoader, and Application ClassLoader are the three ClassLoaders that will help in achieving it.
 * BootStrap ClassLoader – Responsible for loading classes from the bootstrap classpath, nothing but rt.jar. Highest priority will be given to this loader.
 * Extension ClassLoader – Responsible for loading classes which are inside the ext folder (jre\lib).
 * Application ClassLoader –Responsible for loading Application Level Classpath, path mentioned Environment Variable, etc.
@@ -174,3 +174,44 @@ Association: The relationship between two or more classes. It tell about has-a r
 Composition: Strong relationship
 
 Aggregation: Weak Relationship
+
+
+## Object Class
+
+There are 11 methods in object class.
+
+1.public String toString();
+
+2.public native int hashCode();
+
+3.public boolean equals(Object o)
+
+4.protected native Object clone() throws CloneNotSupportedException
+
+5.protected void finalize() throws Throwable
+
+6.public final class getClass()
+
+7.public final void wait throws InterruptedException
+
+8. public final void wait throws(long ms) InterruptedException
+
+9. public final void wait throws(long ms, int ns) InterruptedException
+
+10.public native final void notify()
+
+11.public native final void notifyAll()
+
+
+| Interface                                                                                                                             | Abstract Class                                                                                                                                                                                                                                                           |
+|---------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| If we don’t know anything about implementation just we know requirement (100% abstract class)                                         | If we know partial implementation                                                                                                                                                                                                                                        |
+| Every method in interface is public abstract                                                                                          | Abstract and concrete methods                                                                                                                                                                                                                                            |
+| we cannot declare interface with following modifiers.  protected ,private , static, final, synchronized, native and strictfp.         | There are no restrictions in modifiers.                                                                                                                                                                                                                                  |
+| Every variable present inside interface is always public static final whether we declare it or not                                    | The variables present inside abstarct class need not be public static and final.                                                                                                                                                                                         |
+| For interface variables compulsory we should perform initialization at the time of declaration otherwise will get Compile time error. | abstract classes in Java can have instance variables without initialization. Abstract classes are meant to be extended by other classes, and the responsibility of initializing the instance variables lies with the concrete subclasses that extend the abstract class. |
+| Cannot take constructor                                                                                                               | Can take constructor                                                                                                                                                                                                                                                     |
+
+
+
+![img_6.png](img_6.png)
