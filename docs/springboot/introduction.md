@@ -51,30 +51,6 @@ SPRING MVC FLOW
 15. View executes and returns HTML output to the DispatcherServlet.
 16. DispatcherServlet will sends the output to the Browser.
 
-HTTP Methods:
-
-PUT Vs Post:
-
-1. To update each and every detail of a record the go for Put Request. To create a new record go for Post Request.
-2. Post is not idempotent. Whereas Put is idempotent.
-3. When we hit the same data for multiple times using Post Request , multiple records are inserted in Db. Whereas using Put the record is updated , new record is not created.
-
-Get vs Post :
-
-| GET                                                                                                         | POST |
-|-------------------------------------------------------------------------------------------------------------| --- |
-| We can use GET method to Get info from the server                                                           | We Can use Post method to post information to the server. |
-| Usually GET Requests are Read -only                                                                         | Usually Post requests are write or update operations. |
-| End-user provided information will be appended to the URL as the part of Query String and send to the user. | Information will be encapsulated in the request body and send to the server. |
-| By Using Get Request we can send only Character data but not images/files.                                  | By Using Post request we can send both Binary and Character data to the server. |
-| By using Get request we can send only limited amount of information , depends on browser.                   | By using Post request we can send huge amount of information to the server. |
-| Security is less , hence sensitive info like user names or passwords cannot be send.                        | Security is more. |
-| Caching of Get is possible                                                                                  | Caching is not possible. |
-
-Put vs Patch:
-
-1. To Update a single or some parameters in a record then go For Patch , To update a all values in a record go for Put request.
-2. If we use Put request for updating some parameters then remaining parameters will be updated as null.
 
 SPRING BOOT ACTUATORS:
 
@@ -119,43 +95,43 @@ endpoint:health:show-details: alwaysbeans:enabled: true
 
 - -> Once our application started we can use below URL to see actuator endpoints which are exposed
 
-http://localhost:8090/actuator
+       http://localhost:8090/actuator
 
-{
+       {
 
-"_links":{
+        "_links":{
 
-"self":{
+        "self":{
 
-"href":"http://localhost:8090/actuator",
+         "href":"http://localhost:8090/actuator",
 
-"templated":false
+          "templated":false
 
-},
+          },
 
-"auditevents":{
+         "auditevents":{
 
-"href":"http://localhost:8090/actuator/auditevents",
+         "href":"http://localhost:8090/actuator/auditevents",
 
-"templated":false
+         "templated":false
 
-},
+          },
 
-"beans":{
+        "beans":{
 
-"href":"http://localhost:8090/actuator/beans",
+        "href":"http://localhost:8090/actuator/beans",
 
-"templated":false
+        "templated":false
 
-},
+            },
 
-"caches-cache":{
+          "caches-cache":{
 
-"href":"http://localhost:8090/actuator/caches/{cache}",
+          "href":"http://localhost:8090/actuator/caches/{cache}",
 
-"templated":true
+          "templated":true
 
-}
+           }
 
 How @Request Mapping works?
 
