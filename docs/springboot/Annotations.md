@@ -1,7 +1,7 @@
 **@SpringBootApplication**
 
-@SpringBootApplication = @SpringBootConfiguration + @EnableAutoConfiguration + @ComponentScan
-                         (@Configuration)
+@SpringBootApplication = @SpringBootConfiguration (@Configuration) + @EnableAutoConfiguration + @ComponentScan
+                         
 
 **@Component**
 
