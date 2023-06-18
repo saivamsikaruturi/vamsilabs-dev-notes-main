@@ -8,7 +8,7 @@
 **clone() method**
 
 * clone() method is defined as protected in the Object class which you must override as public
-  in any derived classes that tou want to clone.
+  in any derived classes that want to clone.
 
 **Advantages of cloning**
 
@@ -26,11 +26,11 @@ a) Shallow copy cloning:
 * If original object has any references to other objects as fields, then only references of those objects are copied into clone object, copy of those objects are not created. That means any changes made to those objects through clone object will be reflected in original object or vice-versa.
 * Shallow copy is not 100% disjoint from original object. Shallow copy is not 100% independent of original object.
 
-![cloning1.PNG](cloning1.PNG)
+![cloning.PNG](Cloning.PNG)
 
-![address.PNG](address.PNG)
+![address.PNG](Address.PNG)
 
-![shallow.PNG](shallow.PNG)
+![shallow.PNG](shallowPNG.PNG)
 
 ![shallow1.PNG](shallow1.PNG)
 
@@ -41,7 +41,7 @@ b) Deep copy cloning
 * That means clone object and original object will be 100% disjoint.
 * They will be 100% independent of each other. Any changes made to clone object will not be reflected in original object or vice-versa.
 
-![cloning2.PNG](cloning2.PNG)
+![cloning2.PNG](Cloning1.PNG)
 
 ![deep.PNG](deep.PNG)
 
