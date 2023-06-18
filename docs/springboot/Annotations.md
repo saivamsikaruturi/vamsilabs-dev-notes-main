@@ -35,17 +35,6 @@
 * By default, the bean name is same as method name. We can sp*ecify bean name using @Bean(name = "beanName")
 * @Bean annotation provides initMethod and destroyMethod attributes to perform certain actions after bean initialization or before bean destruction by the container.
 
-
-## StereoType Annotations
-* These annotations are used to create Spring beans automatically in the application context (Spring IOC container)
-* The main stereotype annotation is @Component.
-* By using this annotation, Spring provides more Stereotype meta annotations such as **@Service ,@Repository and @Controller**
-* **@Service** annotation is used to create Spring beans at the Service layer.
-* **@Repository** is used to create Spring beans for the Repositories at the DAO layer.
-* **@Controller** is used to create Spring beans at the controller layer.
-
-![sterotype.png](sterotype.png)
-
 **@Lazy**
 
 * By default, Spring creates all singleton beans eagerly at the startup/bootstrapping of the application context.
@@ -59,13 +48,13 @@
 * We use @Scope to define the scope of a @Component class or a @Bean annotation.
 
 * The latest version of the Spring framework defines 6 types of scopes.
-   * Singleton
-   * prtototype
-   * request
-   * session
-   * application
-   * websocket
-*The last four scopes are only available in a web-aware application.
+  * Singleton
+  * prtototype
+  * request
+  * session
+  * application
+  * websocket
+    *The last four scopes are only available in a web-aware application.
 
 **@Value**
 
@@ -79,6 +68,18 @@
 * Spring @PropertySources annotation is used to provide multiple properties files to Spring Environment.
 * These annotation is used with @Configuration classes.
 * Spring @PropertySource annotation is repeatable, means you can have multiple PropertySource on a Configuration class.
+
+
+
+## StereoType Annotations
+* These annotations are used to create Spring beans automatically in the application context (Spring IOC container)
+* The main stereotype annotation is @Component.
+* By using this annotation, Spring provides more Stereotype meta annotations such as **@Service ,@Repository and @Controller**
+* **@Service** annotation is used to create Spring beans at the Service layer.
+* **@Repository** is used to create Spring beans for the Repositories at the DAO layer.
+* **@Controller** is used to create Spring beans at the controller layer.
+
+![sterotype.png](sterotype.png)
 
 
 ## REST API related Annotations:
