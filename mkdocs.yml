@@ -24,6 +24,7 @@ nav:
       - Gradle: java/gradle.md
       - Java Basics: java/JavaBasics.md
       - Strings: java/Strings.md
+      - Cloning: java/Cloning.md
       - Garbage Collection: java/GarbageCollection.md
       - Java 8: java/Java8.md
   - Advanced Java:
@@ -66,8 +67,8 @@ nav:
           - Null Object: designpatterns/behaviouralDesignPatterns/NullObject.md
   - SpringBoot:
       - Introduction: springboot/introduction.md
-      - Annotations: springboot/Annotations.md
       - AutoConfiguration: springboot/AutoConfiguration.md
+      - Annotations: springboot/Annotations.md
   - DataBases:
       - Neo4j: databases/neo4j.md
       - SQL: databases/sql.md

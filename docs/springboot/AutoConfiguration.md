@@ -9,6 +9,7 @@ What is Auto Configuration?
 * for example the default port is 8080 but if we change the port you can configure server.port = 9090
 
 **CaseStudy**: DataSource Auto Configuration
+
 1. Use explicitly registered bean, if defined
 2. Use properties from application.properties 
 3. Use in-memory JDBC driver if available on classpath
