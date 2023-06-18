@@ -211,3 +211,13 @@ Uses Compare to for find the order.
 | HashTable             | Synchronous                            | Object level lock  | Single thread                                             | Does not allow null key and null values | Fail Safe | Legacy class not recommended      |
 | Synchronized HashMap  | Synchronous                            | Object level lock  | Single thread                                             | One null key , N no.of null values      | Fail Safe | Multi Thread(Low Performance)     |
 | ConcurrentHashMap     | Only write operations are synchronized | Segment level lock | 16 threads perform write and ‘N’ threads can perform read | Does not allow null key & values.       | Fail Safe | Multi Thread((Better Performance) |
+
+## Difference between Comparable and Comparator 
+
+
+| Comparable            | Comparator                               |
+|-----------------------|------------------------------------------|
+| Natural Sorting Order | Customized Sorting                       |
+| Java.lang             | Java.util                                |
+| compareTo()           | Compare and equals()                     |
+| Homogenous objects    | Both Homogenous and Heterogenous Objects |

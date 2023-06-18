@@ -203,6 +203,9 @@ There are 11 methods in object class.
 11.public native final void notifyAll()
 
 
+
+## Differnce between Abstract Class and Interface
+
 | Interface                                                                                                                             | Abstract Class                                                                                                                                                                                                                                                           |
 |---------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | If we don’t know anything about implementation just we know requirement (100% abstract class)                                         | If we know partial implementation                                                                                                                                                                                                                                        |
@@ -213,6 +216,7 @@ There are 11 methods in object class.
 | Cannot take constructor                                                                                                               | Can take constructor                                                                                                                                                                                                                                                     |
 
 
+## Upcasting and Downcasting
 
 ![img_6.png](img_6.png)
 
@@ -281,13 +285,6 @@ In Java, built-in marker interfaces are the interfaces that are already present 
 o	Cloneable Interface
 o	Serializable Interface
 o	Remote Interface
-
-| Comparable | Comparator |
-| --- | --- |
-| Natural Sorting Order | Customized Sorting |
-| Java.lang | Java.util |
-| compareTo() | Compare and equals() |
-| Homogenous objects | Both Homogenous and Heterogenous Objects |
 
 
 ## Serialization, Deserialization, Externalization
