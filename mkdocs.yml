@@ -67,6 +67,7 @@ nav:
   - SpringBoot:
       - Introduction: springboot/introduction.md
       - Annotations: springboot/Annotations.md
+      - Auto Configuration: springboot/AutoConfiguration.md
   - DataBases:
       - Neo4j: databases/neo4j.md
       - SQL: databases/sql.md

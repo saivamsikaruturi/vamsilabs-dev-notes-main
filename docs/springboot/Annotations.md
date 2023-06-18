@@ -1,3 +1,5 @@
+## Spring Boot Main annotations
+
 **@SpringBootApplication**
 
 @SpringBootApplication = @SpringBootConfiguration (@Configuration) + @EnableAutoConfiguration + @ComponentScan
@@ -7,6 +9,10 @@
 
 * The component annotation indicates that an annotated class is a "spring bean/component".
 * The @Component annotation tells Spring container to automatically create Spring bean.
+
+
+
+## Spring Core related Annotations:
 
 **@Autowired**
 
@@ -74,6 +80,8 @@
 * These annotation is used with @Configuration classes.
 * Spring @PropertySource annotation is repeatable, means you can have multiple PropertySource on a Configuration class.
 
+
+## REST API related Annotations:
 **@Controller**
 
 * Spring provides @Controller annotation to make a Java class as a Spring MVC Controller. The @Controller annotation indicates that a particular class serves the role of a controller.
@@ -140,9 +148,19 @@ Put vs Patch:
 * Specifically, @DeleteMapping is a composed annotation that acts as a shortcut for @RequestMapping(method=RequestMethod.DELETE)
 
 **@PathVariable**
+
 * @PathVariable annotation used on a method argument to bind the value of a URI template variable to a method argument.
 
 **RequestParam**
 
 * We can use @RequestParam to extract query parameters from the request.
+
+Difference between @RequestMapping & @GetMapping
+
+@RequestMapping is a general-purpose annotation used to map methods to various HTTP methods and URL patterns, while @GetMapping is a specialized annotation specifically used for mapping HTTP GET requests to methods.
+
+@RequestMapping can be used with any HTTP method, whereas @GetMapping is exclusively used for mapping HTTP GET requests.
+
+@RequestMapping requires explicit specification of the HTTP method(s) using the method attribute, while @GetMapping implicitly maps to the HTTP GET method.
+
 

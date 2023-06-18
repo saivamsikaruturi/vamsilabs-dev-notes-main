@@ -99,8 +99,8 @@ i.e Inner Class without Name , only one time use (instant use)
 Default method came into picture for solving limitation of interfaces. For adding more functionality methods in interface without breaking the implementation classes functionality.
 
     interface Example{
-    abstract **void** m1();
-    abstract **void** m2();
+    abstract void m1();
+    abstract void m2();
     }
 
     class Sample implements Example{ 
@@ -187,7 +187,7 @@ test()
       Predicate<String employeePredicate=e-e.length()>4;
       for(String s1:res){if(employeePredicate.test (s1))
       {
-      System.***out***.println (s1);
+      System.out.println (s1);
       }
       }
 
@@ -228,7 +228,7 @@ It does not require any input , but returns output.
 get()
 
       Supplier<Date date=()-**new** Date ();
-      System.***out***.println (date.get ());
+      System.out.println (date.get ());
 
 //otp generation
 
