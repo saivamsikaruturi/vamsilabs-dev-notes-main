@@ -8,7 +8,7 @@
 
     s1 = “javascript”; a new object javascript will be created and now s1 will point to javascript.
 
-**Prove Strings are Immutable:**
+## Prove Strings are Immutable
 
     String s1="vamsi";    
     System.out.println (s1.hashCode ());  
@@ -35,19 +35,20 @@
 
 
 
-**Why String is Immutable:**
+## Why String is Immutable
 
 1.Saving Heap Space
 
 2.Good for HashMap Key
 
-3.password and user name
+3.password and username
 
 4.good for multiple thread operation , Thread safe.
 
   Even if some thread modifies the value, an entirely new String is created without affecting the original one.
 
 
+## Difference between String ,String Buffer and String Builder
 
 | String | String Buffer | String Builder |
 | --- | --- | --- |
@@ -58,7 +59,7 @@
 | Less performance | Less performance | Best Performance. Recommended while using Multi Threading |
 
 
-**why char[] is preferred more than String while storing passwords?**
+## why char[] is preferred more than String while storing passwords?
 
 * In Java, using char[] is often considered a better practice than using String for storing passwords because String objects are immutable, meaning they cannot be changed once created. This immutability poses a security risk when it comes to storing sensitive information like passwords.
 
@@ -78,7 +79,7 @@
 
 * However, it's worth noting that this approach does not completely eliminate the risks associated with password storage, and it's essential to follow other security best practices such as hashing and salting passwords before storing them.
 
-**Rules For Creating Immutable Class:**
+## Rules For Creating Immutable Class
 
 1.Make the class as final.
 
