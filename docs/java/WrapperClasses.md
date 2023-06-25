@@ -22,13 +22,13 @@
 
     
       
-      int autoBoxing=123;
+         int autoBoxing=123;
 
-      System.out.println(Integer.valueOf(autoBoxing));
+         System.out.println(Integer.valueOf(autoBoxing));
     
-      Integer autoUnBoxing = new Integer (23);
+         Integer autoUnBoxing = new Integer (23);
     
-      System.out.println(autoUnBoxing.intValue ());
+         System.out.println(autoUnBoxing.intValue ());
     
       String num = "123";
     
