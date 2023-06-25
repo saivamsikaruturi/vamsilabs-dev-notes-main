@@ -230,29 +230,7 @@ ParenT p = new Child();
 
 Child c = (Child)p;
 
-## Wrapper Classes
 
-**AutoBoxing and Auto UnBoxing:**
-
-    int autoBoxing=123;
-
-    System.out.println(Integer.valueOf(autoBoxing));
-    
-    Integer autoUnBoxing = new Integer (23);
-    
-    System.out.println(autoUnBoxing.intValue ());
-    
-    String num = "123";
-    
-    int i = Integer.parseInt(num);
-
-    System.out.println(i);
-
-    Integer num1=123;
-
-    String s1 = num1.toString ();
-    
-    System.out.println (s1);
 
 ## Access Modifiers
 
