@@ -22,7 +22,7 @@
 * Constructor is used to initialize an object
 * ClassName objname =new Constructor();
 
-      Student s =new Student ("Vamsi" ,1);
+      Student s = new Student ("Vamsi" ,1);
 
 ![c1.png](c1.png)
 
