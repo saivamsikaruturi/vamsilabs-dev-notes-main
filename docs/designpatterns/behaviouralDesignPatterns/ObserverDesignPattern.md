@@ -17,4 +17,5 @@ Example:
 For example, a news agency can notify channels when it receives news.
 Receiving news is what changes the state of the news agency, and it causes the channels to be notified.
 
-https://github.com/vamsi1998123/Java-Practice/tree/main/src/main/java/com/vamsi/javaPractice/DesignPatterns/Observer
+
+[observer example](https://github.com/vamsi1998123/Java-Practice/tree/main/src/main/java/com/vamsi/javaPractice/DesignPatterns/Observer)
