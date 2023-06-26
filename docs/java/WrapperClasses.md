@@ -30,14 +30,14 @@
     
          System.out.println(autoUnBoxing.intValue ());
     
-      String num = "123";
+         String num = "123";
     
-      int i = Integer.parseInt(num);
+         int i = Integer.parseInt(num);
 
-      System.out.println(i);
+         System.out.println(i);
 
-      Integer num1=123;
+         Integer num1=123;
 
-      String s1 = num1.toString ();
+         String s1 = num1.toString ();
     
-      System.out.println (s1);
+         System.out.println (s1);

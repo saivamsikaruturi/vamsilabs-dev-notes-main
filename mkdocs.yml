@@ -23,6 +23,10 @@ nav:
       - Maven: java/maven.md
       - Gradle: java/gradle.md
       - Java Basics: java/JavaBasics.md
+      - Variables: java/Variables.md
+      - Constructors: java/Constructors.md
+      - This and Super: java/thisandSuper.md
+      - Access Modifiers: java/AccessModifiers.md
       - Strings: java/Strings.md
       - Wrapper Classes: java/WrapperClasses.md
       - Cloning: java/Cloning.md

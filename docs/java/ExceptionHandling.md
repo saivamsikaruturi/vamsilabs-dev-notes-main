@@ -23,6 +23,14 @@ Example: Out of memory error
 - Compiler does not produce any error whether you handle or not during compile time.
 - Ex: Null Pointer Exception, Index Out of Bound Exception , Arithmetic Exception
 
+| Checked Exceptions                                                                                          | Unchecked Exceptions                                                                                                                          |
+|-------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| They are known at compile time.                                                                             | They are known at run time.                                                                                                                   |
+| They are checked at compile time.                                                                           | They are not checked at compile time. Because they occur only at run time.                                                                    |
+| These are compile time exceptions.                                                                          | These are run time exceptions.                                                                                                                |
+| If these exceptions are not handled properly in the application, they give compile time error.              | If these exceptions are not handled properly, they don’t give compile time error. But application will be terminated prematurely at run time. |
+| All sub classes of java.lang.Exception Class except sub classes of RunTimeException are checked exceptions. | All sub classes of RunTimeException and sub classes of java.lang.Error are unchecked exceptions.                                              |
+
 ## Difference Between ClassNotFoundException and NoClassDefFoundError
 
 | Class Not Found Exception | NoClassDefFound Error |
