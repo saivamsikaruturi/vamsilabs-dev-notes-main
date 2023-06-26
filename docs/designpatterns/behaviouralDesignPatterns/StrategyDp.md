@@ -1,0 +1,1 @@
+[startegy example](https://github.com/vamsi1998123/Java-Practice/tree/main/src/main/java/DesignPatterns/StartegyPattern)
