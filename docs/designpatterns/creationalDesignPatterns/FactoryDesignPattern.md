@@ -8,3 +8,5 @@ Also called  - *Virtual Constructor*
 It promotes the loose-coupling by eliminating the need to bind application-specific classes into the code.
 
 ![factory.png](factory.png)
+
+[FactoryDp Example](https://github.com/vamsi1998123/Java-Practice/tree/main/src/main/java/DesignPatterns/Factory)
