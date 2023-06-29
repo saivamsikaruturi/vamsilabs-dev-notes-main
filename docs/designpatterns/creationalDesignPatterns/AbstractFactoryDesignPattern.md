@@ -15,6 +15,7 @@ Simply we can say abstraction over Multiple Factories
 
 Applicability
 -------------
+
 Use the Abstract Factory pattern when
 1. a system should be independent of how its products are created, composed, and represented.
 2. a system should be configured with one of multiple families of products.
