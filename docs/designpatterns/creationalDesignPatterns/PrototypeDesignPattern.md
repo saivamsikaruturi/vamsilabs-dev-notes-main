@@ -13,3 +13,5 @@ objects by copying this prototype.*
 4. This approach saves costly resources and time, especially when object creation is a heavy process.
 
 _Example:_ create an object from existing objects is the `clone()` method.
+
+[Prototype Example](https://github.com/vamsi1998123/Java-Practice/tree/main/src/main/java/DesignPatterns/Prototype)
