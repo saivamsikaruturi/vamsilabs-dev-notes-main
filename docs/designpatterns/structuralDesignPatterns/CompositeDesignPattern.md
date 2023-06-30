@@ -15,24 +15,30 @@ Let's see the 4 elements of composite pattern.
    Declares interface for objects in composition.
    Implements default behavior for the interface common to all classes as appropriate.
    Declares an interface for accessing and managing its child components.
+
 2) **Leaf**
    Represents leaf objects in composition. A leaf has no children.
    Defines behavior for primitive objects in the composition.
+
 3) **Composite**
    Defines behavior for components having children.
    Stores child component.
    Implements child related operations in the component interface.
+
 4) **Client**
    Manipulates objects in the composition through the component interface.
 
 Example Here:
 ------------
 1.
-- Interface : Employee
-- Developer : Leaf
-- Manager | ProductOwner | CEO : Composite [ contains many nodes ]
-- Driver: Client
+   - Interface : Employee
+   - Developer : Leaf
+   - Manager | ProductOwner | CEO : Composite [ contains many nodes ]
+   - Driver: Client
+
 2.
-- Interface : Employee
-- Employer : Leaf and Composite
-- Driver: Client
+   - Interface : Employee
+   - Employer : Leaf and Composite
+   - Driver: Client
+
+[CompositeDesignPattern](https://github.com/vamsi1998123/Java-Practice/tree/main/src/main/java/DesignPatterns/Structural/Composite)
