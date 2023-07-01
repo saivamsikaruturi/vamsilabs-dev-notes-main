@@ -1,3 +1,6 @@
+## Code Implemenation
+[Decorator](https://github.com/vamsi1998123/Design-Patterns/tree/master/src/main/java/com/example/designpatterns/structural/decorator)
+
 Intent
 -----
 *Attach additional responsibilities to an object dynamically. Decorators provide a

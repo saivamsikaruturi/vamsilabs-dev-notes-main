@@ -1,4 +1,7 @@
-**Intent**
+## Code Implementation
+[PrototypeDp](https://github.com/vamsi1998123/Design-Patterns/tree/master/src/main/java/com/example/designpatterns/creational/prototype)
+
+## Intent
 ----------
 *Specify the kinds of objects to create using a prototypical instance, and create new
 objects by copying this prototype.*
@@ -14,4 +17,3 @@ objects by copying this prototype.*
 
 _Example:_ create an object from existing objects is the `clone()` method.
 
-[Prototype Example](https://github.com/vamsi1998123/Java-Practice/tree/main/src/main/java/DesignPatterns/Prototype)

@@ -1,3 +1,6 @@
+## Code Implementation
+[CompositeDp](https://github.com/vamsi1998123/Design-Patterns/tree/master/src/main/java/com/example/designpatterns/structural/composite)
+
 Intent
 ------
 *Composite is a structural design pattern that lets you compose objects into tree structures and
@@ -41,4 +44,3 @@ Example Here:
    - Employer : Leaf and Composite
    - Driver: Client
 
-[CompositeDesignPattern](https://github.com/vamsi1998123/Java-Practice/tree/main/src/main/java/DesignPatterns/Structural/Composite)

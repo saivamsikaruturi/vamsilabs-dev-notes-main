@@ -1,6 +1,6 @@
 
 ## Code Implementation
-[FactoryDp Implementation](https://github.com/vamsi1998123/Design-Patterns/tree/master/src/main/java/com/example/designpatterns/creational/factory)
+[FactoryDp](https://github.com/vamsi1998123/Design-Patterns/tree/master/src/main/java/com/example/designpatterns/creational/factory)
 
 **Intent**
 ----------
