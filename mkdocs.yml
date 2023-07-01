@@ -77,6 +77,8 @@ nav:
   - DataBases:
       - Neo4j: databases/neo4j.md
       - SQL: databases/sql.md
+  - Kafka:
+      - Kafka Basics: Kafka/kafka.md
   - DevOps:
       - Tools: devops/devops.md
       - Linux: devops/linux.md
