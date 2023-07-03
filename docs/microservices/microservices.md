@@ -1,11 +1,4 @@
-<div style="display: flex; align-items: center;">
-  **MicroServices**
-</div>
-
-
-![Picture3.png](Picture3.png)
-![Picture2.png](Picture2.png)
-
+![main.PNG](main.PNG)
 ![Untitled.png](Untitled.png)
 
 # What Is Monolithic Application?
