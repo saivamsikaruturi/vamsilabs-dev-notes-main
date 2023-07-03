@@ -28,6 +28,7 @@ Event streaming:
 * It's a distributed system consisting of servers and clients that communicate via high performance TCP network protocol.
 
 **Servers**: 
+
 * Kafka is run as a cluster of one or more servers that can span multiple data centers or cloud regions. Some of these servers from the storage layer called the brokers. 
 * Other servers run Kafka Connect to continuously import and export data as event streams to integrate Kafka with your existing systems such as relational DBS as well as other Kafka clusters
 

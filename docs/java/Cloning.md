@@ -1,6 +1,6 @@
 ## Cloning
 * The process of creating duplicate copy of an object.
-* If you want to quickly create an object using the existing object in such a way that you get a new instance (reference is not shared) with the same cintent for the fields in the new object as in
+* If you want to quickly create an object using the existing object in such a way that you get a new instance (reference is not shared) with the same intent for the fields in the new object as in
   existing object.
 * That's when tou can use clone() method which creates an exact copy of the existing object.Then  you can modify the cloned object without those
   modification reflecting in original.
