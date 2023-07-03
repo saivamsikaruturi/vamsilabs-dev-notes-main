@@ -45,10 +45,7 @@ deployable module which communicate each other through Restful Web Services.
 
 - To maintain the port information of different micro services and to scaling up of the services we require service
 - The service registry is an important part of service discovery
-- The service registry is similar to a phone book where we maintain the phone number of contacts similarly service registry maintains services
-
-information. So essentially this is a database containing the network locations of service instances where it’s running.
-
+- The service registry is similar to a phone book where we maintain the phone number of contacts similarly service registry maintains services information. So essentially this is a database containing the network locations of service instances where it’s running.
 - Service instances need to be highly available and up to
 - Clients can cache network locations obtained from the service registry and this information can become out of date and clients become unable to discover the service instances so a service registry consists of a cluster of servers that use a replication protocol to maintain consistency
 - AWS, Kubernetes does not have a separate service registry but it’s inbuilt into the
