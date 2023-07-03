@@ -55,3 +55,26 @@ information. So essentially this is a database containing the network locations 
 
 - Self Registration option – a service instance is responsible for registering and deregistering itself with the service Heartbeat requests will be sent out to go out of registry expirations. @EnableEurekaClient is being used by any eureka client is a good example of this
 - Third-party registration option- in this case instead of service register/deregister itself another third party system manages track of all running it’s the kind of registrar who maintains all of this using polling or tracking all the services instances. Registrar project, Netflix Prana.
+
+![eureka.PNG](eureka.PNG)
+
+![seureka.PNG](seureka.PNG)
+
+![apigateway.PNG](apigateway.PNG)
+
+![config.PNG](config.PNG)
+
+![cb.PNG](cb.PNG)
+
+![cb1.PNG](cb1.PNG)
+
+![hs.PNG](hs.PNG)
+
+![cs.PNG](cs.PNG)
+
+![zs.PNG](zs.PNG)
+
+![final.jpg](final.jpg)
+
+
+
