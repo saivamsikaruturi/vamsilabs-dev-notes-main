@@ -1,9 +1,8 @@
 <div style="display: flex; align-items: center;">
   <p>MicroServices</p>
-  <img src="Picture3.png" alt="Picture3.png"/>
-  <img src="Picture2.png" alt="Picture2.png"/>
-</div>
 
+![Picture3.png](Picture3.png)
+</div>
 ![Picture2.png](Picture2.png)
 
 ![Untitled.png](Untitled.png)
