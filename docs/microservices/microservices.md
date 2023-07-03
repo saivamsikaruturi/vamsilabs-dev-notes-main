@@ -41,7 +41,7 @@ deployable module which communicate each other through Restful Web Services.
 
 ![SD.PNG](SD.PNG)
 
-## SERVICE REGISTRY (EUREKA SERVER)
+## Service Registry (Eureka Server)
 
 - To maintain the port information of different micro services and to scaling up of the services we require service
 - The service registry is an important part of service discovery
