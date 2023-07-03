@@ -1,6 +1,7 @@
 <div style="display: flex; align-items: center;">
   <p>MicroServices</p>
-  <img src="https://github.com/vamsi1998123/sivalabs-dev-notes-main/blob/d04841f1603832226a874ebe24f2762bfd14fb26/docs/microservices/Picture3.png" alt="Picture3.png"/>
+  <img src="Picture3.png" alt="Picture3.png"/>
+  <img src="Picture2.png" alt="Picture2.png"/>
 </div>
 
 ![Picture2.png](Picture2.png)
