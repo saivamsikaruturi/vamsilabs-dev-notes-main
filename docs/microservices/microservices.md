@@ -30,7 +30,7 @@ Within this microservice architecture, the entire functionality is split in inde
 
 deployable module which communicate each other through Restful Web Services.
 
-# Components
+## Components
 
 - Service Discovery
 - API GATEWAY
