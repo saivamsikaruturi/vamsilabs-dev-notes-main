@@ -1,10 +1,13 @@
-# What Is Monolithic Application?
+![main.PNG](main.PNG)
+![Untitled.png](Untitled.png)
+
+## What Is Monolithic Application?
 
 - In Monolithic the application is build as a single
 - Such application comprises client-side interface , server-side interface and a
 - Normally a monolithic application have one large code and it lack
 
-# Disadvantages Of Monolithic
+## Disadvantages Of Monolithic
 
 - The code base get larger with time and hence it’s very difficult to
 - It is very difficult to introduce new technology as it affects the whole
