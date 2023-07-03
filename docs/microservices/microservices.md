@@ -1,7 +1,7 @@
 <div style="display: flex; align-items: center;">
-  <p>MicroServices</p>
-<img src="SD.PNG" alt="docs/microservices/SD.PNG">
+  **MicroServices**
 </div>
+
 
 ![Picture3.png](Picture3.png)
 ![Picture2.png](Picture2.png)
