@@ -79,6 +79,8 @@ nav:
       - SQL: databases/sql.md
   - Kafka:
       - Kafka Basics: Kafka/kafka.md
+  - Postgresql:
+      - Replication & Sharding: postgresql/postgresql.md
   - MicroServices:
       - Basic Terminology: microservices/microservices.md
   - DevOps:
