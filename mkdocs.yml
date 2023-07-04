@@ -23,6 +23,7 @@ nav:
       - Maven: java/maven.md
       - Gradle: java/gradle.md
       - Java Basics: java/JavaBasics.md
+      - JVM: java/Jvm.md
       - OOPS: java/oops.md
       - Constructors: java/Constructors.md
       - This and Super: java/thisandSuper.md
