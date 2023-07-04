@@ -102,25 +102,7 @@ Method Area
 
 ## Data Types
 
-* Variables are nothing but reserved memory locations to store values.This means that when you create a variable you reserve some space in memory.
-* There are two data types available in java
-    * Primitive Data Types
-    * Reference/Object Data Types
-
-Boolean --- true , false(default)
-byte
-char
-short
-int
-long
-float
-double
-
-Non-Primitive
-* String
-* Array
-* Class
-
+![datatypes.PNG](datatypes.PNG)
 
 
 
@@ -140,40 +122,6 @@ Non-Primitive
 1. Security : pointers allows user to access memory locations , which may lead hackers to access any file in your application.
 2. Simplicity: The pointers are complex, so in order to make java simple , pointers are not used in java.
 
-
-## OOPS
-
-Abstraction
-
-Encapsulation
-
-Inheritance
-
-Polymorphism
-
-Abstraction: The process of hiding unwanted data and showing only the required functionality is known as Abstraction.
-
-Encapsulation: The process of wrapping of data into a single unit is known as Encapsulation.
-
-Inheritance : Acquiring the properties of Parent class to Child class
-
-Polymorphism: A method can exist in different format within the same class or Super and Sub Classes for doing same action in different ways or doing different action.
-
-Inheritance:
-
-There are 4 types of inheritance
-
-1.Single Inheritance 2. Multiple Inheritance 3. Multi Level 4.Hierarchial Inheritance 5.Hybrid Inheritance
-
-![MergedImages.png](MergedImages.png)
-
-## Association, Composition and Aggregation
-
-Association: The relationship between two or more classes. It tell about has-a relationship.
-
-Composition: Strong relationship
-
-Aggregation: Weak Relationship
 
 
 ## Object Class

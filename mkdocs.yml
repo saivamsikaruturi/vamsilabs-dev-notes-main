@@ -24,6 +24,7 @@ nav:
       - Gradle: java/gradle.md
       - Java Basics: java/JavaBasics.md
       - Variables: java/Variables.md
+      - OOPS: java/oops.md
       - Constructors: java/Constructors.md
       - This and Super: java/thisandSuper.md
       - Access Modifiers: java/AccessModifiers.md
