@@ -23,7 +23,6 @@ nav:
       - Maven: java/maven.md
       - Gradle: java/gradle.md
       - Java Basics: java/JavaBasics.md
-      - Variables: java/Variables.md
       - OOPS: java/oops.md
       - Constructors: java/Constructors.md
       - This and Super: java/thisandSuper.md
@@ -32,6 +31,7 @@ nav:
       - Wrapper Classes: java/WrapperClasses.md
       - Cloning: java/Cloning.md
       - Garbage Collection: java/GarbageCollection.md
+      - Serialization: java/Serialization.md
       - Java 8: java/Java8.md
   - Advanced Java:
       - Exception Handling: java/ExceptionHandling.md
