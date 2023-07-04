@@ -111,7 +111,9 @@ Method Area
  **Types of Variables**
 
 a) Local Variables: within a method. Direct access.
-b) Instance Variables: declared inside the class. Accessing is done through object
+
+b) Instance Variables: declared inside the class. Accessing is done through object.
+
 c) Static Variables: Memory alloted only once . Declared using static keyword. Directly access. 
 
 
