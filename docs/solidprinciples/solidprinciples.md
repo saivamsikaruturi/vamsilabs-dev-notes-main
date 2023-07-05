@@ -1,18 +1,6 @@
 # SOLID PRINCIPLES
 ![images-removebg-preview.jpg](images-removebg-preview.jpg)
 
-**SOLID PRINCIPLES**
-
-S- Single Responsibility Principle
-
-O- Open and Close Principle
-
-L- Leskov's Substitution Principle
-
-I- Interface Segregation Principle
-
-D- Dependency Inversion Principle
-
 **Single Responsibility Principle**
 
 It states that every java class must perform a single Functionality. Implementation of multiple Functionalities in a single class will mashup the code.
