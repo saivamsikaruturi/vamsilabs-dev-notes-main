@@ -1,4 +1,5 @@
 # SOLID PRINCIPLES
+![images-removebg-preview.jpg](images-removebg-preview.jpg)
 
 **SOLID PRINCIPLES**
 
