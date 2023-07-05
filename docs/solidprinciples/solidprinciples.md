@@ -1,4 +1,6 @@
 # SOLID PRINCIPLES
+
+![images.png](images.png)
 ![images-removebg-preview.jpg](images-removebg-preview.jpg)
 
 **Single Responsibility Principle**
