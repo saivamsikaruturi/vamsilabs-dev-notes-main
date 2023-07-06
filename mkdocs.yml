@@ -76,6 +76,7 @@ nav:
       - Introduction: springboot/introduction.md
       - AutoConfiguration: springboot/AutoConfiguration.md
       - Annotations: springboot/Annotations.md
+      - Rest API Best Practices: springboot/restapibestpractices.md
   - DataBases:
       - Neo4j: databases/neo4j.md
       - SQL: databases/sql.md
