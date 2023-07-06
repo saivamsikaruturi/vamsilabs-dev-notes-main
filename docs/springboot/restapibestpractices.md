@@ -33,6 +33,7 @@ Rest - Representational State Transfer
 * Have a great documentation.
 * Versioning  like v1/person , v2/person
 * Error Handling
+
    **RESPONSE STATUS CODE**
     * 200 - SUCCESS
     * 201 - CREATED
