@@ -37,14 +37,15 @@ Rest - Representational State Transfer
 * Error Handling
 
    **RESPONSE STATUS CODE**
+    
     * 200 - SUCCESS
     * 201 - CREATED
     * 400 - BAD REQUEST
     * 401 - UNAUTHORIZED
     * 500 - SERVER ERROR
+  
 * Implement Rate Limiting:
   Protect your API from abuse by implementing rate limiting mechanisms to control the number of requests from a single client.
 * Use Pagination for Large Data Sets:
-
-Implement pagination to retrieve large data sets in smaller chunks.
-Provide parameters like page and pageSize to control the number of results returned.
+  * Implement pagination to retrieve large data sets in smaller chunks.
+  * Provide parameters like page and pageSize to control the number of results returned.
