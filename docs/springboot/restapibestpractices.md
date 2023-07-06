@@ -3,7 +3,7 @@ Rest - Representational State Transfer
 
 * A rest api should be Restful and Stateless.
 
-**What does Stateless mean ?**
+## What does Stateless mean ?
 
 ![stateless.PNG](stateless.PNG)
 
@@ -12,11 +12,13 @@ Rest - Representational State Transfer
 * Therefore, the client is free to interact with any server in a load balanced fashion without being tied to a specific server.
 * In a single server environment, stateless mean that the server can process any request without any knowledge of the previous requests from a certain client.
 
-**Why Stateless ?**
+## Why Stateless ?
 
 * This makes the API more scalable as requests can be processed by any available server without relying on a specific state from the server. also,
 * This makes the API more available, if a web server fails then incoming requests can be routed to another instance while the failed server is restarted with no bad effects on the client application   
 
+
+## Best Practices
 
 * Use Contract First Approach
 * Make Great use of HTTP.
