@@ -138,7 +138,7 @@ Put vs Patch:
 * Specifically ,@PostMapping is a composed annotation that acts as a shortcut for @RequestMapping(method =RequestMethod.POST)
 * The @RequestBody annotation is responsible for retrieving the HTTP request body and automatically converting it to the Java Object
 
-**PutMapping**
+**@PutMapping**
 
 * The PUT HTTP method is used to update the resource and @PutMapping annotation for mapping HTTP PUT request onto specific handler method.
 * Specifically, @PutMapping is a composed annotation that acts as a shortcut for @RequestMapping(method=RequestMethod.PUT)
@@ -152,11 +152,11 @@ Put vs Patch:
 
 * @PathVariable annotation used on a method argument to bind the value of a URI template variable to a method argument.
 
-**RequestParam**
+**@RequestParam**
 
 * We can use @RequestParam to extract query parameters from the request.
 
-Difference between @RequestMapping & @GetMapping
+## Difference between @RequestMapping & @GetMapping
 
 @RequestMapping is a general-purpose annotation used to map methods to various HTTP methods and URL patterns, while @GetMapping is a specialized annotation specifically used for mapping HTTP GET requests to methods.
 
