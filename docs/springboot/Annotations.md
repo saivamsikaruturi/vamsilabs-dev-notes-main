@@ -158,10 +158,10 @@ Put vs Patch:
 
 ## Difference between @RequestMapping & @GetMapping
 
-@RequestMapping is a general-purpose annotation used to map methods to various HTTP methods and URL patterns, while @GetMapping is a specialized annotation specifically used for mapping HTTP GET requests to methods.
+* @RequestMapping is a general-purpose annotation used to map methods to various HTTP methods and URL patterns, while @GetMapping is a specialized annotation specifically used for mapping HTTP GET requests to methods.
 
-@RequestMapping can be used with any HTTP method, whereas @GetMapping is exclusively used for mapping HTTP GET requests.
+* @RequestMapping can be used with any HTTP method, whereas @GetMapping is exclusively used for mapping HTTP GET requests.
 
-@RequestMapping requires explicit specification of the HTTP method(s) using the method attribute, while @GetMapping implicitly maps to the HTTP GET method.
+* @RequestMapping requires explicit specification of the HTTP method(s) using the method attribute, while @GetMapping implicitly maps to the HTTP GET method.
 
 
