@@ -13,13 +13,13 @@ Our context is going to delegate the behavior to the state implementation. In ot
 
 We see that logic is separated and adding new states is simple – it comes down to adding another State implementation if needed
 
-Example
+**Example**
 
-During Food Delivery Possible States Could be [ACCEPTED_THE_ORDER, FOOD_BEING_PREPARED, FOOD_PICKED_UP_BY_DELIVERY_PARTNER, DELIVERY_IS_IN_TRANSITION, FOOD_DELIVERED]
-During Payment for Movie booking or food [PAYMENT_INITIATED, PAYMENT_PROCESSING, PAYMENT_COMPLETED, PAYMENT_FAILED]
-In Amazon Delivery Track [ITEM_NOT_YET_DISPATCHED, ITEM_IS_IN_HUB1, ITEM_IS_IN_HUB2, ITEM_DELIVERED]
-here if we return bck [ITEM_PICKUP ...]
-The Basic idea all were sequential if we change the state a some point then everything goes in sequential
+* During Food Delivery Possible States Could be [ACCEPTED_THE_ORDER, FOOD_BEING_PREPARED, FOOD_PICKED_UP_BY_DELIVERY_PARTNER, DELIVERY_IS_IN_TRANSITION, FOOD_DELIVERED]
+* During Payment for Movie booking or food [PAYMENT_INITIATED, PAYMENT_PROCESSING, PAYMENT_COMPLETED, PAYMENT_FAILED]
+* In Amazon Delivery Track [ITEM_NOT_YET_DISPATCHED, ITEM_IS_IN_HUB1, ITEM_IS_IN_HUB2, ITEM_DELIVERED]
+  here if we return bck [ITEM_PICKUP ...]
+* The Basic idea all were sequential if we change the state a some point then everything goes in sequential
 
-Downsides
-State pattern drawback is the payoff when implementing transition between the states. That makes the state hardcoded, which is a bad practice in general. But, depending on our needs and requirements, that might or might not be an issue
+**Downsides**
+* State pattern drawback is the payoff when implementing transition between the states. That makes the state hardcoded, which is a bad practice in general. But, depending on our needs and requirements, that might or might not be an issue
