@@ -24,4 +24,5 @@ We see that logic is separated and adding new states is simple – it comes down
 * The Basic idea all were sequential if we change the state a some point then everything goes in sequential
 
 **Downsides**
+
 * State pattern drawback is the payoff when implementing transition between the states. That makes the state hardcoded, which is a bad practice in general. But, depending on our needs and requirements, that might or might not be an issue
