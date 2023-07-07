@@ -1,7 +1,9 @@
-ntent
+Intent
 Allow an object to alter its behavior when its internal state changes. The object will appear to change its class
 
 idea = "allow the object for changing its behavior without changing its class"
+
+[StateDp Example](https://github.com/vamsi1998123/Design-Patterns/tree/master/src/main/java/com/example/designpatterns/behavioural/state)
 
 UML Diagram 
 
