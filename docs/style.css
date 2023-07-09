@@ -2,3 +2,7 @@
 div[id$=".md"] {
     color: blue;
 }
+/* styles.css */
+.markdown-content {
+    color: blue;
+}
