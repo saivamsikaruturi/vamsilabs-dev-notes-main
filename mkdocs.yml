@@ -44,6 +44,7 @@ nav:
   - Solid Principles:
       - Solid Principles: solidprinciples/solidprinciples.md
   - Design Patterns:
+      - Introduction: designpatterns/dp.md
       - Creational Design Patterns:
           - Creational Design Patterns: designpatterns/creationalDesignPatterns/CreationalDesignPatterns.md
           - Singleton : designpatterns/creationalDesignPatterns/singletondesignpattern.md
