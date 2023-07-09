@@ -64,7 +64,7 @@ nav:
           - Command: designpatterns/behaviouralDesignPatterns/CommandDp.md
           - Iterator: designpatterns/behaviouralDesignPatterns/Iterator.md
           - Mediator: designpatterns/behaviouralDesignPatterns/MediatorDp.md
-          - Memento: designpatterns/behaviouralDesignPatterns/MementoDP.md
+          - Memento:  designpatterns/behaviouralDesignPatterns/MementoDp.md
           - Observer: designpatterns/behaviouralDesignPatterns/ObserverDesignPattern.md
           - State: designpatterns/behaviouralDesignPatterns/StateDp.md
           - Strategy: designpatterns/behaviouralDesignPatterns/StrategyDp.md
