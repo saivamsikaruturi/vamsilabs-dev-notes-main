@@ -21,7 +21,7 @@ Event streaming:
 2. To store stream of events durably and reliably for as long as you want.
 3. To process stream of events as they occur or retrospectively.
 
-* All these functionalities provided in a distributed, highly scalable, elastic, fault tolerant and secure manner.
+* All these functionalities provided in a distributed, highly scalable, elastic, fault-tolerant and secure manner.
 
 **How does Kafka work??**
 

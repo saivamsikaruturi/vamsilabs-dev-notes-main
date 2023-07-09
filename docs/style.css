@@ -1,4 +1,4 @@
 /* styles.css */
-.md{
+div[id$=".md"] {
     color: blue;
 }
