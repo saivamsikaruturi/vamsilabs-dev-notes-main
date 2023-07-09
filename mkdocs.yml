@@ -60,18 +60,17 @@ nav:
           - Adapter : designpatterns/structuralDesignPatterns/AdapterDesignPattern.md
           - Bridge :  designpatterns/structuralDesignPatterns/BridgeDesignPattern.md
       - Behavioural Design Patterns:
-          - Chain Of Responsibility: designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern.md
+          - Observer: designpatterns/behaviouralDesignPatterns/ObserverDesignPattern.md
+          - Strategy: designpatterns/behaviouralDesignPatterns/StrategyDp.md
           - Command: designpatterns/behaviouralDesignPatterns/CommandDp.md
           - Iterator: designpatterns/behaviouralDesignPatterns/Iterator.md
+          - State: designpatterns/behaviouralDesignPatterns/StateDp.md
+          - Template: designpatterns/behaviouralDesignPatterns/TemplateDp.md
+          - Chain Of Responsibility: designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern.md
           - Mediator: designpatterns/behaviouralDesignPatterns/MediatorDp.md
           - Memento:  designpatterns/behaviouralDesignPatterns/MementoDp.md
-          - Observer: designpatterns/behaviouralDesignPatterns/ObserverDesignPattern.md
-          - State: designpatterns/behaviouralDesignPatterns/StateDp.md
-          - Strategy: designpatterns/behaviouralDesignPatterns/StrategyDp.md
-          - Template: designpatterns/behaviouralDesignPatterns/TemplateDp.md
           - Visitor: designpatterns/behaviouralDesignPatterns/VisitorDp.md
           - Interpreter: designpatterns/behaviouralDesignPatterns/Interpreter.md
-          - Null Object: designpatterns/behaviouralDesignPatterns/NullObject.md
   - SpringBoot:
       - Introduction: springboot/introduction.md
       - AutoConfiguration: springboot/AutoConfiguration.md
