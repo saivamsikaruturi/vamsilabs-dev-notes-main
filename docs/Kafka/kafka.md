@@ -1,5 +1,3 @@
-<div style="color: blue;">
-
 Event streaming:
 
 * Capturing data in real time from event- sources like databases, sensors, mobile devices, cloud services and software applications in the form of stream of events.
@@ -60,8 +58,6 @@ Producers and consumers are fully decoupled and agnostic to each other.
 
 ![topic.PNG](topic.PNG)
 
- <img src="topic.PNG" alt="Topic" />
-
 * Events are organized and durably stored in topics .
 
      or
@@ -77,5 +73,3 @@ Producers and consumers are fully decoupled and agnostic to each other.
 * Events within same even key (example:2 customer or vehicle id) are written to same partition and Kafka guarantees that any consumer of a given topic partition will always read partition event in same order they are written.
 
 * To make data fault tolerant and highly available every topic can be replicated even across geo regions or data centers.
-
-</div>
