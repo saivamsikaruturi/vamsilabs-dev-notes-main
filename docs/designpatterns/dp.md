@@ -1,2 +1,2 @@
 **DESIGN PATTERNS**
-![dp.PNG](dp.PNG)
+![dps.PNG](dps.PNG)
