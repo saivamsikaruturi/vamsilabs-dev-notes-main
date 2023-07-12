@@ -1,2 +1,1 @@
-**DESIGN PATTERNS**
 ![dps.PNG](dps.PNG)
