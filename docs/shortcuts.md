@@ -46,7 +46,6 @@ http://sushihangover.github.io/iterm2-osx-jump-word-wise-left-and-right-in-navig
 ## Working with open source
 
 ```shell
-git clone https://github.com/sivaprasadreddy/spring-boot.git
 cd spring-boot
 git remote add upstream https://github.com/spring-projects/spring-boot.git
 git remote -v

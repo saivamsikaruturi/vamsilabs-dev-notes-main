@@ -57,10 +57,10 @@ Hello World!!!
 We can initialize the hello-go application as a module using `go mod init` command as follows:
 
 ```bash
-hello-go> go mod init github.com/sivaprasadreddy/hello-go
-go: creating new go.mod: module github.com/sivaprasadreddy/hello-go
+hello-go> go mod init github.com/vamsikaruturi/hello-go
+go: creating new go.mod: module github.com/vamsikaruturi/hello-go
 hello-go> cat go.mod
-module github.com/sivaprasadreddy/hello-go
+module github.com/vamsikaruturi/hello-go
 
 go 1.14
 hello-go>
@@ -71,7 +71,7 @@ We can install 3rd-party dependencies using `go get` command as follows:
 ```bash
 hello-go> go get -u github.com/mitchellh/go-homedir
 hello-go> cat go.mod
-module github.com/sivaprasadreddy/hello-go
+module github.com/vamsikaruturi/hello-go
 
 go 1.14
 

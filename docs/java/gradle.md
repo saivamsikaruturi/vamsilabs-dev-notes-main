@@ -22,7 +22,7 @@ task runMyScript(type:Exec) {
 //To run a single command
 task buildDockerImage(type:Exec) {
     executable "sh"
-    args "-c", "docker build -t sivaprasadreddy/spring-boot-todolist ."
+    args "-c", "docker build -t vamsikaruturi/spring-boot-todolist ."
 }
 
 //To run multiple commands

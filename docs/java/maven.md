@@ -437,7 +437,7 @@
       <sonar.jdbc.password>sonar</sonar.jdbc.password>
       <sonar.host.url>http://localhost:9000</sonar.host.url>
       <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-      <sonar.organization>sivaprasadreddy-github</sonar.organization>
+      <sonar.organization>vamsikaruturi-github</sonar.organization>
     </properties>
     
     <plugin>
@@ -475,7 +475,7 @@
                 <run>
                     <env>
                         <POSTGRES_DB>mydb</POSTGRES_DB>
-                        <POSTGRES_USER>siva</POSTGRES_USER>
+                        <POSTGRES_USER>vamsi</POSTGRES_USER>
                         <POSTGRES_PASSWORD>secret</POSTGRES_PASSWORD>
                     </env>
                     <ports>

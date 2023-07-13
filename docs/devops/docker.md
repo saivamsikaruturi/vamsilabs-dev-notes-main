@@ -39,7 +39,7 @@ Commit changes in a docker container: `docker commit ContainerID username/reposi
 
 ## Create Docker Image
 
-Build an image using Dockerfile: `docker build -t sivaprasadreddy/myapp:1.0 .`
+Build an image using Dockerfile: `docker build -t vamsikaruturi/myapp:1.0 .`
 
 Build an image using different Dockerfile name: 
 
@@ -53,7 +53,7 @@ View layers of a container: `docker history ContainerId`
 # A basic apache server. To use either add or bind mount content under /var/www
 FROM ubuntu:12.04
 
-LABEL maintainer="siva@mail.com"
+LABEL maintainer="krishnavamsikaruturi@gmail.com"
 
 RUN apt-get update && apt-get install -y apache2 && \ 
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -129,7 +129,7 @@ CMD ["/usr/sbin/apache2", "-D", "FOREGROUND"]
 //Dockerfile to demonstrate the behavior of CMD
 ```
 FROM busybox:latest
-MAINTAINER Siva <sivaprasadreddy.k@gmail.com>
+MAINTAINER Vamsi <krishnavamsikaruturi@gmail.com>
 CMD ["echo", "Dockerfile CMD demo"]
 ```
 
@@ -183,15 +183,15 @@ Only the last HEALTHCHECK instruction will take effect.
 
 `$ docker login`
 
-Username: sivaprasadreddy
+Username: vamsi
 
 Password: my_password
 
-* `docker push sivaprasadreddy/myapp`
+* `docker push vamsikaruturi/myapp`
 
 Delete Image
 
-* `docker rmi sivaprasadreddy/myapp`
+* `docker rmi vamsikaruturi/myapp`
 
 ## Docker cleanup
 
