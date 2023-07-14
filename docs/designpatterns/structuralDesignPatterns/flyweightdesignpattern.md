@@ -3,6 +3,7 @@ Intent
 *is a behavioral design pattern that lets you fit more objects into the available amount of RAM
 by sharing common parts of state between multiple objects instead of keeping all the data in each object*
 
+[FlyWeightExample](https://github.com/vamsi1998123/Design-Patterns/tree/master/src/main/java/com/example/designpatterns/structural/flyweight)
 
 A flyweight is a shared object that can be used in multiple contexts simultaneously.
 The flyweight acts as an independent object in each context—it's indistinguishable from an instance of the object that's not shared.
@@ -21,11 +22,7 @@ The key concept here is the distinction between intrinsic and extrinsic state.
 4. By separating the object's state into intrinsic and extrinsic state, the Flyweight Design Pattern allows for a reduction in memory usage and improved performance, as the intrinsic state is shared among multiple objects, while the extrinsic state is stored only once for each individual object.
 
 
-
-
-
-
-![img.png](flyweight.png)
+![flyweight.png](flyweight.png)
 
 Implementation:
 --------------
