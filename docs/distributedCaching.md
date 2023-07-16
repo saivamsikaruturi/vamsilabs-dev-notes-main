@@ -21,6 +21,7 @@
 Caching Strategy
 
 1. Caching Aside
+
 * Application first check the cache.
 * If data found in Cache, it's called Cache Hit and data is returned to the client.
 * If data is not found in Cache, its called Cache Miss.Application fetch the data from DB , store it back to Cache and data is return back to the client.
