@@ -97,6 +97,17 @@ Use of Daemon Thread:
 
     }
 
+## Volatile Keyword
+  
+   volatile int a = 10;
+   t1 t2 t3 
+   10 40 40
+   20 50 
+   30 60
+   40
+* Using volatile force a thread to read and write variables directly from RAM.
+* When many threads are using the same volatile variable all of them see the last version that is present in RAM and not a possible old copy in cache.
+
 ## Thread Scheduler
 
 1.It is a part of JVM
@@ -214,7 +225,8 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 
 5.sleep method immediately goes to runnable state after waking up while in case of wait() , waiting thread first fights back for the lock and then goes to Runnable state.
 
-What is CompletableFuture?
+
+## What is CompletableFuture?
 
 
 A CompeltableFuture is used for asynchronous programming. Asynchronous programming means writing non-blocking code. It runs a task on a separate thread than the main application thread and notifies the main thread about its progress, completion or failure.
