@@ -98,7 +98,7 @@ Use of Daemon Thread:
     }
 
 
-#Working of Thread Pool
+## Working of Thread Pool
 
 * Creation of a thread is an expensive operation. You want a fixed number of threads say 10 threads , you want to create them upfront let's call it a pool , a pool of threads that's why the name **Thread pool** and let's submit 1000 tasks to them.
 * What is the ideal pool size?
