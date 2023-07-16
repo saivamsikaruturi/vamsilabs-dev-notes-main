@@ -5,21 +5,21 @@
 
 1. Process Based Multitasking : Exceuting more than one task at a time where each independent of other.
 
-2.Thread Based Multitasking
+2. Thread Based Multitasking
 
-Executing the several tasks where each task is part of the same program.
+* Executing the several tasks where each task is part of the same program.
 
 **What is Thread?**
 
-Thread is a light-weight process. A separate flow of exceution. or Smallest unit of CPU execution.
+* Thread is a light-weight process. A separate flow of exceution. or Smallest unit of CPU execution.
 
-Thread is light-weight because thread shared the same memory address space, and It takes less memory and less time to execute the program.
+* Thread is light-weight because thread shared the same memory address space, and It takes less memory and less time to execute the program.
 
 **What is Daemon Thread?**
 
-The thread which is executing in the background is called Daemon Thread.
+* The thread which is executing in the background is called Daemon Thread.
 
-Ex: Garbage Collector , Attach Listener.
+* Ex: Garbage Collector , Attach Listener.
 
 Use of Daemon Thread:
 
@@ -296,7 +296,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 ## What is CompletableFuture?
 
 
-A CompeltableFuture is used for asynchronous programming. Asynchronous programming means writing non-blocking code. It runs a task on a separate thread than the main application thread and notifies the main thread about its progress, completion or failure.
+A Compeltable Future is used for asynchronous programming. Asynchronous programming means writing non-blocking code. It runs a task on a separate thread than the main application thread and notifies the main thread about its progress, completion or failure.
 
 In this way, the main thread does not block or wait for the completion of the task. Other tasks execute in parallel. Parallelism improves the performance of the program.
 
