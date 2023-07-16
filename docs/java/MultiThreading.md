@@ -161,12 +161,17 @@ Use of Daemon Thread:
 
 ## Volatile Keyword
   
-   volatile int a = 10;
-   t1 t2 t3 
-   10 40 40
-   20 50 
-   30 60
-   40
+    volatile int a = 10;
+
+    t1 t2 t3 
+  
+    10 40 40
+ 
+    20 50 
+ 
+    30 60
+  
+    40
 * Using volatile force a thread to read and write variables directly from RAM.
 * When many threads are using the same volatile variable all of them see the last version that is present in RAM and not a possible old copy in cache.
 
