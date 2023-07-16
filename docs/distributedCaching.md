@@ -20,7 +20,7 @@
 
 Caching Strategy
 
-1. Caching Aside
+**1. Caching Aside**
 
 * Application first check the cache.
 * If data found in Cache, it's called Cache Hit and data is returned to the client.
@@ -28,20 +28,20 @@ Caching Strategy
 
 ![cs1.PNG](cs1.PNG)
 
-2. Read through Cache
+**2. Read through Cache**
 
 ![cs2.PNG](cs2.PNG)
 
-3. Write Around Cache.
+**3. Write Around Cache**
 
 ![cs3.PNG](cs3.PNG)
 
-4. Write through Cache
+**4. Write through Cache**
 
 ![cs-4.PNG](cs-4.PNG)
 
 
-5. Write Back (or Behind) Cache.
+**5. Write Back (or Behind) Cache**
 
 ![cs-5.PNG](cs-5.PNG)
 
