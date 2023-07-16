@@ -110,25 +110,25 @@ Use of Daemon Thread:
 
 
 
-     public class ExecutorServices {
-     public static void main(String[] args) {
-       ExecutorService executorService = Executors.newFixedThreadPool(cores);
-        for(int i =0;i<=1000;i++) {
+         public class ExecutorServices {
+         public static void main(String[] args) {
+         ExecutorService executorService = Executors.newFixedThreadPool(cores);
+         for(int i =0;i<=1000;i++) {
             executorService.execute(new Print1000Numbers());
-        }
+         }
 
-        executorService.shutdown();
-        System.out.println(Duration.between(Instant.now(),now));
-    }
-    }
+         executorService.shutdown();
+         System.out.println(Duration.between(Instant.now(),now));
+         }
+         }
 
-    public class Print1000Numbers implements Runnable{
-    @Override
-    public void run() {
+         public class Print1000Numbers implements Runnable{
+         @Override
+         public void run() {
            System.out.println("print");
 
-    }
-    }
+        }
+        }
 
 ## Types of Thread Pools
 1. FixedThreadPool
