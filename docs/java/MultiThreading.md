@@ -130,27 +130,31 @@ Use of Daemon Thread:
     }
     }
 
-## Types of Pools:
+## Types of Thread Pools
 1. FixedThreadPool
 2. CachedThreadPool
 3. ScheduledThreadPool
 4. SingleThreadedExecutor
 
 **FixedThreadPool**
+
 * Suppose there are 100 tasks, and you have created a thread pool with 10 threads , The threads picks the tasks from the blocking queue and the remaining tasks will be in the waiting state in the queue , the threads picks the waiting tasks from the queue once it completes the task.
 
 **CachedThreadPool**
+
 * Here, there is no fixed no.of threads and also queue to hold the tasks instead it is replaced by synchronous queue 
   which only space for a single item.
 * It will hold the task in the sync queue , if any thread is free , it will assign the task to the thread, else it will create a new Thread and assigns the task to it.
 * If thread is idle for 60 seconds, then it will kill the thread.
 
 **ScheduledThreadPool**
-scheduledExecutorService.scheduleWithFixedDelay(new Print1000Numbers(),10,100, TimeUnit.MILLISECONDS);
-scheduledExecutorService.scheduleAtFixedRate();
-scheduledExecutorService.schedule();
+
+* scheduledExecutorService.scheduleWithFixedDelay(new Print1000Numbers(),10,100, TimeUnit.MILLISECONDS);
+* scheduledExecutorService.scheduleAtFixedRate();
+* scheduledExecutorService.schedule();
 
 **SingleThreadedExecutor**
+
 * Here the size of the thread pool is only one which fetches all the tasks from the blocking queue and running it. For example if the tasks throws an exception
   and the thread is killed like any other thread pool executor, it will recreate a new thread.
 * This type of thread pool is used when you want to ensure that task1 is always run before task2.
