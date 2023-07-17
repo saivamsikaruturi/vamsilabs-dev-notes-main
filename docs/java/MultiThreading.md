@@ -412,11 +412,11 @@ Two Threads can communicate with each other by using wait(), notify() and notify
         System.out.println("sending training remainder to :"+email);
        }
 
-       public static void main(String[] args) throws ExecutionException, InterruptedException {
-       EmployeeRemainderService employeeRemainderService = new EmployeeRemainderService();
-       employeeRemainderService.sendRemainder().get();
-       }
-       }
+        public static void main(String[] args) throws ExecutionException, InterruptedException {
+        EmployeeRemainderService employeeRemainderService = new EmployeeRemainderService();
+        employeeRemainderService.sendRemainder().get();
+        }
+        }
 
 **thenRun():**
 
