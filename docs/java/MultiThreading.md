@@ -354,17 +354,23 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 * CompletableFuture.supplyAync(Supplier<T>,Executor)
 
 
-         ExecutorService executorService = Executors.newFixedThreadPool(10);
-         CompletableFuture<List<Employee>> listCompletableFuture = CompletableFuture.supplyAsync(() -> {
+             ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+            CompletableFuture<List<Employee>> listCompletableFuture = 
+            CompletableFuture.supplyAsync(() -> {
+
             List<Employee> all = employeeRepository.findAll();
+
             return DepartmentRepository.getDetails(all.get(0).getEmpId(), all.get(0).getName());
 
-        ,executorService});
-        try {
+           ,executorService});
+        
+           try {
             listCompletableFuture.get();
-        } catch (InterruptedException e) {
+          } 
+          catch (InterruptedException e) {
             throw new RuntimeException(e);
-        } 
+         } 
 
 ## Seamphore
 
