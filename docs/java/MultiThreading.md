@@ -29,13 +29,13 @@ Use of Daemon Thread:
 
         public class MyThread extends Thread{
  
-       public void run(){
+        public void run(){
 
-       for(int i=0;i<10;i++){
+        for(int i=0;i<10;i++){
 
-       System.out.println ("hello");
+        System.out.println ("hello");
 
-       }
+        }
 
         }
 
@@ -295,6 +295,19 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 
 
 ## Future
+
+    Future<Integer> submit1 = executorService.submit(randomNumberGenerator);
+    Integer integer1 = submit1.get();
+
+    public class RandomNumberGenerator implements Callable {
+    @Override
+    public Integer call() throws Exception {
+        Thread.sleep(3000);
+        Random random = new Random();
+        return random.nextInt();
+    }
+}
+
 
 
 ## What is CompletableFuture?
