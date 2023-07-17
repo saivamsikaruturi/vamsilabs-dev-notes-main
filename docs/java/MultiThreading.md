@@ -380,6 +380,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 * This method takes a Consumer functional interface as an argument and specifies an action to be performed with the result of the CompletableFuture when it completes. It returns a new CompletableFuture that completes when the action is finished. The Consumer accepts the result of the CompletableFuture but doesn't produce any output.
 
 
+
       public class EmployeeRemainderService {
       public CompletableFuture<Void> sendRemainder(){
 
@@ -421,6 +422,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 
 * This method takes a Runnable functional interface as an argument and specifies an action to be performed after the completion of the CompletableFuture, regardless of its result. It returns a new CompletableFuture that completes when the action is finished.
 
+     
       ExecutorService service = Executors.newFixedThreadPool(10);   
       CompletableFuture<Void> voidCompletableFuture1 =
       
