@@ -392,7 +392,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
         }).thenApply((employees) -> {
         System.out.println("filtering data" + Thread.currentThread().getName());
         return employees.stream().filter(employee -> "TRUE".equals(employee.getNewJoiner()))
-       .collect(Collectors.toList());
+        .collect(Collectors.toList());
         }).thenApply((newjoiners) -> {
         System.out.println("filtering learning pending data" + Thread.currentThread().getName());
         return newjoiners.stream().filter(newemp -> newemp.getLearningPending().equals("TRUE"))
