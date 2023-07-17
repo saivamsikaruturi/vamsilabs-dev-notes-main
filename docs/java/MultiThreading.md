@@ -376,6 +376,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 **thenApply(), thenAccept, thenRun()**
 
 **thenAccept():**
+
 * This method takes a Consumer functional interface as an argument and specifies an action to be performed with the result of the CompletableFuture when it completes. It returns a new CompletableFuture that completes when the action is finished. The Consumer accepts the result of the CompletableFuture but doesn't produce any output.
 
 
@@ -400,7 +401,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
       return emp.stream().map(Employee::getEmail).collect(Collectors.toList());
       })
       .thenAccept((emails) -> {
-      System.out.println("get email:" + Thread.currentThread().getName());
+      System.out.println("get email " + Thread.currentThread().getName());
       emails.forEach(EmployeeRemainderService::sendEmail);
        });
        return voidCompletableFuture;
@@ -417,6 +418,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
        }
 
 **thenRun():**
+
 * This method takes a Runnable functional interface as an argument and specifies an action to be performed after the completion of the CompletableFuture, regardless of its result. It returns a new CompletableFuture that completes when the action is finished.
 
       ExecutorService service = Executors.newFixedThreadPool(10);   
