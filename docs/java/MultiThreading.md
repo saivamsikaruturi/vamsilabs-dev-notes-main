@@ -442,19 +442,6 @@ Two Threads can communicate with each other by using wait(), notify() and notify
       },service);           
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Seamphore
 
 * It is a class in java.util.concurrent package.
