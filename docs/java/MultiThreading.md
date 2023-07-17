@@ -351,7 +351,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 * If we want to run some background task asynchronously and **want to return anything** from that task, then use CompletableFuture.supplyAsync() method.It takes Supplier<T> object and returns CompletableFuture<T>.
 
 * CompletableFuture.supplyAsync(Supplier<T>)
-* CompletableFuture.supplyAync(Supplier<T>,Executor)
+* CompletableFuture.supplyAsync(Supplier<T>,Executor)
 
 
              ExecutorService executorService = Executors.newFixedThreadPool(10);
@@ -371,6 +371,84 @@ Two Threads can communicate with each other by using wait(), notify() and notify
           catch (InterruptedException e) {
             throw new RuntimeException(e);
          } 
+
+
+**thenApply(), thenAccept, thenRun()**
+
+**thenAccept():**
+* This method takes a Consumer functional interface as an argument and specifies an action to be performed with the result of the CompletableFuture when it completes. It returns a new CompletableFuture that completes when the action is finished. The Consumer accepts the result of the CompletableFuture but doesn't produce any output.
+
+
+                public class EmployeeRemainderService {
+                public CompletableFuture<Void> sendRemainder(){
+
+             CompletableFuture<Void> voidCompletableFuture = CompletableFuture.supplyAsync(() -> {
+                    System.out.println("fetch data" + Thread.currentThread().getName());
+                    return EmployeeRep.fetchEmployees();
+                    }).thenApply((employees) -> {
+                    System.out.println("filtering data" + Thread.currentThread().getName());
+                    return employees.stream().filter(employee -> "TRUE".equals(employee.getNewJoiner()))
+                    .collect(Collectors.toList());
+                    }).thenApply((newjoiners) -> {
+                    System.out.println("filtering learning pending data" + Thread.currentThread().getName());
+                    return newjoiners.stream().filter(newemp -> newemp.getLearningPending().equals("TRUE"))
+                    .collect(Collectors.toList());
+                    }).thenApply((emp) -> {
+                    System.out.println("get email ids:" + Thread.currentThread().getName());
+                    return emp.stream().map(Employee::getEmail).collect(Collectors.toList());
+                    })
+                    .thenAccept((emails) -> {
+                    System.out.println("get email:" + Thread.currentThread().getName());
+                    emails.forEach(EmployeeRemainderService::sendEmail);
+                    });
+                    return voidCompletableFuture;
+                    }
+
+    public static  void sendEmail(String email){
+        System.out.println("sending training remainder to :"+email);
+    }
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+     EmployeeRemainderService employeeRemainderService = new EmployeeRemainderService();
+     employeeRemainderService.sendRemainder().get();
+       }
+       }
+
+**thenRun():**
+* This method takes a Runnable functional interface as an argument and specifies an action to be performed after the completion of the CompletableFuture, regardless of its result. It returns a new CompletableFuture that completes when the action is finished.
+          
+                   CompletableFuture<Void> voidCompletableFuture1 = CompletableFuture.supplyAsync(() -> {
+                    System.out.println("fetch data" + Thread.currentThread().getName());
+                    return EmployeeRep.fetchEmployees();
+                },service).thenApplyAsync((employees) -> {
+                    System.out.println("filtering data" + Thread.currentThread().getName());
+                    return employees.stream().filter(employee -> "TRUE".equals(employee.getNewJoiner()))
+                            .collect(Collectors.toList());
+                },service).thenApplyAsync((newjoiners) -> {
+                    System.out.println("filtering learning pending data" + Thread.currentThread().getName());
+                    return newjoiners.stream().filter(newemp -> newemp.getLearningPending().equals("TRUE"))
+                            .collect(Collectors.toList());
+                },service).thenApplyAsync((emp) -> {
+                    System.out.println("get email ids:" + Thread.currentThread().getName());
+                    return emp.stream().map(Employee::getEmail).collect(Collectors.toList());
+                },service)
+                .thenRunAsync(() -> {
+                    System.out.println("got all new joiner emails");
+                },service);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Seamphore
 
