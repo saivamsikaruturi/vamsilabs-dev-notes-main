@@ -333,20 +333,20 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 * CompletableFuture.runAsync(Runnavle)
 * CompletableFuture.runAsync(Runnavle,Executor)
               
-       void runAsyncDemo(){
+         void runAsyncDemo(){
        
-       ExecutorService executorService = Executors.newFixedThreadPool(10);
+         ExecutorService executorService = Executors.newFixedThreadPool(10);
      
-       CompletableFuture.runAsync(new Runnable() {
+         CompletableFuture.runAsync(new Runnable() {
      
-       @Override
-       public void run() {
-       for(int i=0;i<=100;i++){
-       System.out.println(i);
-       }
-       }
-       },executorService);
-       }
+         @Override
+         public void run() {
+         for(int i=0;i<=100;i++){
+         System.out.println(i);
+         }
+         }
+         },executorService);
+         }
 
 * If we want to run some background task asynchronously and **want to return anything** from that task, then use CompletableFuture.supplyAsync() method.It takes Supplier<T> object and returns CompletableFuture<T>.
 
