@@ -1,5 +1,3 @@
-**MultiThreading**
-
 ## Multitasking
 
 
@@ -25,77 +23,77 @@ Use of Daemon Thread:
 
 ## Thread Creation
 
-- - We can create Threads in 2 ways
+- We can create Threads in 3 ways
 
-1.By extending Thread Class
+1. By extending Thread Class
 
-    public class MyThread extends Thread{
+        public class MyThread extends Thread{
+ 
+       public void run(){
 
-    public void run(){
+       for(int i=0;i<10;i++){
 
-    for(int i=0;i<10;i++){
+       System.out.println ("hello");
 
-    System.out.println ("hello");
+       }
 
-    }
+        }
 
-    }
+        }
 
-    }
+        public class Demo {
 
-    public class Demo {
+        public static void main(String[] args) {
 
-    public static void main(String[] args) {
+        MyThread thread=new MyThread ();
 
-    MyThread thread=new MyThread ();
+       thread.start ();
 
-    thread.start ();
+       for(int i=0;i<10;i++)
 
-    for(int i=0;i<10;i++)
+       {
 
-    {
+       System.out.println ("hi");
+        }
+        }
+        }
 
-     System.out.println ("hi");
-    }
-    }
-    }
+2. By using Runnable interface
 
-2.By using Runnable interface
+        class MyRunnable implements Runnable{
 
-    class MyRunnable implements Runnable{
+       @Override
+       public void run() {
 
-    @Override
-    public void run() {
+       for (int i = 0; i < 10; i++) {
 
-    for (int i = 0; i < 10; i++) {
+       System.out.println ("child Thread");
 
-    System.out.println ("child Thread");
+        }
 
-    }
+        }
 
-    }
+        }
 
-    }
+       public class ThreadDemo {
 
-    public class ThreadDemo {
+       public static void main(String[] args) {
 
-    public static void main(String[] args) {
+       MyRunnable runnable=new MyRunnable ();
 
-    MyRunnable runnable=new MyRunnable ();
+       Thread thread=new Thread (runnable);
 
-    Thread thread=new Thread (runnable);
+       thread.start ();
 
-    thread.start ();
+       for(int i=0;i<10;i++){
 
-    for(int i=0;i<10;i++){
+       System.out.println ("parent thread");
 
-    System.out.println ("parent thread");
+       }
 
-    }
+       }
 
-    }
-
-    }
+       }
 
 
 ## Working of Thread Pool or Executor Framework
@@ -130,6 +128,8 @@ Use of Daemon Thread:
         }
         }
 
+
+3. Executor Framework 
 
 ## Types of Thread Pools
 1. FixedThreadPool
@@ -294,6 +294,9 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 5.sleep method immediately goes to runnable state after waking up while in case of wait() , waiting thread first fights back for the lock and then goes to Runnable state.
 
 
+## Future
+
+
 ## What is CompletableFuture?
 
 
@@ -303,7 +306,6 @@ In this way, the main thread does not block or wait for the completion of the ta
 
 A CompletableFuture is a class in Java. It belongs to java.util.cocurrent package. It implements CompletionStage and Future interface.
 
-Why Completable Future?
 
 There are
 
