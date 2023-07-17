@@ -384,23 +384,23 @@ Two Threads can communicate with each other by using wait(), notify() and notify
          public class EmployeeRemainderService {
          public CompletableFuture<Void> sendRemainder(){
 
-      CompletableFuture<Void> voidCompletableFuture = 
+         CompletableFuture<Void> voidCompletableFuture = 
                  
-      CompletableFuture.supplyAsync(() -> {
-      System.out.println("fetch data" + Thread.currentThread().getName());
-      return EmployeeRep.fetchEmployees();
-      }).thenApply((employees) -> {
-      System.out.println("filtering data" + Thread.currentThread().getName());
-      return employees.stream().filter(employee -> "TRUE".equals(employee.getNewJoiner()))
-      .collect(Collectors.toList());
-      }).thenApply((newjoiners) -> {
-      System.out.println("filtering learning pending data" + Thread.currentThread().getName());
-      return newjoiners.stream().filter(newemp -> newemp.getLearningPending().equals("TRUE"))
-      .collect(Collectors.toList());
-      }).thenApply((emp) -> {
-      System.out.println("get email ids " + Thread.currentThread().getName());
-      return emp.stream().map(Employee::getEmail).collect(Collectors.toList());
-      })
+        CompletableFuture.supplyAsync(() -> {
+        System.out.println("fetch data" + Thread.currentThread().getName());
+        return EmployeeRep.fetchEmployees();
+        }).thenApply((employees) -> {
+        System.out.println("filtering data" + Thread.currentThread().getName());
+        return employees.stream().filter(employee -> "TRUE".equals(employee.getNewJoiner()))
+       .collect(Collectors.toList());
+       }).thenApply((newjoiners) -> {
+       System.out.println("filtering learning pending data" + Thread.currentThread().getName());
+       return newjoiners.stream().filter(newemp -> newemp.getLearningPending().equals("TRUE"))
+       .collect(Collectors.toList());
+       }).thenApply((emp) -> {
+       System.out.println("get email ids " + Thread.currentThread().getName());
+       return emp.stream().map(Employee::getEmail).collect(Collectors.toList());
+       })
       .thenAccept((emails) -> {
       System.out.println("get email " + Thread.currentThread().getName());
       emails.forEach(EmployeeRemainderService::sendEmail);
