@@ -401,14 +401,14 @@ Two Threads can communicate with each other by using wait(), notify() and notify
         System.out.println("get email ids " + Thread.currentThread().getName());
         return emp.stream().map(Employee::getEmail).collect(Collectors.toList());
         })
-       .thenAccept((emails) -> {
-       System.out.println("get email " + Thread.currentThread().getName());
-       emails.forEach(EmployeeRemainderService::sendEmail);
-        });
-        return voidCompletableFuture;
-        }
+        .thenAccept((emails) -> {
+        System.out.println("get email " + Thread.currentThread().getName());
+        emails.forEach(EmployeeRemainderService::sendEmail);
+         });
+         return voidCompletableFuture;
+         }
 
-       public static  void sendEmail(String email){
+        public static  void sendEmail(String email){
         System.out.println("sending training remainder to :"+email);
        }
 
