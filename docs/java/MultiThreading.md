@@ -396,7 +396,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
       return newjoiners.stream().filter(newemp -> newemp.getLearningPending().equals("TRUE"))
       .collect(Collectors.toList());
       }).thenApply((emp) -> {
-      System.out.println("get email ids:" + Thread.currentThread().getName());
+      System.out.println("get email ids " + Thread.currentThread().getName());
       return emp.stream().map(Employee::getEmail).collect(Collectors.toList());
       })
       .thenAccept((emails) -> {
@@ -406,11 +406,11 @@ Two Threads can communicate with each other by using wait(), notify() and notify
        return voidCompletableFuture;
        }
 
-    public static  void sendEmail(String email){
+     public static  void sendEmail(String email){
         System.out.println("sending training remainder to :"+email);
-    }
+     }
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+     public static void main(String[] args) throws ExecutionException, InterruptedException {
      EmployeeRemainderService employeeRemainderService = new EmployeeRemainderService();
      employeeRemainderService.sendRemainder().get();
        }
@@ -434,7 +434,7 @@ Two Threads can communicate with each other by using wait(), notify() and notify
       return newjoiners.stream().filter(newemp -> newemp.getLearningPending().equals("TRUE"))
       .collect(Collectors.toList());
       },service).thenApplyAsync((emp) -> {
-      System.out.println("get email ids:" + Thread.currentThread().getName());
+      System.out.println("get email ids " + Thread.currentThread().getName());
       return emp.stream().map(Employee::getEmail).collect(Collectors.toList());
       },service)
       .thenRunAsync(() -> {
