@@ -313,18 +313,58 @@ Two Threads can communicate with each other by using wait(), notify() and notify
 ## What is CompletableFuture?
 
 
-A Compeltable Future is used for asynchronous programming. Asynchronous programming means writing non-blocking code. It runs a task on a separate thread than the main application thread and notifies the main thread about its progress, completion or failure.
+* A Completable Future is used for asynchronous programming. Asynchronous programming means writing non-blocking code. It runs a task on a separate thread than the main application thread and notifies the main thread about its progress, completion or failure.
 
-In this way, the main thread does not block or wait for the completion of the task. Other tasks execute in parallel. Parallelism improves the performance of the program.
+* In this way, the main thread does not block or wait for the completion of the task. Other tasks execute in parallel. Parallelism improves the performance of the program.
 
-A CompletableFuture is a class in Java. It belongs to java.util.cocurrent package. It implements CompletionStage and Future interface.
+* A CompletableFuture is a class in Java. It belongs to java.util.cocurrent package. It implements CompletionStage and Future interface.
+
+* It cannot be manually completed
+* Multiple Futures cannot be chained together
+* We cannit combine multiple Futures together
+* No Proper Exception Handling mechanism.
 
 
-There are
 
-runAsync()
+## runAsync() vs supplyAsync()
 
-supplyAsync()
+* If we want to run some background task asynchronously and **do not want to return anything** from that task, then use CompletableFuture.runAsync() method.It takes Runnable object and returns CompletableFuture<Void>.
+
+* CompletableFuture.runAsync(Runnavle)
+* CompletableFuture.runAsync(Runnavle,Executor)
+              
+       void runAsyncDemo(){
+       
+       ExecutorService executorService = Executors.newFixedThreadPool(10);
+     
+       CompletableFuture.runAsync(new Runnable() {
+     
+       @Override
+       public void run() {
+       for(int i=0;i<=100;i++){
+       System.out.println(i);
+       }
+       }
+       },executorService);
+       }
+
+* If we want to run some background task asynchronously and **want to return anything** from that task, then use CompletableFuture.supplyAsync() method.It takes Supplier<T> object and returns CompletableFuture<T>.
+
+* CompletableFuture.supplyAsync(Supplier<T>)
+* CompletableFuture.supplyAync(Supplier<T>,Executor)
+
+
+         ExecutorService executorService = Executors.newFixedThreadPool(10);
+         CompletableFuture<List<Employee>> listCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            List<Employee> all = employeeRepository.findAll();
+            return DepartmentRepository.getDetails(all.get(0).getEmpId(), all.get(0).getName());
+
+        ,executorService});
+        try {
+            listCompletableFuture.get();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } 
 
 ## Seamphore
 
