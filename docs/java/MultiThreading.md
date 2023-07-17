@@ -25,7 +25,7 @@ Use of Daemon Thread:
 
 - We can create Threads in 3 ways
 
-1. By extending Thread Class
+ **1. By extending Thread Class**
 
         public class MyThread extends Thread{
  
@@ -45,55 +45,55 @@ Use of Daemon Thread:
 
         public static void main(String[] args) {
 
-        MyThread thread=new MyThread ();
+         MyThread thread=new MyThread ();
 
-       thread.start ();
+         thread.start ();
 
-       for(int i=0;i<10;i++)
+         for(int i=0;i<10;i++)
+ 
+         {
 
-       {
+         System.out.println ("hi");
+         }
+         }
+         }
 
-       System.out.println ("hi");
-        }
-        }
-        }
-
-2. By using Runnable interface
+**2. By using Runnable interface**
 
         class MyRunnable implements Runnable{
 
-       @Override
-       public void run() {
+        @Override
+        public void run() {
 
-       for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
 
-       System.out.println ("child Thread");
+        System.out.println ("child Thread");
 
-        }
+         }
 
-        }
+         }
 
-        }
+         }
 
-       public class ThreadDemo {
+         public class ThreadDemo {
 
-       public static void main(String[] args) {
+         public static void main(String[] args) {
 
-       MyRunnable runnable=new MyRunnable ();
+         MyRunnable runnable=new MyRunnable ();
 
-       Thread thread=new Thread (runnable);
+         Thread thread=new Thread (runnable);
 
-       thread.start ();
+         thread.start ();
 
-       for(int i=0;i<10;i++){
+         for(int i=0;i<10;i++){
 
-       System.out.println ("parent thread");
+         System.out.println ("parent thread");
 
-       }
+         }
 
-       }
+         }
 
-       }
+         }
 
 
 ## Working of Thread Pool or Executor Framework
@@ -129,7 +129,7 @@ Use of Daemon Thread:
         }
 
 
-3. Executor Framework 
+**3. Executor Framework** 
 
 ## Types of Thread Pools
 1. FixedThreadPool
