@@ -78,6 +78,8 @@ nav:
       - Annotations: springboot/Annotations.md
       - IOC and Dependency Injection: springboot/SpringIOC.md
       - Rest API Best Practices: springboot/restapibestpractices.md
+  - Junit:
+      - Basics: Junit/junit.md
   - DataBases:
       - Neo4j: databases/neo4j.md
       - SQL: databases/sql.md
