@@ -1,4 +1,4 @@
-**public static void main(String[] args)**
+## public static void main(String[] args)
 
   public - to call by jvm from anywhere
   static - without existing object also JVM has to call this method and main method has no way related to any object.
@@ -7,7 +7,7 @@
   String[] args- command line arguments
 
 
-**System.out.println()**
+## System.out.println()
  
   example: 
              
@@ -62,7 +62,34 @@ int i = 9;: This assigns the decimal value 9 to the variable i. The number 9 is 
 int i = 09;: This is not a valid integer initialization in Java. In Java, if a numeric literal starts with a leading zero (0), it is interpreted as an octal (base 8) number. However, octal numbers can only include digits from 0 to 7. Since 9 is not a valid octal digit, the code int i = 09; will result in a compilation error.
 
 
-**ReHashing**
+
+## Is Java Pass by Value or Pass by reference ??
+
+**Pass by value**
+
+![passby.PNG](passby.PNG)
+
+
+    int a = 10;
+    int b;
+    b = a;
+    System.out.println(a); -- 10;
+    System.out.println(b); -- 10;
+    b = 20;
+    System.out.println(b) -- 20;
+    System.out.println(a) -- 10;
+
+**Pass by Reference**
+   
+![passbyref.PNG](passbyref.PNG)   
+
+* Here we are passing the memory address and the object which we are changing will be reflecting in the initial object.
+* So, by default all the object references when passed into a particular method will look like pass by reference but it's actually memory address.
+* **In Java, it is pass by value.**
+
+
+
+## ReHashing
 
 
 
