@@ -1,10 +1,3 @@
-## Linked Hash Set
-
-- Child class of Hash Set
-- It is used when duplicates are not allowed and insertion order should be preserved.
-- Underlying data structure is Hash table and linked list.
-- For Cache based applications
-
 ## Difference between ArrayList & LinkedList
 | ArrayList                                                                                                                                                 | LinkedList                                                                                                                            |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|

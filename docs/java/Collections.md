@@ -8,6 +8,16 @@
 
 ## Collection Hierarchy 
 ![img_16.png](img_16.png)
+
+
+## Linked Hash Set
+
+- Child class of Hash Set
+- It is used when duplicates are not allowed and insertion order should be preserved.
+- Underlying data structure is Hash table and linked list.
+- For Cache based applications
+
+
 ## What is the contract between hashCode() and equals() method
 
 - Whenever it is invoked on the same object more than once during execution of Java application the hashCode method must consistently return the same hashCode value
