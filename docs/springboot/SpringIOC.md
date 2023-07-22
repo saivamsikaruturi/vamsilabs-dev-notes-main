@@ -12,18 +12,19 @@
   a) init()
   b) destroy()
 
-* The annotations used are @PostConstruct and @PreDestroy 
+* The annotations used are @PostConstruct and @PreDestroy. 
 
   
   
     
 
+       
        import javax.annotation.PostConstruct;
        import javax.annotation.PreDestroy;
  
-      public class MyBean {
+       public class MyBean {
 
-     @PostConstruct
+       @PostConstruct
     public void init() {
         // This method will be called after the bean is constructed and its properties are set.
         System.out.println("Bean initialization method called (init()).");
