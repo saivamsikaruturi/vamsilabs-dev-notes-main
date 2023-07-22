@@ -14,7 +14,6 @@
 
 * and the annotations used are @PostConstruct and @PreDestroy 
 
-yee
     
     
       import javax.annotation.PostConstruct;
