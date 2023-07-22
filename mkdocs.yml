@@ -37,6 +37,7 @@ nav:
   - Advanced Java:
       - Exception Handling: java/ExceptionHandling.md
       - Collections: java/Collections.md
+      - Differences in Collections: java/DiffCollections.md
       - Concurrent Collections: java/ConcurrentCollections.md
       - MultiThreading: java/MultiThreading.md
   - StreamApi:
