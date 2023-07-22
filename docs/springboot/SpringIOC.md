@@ -42,6 +42,7 @@ yee
 
 * In Spring, the scope of a bean defines the lifecycle and visibility of the bean within the application context. 
 * There are 6 types
+
 **a) Singleton Scope**
 
 * This is the default scope in Spring.
