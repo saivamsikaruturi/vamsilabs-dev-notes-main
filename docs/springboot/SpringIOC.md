@@ -23,23 +23,19 @@
          @PostConstruct
          public void init() {
          // This method will be called after the bean is constructed and its properties are set.
-      System.out.println("Bean initialization method called (init()).");
-      }
+         System.out.println("Bean initialization method called (init()).");
+         }
 
-      @PreDestroy
-      public void destroy() {
-      // This method will be called when the bean is being destroyed, typically during application shutdown.
-      System.out.println("Bean destruction method called (destroy()).");
-      }
+         @PreDestroy
+         public void destroy() {
+         // This method will be called when the bean is being destroyed, typically during application shutdown.
+         System.out.println("Bean destruction method called (destroy()).");
+         }
 
-      // Other methods and properties of the bean go here...
-      } 
+         // Other methods and properties of the bean go here...
+         } 
     
-
-       
-      
-
-
+          
 ## Spring Scopes 
 
 * In Spring, the scope of a bean defines the lifecycle and visibility of the bean within the application context. 
