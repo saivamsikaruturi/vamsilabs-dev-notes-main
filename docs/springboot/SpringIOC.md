@@ -12,32 +12,31 @@
   a) init()
   b) destroy()
 
-* The annotations used are @PostConstruct and @PreDestroy. 
+* The annotations used are @PostConstruct and @PreDestroy
 
-  
-  
-    
+      import javax.annotation.PostConstruct;
+      import javax.annotation.PreDestroy;
 
-       
-       import javax.annotation.PostConstruct;
-       import javax.annotation.PreDestroy;
- 
        public class MyBean {
 
        @PostConstruct
-    public void init() {
-        // This method will be called after the bean is constructed and its properties are set.
-        System.out.println("Bean initialization method called (init()).");
-    }
+       public void init() {
+      // This method will be called after the bean is constructed and its properties are set.
+      System.out.println("Bean initialization method called (init()).");
+      }
 
-    @PreDestroy
-    public void destroy() {
-        // This method will be called when the bean is being destroyed, typically during application shutdown.
-        System.out.println("Bean destruction method called (destroy()).");
-    }
+      @PreDestroy
+      public void destroy() {
+      // This method will be called when the bean is being destroyed, typically during application shutdown.
+      System.out.println("Bean destruction method called (destroy()).");
+      }
 
-    // Other methods and properties of the bean go here...
-    }
+      // Other methods and properties of the bean go here...
+      } 
+    
+
+       
+      
 
 
 ## Spring Scopes 
