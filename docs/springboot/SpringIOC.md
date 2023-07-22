@@ -15,8 +15,8 @@
 * The annotations used are @PostConstruct and @PreDestroy
 * Code Explaining these methods:
 
-      import javax.annotation.PostConstruct;
-      import javax.annotation.PreDestroy;
+   
+
 
        public class MyBean {
 
