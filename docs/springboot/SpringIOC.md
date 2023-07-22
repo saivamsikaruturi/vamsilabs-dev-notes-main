@@ -18,11 +18,11 @@
    
 
 
-       public class MyBean {
-
-       @PostConstruct
-       public void init() {
-      // This method will be called after the bean is constructed and its properties are set.
+          public class MyBean {
+ 
+         @PostConstruct
+         public void init() {
+         // This method will be called after the bean is constructed and its properties are set.
       System.out.println("Bean initialization method called (init()).");
       }
 
