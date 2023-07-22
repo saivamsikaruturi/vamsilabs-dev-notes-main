@@ -12,7 +12,7 @@
   a) init()
   b) destroy()
 
-* and the annotations used are @PostConstruct and @PreDestroy 
+* The annotations used are @PostConstruct and @PreDestroy 
 
   
   
