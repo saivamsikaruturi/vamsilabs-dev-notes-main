@@ -5,6 +5,7 @@
 * The data in the caching system is usually stored in faster access hardware like RAM.
 
 **Caching Best Practices**
+
 * Before you cache something you need to understand the **validity** of the data or  when you understand 
   how long I can save this particular data so that's when we get **high hit rate**
 * Othewise it will cause **cache miss**. So, we need to properly set TTL.
