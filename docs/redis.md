@@ -33,6 +33,7 @@ Caching Strategies:
 
 
 ![lru.PNG](lru.PNG)
+
 * We should use a Bi-Directional Linked List 
 * Create a node in the list and then store the key-value pair.
 * And then store the address of the node in the bucket of the hash table.
