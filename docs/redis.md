@@ -68,6 +68,7 @@ Caching Strategies:
 **Availability**
 
 ![availability.PNG](availability.PNG)
+
 * Suppose if the server -1 went down then there will be a cache miss and the requests to the db will be more.
 * we can have replication of these servers. For example the replication factor is 2 that means that we'll have to replicate every data 
   into 2 copies.
