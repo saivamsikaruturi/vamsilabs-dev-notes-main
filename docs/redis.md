@@ -71,9 +71,10 @@ Caching Strategies:
 ![availability.PNG](availability.PNG)
 
 * Suppose if the server -1 went down then there will be a cache miss and the requests to the db will be more.
-* we can have replication of these servers. For example the replication factor is 2 that means that we'll have to replicate every data 
-  into 2 copies.
+* we can have replication of these servers. For example the replication factor is 2 that means that we'll have to replicate 
+  every data into 2 copies.
 * The request now will be shared to the copy of server-1 so that we can get less latency and the performance is lot better.
-* But the problem is we need to keep seeking the updates from which happens between master and slave. There will be some latency and inconsistency of data.
+* But the problem is we need to keep seeking the updates from which happens between master and slave. There will be 
+  some latency and inconsistency of data.
 * Let's make the copy server as Slave server.
 * The reads and writes always happens from master server until the master goes down.
