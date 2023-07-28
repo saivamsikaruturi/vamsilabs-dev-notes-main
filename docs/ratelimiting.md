@@ -80,3 +80,28 @@ Scenario 2:
 
 **e) Sliding Windows Counter**
 
+* This is similar to sliding logs but we need to optimize in case of memory.
+* UI:[11:30:01 2  11:30:02 5  11:30:05 3    ]
+  11:30:01 
+  11:30:01
+* For each and every request also we need to sort and filter out entries from the last minute amd then count the values i.e 2+5+3 = 10
+
+**Distributed**
+* All the Above algorithms only on the single server. But we have distributed setup with multiple servers
+  we will face 2 problems 
+  a) Inconsistency in the rate limit data.
+  b) Race condition (locks) 
+
+![inconsistencyrl.PNG](inconsistencyrl.PNG)
+
+* We can solve this problem by sticky session.
+* We should redirect the user to the same load balancer.
+* This is not a well-balanced design, because if all the requests from one users goes to the same app server and rate limiter, the load on the server will increase.
+
+
+* If more than one rate limiter is available, then one rate limiter is access the value from the redis then it will put lock on that key.
+* so that no other limiters will update the count. But it will add some latency.
+* we can solve this by
+  a) Relaxing rate limit b) Local Memory + sync service.  
+
+![localmemory.PNG](localmemory.PNG)
