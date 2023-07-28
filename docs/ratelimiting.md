@@ -55,6 +55,28 @@ Scenario 2:
 * Whenever the requests are coming into the bucket it will sit into the bucket and from there to the request processor.
 * If more requests are coming in the bucket will fill immediately before even we process it.
 * And the extra requests like 4 , 5 requests will overflow.
-* If the first request is processed , so we have some space in the bucj=ket , so we can accommodate a new request in the bucket.
+* If the first request is processed , so we have some space in the bucket , so we can accommodate a new request in the bucket.
 
 **c) Fixed Window Counter**
+
+* This is the simplest of all .
+* Here, we will have a counter we keep on incrementing the counter for every request and when the counter exceeds the rate limit 
+  we are going to drop all the requests which are coming in.
+* For example, we have defined 10R/M.
+* We can use Redis, for storing the time as key and value as the counter value.
+    U1_11:00  10
+    U1_11:01  0
+* It is memory efficient.
+* But there is one more problem
+* Suppose we got more requests at the end of the minute, then the server is overloaded and also the traffic is not smoothened.
+
+**d) Sliding Logs**
+
+* We can use either hash table or redis.
+* U1 : [0 0 0 0 0 0 0 0] each entry should also contain timestamp.
+* We need access the array and then filter out all the entries older than one minute. 
+* The problem is we need to store as many entries which is almost equal to the rate limit (1OR/min).
+* If we have a million users then 1M*rate limit , that much data in redis/hash table is bad.
+
+**e) Sliding Windows Counter**
+
