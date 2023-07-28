@@ -9,6 +9,7 @@ Scenario 2:
 * For Both these scenarios the solution is rate limiting.
 * Rate limiting products your APIs from overuse by limiting how often user can access your API.
 * Once the users quota is finished either the requests are dropped or rejected, and it is very important for many important reasons 
+  
   for example: 
   a) User Experience (UX): In the application some users are using overusing the API's in that case the other users will get affected .So if you maintain quality of 
                             service or better UX you need to rate limit.
@@ -17,6 +18,7 @@ Scenario 2:
 
 
 **Levels at which use can Rate Limit or Types of Rate Limiting**
+
 * User 
 * Concurrent
 * Location Id
