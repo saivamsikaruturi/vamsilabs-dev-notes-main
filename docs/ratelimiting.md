@@ -31,19 +31,21 @@ Scenario 2:
 **Algorithms For Rate Limit**
 
 **a)Token Bucket** : Suppose we are limiting our API's to 5 requests/min .
-    * We can use redis as the token bucket because it is in memory and faster to access.
-    * For every unique user we will track the last time at which the request was made and the available tokens.
-            U1 : 12:04:01 5
-    * So every time when the request comes in the rate limiter should do 2 things
-       1. Fetch Token
-       2. Update Token : once it access the token, and understood that we have enough token left so it can make the request and also 
-                         afterwards it should update the token to the latest token available
-    * U1 12:04:25 then the available tokens will be 5 , as the new request is made the token will be updated to 4.
-    * U1 12:04:37 then the token will be reduced to 3.
-    * U1 12:07:07  and the token is refilled to 5 as this is the new minute,then the token will be reduced to 4.
-    * If all 5 tokens are completed , if the new request comes in the same minute then the request will be dropped.
-    * This algorithm is memory efficient as we are saving less amount of data per user.
-    * But in distributed environment it could cause race around condition i.e 2 requests are coming from 2 app servers for the same user, so both will
-      try to update the token and the time.
 
-**b)Leaky Bucket** :
+* We can use redis as the token bucket because it is in memory and faster to access.
+* For every unique user we will track the last time at which the request was made and the available tokens.
+        U1 : 12:04:01 5
+* So every time when the request comes in the rate limiter should do 2 things
+   1. Fetch Token
+   2. Update Token : once it access the token, and understood that we have enough token left so it can make the request and also 
+                     afterwards it should update the token to the latest token available
+* U1 12:04:25 then the available tokens will be 5 , as the new request is made the token will be updated to 4.
+* U1 12:04:37 then the token will be reduced to 3.
+* U1 12:07:07  and the token is refilled to 5 as this is the new minute,then the token will be reduced to 4.
+* If all 5 tokens are completed , if the new request comes in the same minute then the request will be dropped.
+* This algorithm is memory efficient as we are saving less amount of data per user.
+* But in distributed environment it could cause race around condition i.e 2 requests are coming from 2 app servers for the same user, so both will
+  try to update the token and the time.
+
+**b)Leaky Bucket** : 
+* Consider you have bucket   
