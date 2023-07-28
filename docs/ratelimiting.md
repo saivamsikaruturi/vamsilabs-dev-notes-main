@@ -87,6 +87,7 @@ Scenario 2:
 * For each and every request also we need to sort and filter out entries from the last minute amd then count the values i.e 2+5+3 = 10
 
 **Distributed**
+
 * All the Above algorithms only on the single server. But we have distributed setup with multiple servers
   we will face 2 problems 
   a) Inconsistency in the rate limit data.
