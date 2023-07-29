@@ -5,6 +5,7 @@
   C - Consistency
   A - Availability
   P - Partition Tolerance
+
 * We can use CA , CP or AP . but not CAP.
 * Why we cannot use all the three at once??
 * Consistency: After successful write in any node, the data should be same in any other node.
