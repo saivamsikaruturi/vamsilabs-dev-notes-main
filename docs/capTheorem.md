@@ -6,7 +6,7 @@
   A - Availability
   P - Partition Tolerance
 
-* We can use CA , CP or AP . but not CAP.
+* We can use CA , CP or AP. but not CAP.
 * Why we cannot use all the three at once??
 * Consistency: After successful write in any node, the data should be same in any other node.
 * Availability: All nodes should be available.
@@ -16,7 +16,7 @@
 
 *Master-Slave*
    
-* When there is some partition issue , then there will be no consistence then only AP.
+* When there is some partition issue, then there will be no consistence then only AP.
 * When one node is down, then there is no Availability , then only CP.
 
 ![databaseissues.PNG](databaseissues.PNG)
