@@ -52,6 +52,7 @@ Scenario 2:
 * Consider you have bucket which can hold 3 requests at any given point of time    
 
    ![leakybucket.PNG](leakybucket.PNG)
+
 * Whenever the requests are coming into the bucket it will sit into the bucket and from there to the request processor.
 * If more requests are coming in the bucket will fill immediately before even we process it.
 * And the extra requests like 4 , 5 requests will overflow.
