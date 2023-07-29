@@ -91,6 +91,7 @@ nav:
   - MicroServices:
       - Basic Terminology: microservices/microservices.md
   - System Design:
+      - Cap Theorem: capTheorem.md
       - Rate Limiter: ratelimiting.md
       - Distributed Caching: distributedCaching.md
       - Redis: redis.md
