@@ -1,6 +1,6 @@
 * It is the Desirable property of distributed System with replicated data.
 
-  ![captheorem.PNG](captheorem.PNG)
+  ![captheorem.jpg](captheorem.jpg)
   C - Consistency
   A - Availability
   P - Partition Tolerance
