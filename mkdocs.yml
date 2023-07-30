@@ -18,6 +18,7 @@ nav:
   - Shortcuts: shortcuts.md
   - Git: git.md
   - Interview Questions: interviewquestions.md
+  - DataStructures: dsa.md
   - Java:
       - Ecosystem: java/ecosystem.md
       - Maven: java/maven.md
