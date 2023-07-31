@@ -25,3 +25,15 @@ The difference between L4 and L7 Balancers:
 
 ## IP Hash
 ![iphash.PNG](iphash.PNG)
+
+
+## Least Connection
+![leastconnection.PNG](leastconnection.PNG)
+
+## Weighted Least Connection
+![leastweightedconnection.PNG](leastweightedconnection.PNG)
+
+## Least Response Time
+![LRT.PNG](LRT.PNG)
+
+
