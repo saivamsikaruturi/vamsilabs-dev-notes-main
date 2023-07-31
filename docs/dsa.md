@@ -52,6 +52,12 @@ Eg:
 [1,3,5]: YES
 [5,1,3]: YES
 
+2D Arrays:
+* int[][] = new int[5][6];
+
+* Transpose of a matrix : you have a square 2d matrix.return the transpose of a given matrix.
+   i.e convert all the columns into rows.
+
 
 
 **LinkedList**
@@ -112,21 +118,26 @@ Add the element in the middle:
 
 * If you want to store hierarchical data.
 * Nomenclature in tree:
-         A  - root 
-    B         C 
-  D   E     F    G
-     H  I
+       
+    A  - root 
+   
+ B         C 
+ 
+D   E     F    G
+    
+   H  I
 
-   root node - the top most node of the hierarchy.
-   parent node - here  B, E,C are the parent node.
-   child node - successors of given node.
-   child node(C) -F ,G
-   child node(B) - D,E
-   siblings - nodes with common parent.
-   leaf node - nodes with zero children.
-   ascendants - all the nodes above that given node.
+
+* root node - the top most node of the hierarchy.
+* parent node - here  B, E,C are the parent node.
+* child node - successors of given node.
+* child node(C) -F ,G
+* child node(B) - D,E
+* siblings - nodes with common parent.
+* leaf node - nodes with zero children.
+* ascendants - all the nodes above that given node.
    For ex: ascendants of I - E,B,A (root node)
-   descendants - all the nodes below the given node.
+* descendants - all the nodes below the given node.
 
    * Height of a node: take out the path from that given node to all other leaf nodes. length in terms of edge.
    * Height of A:  
@@ -155,3 +166,49 @@ key -value pair
 * It is nothing but collection of nodes, connected to each other using edges.
  
 ![graphs.PNG](graphs.PNG)
+
+Real Time Examples:
+1. Facebook friends
+2. Google Maps
+
+Trees vs Graphs
+1. In trees there is a unique node which is known as root. , in graphs no unique node which is known as root.
+2. Hierarchy is clearly defined . no hierarchy in graphs.
+3. Treed cannot form a cycle. Graphs can form cycle.
+
+Classification of graphs:
+Case 1 :
+Directed and Undirected.
+![case1graphs.PNG](case1graphs.PNG)
+
+Case 2 :
+
+![case2graphs.PNG](case2graphs.PNG)
+
+Case 3:
+
+Undirected Cyclic growth and Undirected Acyclic graph
+
+Case 4 :
+Directed Cyclic and Directed Acyclic graph
+
+Input of a Graph:
+assume graph is undirected . the first line will have 2 integers  one is no.of nodes and other is no. of edges.
+
+7 8 
+0 1 
+0 3
+1 2
+3 2
+3 4 
+6 5 
+4 5
+
+
+**Dynamic Programming**
+
+* Those who don't remember the past are commended to repeat it.
+* Overlapping sub problem
+* 1. Top down approach -- recursive (memoization / keep in memory (arrays , hashmaps))
+* 2. Bottom up approach -- iterative 
+

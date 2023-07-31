@@ -94,6 +94,7 @@ nav:
   - System Design:
       - Cap Theorem: capTheorem.md
       - Rate Limiter: ratelimiting.md
+      - Load Balancing: loadbalancer.md
       - Distributed Caching: distributedCaching.md
       - Redis: redis.md
   - DevOps:
