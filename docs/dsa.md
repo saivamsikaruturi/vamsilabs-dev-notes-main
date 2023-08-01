@@ -1,7 +1,7 @@
 Topics:
 
 
-Arrays:
+## Arrays:
 
 * Collection of "Similar Type of Data Elements" stored in a "contiguous location".
 
@@ -59,7 +59,7 @@ Eg:
 
 
 
-**LinkedList**
+## LinkedList
 
 * When the spaces are not available together we are not able to store in array with large size , it may throw throw stack over flow, and came up with Linked List.
 * So along with value we should store address of next node.
@@ -92,7 +92,7 @@ Add the element in the middle: we need to pass the index
       node.next = temp2;
 
 
-**Stack**
+## Stack
 
 * In dynamic array we can add element at any index , but if I restrict the operations to add at last and remove at last.This data structure is known as Stack.
 * This will automatically follow LIFO (last in first out).
@@ -109,13 +109,13 @@ Add the element in the middle: we need to pass the index
 * size() --> size of the stack.
 * pop() ---> remove the element.
 
-**Queue**
+## Queue
 
 * Add at end, but remove from first.
 * FIFO(first in first out).
 * offer() --> to add the element.
 
-**Tree**
+## Tree
 
 * If you want to store hierarchical data.
 * Nomenclature in tree:
@@ -139,12 +139,12 @@ Add the element in the middle: we need to pass the index
    * we need to consider maximum length as the height of the node. So here the maximum length is 3.
    * Depth of Node:take out the path from that root node to the that node.
 
-*Heap*
+## Heap
 * Priority Queue: removes highest priority element. gives prior to lower value if its default priority queue.
     50 10 20 30 70 remove() - 10
 
 
-**HashMap**
+## HashMap
 
 India -138
 Pakistan - 22
@@ -152,12 +152,12 @@ Nepal - 3
 USA -33
 key -value pair
 
-**HashSet**
+## HashSet
 
 * duplicates will not be added 
 * only keys in map will be added as values in set.
 
-**Graphs**
+## Graphs
 
 * It is nothing but collection of nodes, connected to each other using edges.
  
@@ -209,7 +209,7 @@ assume graph is undirected . the first line will have 2 integers  one is no.of n
 4 5
 
 
-**Dynamic Programming**
+## Dynamic Programming
 
 * Those who don't remember the past are commended to repeat it.
 * Overlapping sub problem
