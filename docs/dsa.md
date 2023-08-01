@@ -8,6 +8,7 @@ Time and Space Complexity
 Auxiliary Space and In Memory Space
 
 Arrays:
+
 * Collection of "Similar Type of Data Elements" stored in a "contiguous location".
 
 Operations:
@@ -15,8 +16,11 @@ Operations:
 Case 1: Unsorted Array
 
 Search:
+
 a=[5 2 1 3 4 6 -2]
+
 num = 5
+
 nun index of num in a[] , if not found return -1
 
 Approach:
@@ -44,7 +48,7 @@ Eg:
 [1,3,2] : YES
 [1,3,4] : YES
 [1,3,6,4] : NO
-[1,
+
 
 SubSet: ANY COMBINATION
 Smaller Subset of Array. Does Not Necessarily Contiguous and Order Does not matter.
@@ -53,6 +57,7 @@ Eg:
 [5,1,3]: YES
 
 2D Arrays:
+
 * int[][] = new int[5][6];
 
 * Transpose of a matrix : you have a square 2d matrix.return the transpose of a given matrix.
@@ -62,33 +67,37 @@ Eg:
 
 **LinkedList**
 
-* When the spaces are not available together we are not able to store in array , and came up with Linked List.
+* When the spaces are not available together we are not able to store in array with large size , it may throw throw stack over flow, and came up with Linked List.
 * So along with value we should store address of next node.
 
 
 Add the element at the start:
-  Node node = new Node(10);
-  node.next = head
-  head =node
+        
+      Node node = new Node(10);
+      node.next = head
+      head =node
 
 Add the element at the end:
-   Node temp = head;
-   while(temp!=next){
-   temp = temp.next; 
-   }
-   temp.next = node;
-   node.next = null
+   
+      Node temp = head;
+      while(temp!=next){
+      temp = temp.next; 
+      }
+      temp.next = node;
+      node.next = null
 
 Add the element in the middle:
+
 * we need to pass the index
-  Node temp = head;
-* for(int i = 0 ; i<index-1;i++){
-   temp = temp.next;
-  }
-  Node temp1 = temp.next;
-  Node temp2 = temp1.next;
-  temp1.next = node;
-  node.next = temp2;
+ 
+      Node temp = head;
+      for(int i = 0 ; i<index-1;i++){
+      temp = temp.next;
+      }
+      Node temp1 = temp.next;
+      Node temp2 = temp1.next;
+      temp1.next = node;
+      node.next = temp2;
 
 
 **Stack**
@@ -159,10 +168,12 @@ USA -33
 key -value pair
 
 **HashSet**
+
 * duplicates will not be added 
 * only keys in map will be added as values in set.
 
 **Graphs**
+
 * It is nothing but collection of nodes, connected to each other using edges.
  
 ![graphs.PNG](graphs.PNG)
@@ -172,6 +183,7 @@ Real Time Examples:
 2. Google Maps
 
 Trees vs Graphs
+
 1. In trees there is a unique node which is known as root. , in graphs no unique node which is known as root.
 2. Hierarchy is clearly defined . no hierarchy in graphs.
 3. Treed cannot form a cycle. Graphs can form cycle.
@@ -196,12 +208,19 @@ Input of a Graph:
 assume graph is undirected . the first line will have 2 integers  one is no.of nodes and other is no. of edges.
 
 7 8 
+
 0 1 
+
 0 3
+
 1 2
+
 3 2
-3 4 
+
+3 4
+
 6 5 
+
 4 5
 
 
