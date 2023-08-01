@@ -1,11 +1,5 @@
 Topics:
 
-Arrays
-Prefix Sum
-Binary Search
-Two Pointers
-Time and Space Complexity
-Auxiliary Space and In Memory Space
 
 Arrays:
 
