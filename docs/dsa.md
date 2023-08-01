@@ -120,14 +120,7 @@ Add the element in the middle: we need to pass the index
 * If you want to store hierarchical data.
 * Nomenclature in tree:
        
-    A  - root 
-   
- B         C 
- 
-D   E     F    G
-    
-   H  I
-
+![trees.PNG](trees.PNG)
 
 * root node - the top most node of the hierarchy.
 * parent node - here  B, E,C are the parent node.
