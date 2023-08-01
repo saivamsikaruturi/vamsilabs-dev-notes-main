@@ -84,6 +84,7 @@ Add the element in the middle:
 
 * we need to pass the index
  
+     
       Node temp = head;
       for(int i = 0 ; i<index-1;i++){
       temp = temp.next;
