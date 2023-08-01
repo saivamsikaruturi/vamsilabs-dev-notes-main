@@ -161,7 +161,7 @@ key -value pair
 
 * It is nothing but collection of nodes, connected to each other using edges.
  
-![graphs.PNG](graphs.PNG)
+![graphs.jpg](graphs.jpg)
 
 Real Time Examples:
 1. Facebook friends
@@ -176,11 +176,11 @@ Trees vs Graphs
 Classification of graphs:
 Case 1 :
 Directed and Undirected.
-![case1graphs.PNG](case1graphs.PNG)
+![case1graphs.jpg](case1graphs.jpg)
 
 Case 2 :
 
-![case2graphs.PNG](case2graphs.PNG)
+![case2graphs.jpg](case2graphs.jpg)
 
 Case 3:
 
