@@ -92,6 +92,7 @@ nav:
   - MicroServices:
       - Basic Terminology: microservices/microservices.md
   - System Design:
+      - Https: https.md
       - Cap Theorem: capTheorem.md
       - Rate Limiter: ratelimiting.md
       - Load Balancing: loadbalancer.md
