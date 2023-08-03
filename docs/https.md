@@ -7,8 +7,10 @@
 * If the encrypted data gets intercepted by a hacker all they could see is jumbo data.
 
 *Working*
+
 * Step 1: TCP Handshake
   * Just like in the case of http, the browser establishes TCP connection with the server.
+
 * Step 2: Certificate
   * This is where TLS Handshake begins.
   * The process sends a client hello message to the server.
@@ -20,6 +22,7 @@
   * The client uses this key in asymmectric encryption.
   * In aymmetric encryption a piece of data that is encrypted by a public key can only be decrypted by the private key.
   * The step 2 is concluded by sending a hello done by the server.
+  
 * Step 3: Key Exchange
   * In this step the client and server come up with a share encryption key to use to encrypt data.
   * This is where asymmetric encryption comes.
@@ -27,5 +30,6 @@
   * This session key will be encrypted with a server public key and sends to the server.
   * The server receives the session key and decrypts with its private key.
   * So both the client and the server will have the session key.
+  
 * Step 4: Data Transmission.
   * They send the encrypted data between the client and the server using this session key.
