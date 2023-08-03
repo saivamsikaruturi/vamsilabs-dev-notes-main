@@ -12,9 +12,9 @@
   * Just like in the case of http, the browser establishes TCP connection with the server.
 
 * Step 2: Certificate
-  * This is where TLS Handshake begins.
-  * The process sends a client hello message to the server.
-  * In this hello message the browser tells the server , it will tell the server the TLS version (TLS 1.2 ,1.3) it supports and the Cyber suite it supports.
+     * This is where TLS Handshake begins.
+     * The process sends a client hello message to the server.
+     * In this hello message the browser tells the server , it will tell the server the TLS version (TLS 1.2 ,1.3) it supports and the Cyber suite it supports.
   * A cyber suite is a set of encryption algorithms.
   * The server sends back the  hello message with all the tls and cyber suite details sent by the client.
   * Server sends the certificate to the client.
