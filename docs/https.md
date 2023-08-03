@@ -19,8 +19,8 @@
   * The server sends back the  hello message with all the tls and cyber suite details sent by the client.
   * Server sends the certificate to the client.
   * The certificate a lot of things but one important thing is public key.
-  * The client uses this key in asymmectric encryption.
-  * In aymmetric encryption a piece of data that is encrypted by a public key can only be decrypted by the private key.
+  * The client uses this key in asymmetric encryption.
+  * In asymmetric encryption a piece of data that is encrypted by a public key can only be decrypted by the private key.
   * The step 2 is concluded by sending a hello done by the server.
   
 * Step 3: Key Exchange
