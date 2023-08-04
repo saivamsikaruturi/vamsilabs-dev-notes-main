@@ -8,6 +8,8 @@
 
 *Working*
 
+![TOPOLOGY CLASS DIAGRAM-Page-7.drawio.png](TOPOLOGY CLASS DIAGRAM-Page-7.drawio.png)
+
 * Step 1: TCP Handshake
      * Just like in the case of http, the browser establishes TCP connection with the server.
 
