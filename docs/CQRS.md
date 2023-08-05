@@ -16,6 +16,6 @@ Command
 /PUT - Update Products
 /DELETE - Delete Products
 
-![cqrs.PNG][cqrs.PNG]
+![cqrs.PNG](cqrs.PNG)
 
 * In order to sync both the micro-services to avoid data inconsistency we can use any messaging system like kafka, RabbitMQ or Redis PubSub
