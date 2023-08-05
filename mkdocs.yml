@@ -91,6 +91,7 @@ nav:
       - Replication & Sharding: postgresql/postgresql.md
   - MicroServices:
       - Basic Terminology: microservices/microservices.md
+      - CQRS: CQRS.md
   - System Design:
       - Https: https.md
       - Cap Theorem: capTheorem.md
