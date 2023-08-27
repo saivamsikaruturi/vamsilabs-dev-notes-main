@@ -14,7 +14,7 @@ theme:
     background: "grey"
     text: "white"
   custom_css:
-    - docs/style.css
+    - style.css
 
 nav:
   - Home: index.md
