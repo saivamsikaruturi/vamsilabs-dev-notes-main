@@ -13,6 +13,9 @@ theme:
     accent: "cyan"
     background: "grey"
     text: "white"
+  custom_css:
+    - docs/style.css
+
 nav:
   - Home: index.md
   - Learning: learning.md

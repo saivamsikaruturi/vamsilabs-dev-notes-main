@@ -1,8 +1,28 @@
-/* styles.css */
-div[id$=".md"] {
-    color: blue;
+/* Position the navigation menu at the top */
+#nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
 }
-/* styles.css */
-.markdown-content {
-    color: blue;
+
+/* Style for each navigation item */
+#nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+#nav li {
+    margin: 0 15px;
+}
+
+#nav a {
+    text-decoration: none;
+    color: #333;
+}
+
+#nav a:hover {
+    color: #f00; /* Change to your preferred hover color */
 }
