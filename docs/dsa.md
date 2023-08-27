@@ -211,8 +211,37 @@ assume graph is undirected . the first line will have 2 integers  one is no.of n
 
 ## Dynamic Programming
 
+- Optimization over recursion.
+- Storing the results of previous states.
+
 * Those who don't remember the past are commended to repeat it.
 * Overlapping sub problem
 * 1. Top down approach -- recursive (memoization / keep in memory (arrays , hashmaps))
-* 2. Bottom up approach -- iterative 
+* 2. Bottom up approach -- iterative
 
+
+## Greedy:
+- Find me the BEST Solution Now.
+- DON'T THINK FOR FUTURE.
+
+
+## BackTracking  
+
+(true or false) (0 or 1) (possible or not possible)
+
+- Optimisation Over Brute Force
+  (Exhaust All possible options)
+
+state space tree
+
+Hashing:
+1.Encryption and decryption are both are part of hashing.
+2.shortening url
+3.cryptography algos : sha 256,md5,rsa
+
+Rolling Hash
+KMP/Rabin Karp - String matching Algos
+
+Prime Number: Efficient Hash Function
+P = 10^9+9
+h() = s[0]+(p*i+p*i^2+p*i^3...) mod p
