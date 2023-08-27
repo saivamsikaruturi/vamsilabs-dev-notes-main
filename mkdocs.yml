@@ -7,14 +7,9 @@ repo_name: "vamsi1998123/vamsilabs-dev-notes-main"
 repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
-  name: "material-dark"
-  palette:
-    primary: "blue"
-    accent: "cyan"
-    background: "grey"
-    text: "white"
   custom_css:
     - style.css
+
 
 nav:
   - Home: index.md

@@ -26,3 +26,8 @@
 #nav a:hover {
     color: #f00; /* Change to your preferred hover color */
 }
+
+.navbar {
+    background-color: #333;
+    color: white;
+}
