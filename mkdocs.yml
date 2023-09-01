@@ -8,7 +8,9 @@ site_url: "https://vamsilabs-dev-notes.netlify.app"
 
 theme:
   name: mkdocs
-  nav_style: dark
+  nav_style: left
+  custom_dir: custom
+
 
 
 plugins:
@@ -136,3 +138,7 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+
+custom:
+  styles:
+    - "custom.css"
