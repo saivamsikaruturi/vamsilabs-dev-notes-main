@@ -16,7 +16,7 @@ create (p:Person{name:"Tom"})-[:Follows{since:"1956"}]->(:Person{name:"Cre"}) re
 
 **MATCH (a:Cities), (b:Theaters)WHERE a.city= b.cityMERGE (a)-[r:HOLDS]->(b) RETURN a,b**
 
-**Two way Relations ship**(peter follows desmond and bosede)
+**Two-way Relations ship**(peter follows desmond and bosede)
 
 create p1=(b:Person{name:"Bosede"})<-[:Follows]-(p:Person{name:"Peter"})-[:Follows]->(d:Person{name:"Desmond"}) return p1
 
@@ -294,22 +294,20 @@ Call apoc.refactor.extractNode(r,[‘Role’] , ‘HAD_ROLE’,’IN_MOVIE’) y
 
 **Meta functions**:
 
-1.apoc.meta.graph() --- gives the relationships between all the nodes in the graph format
+1. apoc.meta.graph() --- gives the relationships between all the nodes in the graph format
 ![Picture1.png](Picture1.png)
 
 2. apoc.meta.schema() – gives the details of all nodes in json format.
 
-3.apoc.meta.data() – gives the details of all nodes and its relationship in tabular format
+3. apoc.meta.data() – gives the details of all nodes and its relationship in tabular format
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/de170fff-45d3-446e-b639-c635cd925a02/image2.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/de170fff-45d3-446e-b639-c635cd925a02/image2.png)
-
+![neo4j01.png](neo4j01.png)
 4. apoc.meta.stats() – gives the stastics of entire data base.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ecaddf8e-2b9b-4268-8b2a-e1c5d45a494f/image3.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ecaddf8e-2b9b-4268-8b2a-e1c5d45a494f/image3.png)
-
+![neo4j02.png](neo4j02.png)
 5. apoc.meta.nodeTypeProperties() – returns all the data types of parameters of all nodes.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/23ba4bb0-c422-4448-9928-9fef0763ab02/image4.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/23ba4bb0-c422-4448-9928-9fef0763ab02/image4.png)
+![neo4j03.png](neo4j03.png)
 
 To Perform batch updates on the graph .Neo4j is a transactional database , which means each operation is bounded by a transaction. And it is durable ,isolated.
 
@@ -341,17 +339,17 @@ founded: 1897
 
 }) AS output;
 
-> {
->
->
-> "person.club.founded": 1897,
->
-> "person.name": "Cristiano Ronaldo",
->
-> "person.club.name": "Juventus"
->
-> }
->
+    {
+
+
+     "person.club.founded": 1897,
+
+     "person.name": "Cristiano Ronaldo",
+
+     "person.club.name": "Juventus"
+
+     }
+
 
 Setting a parameter using :param
 
@@ -359,15 +357,15 @@ Setting a parameter using :param
 
 return apoc.map.fromPairs([["a",1],["b",2]])
 
-> {
->
->
-> "a": 1,
->
-> "b": 2
->
-> }
->
+    {
+    
+
+    "a": 1,
+ 
+    "b": 2
+
+     }
+
 
 return apoc.map.fromLists(["a","b"],[1,2])
 
