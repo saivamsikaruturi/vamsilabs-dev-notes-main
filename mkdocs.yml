@@ -13,7 +13,7 @@ theme:
     icon: "home"
   palette:
     primary: "blue grey"
-    accent: "blue"
+    accent: "red"
   font:
     text: "IBM Plex Serif"
     code: "IBM Plex Mono"
