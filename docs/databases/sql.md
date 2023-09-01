@@ -78,6 +78,7 @@ Infinite Dynamo (graph)
 ## Delete, Drop and Truncate
 
 
+
 ## Nth highest salary
 
     select max(salary) from employee where salary < (Select max(salary) from employee where salary)
