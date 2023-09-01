@@ -106,7 +106,7 @@ nav:
   - Misc:
       - CleanArchitecture: misc/clean-architecture.md
   - extra_css:
-      - css: docs/style.css
+      - css: style.css
 
 # Customization
 extra:
