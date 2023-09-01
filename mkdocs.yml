@@ -7,7 +7,12 @@ repo_name: "vamsi1998123/vamsilabs-dev-notes-main"
 repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
-  name: mkdocs
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
   language: en
   palette:
     - scheme: default
@@ -22,16 +27,18 @@ theme:
         name: Switch to light mode
       primary: teal
       accent: lime
-  features:
-    - navigation.tabs: {}
-    - navigation.sections: {}
-    - toc.integrate: {}
-    - navigation.top: {}
-    - search.suggest: {}
-    - search.highlight: {}
-    - content.tabs.link: {}
-    - content.code.annotation: {}
-    - content.code.copy: {}
+  # logo: PyTorch_logo_icon.svg
+
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js #?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+
+
+plugins:
+  - search
 
 nav:
   - Home: index.md
@@ -56,7 +63,78 @@ nav:
       - Garbage Collection: java/GarbageCollection.md
       - Serialization: java/Serialization.md
       - Java 8: java/Java8.md
-  # (Rest of your navigation hierarchy...)
+  - Advanced Java:
+      - Exception Handling: java/ExceptionHandling.md
+      - Collections: java/Collections.md
+      - Differences in Collections: java/DiffCollections.md
+      - Concurrent Collections: java/ConcurrentCollections.md
+      - MultiThreading: java/MultiThreading.md
+  - StreamApi:
+      - StreamApiQuestions: stream api/streamapi.md
+  - Solid Principles:
+      - Solid Principles: solidprinciples/solidprinciples.md
+  - Design Patterns:
+      - Introduction: designpatterns/dp.md
+      - Creational Design Patterns:
+          - Creational Design Patterns: designpatterns/creationalDesignPatterns/CreationalDesignPatterns.md
+          - Singleton : designpatterns/creationalDesignPatterns/singletondesignpattern.md
+          - Factory : designpatterns/creationalDesignPatterns/FactoryDesignPattern.md
+          - Abstract Factory : designpatterns/creationalDesignPatterns/AbstractFactoryDesignPattern.md
+          - Builder :  designpatterns/creationalDesignPatterns/BuilderDesignPattern.md
+          - Prototype : designpatterns/creationalDesignPatterns/PrototypeDesignPattern.md
+      - Structural Design Patterns:
+          - FlyWeight : designpatterns/structuralDesignPatterns/flyweightdesignpattern.md
+          - Facade : designpatterns/structuralDesignPatterns/facadedesignpattern.md
+          - Decorator : designpatterns/structuralDesignPatterns/DecoratorDesignPattern.md
+          - Proxy : designpatterns/structuralDesignPatterns/Proxydesignpattern.md
+          - Composite : designpatterns/structuralDesignPatterns/CompositeDesignPattern.md
+          - Adapter : designpatterns/structuralDesignPatterns/AdapterDesignPattern.md
+          - Bridge :  designpatterns/structuralDesignPatterns/BridgeDesignPattern.md
+      - Behavioural Design Patterns:
+          - Observer: designpatterns/behaviouralDesignPatterns/ObserverDesignPattern.md
+          - Strategy: designpatterns/behaviouralDesignPatterns/StrategyDp.md
+          - Command: designpatterns/behaviouralDesignPatterns/CommandDp.md
+          - Iterator: designpatterns/behaviouralDesignPatterns/Iterator.md
+          - State: designpatterns/behaviouralDesignPatterns/StateDp.md
+          - Template: designpatterns/behaviouralDesignPatterns/TemplateDp.md
+          - Chain Of Responsibility: designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern.md
+          - Mediator: designpatterns/behaviouralDesignPatterns/MediatorDp.md
+          - Memento:  designpatterns/behaviouralDesignPatterns/MementoDp.md
+          - Visitor: designpatterns/behaviouralDesignPatterns/VisitorDp.md
+          - Interpreter: designpatterns/behaviouralDesignPatterns/Interpreter.md
+  - SpringBoot:
+      - Introduction: springboot/introduction.md
+      - AutoConfiguration: springboot/AutoConfiguration.md
+      - Annotations: springboot/Annotations.md
+      - IOC and Dependency Injection: springboot/SpringIOC.md
+      - Rest API Best Practices: springboot/restapibestpractices.md
+  - Junit:
+      - Basics: junit/junit.md
+  - DataBases:
+      - Neo4j: databases/neo4j.md
+      - SQL: databases/sql.md
+  - Kafka:
+      - Kafka Basics: Kafka/kafka.md
+  - Postgresql:
+      - Replication & Sharding: postgresql/postgresql.md
+  - MicroServices:
+      - Basic Terminology: microservices/microservices.md
+      - CQRS: CQRS.md
+  - System Design:
+      - Https: https.md
+      - Cap Theorem: capTheorem.md
+      - Rate Limiter: ratelimiting.md
+      - Load Balancing: loadbalancer.md
+      - Distributed Caching: distributedCaching.md
+      - Redis: redis.md
+  - DevOps:
+      - Tools: devops/devops.md
+      - Linux: devops/linux.md
+      - Docker: devops/docker.md
+      - Ansible: devops/ansible.md
+      - AWS: devops/aws.md
+  - Misc:
+      - CleanArchitecture: misc/clean-architecture.md
 
 # Customization
 extra:
