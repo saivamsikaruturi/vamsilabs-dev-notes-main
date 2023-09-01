@@ -75,7 +75,6 @@ Infinite Dynamo (graph)
 | Leaf node of clustered index contains table data.                    | Leaf nodes of non-clustered index contains pointers to get the pointers that contain data. |
 
 
-
 ## Delete, Drop and Truncate
 
 
