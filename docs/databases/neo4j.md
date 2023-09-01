@@ -1,6 +1,6 @@
 # NEO4J
 
-**Creating a node**:
+## Creating a node
 
     CREATE (movie:MOVIES {id:1,name:”RRR”,”releaseDate:”2022-11-20”} ) return movie;
 
@@ -8,7 +8,7 @@ But CREATE can create duplicate node. So better use MERGE .
 
     MERGE (movie:MOVIES {id:1,name:”RRR”,”releaseDate:”2022-11-20”} ) return movie
 
-**Creating a Relationship:**
+## Creating a Relationship
 
     create (p:Person{name:"Tom"})-[:Follows]->(:Person{name:"Cruise"}) return p
 
@@ -20,31 +20,31 @@ But CREATE can create duplicate node. So better use MERGE .
 
     create p1=(b:Person{name:"Bosede"})<-[:Follows]-(p:Person{name:"Peter"})-[:Follows]->(d:Person{name:"Desmond"}) return p1
 
-**RETREIVE/MATCH:**
+## RETREIVE/MATCH
+ 
+       Match (n:PLAYER) return n.name as playerName, n.height as height;
 
-1.     Match (n:PLAYER) return n.name as playerName, n.height as height;
+       Match (n:PLAYER) where n.name=’James’ return n
 
-2.     Match (n:PLAYER) where n.name=’James’ return n
-
-3.     Match (n:PLAYER {name:”James”} return n
+       Match (n:PLAYER {name:”James”} return n
 
 Based on relationship:
 
       MATCH (a:Screens {name:”IMAX} )-[:PLAYS]-> (b:Shows {showId:2} ) with a,b
 
-**UPDATE a parameter in a node**:
+## UPDATE a parameter in a node
 
      Match (n:MODEL) where id(n)=28 set n.modelId=1221 , n.name=”test” return n;
 
-**UPDATE a relationship between nodes**:
+## UPDATE a relationship between nodes
 
      Match (n:movies)-[r:directed]->(m:cast) set r.relationship="acted"
 
-**Delete a node**:
+## Delete a node
 
     match (n :Person {name: ”sai” } ) DETACH DELETE n
 
-**Deleting a parameter in a node or setting a parameter null** :
+## Deleting a parameter in a node or setting a parameter null
 
     match(n{name:"Gate"}) set n.occupation=null return n
 
@@ -90,9 +90,9 @@ union all
 
 - -- > with is used for assigning and used it for later
 
-1.     match (p:Person)-[r:ACTED_IN]->(m:Movie) with p, count(*) as k where k>5 return p
+       match (p:Person)-[r:ACTED_IN]->(m:Movie) with p, count(*) as k where k>5 return p
 
-2.     WITH [3,4,5,6,8] AS list RETURN list
+       WITH [3,4,5,6,8] AS list RETURN list
 
 //unwind --equivalent to flatmap
 
@@ -108,7 +108,7 @@ union all
 
     CREATE (d:Day{name:n}) )
 
-AGGREGATE Functions:
+## AGGREGATE Functions
 
 1.**COUNT**: to get the number of theaters in a city
 
@@ -138,7 +138,7 @@ the output wil be :
 
      match (n:Seat) return SUM(toInteger(n.price)) 1140
 
-**List Functions**:
+## List Functions
 
 1.**Keys** : returns all the properties in a node:
 
@@ -148,28 +148,28 @@ the output wil be :
 
     MATCH (a) WHERE a.name = 'Alice' RETURN labels(a) Person ,Developer
 
-3. nodes:
+3.**nodes:**
 
-    MATCH p = (a)-->(b)-->(c)
-    WHERE a.name = 'Alice' AND c.name = 'Eskil'
-    RETURN nodes(p)
+       MATCH p = (a)-->(b)-->(c)
+       WHERE a.name = 'Alice' AND c.name = 'Eskil'
+       RETURN nodes(p)
 
-4. range()
+4.**range():**
 
        RETURN range(0, 10)
 
-4. reduce : similar to reduce in java 8
+5.**reduce:** similar to reduce in java 8
 
        MATCH p = (a)-->(b)-->(c)
        WHERE a.name = 'Alice' AND b.name = 'Bob' AND c.name = 'Daniel'
        RETURN reduce(totalAge = 0, n IN nodes(p) | totalAge + n.age) AS reduction
 
-5.reverse()
+6.**reverse():**
 
       WITH [4923,'abc',521, null, 487] AS ids
       RETURN reverse(ids)
 
-6. tail()   returns a list lresult containing all the elements, excluding the first one, from a list list.
+7.**tail():**   returns a list lresult containing all the elements, excluding the first one, from a list list.
 
        MATCH (a) WHERE a.name = 'Eskil'
        RETURN a.array, tail(a.array)
@@ -180,11 +180,11 @@ And also we have toBooleanList(), toStringList(), toIntegerList(),toFloatList().
 
 **Call apoc.help(“create”) -- to know all the sub functions**
 
-1.Creating a node:
+1.**Creating a node:**
 
     CALL apoc.create.nodes(["Person"], [{name: "Tom Hanks"}]);
 
-2.load json:
+2.**load json:**
 
     Call apoc.load.json(url) yield value unwind value.items as quantity return keys(quantity)
 
@@ -192,26 +192,26 @@ And also we have toBooleanList(), toStringList(), toIntegerList(),toFloatList().
 
     Merge (p)
 
-3.apoc.do.case --- write query
+3.**apoc.do.case** --- write query
 
     match (m:Movie) call apoc.do.case([
     m.released<2010 and m.released>2000,
     'SET m.era="most recent" RETURN m', m.released<2000 and m.released>1990, 'set m.era="recent" return m'],'set m.era="old" return m',{m:m}) yield value return value.m.title as Title ,value.m.released as
     Released,value.m.era order by Released
 
-4. apoc.when – read query
+4.**apoc.when** – read query
 
        match (p:Person)-[:ACTED_IN]->(m:Movie)with distinct p,collect(m) as movies
        call apoc.when(SIZE(movies)>5, 'Return
        "established" as status','Return "upcoming" as status',{movies:movies}) yield value return p.name as name ,value.status as status
 
-5.apoc.do.when –write query
+5.**apoc.do.when** –write query
 
      match (p:Person)-[:ACTED_IN]->(m:Movie)with distinct p,collect(m) as movies
      call apoc.do.when(SIZE(movies)>5, 'set p.status=”established”return p’,
      'set p.status= "upcoming" return p',{p:p}) yield value return value.p.name as name ,value.p.status as status
 
-6. load csv file into db
+6.**load csv file** into db
 
        load csv with headers from 'file:///Screens.csv' as row with row
 
@@ -221,74 +221,76 @@ And also we have toBooleanList(), toStringList(), toIntegerList(),toFloatList().
 
         load csv with headers from [file:///People.csv](file:///People.csv) as row call apoc.create.node([‘Person’] +case row.label when “ ” then[] else [row.label] end, {name:row.name, born:toInteger(row.born)}) yield node return node.
 
-7.apoc.coll.avg
+7.**apoc.coll.avg**
 
-8.apoc.coll.toSet([list])
+8.**apoc.coll.toSet([list])**
 
-9.apoc.coll.sort([list])
+9.**apoc.coll.sort([list])**
 
-10.Sort Nodes:
+10.**Sort Nodes:**
 
      Match (n:Person) with collect(n) as people return apoc.coll.sortNodes(people, '^name') as output.
 
-11.reverse a collection:
+11.**Reverse a collection:**
 
         apoc.coll.reverse(collection)
 
-12. check whether the number is in range
+12.**check whether the number is in range:**
 
         apoc.coll.contains(range(1,10),2)
 
-13. split the list into 2:
+13.**split the list into 2:**
 
         apoc.coll.split(range(1,100),5)
 
         output: [1,2,3,4,5],[6,7,8,……100]
 
-14. frequencies:
+14.**frequencies:**
 
         apoc.coll.frequencies([1,3,5,7,9,9]) AS output
 
         output: [ { "count": 1, "item": 1 } , { "count": 1, "item": 3 } , { "count": 1, "item": 5 } , { "count": 1, "item": 7 } , { "count": 2, "item": 9 } ]
 
-15.occurrences
+15.**occurrences:**
 
          apoc.coll.occurrences([1,2,3,3],2) output-1
 
-16.flatten
+16.**flatten**
 
        return apoc.coll.flatten([1,2,[3,4]]) as output  -- output:[1,2,3,4]
 
-17. insert
+17.**insert**
 
         apoc.coll.insert([1,2],2,3) – [1,2,3]
 
-**changing the existing Relationship**:
+## Changing the existing Relationship
 
         match p=()-[r:REVIEWED]->()
 
         call apoc.refactor.setType(r,REVIEWED_BY) yield output return count(*)
 
-**Extract nodes using Relationship:**
+## Extract nodes using Relationship
 
          Match p=()-[r:ACTED_IN] ->()
 
         Call apoc.refactor.extractNode(r,[‘Role’] , ‘HAD_ROLE’,’IN_MOVIE’) yield output return output
 
-**Meta functions**:
+## Meta functions
 
-1. apoc.meta.graph() --- gives the relationships between all the nodes in the graph format
+1.**apoc.meta.graph()** --- gives the relationships between all the nodes in the graph format
 ![Picture1.png](Picture1.png)
 
-2. apoc.meta.schema() – gives the details of all nodes in json format.
+2.**apoc.meta.schema()** – gives the details of all nodes in json format.
 
-3. apoc.meta.data() – gives the details of all nodes and its relationship in tabular format
+3.**apoc.meta.data()** – gives the details of all nodes and its relationship in tabular format
 
 ![neo4j01.png](neo4j01.png)
-4. apoc.meta.stats() – gives the stastics of entire data base.
+
+4.**apoc.meta.stats()** – gives the stastics of entire data base.
 
 ![neo4j02.png](neo4j02.png)
-5. apoc.meta.nodeTypeProperties() – returns all the data types of parameters of all nodes.
+
+5.**apoc.meta.nodeTypeProperties()** – returns all the data types of parameters of all nodes.
 
 ![neo4j03.png](neo4j03.png)
 
@@ -298,7 +300,7 @@ To Perform batch updates on the graph .Neo4j is a transactional database , which
          as id return id", "CREATE (:Person {id:id})", {batchSize:1000,iterateList:true,parallel:true})
          return { name :"sai",companies:{Capgemini:"Hyderabad",Siemens:"Bnglr"}}
 
-**Map**:
+6.**Map**:
 
         RETURN apoc.map.flatten({person: {name: "Cristiano Ronaldo",club: {
         name: "Juventus",founded: 1897 }}}) AS output;
@@ -314,7 +316,7 @@ To Perform batch updates on the graph .Neo4j is a transactional database , which
      }
 
 
-Setting a parameter using :param
+7.**Setting a parameter using :param**
 
      :param data => ({name:"sai"})
 
@@ -329,31 +331,31 @@ Setting a parameter using :param
 
      }
 
-map.fromLists
+8.**map.fromLists**
     
       return apoc.map.fromLists(["a","b"],[1,2])
 
-map.fromValues
+9.**map.fromValues**
 
       return apoc.map.fromValues(["a",1,"b",2])
 
-apoc.map.merge -for merging 2 maps
+10.**apoc.map.merge** -for merging 2 maps
 
       return apoc.map.merge($data,{a:1,b:2})
 
-apoc.map.setKey
+11.**apoc.map.setKey**
 
      return apoc.map.setKey($data,"age",24)
 
-apoc.map.removeKey
+12.**apoc.map.removeKey**
 
      return apoc.map.removeKey($data,"name")
 
-Apoc.map.setEntry
+13.**apoc.map.setEntry**
 
      return apoc.map.setEntry($data,"city","Bnglr")
 
-Apoc.map.groupBy
+15.**apoc.map.groupBy**
 
     match (m:Movies) with collect (m) as movies
     return apoc.map.groupBy(movies,"releaseDate")
