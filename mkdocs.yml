@@ -8,12 +8,12 @@ site_url: "https://vamsilabs-dev-notes.netlify.app"
 
 theme:
   name: mkdocs
-  nav_style: left
-#  custom_dir: custom
-#
-#  custom:
-#    styles:
-#      - "custom.css"
+  nav_style: dark
+  custom_dir: custom
+
+  custom:
+    styles:
+      - "custom.css"
 
 plugins:
   - search
