@@ -8,7 +8,7 @@ site_url: "https://vamsilabs-dev-notes.netlify.app"
 
 theme:
   name: "material"
-  custom_dir: custom
+  custom_dir: "custom"
   logo:
     icon: "home"
   palette:
