@@ -1,11 +1,17 @@
-/* custom.css */
-
 /* Position the navigation menu at the top */
 nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Move site name and navigation to opposite ends */
     align-items: center;
-    padding: 10px 0;
+    background-color: #333; /* Dark background color for the navbar */
+    color: white;
+    padding: 10px 20px; /* Add more padding for better spacing */
+}
+
+/* Style for the site name */
+.site-name {
+    font-size: 24px; /* Increase the font size for the site name */
+    margin-right: 20px; /* Add spacing between site name and navigation */
 }
 
 /* Style for each navigation item */
@@ -22,14 +28,37 @@ nav li {
 
 nav a {
     text-decoration: none;
-    color: #333;
+    color: white; /* White color for navigation links */
+    font-weight: bold; /* Make the links bold */
+    transition: color 0.3s; /* Smooth color transition on hover */
 }
 
 nav a:hover {
     color: #00b7ff; /* Change to your preferred hover color */
 }
 
-.navbar {
-    background-color: #333;
-    color: white;
+/* Styling for the main content container (adjust as needed) */
+.main-content {
+    padding: 20px; /* Add padding to the main content for better readability */
+    background-color: #f7f7f7; /* Light background color for content */
+    border-radius: 8px; /* Add rounded corners to the content */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the content */
+}
+
+/* Customize the appearance of code blocks (optional) */
+pre {
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+/* Add responsive styling for smaller screens (optional) */
+@media (max-width: 768px) {
+    .site-name {
+        font-size: 20px;
+    }
+    nav li {
+        margin: 0 10px;
+    }
 }
