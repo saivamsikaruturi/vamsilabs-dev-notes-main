@@ -8,15 +8,7 @@ site_url: "https://vamsilabs-dev-notes.netlify.app"
 
 theme:
   name: mkdocs
-  palette:
-    primary: 'green'
-    accent: 'blue'
-    background: 'white'
-    text: 'black'
-    code: 'black'
-  font:
-    text: 'Arial, sans-serif'
-    code: 'Courier New, monospace'
+extra_css: [custom.css]
 
 
 plugins:
