@@ -3,23 +3,12 @@ site_description: "My Quick Reference Docs"
 site_author: "Vamsi Karuturi"
 site_url: "https://vamsilabs-dev-notes.netlify.app"
 
-#repo_name: "vamsi1998123/vamsilabs-dev-notes-main"
-#repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
+repo_name: "vamsi1998123/vamsilabs-dev-notes-main"
+repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
-  name: "material"
-  logo:
-    icon: "home"
-  palette:
-    primary: "blue grey"
-    accent: "red"
-  font:
-    text: "IBM Plex Serif"
-    code: "IBM Plex Mono"
-
-
-plugins:
-  - search
+  name: material
+  custom_dir: docs
 
 nav:
   - Home: index.md
@@ -116,7 +105,10 @@ nav:
       - AWS: devops/aws.md
   - Misc:
       - CleanArchitecture: misc/clean-architecture.md
+  - extra_css:
+      - css: style.css
 
+# Customization
 extra:
   manifest: "manifest.webmanifest"
   social:
@@ -125,21 +117,7 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
 
-
+# Extensions
 markdown_extensions:
-  - pymdownx.highlight:
-      linenums: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - admonition
-  - pymdownx.arithmatex:
-      generic: true
-  - footnotes
-  - pymdownx.details
-  - pymdownx.superfences
-  - pymdownx.mark
-  - attr_list
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
-
+  - codehilite
+  - tables
