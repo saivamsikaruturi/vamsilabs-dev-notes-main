@@ -8,6 +8,7 @@ site_url: "https://vamsilabs-dev-notes.netlify.app"
 
 theme:
   name: "material"
+  custom_dir: custom
   logo:
     icon: "home"
   palette:
@@ -16,6 +17,9 @@ theme:
   font:
     text: "IBM Plex Serif"
     code: "IBM Plex Mono"
+extra_css:
+  - custom.css
+
 
 plugins:
   - search
