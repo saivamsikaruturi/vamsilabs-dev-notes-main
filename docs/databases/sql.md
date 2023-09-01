@@ -85,15 +85,16 @@ Infinite Dynamo (graph)
 * We can use "where" condition and delete a particular row.
 * DELETE may leave fragmented space that requires additional maintenance to reclaim.
 
-      delete from Student;
-      delete from Student where id = 10;
+
+          delete from Student;
+          delete from Student where id = 10;
 
 **Drop**
 
 * It is a DDL statement
 * Deletes the entire table along with the structure.
 
-      drop table Student;
+           drop table Student;
 
 **Truncate**
 
@@ -101,7 +102,7 @@ Infinite Dynamo (graph)
 * It will also delete the rows, but it will delete all the rows at once.
 * However, TRUNCATE is generally faster than DELETE because it deallocates the space used by the table and its data in a more efficient way.
       
-      truncate table Student;
+          truncate table Student;
 
 ## Nth highest salary
 
