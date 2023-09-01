@@ -122,7 +122,7 @@ the output wil be :
 
     Mumabi 10
 
-2. **AVERAGE :** to get the average seat price
+2.**AVERAGE :** to get the average seat price
 
        match (n:Seat) return AVG(toInteger(n.price)) 190
 

@@ -8,6 +8,7 @@ repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
   name: material
+  custom_dir: overrides
 
 nav:
   - Home: index.md
@@ -104,6 +105,8 @@ nav:
       - AWS: devops/aws.md
   - Misc:
       - CleanArchitecture: misc/clean-architecture.md
+  - extra_css:
+      - css: docs/style.css
 
 # Customization
 extra:
