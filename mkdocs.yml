@@ -7,20 +7,24 @@ repo_name: "vamsi1998123/vamsilabs-dev-notes-main"
 repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
-  name: readthedocs
-  logo: null  # Remove the logo to make more space for content
-  extra_navbar:
-      - Home: index.md
-      - Learning: learning.md
-      - Shortcuts: shortcuts.md
-      - Git: git.md
-      - Interview Questions: interviewquestions.md
-      - DataStructures: dsa.md
-      - Java:
-          - Ecosystem: java/ecosystem.md
-          - Maven: java/maven.md
-          - Gradle: java/gradle.md
-          - Java Basics: java/JavaBasics.md
+  name: bootstrap
+  locale: fr
+  analytics:
+    gtag: G-ABC123
+
+
+nav:
+  - Home: index.md
+  - Learning: learning.md
+  - Shortcuts: shortcuts.md
+  - Git: git.md
+  - Interview Questions: interviewquestions.md
+  - DataStructures: dsa.md
+  - Java:
+      - Ecosystem: java/ecosystem.md
+      - Maven: java/maven.md
+      - Gradle: java/gradle.md
+      - Java Basics: java/JavaBasics.md
       - JVM: java/Jvm.md
       - OOPS: java/oops.md
       - Constructors: java/Constructors.md
@@ -32,17 +36,17 @@ theme:
       - Garbage Collection: java/GarbageCollection.md
       - Serialization: java/Serialization.md
       - Java 8: java/Java8.md
-      - Advanced Java:
+  - Advanced Java:
       - Exception Handling: java/ExceptionHandling.md
       - Collections: java/Collections.md
       - Differences in Collections: java/DiffCollections.md
       - Concurrent Collections: java/ConcurrentCollections.md
       - MultiThreading: java/MultiThreading.md
-      - StreamApi:
+  - StreamApi:
       - StreamApiQuestions: stream api/streamapi.md
-      - Solid Principles:
+  - Solid Principles:
       - Solid Principles: solidprinciples/solidprinciples.md
-      - Design Patterns:
+  - Design Patterns:
       - Introduction: designpatterns/dp.md
       - Creational Design Patterns:
           - Creational Design Patterns: designpatterns/creationalDesignPatterns/CreationalDesignPatterns.md
@@ -71,38 +75,38 @@ theme:
           - Memento:  designpatterns/behaviouralDesignPatterns/MementoDp.md
           - Visitor: designpatterns/behaviouralDesignPatterns/VisitorDp.md
           - Interpreter: designpatterns/behaviouralDesignPatterns/Interpreter.md
-      - SpringBoot:
+  - SpringBoot:
       - Introduction: springboot/introduction.md
       - AutoConfiguration: springboot/AutoConfiguration.md
       - Annotations: springboot/Annotations.md
       - IOC and Dependency Injection: springboot/SpringIOC.md
       - Rest API Best Practices: springboot/restapibestpractices.md
-      - Junit:
+  - Junit:
       - Basics: junit/junit.md
-      - DataBases:
+  - DataBases:
       - Neo4j: databases/neo4j.md
       - SQL: databases/sql.md
-      - Kafka:
+  - Kafka:
       - Kafka Basics: Kafka/kafka.md
-      - Postgresql:
+  - Postgresql:
       - Replication & Sharding: postgresql/postgresql.md
-      - MicroServices:
+  - MicroServices:
       - Basic Terminology: microservices/microservices.md
       - CQRS: CQRS.md
-      - System Design:
+  - System Design:
       - Https: https.md
       - Cap Theorem: capTheorem.md
       - Rate Limiter: ratelimiting.md
       - Load Balancing: loadbalancer.md
       - Distributed Caching: distributedCaching.md
       - Redis: redis.md
-      - DevOps:
+  - DevOps:
       - Tools: devops/devops.md
       - Linux: devops/linux.md
       - Docker: devops/docker.md
       - Ansible: devops/ansible.md
       - AWS: devops/aws.md
-      - Misc:
+  - Misc:
       - CleanArchitecture: misc/clean-architecture.md
 
 # Customization
