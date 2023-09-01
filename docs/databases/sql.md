@@ -4,13 +4,13 @@ SQL:
 
 Statements in SQL:
 
-DDL -Create ,Alter ,Drop and Truncate
+DDL -Create, Alter, Drop and Truncate
 
-DML- Select ,insert ,Update and delete
+DML- Select, Insert, Update and delete
 
-DCL – Grant ,Revoke
+DCL – Grant, Revoke
 
-TCL – Commit ,Rollback
+TCL – Commit, Rollback
 
 ## ACID Properties
 
@@ -78,6 +78,30 @@ Infinite Dynamo (graph)
 ## Delete, Drop and Truncate
 
 
+**Delete:**
+
+* It is a DML statement.
+* Remove rows one by one.
+* We can use "where" condition and delete a particular row.
+* DELETE may leave fragmented space that requires additional maintenance to reclaim.
+
+      delete from Student;
+      delete from Student where id = 10;
+
+**Drop**
+
+* It is a DDL statement
+* Deletes the entire table along with the structure.
+
+      drop table Student;
+
+**Truncate**
+
+* It is a DDL statement.
+* It will also delete the rows, but it will delete all the rows at once.
+* However, TRUNCATE is generally faster than DELETE because it deallocates the space used by the table and its data in a more efficient way.
+      
+      truncate table Student;
 
 ## Nth highest salary
 
