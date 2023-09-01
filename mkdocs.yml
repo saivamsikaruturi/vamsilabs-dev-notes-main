@@ -141,7 +141,7 @@ extra:
 # Extensions
 markdown_extensions:
   - pymdownx.highlight:
-      anchor_linenums: true
+      linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - admonition
