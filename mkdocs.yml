@@ -16,16 +16,14 @@ theme:
   palette:
     primary: red
     toggle:
-      # Toggle for light mode (prefers-color-scheme: light)
-      - media: "(prefers-color-scheme: light)"
-        scheme: default
+      # Palette toggle for light mode
+      - scheme: default
         toggle:
           icon: material/brightness-7
           name: Switch to dark mode
 
-      # Toggle for dark mode (prefers-color-scheme: dark)
-      - media: "(prefers-color-scheme: dark)"
-        scheme: slate
+      # Palette toggle for dark mode
+      - scheme: slate
         toggle:
           icon: material/brightness-4
           name: Switch to light mode
