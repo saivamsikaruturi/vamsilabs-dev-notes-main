@@ -2,8 +2,8 @@
 :root {
 
     /* Primary color shades */
-    --md-primary-fg-color: #861f41;
-    --md-primary-fg-color--light: #861f4194;
+    --md-primary-fg-color: orange;
+    --md-primary-fg-color--light: orange;
     --md-primary-fg-color--dark: #ac325a;
     --md-primary-bg-color: hsla(0, 0%, 100%, 1);
     --md-primary-bg-color--light: hsla(0, 0%, 100%, 0.7);
@@ -23,7 +23,7 @@
     --md-code-fg-color: hsla(200, 18%, 26%, 1);
 
     /* Footer */
-    --md-footer-bg-color: #861f41;
+    --md-footer-bg-color: orange;
     --md-footer-bg-color--dark: hsla(0, 0%, 0%, 0.32);
     --md-footer-fg-color: hsla(0, 0%, 100%, 1);
     --md-footer-fg-color--light: hsla(0, 0%, 100%, 0.7);

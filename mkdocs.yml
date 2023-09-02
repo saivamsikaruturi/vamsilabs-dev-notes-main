@@ -31,12 +31,15 @@ theme:
   palette_toggle: true  # Enable palette toggle
 
 palette_toggle_icons:
-  - name: material/brightness-7
+  - name: material/weather-sunny
     scheme: default
-    toggle: Switch to dark mode
-  - name: material/brightness-4
-    scheme: slate
     toggle: Switch to light mode
+  - name: material/weather-night
+    scheme: slate
+    toggle: Switch to dark mode
+    primary: pink
+    accent: pink
+
 
 
 
