@@ -1,3 +1,9 @@
 [build]
 command = "mkdocs build --config-file mkdocs1.yml"
 publish = "site"
+[[plugins]]
+package = "@sentry/netlify-build-plugin"
+
+[plugins.inputs]
+sentryOrg = ""
+sentryProject = ""
