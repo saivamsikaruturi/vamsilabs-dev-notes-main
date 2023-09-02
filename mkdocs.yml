@@ -28,6 +28,17 @@ theme:
     - search.suggest
     - toc.autohide
   custom_dir: 'custom'
+  palette_toggle: true  # Enable palette toggle
+
+palette_toggle_icons:
+  - name: material/brightness-7
+    scheme: default
+    toggle: Switch to dark mode
+  - name: material/brightness-4
+    scheme: slate
+    toggle: Switch to light mode
+
+
 
 
 nav:
