@@ -6,9 +6,7 @@ site_url: "https://vamsilabs-dev-notes.netlify.app"
 repo_name: "vamsi1998123/vamsilabs-dev-notes-main"
 repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
-
-
-ttheme:
+theme:
   name: 'material'
   palette:
     primary: orange
@@ -28,29 +26,55 @@ ttheme:
     - search.suggest
     - toc.autohide
 
-  nav:
-    - Home: index.md
-    - Learning: learning.md
-    - Shortcuts: shortcuts.md
-    - Git: git.md
-    - Interview Questions: interviewquestions.md
-    - DataStructures: dsa.md
-    # ... (rest of your navigation structure)
+nav:
+  - Home: index.md
+  - Learning: learning.md
+  - Shortcuts: shortcuts.md
+  - Git: git.md
+  - Interview Questions: interviewquestions.md
+  - DataStructures: dsa.md
+  - Java:
+      - Ecosystem: java/ecosystem.md
+      - Maven: java/maven.md
+      - Gradle: java/gradle.md
+      # ... (rest of your Java navigation)
+  - Advanced Java:
+    # ... (rest of the Advanced Java navigation)
+  - StreamApi:
+    # ... (rest of the StreamApi navigation)
+  - Solid Principles:
+    # ... (rest of the Solid Principles navigation)
+  - Design Patterns:
+    # ... (rest of the Design Patterns navigation)
+  - SpringBoot:
+    # ... (rest of the SpringBoot navigation)
+  - Junit:
+    # ... (rest of the Junit navigation)
+  - DataBases:
+    # ... (rest of the DataBases navigation)
+  - Kafka:
+    # ... (rest of the Kafka navigation)
+  - Postgresql:
+    # ... (rest of the Postgresql navigation)
+  - MicroServices:
+    # ... (rest of the MicroServices navigation)
+  - System Design:
+    # ... (rest of the System Design navigation)
+  - DevOps:
+    # ... (rest of the DevOps navigation)
+  - Misc:
+    # ... (rest of the Misc navigation)
 
-  # Customization
-  extra:
-    manifest: "manifest.webmanifest"
-    social:
-      - icon: fontawesome/brands/github-alt
-        link: "https://github.com/vamsi1998123"
-      - icon: fontawesome/brands/linkedin
-        link: "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
+# Customization
+extra:
+  manifest: "manifest.webmanifest"
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: "https://github.com/vamsi1998123"
+    - icon: fontawesome/brands/linkedin
+      link: "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
 
-  # Extensions
-  markdown_extensions:
-    - codehilite
-    - tables
-
-
-
-
+# Extensions
+markdown_extensions:
+  - codehilite
+  - tables
