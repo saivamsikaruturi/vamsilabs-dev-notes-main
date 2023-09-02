@@ -135,7 +135,7 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
   custom_html:
-    - custom/custom.html
+    - custom/example.html
 
 # Extensions
 markdown_extensions:
