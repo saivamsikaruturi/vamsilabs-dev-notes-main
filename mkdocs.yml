@@ -10,12 +10,7 @@ theme:
   name: material
   features:
     - navigation.tabs
-  palette:
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to system preference
+    - navigation.tabs.sticky
 
 
 
