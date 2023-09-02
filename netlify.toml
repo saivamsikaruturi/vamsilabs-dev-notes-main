@@ -5,3 +5,4 @@ publish = "site"
 package = "@sentry/netlify-build-plugin"
 [plugins.inputs]
 sentryOrg = "personal-4c8d758ce"
+sentryProject = "new"
