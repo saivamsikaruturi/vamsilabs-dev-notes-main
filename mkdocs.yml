@@ -146,3 +146,7 @@ extra_css:
 extra_javascript:
   - custom/theme-toggle.js  # Include your JavaScript file for theme toggling
 
+
+plugins:
+  - inputs:
+      sentryOrg: 3744502f88138ad871f1bc5303e6e72d081cc28088fdfcf5af34b05b7c918f1e
