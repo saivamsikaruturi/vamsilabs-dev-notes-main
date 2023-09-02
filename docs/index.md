@@ -1,7 +1,12 @@
 # Home
-<!-- BEGIN: Theme Toggle Button -->
+
 <button id="theme-toggle-button">Toggle Theme</button>
-<!-- END: Theme Toggle Button -->
+
+
+# Welcome to Vamsi Tech Notes
+
+This is the rest of your content...
+
 
 Welcome to My Tech Notes
 
