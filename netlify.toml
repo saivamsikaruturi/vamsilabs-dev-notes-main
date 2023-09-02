@@ -1,3 +1,4 @@
 [build]
-command = "mkdocs build --config-file mkdocs.yml"
+command = "pip install git+https://${GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git && mkdocs build"
 publish = "site"
+
