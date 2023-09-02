@@ -144,5 +144,3 @@ extra_css:
 
 extra_javascript:
   - custom/theme-toggle.js  # Include your JavaScript file for theme toggling
-
-requirements: requirements.txt
