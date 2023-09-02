@@ -42,8 +42,6 @@ palette_toggle_icons:
 
 
 
-
-
 nav:
   - Home: index.md
   - Learning: learning.md
