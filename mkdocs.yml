@@ -137,6 +137,3 @@ markdown_extensions:
   - codehilite
   - tables
 
-
-plugins:
-  - blog
