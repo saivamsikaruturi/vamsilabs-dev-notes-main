@@ -4,7 +4,7 @@ nav {
     justify-content: space-between; /* Move site name and navigation to opposite ends */
     align-items: center;
     background-color: #333; /* Dark background color for the navbar */
-    color: white;
+    color: indianred;
     padding: 10px 20px; /* Add more padding for better spacing */
 }
 
@@ -47,7 +47,7 @@ nav a:hover {
 
 /* Customize the appearance of code blocks (optional) */
 pre {
-    background-color: #f7f7f7;
+    background-color: #00b7ff;
     border-radius: 8px;
     padding: 10px;
     overflow-x: auto;
