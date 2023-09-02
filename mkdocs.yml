@@ -37,33 +37,6 @@ nav:
       - Ecosystem: java/ecosystem.md
       - Maven: java/maven.md
       - Gradle: java/gradle.md
-      # ... (rest of your Java navigation)
-  - Advanced Java:
-    # ... (rest of the Advanced Java navigation)
-  - StreamApi:
-    # ... (rest of the StreamApi navigation)
-  - Solid Principles:
-    # ... (rest of the Solid Principles navigation)
-  - Design Patterns:
-    # ... (rest of the Design Patterns navigation)
-  - SpringBoot:
-    # ... (rest of the SpringBoot navigation)
-  - Junit:
-    # ... (rest of the Junit navigation)
-  - DataBases:
-    # ... (rest of the DataBases navigation)
-  - Kafka:
-    # ... (rest of the Kafka navigation)
-  - Postgresql:
-    # ... (rest of the Postgresql navigation)
-  - MicroServices:
-    # ... (rest of the MicroServices navigation)
-  - System Design:
-    # ... (rest of the System Design navigation)
-  - DevOps:
-    # ... (rest of the DevOps navigation)
-  - Misc:
-    # ... (rest of the Misc navigation)
 
 # Customization
 extra:
