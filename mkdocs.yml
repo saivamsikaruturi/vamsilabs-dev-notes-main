@@ -25,6 +25,7 @@ theme:
     - search.share
     - search.suggest
     - toc.autohide
+  custom_dir: 'custom'
 
 
 nav:
