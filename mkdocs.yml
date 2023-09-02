@@ -12,7 +12,9 @@ theme:
     - navigation.tabs.sticky
     - navigation.top
   name: material
-  custom_dir: custom
+  palette:
+    primary: custom
+
 
 
 
