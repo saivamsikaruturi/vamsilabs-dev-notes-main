@@ -1,13 +1,5 @@
 # Home
 
-<button id="theme-toggle-button">Toggle Theme</button>
-
-
-# Welcome to Vamsi Tech Notes
-
-This is the rest of your content...
-
-
 Welcome to My Tech Notes
 
 # My favorite development tools
