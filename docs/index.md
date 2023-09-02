@@ -1,4 +1,5 @@
 # Home
+<button id="theme-toggle-button">Toggle Theme</button>
 
 Welcome to My Tech Notes
 
