@@ -1,3 +1,4 @@
 [build]
-command = "mkdocs build --config-file mkdocs.yml"
-publish = "site"
+command = "mkdocs build --config-file mkdocs.yml"  # Use MkDocs to build your documentation
+publish = "site"  # Publish the built site to the "site" directory
+python = "3.7"  # Specify the Python version (optional, only if needed for your project)
