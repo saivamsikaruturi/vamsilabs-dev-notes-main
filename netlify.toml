@@ -1,3 +1,7 @@
 [build]
 command = "mkdocs build --config-file mkdocs.yml"
 publish = "site"
+
+[[plugins]]
+# Load only the @netlify/plugin-lighthouse
+package = "@netlify/plugin-lighthouse"
