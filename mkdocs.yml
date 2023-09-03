@@ -17,12 +17,16 @@ theme:
       toggle:
         icon: material/lightbulb-outline
         name: Switch to dark mode
+      primary: teal
+      accent: purple
     # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       toggle:
         icon: material/lightbulb
         name: Switch to light mode
+      primary: teal
+      accent: lime
 
   features:
     - search.highlight
@@ -35,10 +39,13 @@ theme:
     - navigation.indexes
     - header.autohide
     - search.share
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
 
-hide:
-  - navigation
-  - toc
+#hide:
+#  - navigation
+#  - toc
 
 
 
@@ -59,8 +66,11 @@ markdown_extensions:
   - pymdownx.tabbed
   - pymdownx.tilde
   - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
   - pymdownx.highlight:
-      linenums: false
+      anchor_linenums: true
   - toc:
       baselevel: 2
 
@@ -176,7 +186,3 @@ extra:
     provider: google
     property: G-XXXXXXXXXX or UA-XXXXXXXX-X
 
-markup:
-  goldmark:
-    renderer:
-      table: true
