@@ -1,0 +1,29 @@
+/* Set header background color to amber */
+header {
+    background-color: var(--md-primary-bg-color);
+}
+.md-nav.md-right {
+    position: fixed; /* Fixed position on the right side */
+    top: 0;
+    right: 0;
+    height: 100%; /* Make it full height */
+    width: 300px; /* Adjust the width as needed */
+    background-color: #f0f0f0; /* Background color for the TOC */
+    overflow-y: auto; /* Add vertical scrolling if needed */
+    border-left: 1px solid #ddd; /* Optional: Add a border */
+}
+
+/* Style TOC links */
+.md-nav.md-right ul li {
+    padding: 10px;
+}
+
+/* Optional: Style TOC link hover and active states */
+.md-nav.md-right ul li:hover {
+    background-color: #ddd;
+}
+
+.md-nav.md-right ul li.active {
+    background-color: #d52a2a;
+    color: #fff;
+}

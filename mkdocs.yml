@@ -8,43 +8,46 @@ repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
   name: material
+  primary: amber
   custom_dir: custom
-  custom_css: custom/custom.css
   custom_html: custom/example.html
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: percona-light
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/lightbulb-outline
         name: Switch to dark mode
-
     # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       toggle:
-        icon: material/toggle-switch
+        icon: material/lightbulb
         name: Switch to light mode
+
   features:
     - search.highlight
     - navigation.top
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.tracking
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
+    - header.autohide
+    - search.share
+
+hide:
+  - navigation
+  - toc
 
 
-extra_css:
-  - https://unicons.iconscout.com/release/v3.0.3/css/line.css
-  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css
-  - css/version-select.css
-  - css/toctree.css
-  - css/percona.css
 
-extra_javascript:
-  - js/version-select.js
+extra_css: [custom/custom.css]
 
 markdown_extensions:
   - codehilite
   - tables
   - attr_list
-  - toc:
-      permalink: True
   - admonition
   - footnotes
   - def_list   # https://michelf.ca/projects/php-markdown/extra/#def-list
@@ -58,9 +61,15 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.highlight:
       linenums: false
+  - toc:
+      baselevel: 2
 
 plugins:
   - search
+  - awesome-pages:
+      filename: .index
+      collapse_single_pages: true
+      strict: false
 
 
 
@@ -168,5 +177,11 @@ extra:
       link: "https://github.com/vamsi1998123"
     - icon: fontawesome/brands/linkedin
       link: "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
+  analytics:
+    provider: google
+    property: G-XXXXXXXXXX or UA-XXXXXXXX-X
 
-
+markup:
+  goldmark:
+    renderer:
+      table: true
