@@ -71,7 +71,7 @@ markdown_extensions:
 
 plugins:
   - search
-  - git-revision-date
+  - git-revision-date-localized
   - section-index # Adds links to nodes - comment out when creating PDF
   #  - htmlproofer # Uncomment to check links - but extends build time significantly
   - mike:
