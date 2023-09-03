@@ -104,6 +104,11 @@ Infinite Dynamo (graph)
       
           truncate table Student;
 
+
+## Indexing
+
+
+
 ## Nth highest salary
 
     select max(salary) from employee where salary < (Select max(salary) from employee where salary)
