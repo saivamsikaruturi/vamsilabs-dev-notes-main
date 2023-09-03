@@ -3,4 +3,8 @@ command = "mkdocs build --config-file mkdocs.yml"
 publish = "site"
 
 [[plugins]]
-package = "netlify-plugin-lighthouse"
+package = "@netlify/plugin-lighthouse"
+
+# optional, deploy the lighthouse report to a path under your site
+[plugins.inputs.audits]
+output_path = "reports/lighthouse.html"
