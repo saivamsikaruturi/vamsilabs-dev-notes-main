@@ -1,5 +1,5 @@
 [build]
-command = " npm install mkdocs build --config-file mkdocs.yml"
+command = " npm install &&  mkdocs build --config-file mkdocs.yml"
 publish = "site"
 
 [[plugins]]
