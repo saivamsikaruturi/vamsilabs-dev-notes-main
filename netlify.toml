@@ -2,6 +2,7 @@
 command = " npm install &&  mkdocs build --config-file mkdocs.yml"
 publish = "site"
 
+
 [[plugins]]
 package = "@netlify/plugin-lighthouse"
 
