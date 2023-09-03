@@ -12,11 +12,11 @@ theme:
 #  custom_dir: docs/custom
 #  custom_html: docs/custom/example.html
   palette:
-#    - media: "(prefers-color-scheme: light)"
-#      scheme: percona-light
-#      toggle:
-#        icon: material/lightbulb-outline
-#        name: Switch to dark mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: percona-light
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
       primary: teal
       accent: purple
 #    # Dark mode
