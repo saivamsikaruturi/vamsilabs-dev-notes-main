@@ -66,10 +66,6 @@ markdown_extensions:
 
 plugins:
   - search
-  - awesome-pages:
-      filename: .index
-      collapse_single_pages: true
-      strict: false
 
 
 
