@@ -68,7 +68,6 @@ plugins:
   - search
 
 
-
 nav:
   - Home: index.md
   - Learning: learning.md
