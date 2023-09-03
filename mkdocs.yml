@@ -8,25 +8,25 @@ repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
   name: material
-  primary: amber
-  custom_dir: docs/custom
-  custom_html: docs/custom/example.html
+#  primary: amber
+#  custom_dir: docs/custom
+#  custom_html: docs/custom/example.html
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: percona-light
-      toggle:
-        icon: material/lightbulb-outline
-        name: Switch to dark mode
+#    - media: "(prefers-color-scheme: light)"
+#      scheme: percona-light
+#      toggle:
+#        icon: material/lightbulb-outline
+#        name: Switch to dark mode
       primary: teal
       accent: purple
-    # Dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/lightbulb
-        name: Switch to light mode
-      primary: teal
-      accent: lime
+#    # Dark mode
+#    - media: "(prefers-color-scheme: dark)"
+#      scheme: slate
+#      toggle:
+#        icon: material/lightbulb
+#        name: Switch to light mode
+#      primary: teal
+#      accent: lime
 
   features:
     - search.highlight
