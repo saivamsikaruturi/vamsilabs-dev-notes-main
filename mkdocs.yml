@@ -8,49 +8,40 @@ repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
   name: material
-#  primary: amber
-#  custom_dir: docs/custom
-#  custom_html: docs/custom/example.html
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: percona-light
-      toggle:
-        icon: material/lightbulb-outline
-        name: Switch to dark mode
-      primary: teal
-      accent: purple
-#    # Dark mode
-#    - media: "(prefers-color-scheme: dark)"
-#      scheme: slate
-#      toggle:
-#        icon: material/lightbulb
-#        name: Switch to light mode
-#      primary: teal
-#      accent: lime
-
+    primary: "red"
+    accent: "red"
   features:
-    - search.highlight
-    - navigation.top
-    - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.tracking
-    - navigation.expand
-    - navigation.path
-    - navigation.indexes
-    - header.autohide
-    - search.share
-    - content.tabs.link
-    - content.code.annotation
-    - content.code.copy
+    - tabs
 
+#  features:
+#    - search.highlight
+#    - navigation.top
+#    - navigation.tabs
+#    - navigation.tabs.sticky
+#    - navigation.tracking
+#    - navigation.expand
+#    - navigation.path
+#    - navigation.prune
+#    - navigation.indexes
+##    - header.autohide
+#    - search.share
+#    - content.tabs.link
+#    - content.code.annotation
+#    - content.code.copy
+#
+#extra_css:
+#  - docs/custom/custom.css
+#
+#
 #hide:
 #  - navigation
-#  - toc
+#  - path
 
 
 
-extra_css:
-  - docs/custom/custom.css
+
+
 
 markdown_extensions:
   - codehilite
@@ -66,7 +57,11 @@ markdown_extensions:
   - pymdownx.smartsymbols
   - pymdownx.tabbed
   - pymdownx.tilde
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - admonition
@@ -181,7 +176,9 @@ extra:
       link: "https://github.com/vamsi1998123"
     - icon: fontawesome/brands/linkedin
       link: "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
+  annotate:
+    json: [.s2]
   analytics:
     provider: google
-    property: G-XXXXXXXXXX or UA-XXXXXXXX-X
+    property: !ENV GOOGLE_ANALYTICS_KEY
 
