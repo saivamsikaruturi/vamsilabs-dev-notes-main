@@ -7,10 +7,80 @@ repo_name: "vamsi1998123/vamsilabs-dev-notes-main"
 repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
-  name: 'material'
+  name: material
+  logo: _images/percona-logo.svg
+  favicon: _images/percona-favicon.ico
+  custom_dir: docs/overrides
+
   palette:
-    primary: orange
-    accent: cyan
+
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: percona-light
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+  # Theme features
+
+  features:
+    - search.highlight
+    - navigation.top
+
+
+extra_css:
+  - https://unicons.iconscout.com/release/v3.0.3/css/line.css
+  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css
+  - css/version-select.css
+  - css/toctree.css
+  - css/percona.css
+
+extra_javascript:
+  - js/version-select.js
+
+markdown_extensions:
+  - codehilite
+  - tables
+  - attr_list
+  - toc:
+      permalink: True
+  - admonition
+  - footnotes
+  - def_list   # https://michelf.ca/projects/php-markdown/extra/#def-list
+  - meta
+  - smarty:
+      smart_angled_quotes: true
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.tabbed
+  - pymdownx.tilde
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      linenums: false
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+        #- plantuml_markdown
+
+plugins:
+  - search
+  - git-revision-date
+  - section-index # Adds links to nodes - comment out when creating PDF
+  #  - htmlproofer # Uncomment to check links - but extends build time significantly
+  - mike:
+      version_selector: true
+      css_dir: css
+      javascript_dir: js
+      canonical_version: null
+
+
 
 nav:
   - Home: index.md
@@ -117,7 +187,4 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
 
-# Extensions
-markdown_extensions:
-  - codehilite
-  - tables
+
