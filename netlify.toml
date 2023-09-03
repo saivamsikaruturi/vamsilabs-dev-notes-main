@@ -1,3 +1,3 @@
 [build]
-command = "pip install git+https://${GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git && mkdocs build"
+command = "pip install git+https://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@github.com/squidfunk/mkdocs-material-insiders.git && mkdocs build"
 publish = "site"
