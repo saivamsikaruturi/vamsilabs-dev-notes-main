@@ -12,35 +12,40 @@ theme:
   custom_dir: docs/custom
   custom_html: docs/custom/example.html
   palette:
+    schema: dark
     primary: teal
     accent: lime
-#  feature:
-#    - media: "(prefers-color-scheme: light)"
-#      scheme: light
-#      accent: deep orange
-#      toggle:
-#        icon: material/weather-sunny
-#        name: Switch to dark mode
-#    - media: "(prefers-color-scheme: dark)"
-#      scheme: slate
-#      accent: deep orange
-#      toggle:
-#        icon: material/weather-night
-#        name: Switch to system preference
-#    - media: "(prefers-color-scheme: auto)"
-#      toggle:
-#        icon: material/theme-light-dark
-#        name: Switch to light mode
+  feature:
+    - media: "(prefers-color-scheme: light)"
+      scheme: light
+      accent: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      accent: deep orange
+      toggle:
+        icon: material/weather-night
+        name: Switch to system preference
+    - media: "(prefers-color-scheme: auto)"
+      toggle:
+        icon: material/theme-light-dark
+        name: Switch to light mode
   features:
     - search.highlight
-    - top
-    - tabs
+    - navigation.top
+    - navigation.tabs
     - navigation.tabs.sticky
     - navigation.tracking
-    - expand
+    - navigation.expand
     - navigation.path
     - navigation.indexes
     - header.autohide
+    - literate-nav
+    - toc.follow
+
+
 
 
 hide:
