@@ -35,7 +35,7 @@ theme:
   features:
     - search.highlight
     - navigation.top
-    - navigation.tabs
+    - tabs
     - navigation.tabs.sticky
     - navigation.tracking
     - navigation.expand
