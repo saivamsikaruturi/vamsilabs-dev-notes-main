@@ -182,9 +182,9 @@ extra:
       link: "https://github.com/vamsi1998123"
     - icon: fontawesome/brands/linkedin
       link: "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
-  annotate:
-    json: [.s2]
-  analytics:
-    provider: google
-    property: !ENV GOOGLE_ANALYTICS_KEY
+#  annotate:
+#    json: [.s2]
+#  analytics:
+#    provider: google
+#    property: !ENV GOOGLE_ANALYTICS_KEY
 
