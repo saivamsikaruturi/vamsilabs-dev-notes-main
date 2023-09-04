@@ -12,22 +12,25 @@ theme:
   custom_dir: docs/custom
   custom_html: docs/custom/example.html
   palette:
+    primary: teal
+    accent: lime
+#  feature:
 #    - media: "(prefers-color-scheme: light)"
-#      scheme: percona-light
+#      scheme: light
+#      accent: deep orange
 #      toggle:
-#        icon: material/lightbulb-outline
+#        icon: material/weather-sunny
 #        name: Switch to dark mode
-#      primary: teal
-#      accent: purple
-#    # Dark mode
 #    - media: "(prefers-color-scheme: dark)"
 #      scheme: slate
+#      accent: deep orange
 #      toggle:
-#        icon: material/lightbulb
+#        icon: material/weather-night
+#        name: Switch to system preference
+#    - media: "(prefers-color-scheme: auto)"
+#      toggle:
+#        icon: material/theme-light-dark
 #        name: Switch to light mode
-      primary: teal
-      accent: lime
-
   features:
     - search.highlight
     - navigation.top
@@ -36,22 +39,15 @@ theme:
     - navigation.tracking
     - navigation.expand
     - navigation.path
-    - navigation.prune
     - navigation.indexes
-#    - header.autohide
-    - search.share
-    - content.tabs.link
-    - content.code.annotation
-    - content.code.copy
-
-extra_css:
-  - docs/custom/custom.css
+    - header.autohide
 
 
 hide:
   - navigation
   - path
-
+extra_css:
+  - docs/custom/custom.css
 
 
 
@@ -71,11 +67,7 @@ markdown_extensions:
   - pymdownx.smartsymbols
   - pymdownx.tabbed
   - pymdownx.tilde
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.superfences
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - admonition
@@ -154,7 +146,6 @@ nav:
       - Annotations: springboot/Annotations.md
       - IOC and Dependency Injection: springboot/SpringIOC.md
       - Rest API Best Practices: springboot/restapibestpractices.md
-      - Spring Boot 3: springboot/SpringBoot3.md
   - Junit:
       - Basics: junit/junit.md
   - DataBases:
@@ -191,9 +182,9 @@ extra:
       link: "https://github.com/vamsi1998123"
     - icon: fontawesome/brands/linkedin
       link: "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
-#  annotate:
-#    json: [.s2]
-#  analytics:
-#    provider: google
-#    property: !ENV GOOGLE_ANALYTICS_KEY
+  annotate:
+    json: [.s2]
+  analytics:
+    provider: google
+    property: !ENV GOOGLE_ANALYTICS_KEY
 
