@@ -33,11 +33,11 @@ theme:
 #        name: Switch to light mode
   features:
     - search.highlight
-    - navigation.top
-    - navigation.tabs
+    - top
+    - tabs
     - navigation.tabs.sticky
     - navigation.tracking
-    - navigation.expand
+    - expand
     - navigation.path
     - navigation.indexes
     - header.autohide
