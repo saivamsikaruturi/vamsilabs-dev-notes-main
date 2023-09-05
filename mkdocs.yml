@@ -105,7 +105,8 @@ nav:
       - Cloning: java/Cloning.md
       - Garbage Collection: java/GarbageCollection.md
       - Serialization: java/Serialization.md
-      - Java 8: java/Java8.md
+  - Java 8: java/Java8.md
+  - Java 17: java/Java17.md
   - Advanced Java:
       - Exception Handling: java/ExceptionHandling.md
       - Collections: java/Collections.md
@@ -151,6 +152,7 @@ nav:
       - Annotations: springboot/Annotations.md
       - IOC and Dependency Injection: springboot/SpringIOC.md
       - Rest API Best Practices: springboot/restapibestpractices.md
+      - Spring Boot 3: springboot/SpringBoot3.md
   - Junit:
       - Basics: junit/junit.md
   - DataBases:
