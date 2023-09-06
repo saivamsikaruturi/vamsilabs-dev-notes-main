@@ -34,25 +34,26 @@ theme:
         name: Switch to light mode
   features:
     - search.highlight
-    - navigation.top
-    - tabs
-    - navigation.tabs.sticky
+    - navigation.tabs
+#    - navigation.tabs.sticky
     - navigation.tracking
-    - navigation.expand
-    - navigation.path
-    - navigation.indexes
-    - header.autohide
+#    - navigation.expand
+#    - navigation.path
+#    - navigation.indexes
+#    - header.autohide
     - literate-nav
     - toc.follow
-
+extra_css:
+  - custom/custom.css
 
 
 
 hide:
   - navigation
   - path
-extra_css:
-  - docs/custom/custom.css
+
+
+
 
 
 

@@ -105,6 +105,18 @@ Infinite Dynamo (graph)
           truncate table Student;
 
 
+
+## Normalization
+
+* Denormalized data set: All the different type of data is bundled together into a single file or a table.
+* Effectively designing a database such that we can avoid data redundancy.
+* There is a step-by-step process you need to follow in order to normalize your database
+
+**Different levels of normalization:**
+* 1 NF, 2NF, 3NF, 4NF, 5NF, BCNF (Boyce-Codd NF)
+* 
+
+
 ## Indexing
 
 

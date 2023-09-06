@@ -1,7 +1,17 @@
-/* Set header background color to amber */
-header {
-    background-color: var(--md-primary-bg-color);
+
+
+.md-nav--primary .md-nav__link[for=__toc] > .md-nav__icon,
+.md-nav--primary .md-nav__link[for=__toc] ~ .md-nav {
+    display: none;
 }
+
+
+
+
+header {
+    background-color: #e6695b; /* Replace with your desired color */
+}
+
 .md-nav.md-right {
     position: fixed; /* Fixed position on the right side */
     top: 0;
@@ -13,16 +23,19 @@ header {
     border-left: 1px solid #ddd; /* Optional: Add a border */
 }
 
-
+.md-grid {
+    max-width: 1440px;
+}
 
 /* Style TOC links */
 .md-nav.md-right ul li {
-    padding: 10px;
+    padding: 1000px;
+    accent-color: #d52a2a;
 }
 
 /* Optional: Style TOC link hover and active states */
 .md-nav.md-right ul li:hover {
-    background-color: #ddd;
+    background-color: #d3e156;
 }
 
 .md-nav.md-right ul li.active {
