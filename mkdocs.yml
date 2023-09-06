@@ -32,6 +32,7 @@ theme:
     - search.highlight
     - navigation.tabs
     - navigation.tracking
+    - navigation.instant
     - literate-nav
 extra_css:
   - custom/custom.css
