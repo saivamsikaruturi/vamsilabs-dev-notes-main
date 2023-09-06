@@ -8,49 +8,41 @@ repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 theme:
   name: material
-  primary: amber
-  custom_dir: docs/custom
-  custom_html: docs/custom/example.html
   palette:
-    schema: dark
-    primary: teal
-    accent: lime
-  feature:
-    - media: "(prefers-color-scheme: light)"
-      scheme: light
-      accent: deep orange
+
+    # Palette toggle for light mode
+    - scheme: default
       toggle:
-        icon: material/weather-sunny
+        icon: material/brightness-7
         name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      accent: deep orange
+
+    # Palette toggle for dark mode
+    - scheme: slate
       toggle:
-        icon: material/weather-night
-        name: Switch to system preference
-    - media: "(prefers-color-scheme: auto)"
-      toggle:
-        icon: material/theme-light-dark
+        icon: material/brightness-4
         name: Switch to light mode
+
   features:
     - search.highlight
     - navigation.tabs
-#    - navigation.tabs.sticky
     - navigation.tracking
-#    - navigation.expand
-#    - navigation.path
-#    - navigation.indexes
-#    - header.autohide
     - literate-nav
-    - toc.follow
 extra_css:
   - custom/custom.css
 
+extra_javascript:
+  - custom/theme-toogle.js
+
+#extra_html:
+#  - custom/example.html
 
 
-hide:
-  - navigation
-  - path
+
+
+#
+#hide:
+#  - navigation
+#  - path
 
 
 
