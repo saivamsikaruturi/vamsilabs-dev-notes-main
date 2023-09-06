@@ -23,6 +23,39 @@ header {
     border-left: 1px solid #ddd; /* Optional: Add a border */
 }
 
+/* Change the background color of the top navigation bar */
+
+
+
+h1{
+    accent-color: #00bdd6;
+}
+:root {
+    --md-primary-fg-color:        #EE0F0F;
+    --md-primary-fg-color--light: #ECB7B7;
+    --md-primary-fg-color--dark:  #90030C;
+}
+
+
+/* Slate theme */
+/*[data-md-color-scheme=slate] .md-tabs {*/
+/*    background-color: green;*/
+/*}*/
+
+
+
+body {
+    background-color: #ffffff;
+    color: #333333;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+
 .md-grid {
     max-width: 1440px;
 }
