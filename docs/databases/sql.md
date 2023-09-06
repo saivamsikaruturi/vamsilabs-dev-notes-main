@@ -106,6 +106,10 @@ Infinite Dynamo (graph)
 
 
 
+
+![flow.jpg](flow.jpg)
+
+
 ## Normalization
 
 * Denormalized data set: All the different type of data is bundled together into a single file or a table.
@@ -114,10 +118,27 @@ Infinite Dynamo (graph)
 
 **Different levels of normalization:**
 * 1 NF, 2NF, 3NF, 4NF, 5NF, BCNF (Boyce-Codd NF)
-* 
+
+**1NF**
+
+* Every column/attribute need to have a single value.
+* Each row should be unique.Either through a single or multiple columns. Not mandatory to have primary key.
+
+**2NF**
+
+* Must be in 1NF.
+* All non-key attributes must be fully dependent on candidate key  ( for example : Order Number + Product code)
+* Every table should have primary key and relationship between the tables should be formed using foreign key.
+
+**3NF**
+
+* Must be in 2NF.
+* Avoid Transitive dependencies.
 
 
 ## Indexing
+
+
 
 
 
