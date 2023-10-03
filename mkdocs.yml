@@ -35,6 +35,7 @@ theme:
     - navigation.instant
     - literate-nav
     - content.code.copy
+    - content.code.select
 extra_css:
   - custom/custom.css
 
