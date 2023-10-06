@@ -1,3 +1,54 @@
+
+![docker.png](docker.png)
+
+**Docker**
+
+* To create, deploy and run applications easily by using containers.
+
+**Problem Statement 1**
+
+* Dev, QA
+* Required Depenedecies and the app need to be run in qa. 
+* For example the java version is changed from java 8 to java 17 in dev env. then the version in qa should also be changed. otherwise the application will not run.
+* Problems : Time Consuming
+             Compatibility issues
+             Error Prone
+* Need to ship all the dependencies along the error-prone.
+* Docker packages the application and the dependencies required to run in a single bundle and ship it to the Target env.
+* In docker, we call this bundle as Image.
+* When we run this image in other env this creates an isolated env.for the application to run by installing all the required packages and we call this isolation env as container.
+
+**Problem Statement 2**
+
+* Consider 3 applications running on the same host, and now we want to isolate these 3 applications due to security reasons.
+* The immediate solution we get is to deploy these 3 applications on 3 different hosts and this works. 
+* But this is not the cost-efficient solution and increases the maintenance overhead.
+* The second thought that we get is, what if we install 3 different VM's on a single host.This solution also works. But this is also not an effective solution and VM's take a lot of resources from the host
+* With docker, we can package these 3 applications into 3 different images and run them on a single host.
+* Now, 3 different containers are created on the same host.
+* Containers are lightweight and smaller whereas vm takes a lot of space.
+
+**Docker Architecture**
+
+![Docker-Architecture.png](Docker-Architecture.png)
+**Docker Engine:** 
+
+* It is a client server application and used to build and containerize the applications. 
+* This is where we run the docker images to create containers.
+* It includes docker servers which is a type of long-running program called daemon process and used to create and manage docker objects like images,containers,networks and volumes.
+* Docker server pulls and pushes the image to docker registry.
+* Docker Registry is a place where we store docker images.
+* Docker client, with which the user can interact with the docker. It includes the Rest Api that includes the interface to takl to daemon.
+* A cli which uses the docker rest api internally to control or interact with the docker daemon through scripting or commands.
+
+* **Advantages of Using Docker**
+
+* Portability
+* High Performance
+* Isolation
+* Scalability
+* Rapid Development
+
 # Docker Commands
 
 ## Docker basics
