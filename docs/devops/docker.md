@@ -30,7 +30,7 @@
 
 **Docker Architecture**
 
-![Docker-Architecture.png](Docker-Architecture.png)
+    ![Docker-Architecture.png](Docker-Architecture.png)
 **Docker Engine:** 
 
 * It is a client server application and used to build and containerize the applications. 
