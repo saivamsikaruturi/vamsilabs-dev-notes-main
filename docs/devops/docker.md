@@ -30,7 +30,7 @@
 
 **Docker Architecture**
 
-    ![Docker-Architecture.png](Docker-Architecture.png)
+   ![Docker-Architecture.png](Docker-Architecture.png)
 **Docker Engine:** 
 
 * It is a client server application and used to build and containerize the applications. 
@@ -48,6 +48,78 @@
 * Isolation
 * Scalability
 * Rapid Development
+
+
+## Container
+
+![docker-arch.png](docker-arch.png)
+
+| VM                   | Container                 |
+|----------------------|---------------------------|
+| Virtualizes Hardware | Virtualizes OS            |
+| Has Guest OS         | Shared Host OS            |
+| Huge in Size(GB)     | Smaller in Size(MB)       |
+| Takes time to create | Can be created in seconds |
+| Takes time to bootup | Can be started in seconds |  
+  
+
+## Install Docker
+
+
+## Basic Docker Commands
+
+* Before running the commands make sure docker is running in local machine.
+
+* docker --help - to get the different commands available in docker. 
+  ex: docker run --help
+
+1. docker pull nginx
+   * To pull the image from the docker registry.
+   * It pulls the latest image if the version is not specified.
+   
+2. docker pull nginx:1.20  
+
+3. docker images 
+    * To check the images available in the machine.
+
+4. docker run nginx
+
+5. docker ps
+    * To get the containers list which are running.
+
+6. docker ps -a
+    * To get the containers which are running and stopped.
+
+7. docker run -d nginx
+    * To run the container in background (-d)
+
+8. docker run -p 80:80 nginx
+    * mapping the host port to container port.
+
+9. docker rm containerId
+    * To delete a container which is not required.
+    * Before deleting the container stop the container.
+   
+10. docker stop containerId
+    * To stop a container which is running.
+    
+11. docker rename "new name" "old name"
+    * To rename the container.
+
+12. docker start containerId
+    * To start a container.
+    
+13. docker rmi imageId
+    * To remove a image which is not required.
+    * Before removing the image, stop the container which is using the image and remove the container.
+
+
+
+
+
+
+
+
 
 # Docker Commands
 
