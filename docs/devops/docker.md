@@ -74,8 +74,8 @@
   ex: docker run --help
 
 1. docker pull nginx
-     * To pull the image from the docker registry.
-     * It pulls the latest image if the version is not specified.
+      * To pull the image from the docker registry.
+      * It pulls the latest image if the version is not specified.
    
 2. docker pull nginx:1.20  
 
