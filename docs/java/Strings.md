@@ -1,6 +1,6 @@
 
 
-![StringsBasics.jpeg](StringsBasics.jpeg)
+![StringBasics.jpeg](StringBasics.jpeg)
   
 
 ## Prove Strings are Immutable
