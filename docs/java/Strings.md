@@ -1,12 +1,7 @@
 
 
-![img_3.png](img_3.png)
-
-    String s1=”java”;
-
-    String s2=”java”;
-
-    s1 = “javascript”; a new object javascript will be created and now s1 will point to javascript.
+![StringsBasics.jpeg](StringsBasics.jpeg)
+  
 
 ## Prove Strings are Immutable
 
