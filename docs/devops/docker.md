@@ -126,21 +126,24 @@
    * none
    * host
    * bridge
-* none network: If the container is in the none-network you will not be able to access anything outside this container.
+**none network**: If the container is in the none-network you will not be able to access anything outside this container.
        
        docker run -d --network none alpine
+
 * This will automatically will terminate, because the purpose of container is not to host any operating system.
 * The purpose of container is to run some service or to run some computation in the container.
 
        docker run -d --network name alphine sleep 500
+
 * To get to into any container
 
        docker exec -it containerId sh
+
 * now, if you try to ping google.com, you will not be access it. as the container is in none network.
 * This network is not suitable for most of the situation as we consume different apis or database.
 
 
-* bridge network: Bridge networks can access external resources and containers in the same network.
+**bridge network**: Bridge networks can access external resources and containers in the same network.
             
       docker run -d --network bridge alphine sleep 500
 
@@ -156,7 +159,7 @@
 
       docker run --name lenskart-app --publish=8080:8080 --env NEO4J_URI=bolt://neo4j1:7687 --env NEO4J_USER=neo4j --env NEO4J_PASSWORD=password --detach --network mongo-net lenskart-image:latest
 
-* host: when you create a container in a host network, we can access anything from the container.
+**host**: when you create a container in a host network, we can access anything from the container.
 
 ## Building Custom Image & Deploying Spring Boot
 
