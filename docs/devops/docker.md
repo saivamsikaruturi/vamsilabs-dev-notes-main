@@ -113,82 +113,107 @@
     * To remove a image which is not required.
     * Before removing the image, stop the container which is using the image and remove the container.
 
+14. docker stop $(docker ps -a)
+    * To stop all containers at once.
+    
+
+## Container Communication
+
+    docker run --name neo4j --publish=7474:7474 --publish=7687:7687 --env NEO4J_AUTH=neo4j/password --detach neo4j:latest
+
+*  docker inspect containerId | grep IpAddress
+* docker network ls
+   * none
+   * host
+   * bridge
+* none network: If the container is in the none-network you will not be able to access anything outside this container.
+       
+       docker run -d --network none alpine
+* This will automatically will terminate, because the purpose of container is not to host any operating system.
+* The purpose of container is to run some service or to run some computation in the container.
+
+       docker run -d --network name alphine sleep 500
+* To get to into any container
+
+       docker exec -it containerId sh
+* now, if you try to ping google.com, you will not be access it. as the container is in none network.
+* This network is not suitable for most of the situation as we consume different apis or database.
 
 
+* bridge network: Bridge networks can access external resources and containers in the same network.
+            
+      docker run -d --network bridge alphine sleep 500
+
+* By default, the network is bridge.
+* If 3 containers are in bridge network, they can communicate with each other.
+* We can access other container resources using the ipAddress of the other container.
+* But our goal was to access the container with the name of the container. This is not possible with default bridge network. 
+* We should create custom bridge network for access through container name.
+
+      docker network  create mongo-net --driver bridge
+
+      docker run --name neo4j --publish=7474:7474 --publish=7687:7687 --env NEO4J_AUTH=neo4j/password --detach --network mongo-net neo4j:latest
+
+      docker run --name lenskart-app --publish=8080:8080 --env NEO4J_URI=bolt://neo4j1:7687 --env NEO4J_USER=neo4j --env NEO4J_PASSWORD=password --detach --network mongo-net lenskart-image:latest
+
+* host: when you create a container in a host network, we can access anything from the container.
+
+## Building Custom Image & Deploying Spring Boot
+
+![dockerfiles.avif](dockerfiles.avif)
 
 
+* Creating image without docker file:
+
+       mvn spring-boot:build-image
+
+**Docker File**: It is having list of instructions to build an image.
+
+* we will run docker build command to build an image.
+* we can push this image to docker hub to share it with the community or pulling it in a different environment.
+* we can create the container by running the image.
+
+* All the instructions will be in the form of instruction followed by arguments
+* For ex: if you want to copy something from your local to the image all you do is:
+           
+         COPY source  destination     COPY  target/app.jar  app.jar
+
+## Dockerfile
+
+      # Download Java
+      ARG JAVA_VERSION="18-jdk"
+      FROM openjdk:${JAVA_VERSION}
+
+      LABEL versioin="1.0.0"
+
+      ENV PROJECT_NAME="todo-api"
+
+      ARG APP_HOME="/opt/deployment/"
+
+      # Copy the jar from local to image
+      RUN mkdir ${APP_HOME}
+      COPY target/todo-1.0.0.jar ${APP_HOME}/todo-1.0.0.jar
+
+      WORKDIR ${APP_HOME}
+
+      EXPOSE 8080
+
+      # Run application with java -jar
+      ENTRYPOINT ["java", "-jar", "todo-1.0.0.jar"]
+
+* we need to build the image from the docker file.
+
+       docker build -t todo-api .
+
+* run the image.
+
+       docker run -p 8080:8080 --network=your-docker-network --name your-spring-app 
+      -e SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/your_database_name \
+      -e SPRING_DATASOURCE_USERNAME=your_username 
+      -e SPRING_DATASOURCE_PASSWORD=your_password 
+       todo-api
 
 
-
-
-# Docker Commands
-
-## Docker basics
-
-Start a container in interactive attached mode: `docker run -i -t ubuntu:16.04 /bin/bash`
-
-Detach from a container: `Ctrl + P Ctrl + Q`
-
-Start a container in detached mode: `docker run -d ubuntu:16.04 /bin/bash`
-
-View logs of a container: `docker logs ContainerId`
-
-Start/Stop/Pause/Restart a container:
-
-* `docker start ContainerID`
-* `docker stop ContainerID`
-* `docker restart ContainerID`
-* `docker pause ContainerID`
-* `docker unpause ContainerID`
-
-List running containers: `docker ps`
-
-List all containers: `docker ps -a`
-
-List only container ids: `docker ps -aq`
-
-List container ids not running: `docker ps -aq -f status=exited`
-
-Delete a container: `docker rm containerId`
-
-Delete all stopped containers:
-
-* `docker rm $(docker ps -aq status=exited)`
-* `docker container prune`
-
-Automatically remove container once stopped: `docker run -i -t --rm ubuntu:16.04 /bin/bash`
-
-Commit changes in a docker container: `docker commit ContainerID username/repository`
-
-## Create Docker Image
-
-Build an image using Dockerfile: `docker build -t vamsikaruturi/myapp:1.0 .`
-
-Build an image using different Dockerfile name: 
-
-`docker build -t busyboxplus:1.0 -f ./myfolder/MyDockerFile`
-
-View layers of a container: `docker history ContainerId`
-
-**Sample Dockerfile**
-
-```
-# A basic apache server. To use either add or bind mount content under /var/www
-FROM ubuntu:12.04
-
-LABEL maintainer="krishnavamsikaruturi@gmail.com"
-
-RUN apt-get update && apt-get install -y apache2 && \ 
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
-
-EXPOSE 80
-
-CMD ["/usr/sbin/apache2", "-D", "FOREGROUND"]
-```
 
 ## Docker Instructions
 
@@ -360,3 +385,11 @@ Are you sure you want to continue? [y/N] y
 Resize disk space for docker vm
 
 * `docker-machine create --driver virtualbox --virtualbox-disk-size "40000" default`
+
+
+## Docker Volumes:
+
+* Containers are ephemeral i.e. when a container is created from an image, it can be destroyed and new containers can be created from the same image and put in place with a minimum of configuration.
+* When a container is deleted any data written to that container will be lost.
+* What if we want to persist the data of a container ? like database containers.
+* This can be achieved with docker volumes.
