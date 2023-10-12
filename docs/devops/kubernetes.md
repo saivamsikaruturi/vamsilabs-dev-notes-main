@@ -21,6 +21,6 @@
 * So, any request made, initially goes to the load balancer and oit distributes the load among multiple containers.
 * Now the application can handle the load.
 
-![problem2.PNG](problem2.PNG)
+![problem2.jpg](problem2.jpg)
 
 * What if there is a way to increase the number of containers if the load 
