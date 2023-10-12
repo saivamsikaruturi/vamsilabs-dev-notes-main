@@ -296,7 +296,7 @@ Constructor Reference:
   Function<String,Intgeger f =s-s.length
   
 ## STREAM API 
-[STREAM API QUESTIONS](https://master--vamsilabs-dev-notes.netlify.app/stream%20api/streamapi/)
+[STREAM API QUESTIONS](https://vamsilabs-master-notes.netlify.app/stream%20api/streamapi/)
 
 ## DATE AND TIME API
 
