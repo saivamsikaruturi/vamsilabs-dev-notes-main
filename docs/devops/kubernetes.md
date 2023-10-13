@@ -151,7 +151,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * A pod can have one or more containers.
 * So, when we want to run our application we will run it in containers.
 * But in k8s the container alone can be deployed and it needs to be wrapped up in a pod.
-* why we need pod ?
+* why we need pod ??
 * In most cases each pod will be having only one container.
 * But there is an example: where the 2 or more containers should run on one pod.
 *  refreshing the configuration for every one hr.
@@ -160,7 +160,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * If we want to scale our application i.e when the load increases if we want to increase the number of instances of our application, we should not increase the no.of containers in the same pod. But we should increase the number of pods.
 * when pods are created each pod is assigned a unique ip address and range of ports. with this we can run 2 applications on the same port in the same node.
 
-![pods.PNG](pods.PNG)
+ ![pods.jpg](pods.jpg)
 
 * Within the same the pod the containers can communicate with "localhost" as they are in the same network.
 * Containers that want to interact with other containers running in other pod can use ip address to communicate.
