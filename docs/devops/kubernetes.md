@@ -102,3 +102,118 @@
      * Endpoint controller (connects the pods and services to populate the object)
 
 **Worker Node Components**:
+
+
+
+
+
+
+
+
+
+
+
+
+## Kubernetes Setup
+
+* Minikube
+* Kind
+* K3s
+* Kubeadm
+
+* 2 CPUs or more
+* 2 GB of free memory
+* 20 GB of free disk space
+* Docker or VM manager
+
+>minikube start --nodes 2 -p local-cluster --driver=docker
+>minikube status -p local-cluster
+> local-cluster
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+local-cluster-m02
+type: Worker
+host: Running
+kubelet: Running
+
+
+## Kubectl Syntax:
+
+kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  etc] [pods,services] [name of the resource] [-o -f]
+
+## Pods:
+
+* It is an encapsulated layer over/around the containers.
+* A pod can have one or more containers.
+* So, when we want to run our application we will run it in containers.
+* But in k8s the container alone can be deployed and it needs to be wrapped up in a pod.
+* why we need pod ?
+* In most cases each pod will be having only one container.
+* But there is an example: where the 2 or more containers should run on one pod.
+*  refreshing the configuration for every one hr.
+* All the containers in the pod will share the same network and storage.
+* When the pod is deleted all the containers in the pod gets deleted. and even same with creation.
+* If we want to scale our application i.e when the load increases if we want to increase the number of instances of our application, we should not increase the no.of containers in the same pod. But we should increase the number of pods.
+* when pods are created each pod is assigned a unique ip address and range of ports. with this we can run 2 applications on the same port in the same node.
+
+![pods.PNG](pods.PNG)
+
+* Within the same the pod the containers can communicate with "localhost" as they are in the same network.
+* Containers that want to interact with other containers running in other pod can use ip address to communicate.
+* To create a pod:
+        
+      kubectl run nginx-pod --image=nginx
+
+* To create pod using yml:
+
+       kubectl apply -f pod.yml
+
+* To get the list of pods:
+  
+      kubectl get pods
+
+* To delete a pod
+
+      kubectl delete pod ngnix-pod
+
+* To filter nodes based on label
+
+      kubectl get pods -l team=intergrations
+
+* To know more info about the pod
+
+      kubectl get pod nginx-pod -o wide  -- in text format
+
+      kubectl get pod nginx-pod -o yaml  -- in yml format
+
+* To get detailed info about the pod
+
+      kubectl describe pod nginx-pod
+
+
+* Getting into the pod:
+
+      kubectl exec -it nginx-pod --bash
+
+* To get into a specific container in a pod
+
+      kubectl exec -it nginx-pod -c nginx-container --bash
+
+* Port Forwarding
+  * we cannot access pod directly outside the node. It can be accessed only from within the node.
+  * If we have access to the cluster, we can access it with port forward.
+
+        kubectl port-forward nginx-pod 8083:80
+
+* Logs of a pod
+
+        kubectl logs nginx-pod
+
+* To delete all the resources of a pod which are created using yml
+
+        kubctl delete -f pod.yml
+
+## Replica Sets and Deployments
