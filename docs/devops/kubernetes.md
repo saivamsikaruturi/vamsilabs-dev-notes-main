@@ -126,18 +126,19 @@
 * 20 GB of free disk space
 * Docker or VM manager
 
->minikube start --nodes 2 -p local-cluster --driver=docker
->minikube status -p local-cluster
-> local-cluster
-type: Control Plane
-host: Running
-kubelet: Running
-apiserver: Running
-kubeconfig: Configured
-local-cluster-m02
-type: Worker
-host: Running
-kubelet: Running
+      minikube start --nodes 2 -p local-cluster --driver=docker
+      minikube status -p local-cluster
+
+      local-cluster
+      type: Control Plane
+      host: Running
+      kubelet: Running
+      apiserver: Running
+      kubeconfig: Configured
+      local-cluster-m02
+      type: Worker
+      host: Running
+      kubelet: Running
 
 
 ## Kubectl Syntax:
