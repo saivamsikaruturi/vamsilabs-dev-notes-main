@@ -68,6 +68,7 @@
 * In real-time there will be more than one master node for fault tolerance.
 
 ![k8sArchitecture.PNG](k8sArchitecture.PNG)
+
 * So a k8s cluster consists of a group of worker nodes and set of master nodes which manages the worker nodes.
 
 **Master Node Components**:
@@ -76,25 +77,28 @@
 
     **kube API SERVER**:
 
-      * To interact with the k8s the user can use the apis provided by api server through cli or sdk.
-      * We can call api server as front end for the k8s control plane.
-      * So with this api we can instruct the k8s to do some operations like scheduling pod, get the list of pods etc.
+     * To interact with the k8s the user can use the apis provided by api server through cli or sdk.
+     * We can call api server as front end for the k8s control plane.
+     * So with this api we can instruct the k8s to do some operations like scheduling pod, get the list of pods etc.
 
     **etcd**:
-      * This is a storage where we can track all the nodes we have in the clusters and the containers details.
-      * Its a key value store to save clustered data, recommended to have backup plan.
-      * It is accessible only from api server for security reasons.No other component can directly interact with etcd.
-      * This etcd has a wonderful feature called watch api. The watch waits for the changes to keys by continuously watching and sends those key updates back to the client.
-      * so if any change happens in the records k8s api will respond accordingly.
+  
+     * This is a storage where we can track all the nodes we have in the clusters and the containers details.
+     * Its a key value store to save clustered data, recommended to have backup plan.
+     * It is accessible only from api server for security reasons.No other component can directly interact with etcd.
+     * This etcd has a wonderful feature called watch api. The watch waits for the changes to keys by continuously watching and sends those key updates back to the client.
+     * so if any change happens in the records k8s api will respond accordingly.
 
     **kube scheduler**:
-      * It helps to schedule the pods based on the various nodes based on the resource utilization.
+  
+     * It helps to schedule the pods based on the various nodes based on the resource utilization.
 
     **kube control manager**:
-      * when a change in a service config occurs for ex: replacing the image from which the pods are running or changing parameters in the config.yml, the controller spots the change amd starts working towards the new desired state.
-      Types of Controllers
-      * Replication Controller (correct no.of pods are running in the cluster)
-      * Node Controller (monitors health of each node)
-      * Endpoint controller (connects the pods and services to populate the object)
+
+     * when a change in a service config occurs for ex: replacing the image from which the pods are running or changing parameters in the config.yml, the controller spots the change amd starts working towards the new desired state.
+     Types of Controllers
+     * Replication Controller (correct no.of pods are running in the cluster)
+     * Node Controller (monitors health of each node)
+     * Endpoint controller (connects the pods and services to populate the object)
 
 **Worker Node Components**:
