@@ -166,42 +166,42 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * Containers that want to interact with other containers running in other pod can use ip address to communicate.
 * To create a pod:
         
-      kubectl run nginx-pod --image=nginx
+           kubectl run nginx-pod --image=nginx
 
 * To create pod using yml:
 
-       kubectl apply -f pod.yml
+          kubectl apply -f pod.yml
 
 * To get the list of pods:
   
-      kubectl get pods
+         kubectl get pods
 
 * To delete a pod
 
-      kubectl delete pod ngnix-pod
+         kubectl delete pod ngnix-pod
 
 * To filter nodes based on label
 
-      kubectl get pods -l team=intergrations
+         kubectl get pods -l team=intergrations
 
 * To know more info about the pod
 
-      kubectl get pod nginx-pod -o wide  -- in text format
+         kubectl get pod nginx-pod -o wide  -- in text format
 
-      kubectl get pod nginx-pod -o yaml  -- in yml format
+         kubectl get pod nginx-pod -o yaml  -- in yml format
 
 * To get detailed info about the pod
 
-      kubectl describe pod nginx-pod
+         kubectl describe pod nginx-pod
 
 
 * Getting into the pod:
 
-      kubectl exec -it nginx-pod --bash
+         kubectl exec -it nginx-pod --bash
 
 * To get into a specific container in a pod
 
-      kubectl exec -it nginx-pod -c nginx-container --bash
+         kubectl exec -it nginx-pod -c nginx-container --bash
 
 * Port Forwarding
   * we cannot access pod directly outside the node. It can be accessed only from within the node.
