@@ -126,6 +126,7 @@
    * none
    * host
    * bridge
+  
 **none network**: If the container is in the none-network you will not be able to access anything outside this container.
        
        docker run -d --network none alpine
