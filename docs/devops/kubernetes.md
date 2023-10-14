@@ -64,7 +64,7 @@
 * Also we can run the same application on multiple nodes to share the node.
 * We call these set of worker nodes as data plane
 * Some one should manage these worker nodes like if one node goes down moving the containers to a healty node etc.
-* This contoller part is taken care by another node called Master node or control-plane.
+* This contoller part is taken care by another nodealled Master node or control-plane.
 * In real-time there will be more than one master node for fault tolerance.
 
 ![K8SArch.PNG](K8SArch.PNG)
@@ -103,6 +103,35 @@
 
 **Worker Node Components**:
 
+   **Container run time**:                                                           
+
+   * To run an image from a container we need a container run time. There are many CRT available in the market like docker,racket, containerd.
+
+   **Kubelet**:
+   
+   * This is an agent that runs on each worker node in the cluster. It makes sure that the containers are running in a pod.
+   * It regularly checks the new or modified pod specification from the api server and ensuring the pods and their containers are healthy.
+   * Kubelet doesn't manage the containers that are not created by k8s.
+   * It is also responsible for registering a node with k8s cluster and sending events like pod status,resource utilization reports to the master server.    
+
+   **KubeProxy**:
+    
+   * It is a network proxy that runs on each worker node.
+   * When a request is received for your application it makes sure to forward it to the appropriate pod.
+
+
+**Summary**:
+
+* Let's say we want to create two instances of an application.
+* First we create an yml file and send it to the **Kube api server**.
+* The api runs the yml file/ specification by the **kube scheduler**.
+* The scheduler selects the worker node to which new node should be assigned based on the configuration and resource availability.
+* At the same time the master server also stores the configuration and status data to etcd.
+* Once the scheduler assigns a worker node the **kube controller manager** on the master node then sends an object specification to the node via api server.
+* Upon receiving the object from the api server the **kubelet** on the node ensures the object are created accordingly.
+* Whenever the status of the pod is changed like pod is killed the kubelet via api server updates the **etcd**.
+* The watch function of stcd monitors the changes to the desired state and the actual state.
+* The controller manager responds to this difference in the state of the resources and work towards the actual state.
 
 
 
