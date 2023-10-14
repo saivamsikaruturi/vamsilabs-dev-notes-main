@@ -67,7 +67,7 @@
 * This contoller part is taken care by another node called Master node or control-plane.
 * In real-time there will be more than one master node for fault tolerance.
 
-![k8sArchitecture.PNG](k8sArchitecture.PNG)
+![K8SArch.PNG](K8SArch.PNG)
 
 * So a k8s cluster consists of a group of worker nodes and set of master nodes which manages the worker nodes.
 
