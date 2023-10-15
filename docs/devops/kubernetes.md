@@ -297,7 +297,7 @@ replica set : https://github.com/vamsi1998123/K8S/blob/main/replicaset.yml
 
 
 
-* RollOut and Roll Back:
+## RollOut and Roll Back:
 * For example: our application is running with 1.21 v and we want to upgrade it to 1.22 v.
 * It requires starting the new version of pod and stopping the old version of pod waiting and verifying the new version.
 * There will be a case of rolling it back to a previous version in case of any issues.
@@ -310,7 +310,7 @@ replica set : https://github.com/vamsi1998123/K8S/blob/main/replicaset.yml
 ![rollout.PNG](rollout.PNG)
 
 
-* deployment.yml - https://github.com/vamsi1998123/K8S/blob/main/deployment.yml
+* https://github.com/vamsi1998123/K8S/blob/main/deployment.yml
 
 ![deployment.PNG](deployment.PNG)
 
