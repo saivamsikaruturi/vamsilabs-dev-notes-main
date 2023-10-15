@@ -1,5 +1,25 @@
 
 
+* String is a sequence of individual character.
+    
+      String s1 = "ABC";
+      String s2 = new String("XYZ");
+
+![StringsBasics.PNG](StringsBasics.PNG)
+
+## Why Strings are Immutable?
+
+     String s1  = "ABC";
+            s1  = "xyz";
+     String s2 = "ABC";
+   
+![Strings2.PNG](Strings2.PNG)
+
+* When the existing string ref is changed, it will not change the existing object, and it will create a new literal and "S1" points to the new literal.
+* If we create a new String literal s2 with "ABC", As ABC literal is available S2 points to ABC.
+
+   
+
 ![StringBasics.jpeg](StringBasics.jpeg)
   
 
@@ -27,10 +47,7 @@
     System.out.println (s==s3);
 
 
-
-
-
-## Why String is Immutable
+## Advantages of Immutability
 
 1.Saving Heap Space
 

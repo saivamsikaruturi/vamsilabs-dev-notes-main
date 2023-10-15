@@ -7,7 +7,7 @@
 * There can be problem in the container or vm/node and either of them is crashed. Then we cannot access our service.
 * In real time, there will be many containers as we deal with microservices architecture.
 
-![k8sintro.jpg](k8sintro.jpg)
+![nodepod.PNG](nodepod.PNG)
 
 * we never know when and which container goes down, can we monitor it manually and restart our stopped containers ?
 * There is a way to monitor the health of each container and node to bring them back when they go down. This is called self-healing or resilience.
