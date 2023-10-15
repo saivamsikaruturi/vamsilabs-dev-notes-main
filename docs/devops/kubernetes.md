@@ -134,15 +134,6 @@
 * The controller manager responds to this difference in the state of the resources and work towards the actual state.
 
 
-
-
-
-
-
-
-
-
-
 ## Kubernetes Setup
 
 * Minikube
@@ -247,3 +238,38 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
         kubctl delete -f pod.yml
 
 ## Replica Sets and Deployments
+
+* What happens if the pod goes down ? Users cannot access our application
+* But in production, we should ensure that our application is highly available.
+* To achieve this we should create multiple instances of our application instead of relying on single instance.
+* In that case even if one instance goes down, the other pod can still solve the request.
+* These instances are called **replicas**. If we create multiple pods manually it can be time-consuming and tedious.
+* Instead of creating these replicas manually we can automate creating these replicas with the replica set object in kubernetes.
+* When the pod goes down automatically bringing back is known as **self-healing**.
+* When we ask replicaset to create 2 replicas it makes sure that 2 replicas are available all the time.
+* If any replica goes down it will create a new replica immediately. If an extra replica is created it will delete a new replica.
+* What if the Node goes down ? Again same problem, Users cannot access our application. We should all our pods to a healthy node.
+* The same replica set can do the job.
+
+![rsk8s.PNG](rsk8s.PNG)
+
+![pors.PNG](pors.PNG)
+
+* Now, we will delete one pod.
+
+![replication.PNG](replication.PNG)    
+
+* Still, we can see 3 pods available. This is because replicaset always makes sure that the given number of replicas available all the time.
+
+* Now, let's try to delete the node. Before let's add one more to the cluster.
+
+          minikube node add --worker
+
+
+
+
+
+## AutoScaling
+
+
+## RBAC
