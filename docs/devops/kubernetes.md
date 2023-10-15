@@ -160,12 +160,20 @@
       host: Running
       kubelet: Running
 
+* Create a cluster using minikube
+       
+           minikube start --nodes 2 -p local-cluster --driver=docker
+
+![clustercreate.PNG](clustercreate.PNG)
+
+
 
 ## Kubectl Syntax:
 
 kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  etc] [pods,services] [name of the resource] [-o -f]
 
-## Pods:
+
+## Pods
 
 * It is an encapsulated layer over/around the containers.
 * A pod can have one or more containers.
@@ -189,6 +197,9 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
            kubectl run nginx-pod --image=nginx
 
 * To create pod using yml:
+
+* pod.yml -- https://github.com/vamsi1998123/K8S/blob/main/pod.yml
+
 
           kubectl apply -f pod.yml
 
@@ -251,6 +262,10 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * What if the Node goes down ? Again same problem, Users cannot access our application. We should all our pods to a healthy node.
 * The same replica set can do the job.
 
+replica set : https://github.com/vamsi1998123/K8S/blob/main/replicaset.yml
+
+       kubectl get rs
+
 ![rsk8s.PNG](rsk8s.PNG)
 
 ![pors.PNG](pors.PNG)
@@ -265,6 +280,49 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
           minikube node add --worker
 
+* Check on which node the pods are running.
+
+![checkpods.PNG](checkpods.PNG)
+
+* Delete the node
+
+       minikube node delete local-cluster-m02 -p local-cluster
+
+![deletenode.PNG](deletenode.PNG)
+
+* The pods got recreated in other node.
+
+![afterdelete.PNG](afterdelete.PNG)
+
+
+
+
+* RollOut and Roll Back:
+* For example: our application is running with 1.21 v and we want to upgrade it to 1.22 v.
+* It requires starting the new version of pod and stopping the old version of pod waiting and verifying the new version.
+* There will be a case of rolling it back to a previous version in case of any issues.
+* If we do this manually there will be a lot of chances of errors and it's time-consuming.
+* We can automate the rollout and rollback with the deployment object in k8s.
+* When we create the deployment, replicaset is automatically created, so no need to create the replica set manually.
+* Every time we create a deployment the deployment creates a replica set and replicaset creates the pod.
+* This is the reason pod is considered as the smallest unit in k8s.
+
+![rollout.PNG](rollout.PNG)
+
+
+* deployment.yml - https://github.com/vamsi1998123/K8S/blob/main/deployment.yml
+
+![deployment.PNG](deployment.PNG)
+
+![deployments1.PNG](deplyments1.PNG)
+
+
+## Services
+
+* All the pods are non-permanent resources and ther ip address keeps on changing and when we try to access with old ip it fails to connect.
+* So, we cannot rely on their ips to communicate if you want to access the services in a pod.
+* The main objective of the services is to abstract the pod ip address from ens user.
+* When a service is created an ip address is assigned to that service. 
 
 
 
