@@ -198,7 +198,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 * To create pod using yml:
 
-* pod.yml -- https://github.com/vamsi1998123/K8S/blob/main/pod.yml
+[pod.yml](https://github.com/vamsi1998123/K8S/blob/main/pod.yml)
 
 
           kubectl apply -f pod.yml
@@ -262,7 +262,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * What if the Node goes down ? Again same problem, Users cannot access our application. We should all our pods to a healthy node.
 * The same replica set can do the job.
 
-replica set : https://github.com/vamsi1998123/K8S/blob/main/replicaset.yml
+[replicaset.yml](https://github.com/vamsi1998123/K8S/blob/main/replicaset.yml)
 
        kubectl get rs
 
@@ -310,7 +310,7 @@ replica set : https://github.com/vamsi1998123/K8S/blob/main/replicaset.yml
 ![rollout.PNG](rollout.PNG)
 
 
-* https://github.com/vamsi1998123/K8S/blob/main/deployment.yml
+[deployment.yml](https://github.com/vamsi1998123/K8S/blob/main/deployment.yml)
 
 ![deployment.PNG](deployment.PNG)
 
