@@ -323,6 +323,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * So, we cannot rely on their ips to communicate if you want to access the services in a pod.
 * The main objective of the services is to abstract the pod ip address from ens user.
 * When a service is created an ip address is assigned to that service. 
+* 
 
 
 

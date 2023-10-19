@@ -1,8 +1,7 @@
-# Home
 
 Welcome to My Tech Notes
 
-# My favorite development tools
+## My favorite development tools
 
 ## CommandLine Tools
 
