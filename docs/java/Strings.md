@@ -35,14 +35,14 @@
 
 * Because s1 and s2 points to the same address.
 
-      String s3 = "ABC";
-      String s4 = new String("ABC");
+         String s3 = "ABC";
+         String s4 = new String("ABC");
 
-      s3 == s4 --> false
-      s3.equals(s4) ---> true
-      s1 == s3 ---> true
-      s3 == s2 ---> true
-      s2 == s4 ---> false
+         s3 == s4 --> false
+         s3.equals(s4) ---> true
+         s1 == s3 ---> true
+         s3 == s2 ---> true
+         s2 == s4 ---> false
 
 
 
