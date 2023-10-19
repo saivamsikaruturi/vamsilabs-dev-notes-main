@@ -21,30 +21,29 @@
 * If we create a new String literal s2 with "ABC", As ABC literal is available S2 points to ABC.
 
    
- 
+## == and .equals
 
-## Prove Strings are Immutable
+![Strings33.PNG](Strings33.PNG)
 
-    String s1="vamsi";    
-    System.out.println (s1.hashCode ());  
-    s1= s1.concat ("krishna");   
-    System.out.println (s1);  
-    System.out.println (s1.hashCode ());
+    String s1 = "ABC";
+    String s2 = "ABC";
 
-    String s1="Vamsi";     
-    System.out.println(s1.equals("Vamsi"));   
-    System.out.println(s1=="Vamsi");  
-    Integer a=1;  
-    Integer b=1;   
-    System.out.println( a==b);  
-    System.out.println(a.equals(b));  
-    String s="vamsi";  
-    String s2="vamsi";  
-    System.out.println (s.equals (s2));     
-    System.out.println (s==s2);    
-    String s3=new String ("vamsi");   
-    System.out.println (s.equals (s3));   
-    System.out.println (s==s3);
+* == operator for address comparison.
+* .equals for value comparison.
+
+      s1 == s2  ---> true
+
+* Because s1 and s2 points to the same address.
+
+      String s3 = "ABC";
+      String s4 = new String("ABC");
+
+      s3 == s4 --> false
+      s3.equals(s4) ---> true
+      s1 == s3 ---> true
+      s3 == s2 ---> true
+      s2 == s4 ---> false
+
 
 
 ## Advantages of Immutability
