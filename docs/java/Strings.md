@@ -2,7 +2,7 @@
 
 * String is a sequence of individual character.
     
-* Consider below example.
+
 
       String s1 = "ABC";
       String s2 = new String("XYZ");
@@ -21,9 +21,7 @@
 * If we create a new String literal s2 with "ABC", As ABC literal is available S2 points to ABC.
 
    
-
-![StringBasics.jpeg](StringBasics.jpeg)
-  
+ 
 
 ## Prove Strings are Immutable
 
