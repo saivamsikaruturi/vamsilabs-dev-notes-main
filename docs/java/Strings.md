@@ -2,6 +2,8 @@
 
 * String is a sequence of individual character.
     
+* Consider below example.
+
       String s1 = "ABC";
       String s2 = new String("XYZ");
 
