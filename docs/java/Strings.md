@@ -7,15 +7,15 @@
       String s1 = "ABC";
       String s2 = new String("XYZ");
 
-![StringsBasics.PNG](StringsBasics.PNG)
+![Strings11.PNG](Strings11.PNG)
 
 ## Why Strings are Immutable?
 
      String s1  = "ABC";
-            s1  = "xyz";
-     String s2 = "ABC";
+            s1  = "XYZ";
+     String s2  = "ABC";
    
-![Strings2.PNG](Strings2.PNG)
+![Strings22.PNG](Strings22.PNG)
 
 * When the existing string ref is changed, it will not change the existing object, and it will create a new literal and "S1" points to the new literal.
 * If we create a new String literal s2 with "ABC", As ABC literal is available S2 points to ABC.
