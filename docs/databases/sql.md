@@ -138,6 +138,12 @@ Infinite Dynamo (graph)
 
 ## Indexing
 
+1. How Table data(rows) are actually stored?
+2. What type of indexing present?
+3. Understanding the data structure used for indexing and how it works?
+
+
+
 
 
 
