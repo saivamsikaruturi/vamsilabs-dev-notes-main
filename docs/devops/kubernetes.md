@@ -338,6 +338,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 ## Types of services
 
 ![services1.PNG](services1.PNG)
+
 * ClusterIp Service
 
 
