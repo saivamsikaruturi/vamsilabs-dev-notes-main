@@ -322,8 +322,23 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * All the pods are non-permanent resources and ther ip address keeps on changing and when we try to access with old ip it fails to connect.
 * So, we cannot rely on their ips to communicate if you want to access the services in a pod.
 * The main objective of the services is to abstract the pod ip address from ens user.
-* When a service is created an ip address is assigned to that service. 
-* 
+* When a service is created an ip address is assigned to that service and this ip address doesn't change as long as the service exists. 
+* So users can call a single stable ip address instead of calling each pod individually and the service forward the request to pod.
+* Now, even if pod ip changes it doesn't matter as the service will take care of routing to appropriate pods.
+* Services are not created on any node unlike pods.
+
+
+**Use Case-2**
+* We have 2 pods of same application.
+* When we make a request to which pod our request goes?
+* Service will take care of load balancing,
+* i.e Service provides load balancing when you have pod replicas. It picks a pod randomly and forwards the request to it.
+* Services also offer other advantages likes service discovery and zero downtime deployments.
+
+## Types of services
+
+![services1.PNG](services1.PNG)
+* ClusterIp Service
 
 
 
