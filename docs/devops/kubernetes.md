@@ -341,10 +341,51 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 * ClusterIp Service
 
+* Node Port Service
 
+## Ingress
+
+![ingress.PNG](ingress.PNG)
+
+* One option to expose our applications outside of the cluster is using node port services.
+* With Node port services on each port on each node and exposing it to the outside of the cluster. The good thing with this is  user can call any node ip in the cluster using thar port and the request gets forward to the correct port but the bad part is the port's value must be 30000-32767 and the node ip change on restarting the node and it's not secure to open ports on the node.
+* In ingress we declare which request should go to which service.
+
+![ingressrules.png](ingressrules.png)
+
+**Nginx ingress controller**
+
+** install ingress controller in ubuntu:
+      
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/cloud/deploy.yaml
+  
+
+
+## Namespaces
+
+* when we have so many kubernetes resources of multiple applications it is tough to maintain those resources.
+* To avoid this issue there should be a way to organize those resources to help different project teams to share a kubernetes cluster.
+* There comes a concept called Namespaces.
+
+## Volumes
+
+
+## StatefulSets
+
+## ConfigMaps and Secrests
+
+## Resource Management
+
+## Advanaced Scheduling
 
 
 ## AutoScaling
 
 
 ## RBAC
+
+
+## Daemon sets
+
+
+## Jobs and CronJobs
