@@ -64,6 +64,7 @@ markdown_extensions:
   - codehilite
   - tables
   - attr_list
+  - md_in_html
   - admonition
   - footnotes
   - def_list   # https://michelf.ca/projects/php-markdown/extra/#def-list
