@@ -21,11 +21,9 @@
 * So, any request made, initially goes to the load balancer, and it distributes the load among multiple containers.
 * Now the application can handle the load.
 
-![problem2.jpg](problem2.jpg)
-
 <figure markdown>
- ![problem2.jpg](problem2.jpg) { width="300" }
-  <figcaption>Image caption</figcaption>
+ ![problem2.jpg](problem2.jpg)
+  <figcaption>Load Balancing, Auto Scaling,Automatic bin packing</figcaption>
 </figure>
 
 * What if there is a way to increase the number of containers if the load increases and decrease the number of containers if load decreases. This is called as Scaling.
