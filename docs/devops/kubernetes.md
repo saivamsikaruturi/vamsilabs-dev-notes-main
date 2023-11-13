@@ -357,7 +357,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * We can also do port-forwarding on svc.
 
 
-![service.yml](https://github.com/vamsi1998123/K8S/blob/main/service.yml)
+[service.yml](https://github.com/vamsi1998123/K8S/blob/main/service.yml)
 
 ![clusterIp.PNG](clusterIp.PNG)
 
@@ -386,7 +386,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * Also it is not secure as we are opening ports on the node.
 * So,it's not advised to use node-port service in production.
 
-![serviceNodePort.yml](https://github.com/vamsi1998123/K8S/blob/main/serviceNodePort.yml)
+[serviceNodePort.yml](https://github.com/vamsi1998123/K8S/blob/main/serviceNodePort.yml)
 
 
 **Load Balancer Service**
@@ -397,7 +397,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * This type of service exposes the pods externally using the cloud providers load balancer.
 * This acts like a cluster ip and node port internally.
 
-![serviceLoadBalancer.yml](https://github.com/vamsi1998123/K8S/blob/main/serviceLoadBalancer.yml)
+[serviceLoadBalancer.yml](https://github.com/vamsi1998123/K8S/blob/main/serviceLoadBalancer.yml)
 
 ![loadbalancer.PNG](loadbalancer.PNG)
 
