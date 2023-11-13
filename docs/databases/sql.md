@@ -1,4 +1,4 @@
-# SQL
+## SQL
 
 SQL:
 
@@ -109,6 +109,14 @@ Infinite Dynamo (graph)
 
 ![flow.jpg](flow.jpg)
 
+
+## Joins
+
+
+## Aggregate Functions
+
+
+## SubQuery
 
 ## Normalization
 

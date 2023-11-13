@@ -332,6 +332,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 
 **Use Case-2**
+
 * We have 2 pods of same application.
 * When we make a request to which pod our request goes?
 * Service will take care of load balancing,
@@ -342,9 +343,65 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 ![services1.PNG](services1.PNG)
 
-* ClusterIp Service
+**ClusterIp Service**
 
-* Node Port Service
+* This type of service exposes the pod that is internal to the cluster.
+* This type of service is useful when you don't want to expose your application to the outside world but all the pods inside the cluster can access it.
+* For example: database.
+* spec:
+     type: ClusterIp
+* This is the default service.
+* Service routes the request to the desired pod based on Labels.
+*   selector:
+       app: nginx(pod label)
+* We can also do port-forwarding on svc.
+
+
+![service.yml](https://github.com/vamsi1998123/K8S/blob/main/service.yml)
+
+![clusterIp.PNG](clusterIp.PNG)
+
+* So, cluster ip services cannot be accessed from outside of the cluster but those van be accessed from all the pods in the cluster.
+* They are restricted to the cluster.
+* We can access the service with the name of the service.
+
+![clusterIpName.PNG](clusterIpName.PNG)
+
+
+                 kubectl port-forward service/nginx-service 8083:8082
+
+![clusterIPPortF.PNG](clusterIPPortF.PNG)
+
+![clusterR.PNG](clusterR.PNG)
+
+* Service offers load-balancing.
+
+**Node Port Service**
+
+* This type of service exposes the pod at each node at a static port called node port.
+* We can access the node port service from outside the cluster by requesting nodeIp:nodePort.
+* It means any request to a cluster on the given node port gets forwarded to the service and internally it acts like a cluster ip and forwards the request to the appropriate pods.
+* To access the service http://192.168.49.2:30000/
+* We are accessing the service with node ip but node ip change we if restart the node.
+* Also it is not secure as we are opening ports on the node.
+* So,it's not advised to use node-port service in production.
+
+![serviceNodePort.yml](https://github.com/vamsi1998123/K8S/blob/main/serviceNodePort.yml)
+
+
+**Load Balancer Service**
+
+
+![loadbalancerservice.PNG](loadbalancerservice.PNG)
+
+* This type of service exposes the pods externally using the cloud providers load balancer.
+* This acts like a cluster ip and node port internally.
+
+![serviceLoadBalancer.yml](https://github.com/vamsi1998123/K8S/blob/main/serviceLoadBalancer.yml)
+
+![loadbalancer.PNG](loadbalancer.PNG)
+
+
 
 ## Ingress
 
