@@ -389,7 +389,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 **Load Balancer Service**
 
-
+{:.foo}
 ![loadbalancerservice.PNG](loadbalancerservice.PNG)
 
 * This type of service exposes the pods externally using the cloud providers load balancer.
