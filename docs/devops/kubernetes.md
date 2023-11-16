@@ -389,7 +389,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 **Load Balancer Service**
 
-{:.foo}
+
 ![loadbalancerservice.PNG](loadbalancerservice.PNG)
 
 * This type of service exposes the pods externally using the cloud providers load balancer.
@@ -430,7 +430,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 ![nginxcontroller.PNG](nginxcontroller.PNG)
 
 * we cannot access the site since nginx-demo.com is not a valid dns.
-* 
+
 
 ## Namespaces
 
@@ -440,15 +440,48 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 ## Volumes
 
+* When a pod is deleted all the data associated with that pod is deleted.
+* How to persist the data even if the pod gets deleted.
+
 
 ## StatefulSets
 
+* Applications which stores the state of the current request,the next request us dependent on the state of the previous request
+  is known as StateFul Application.
+* What if the same application with a load balancer in front ?
+* Let's say first request goes to the instance-1 and we set the authenticated flag to true.
+* If the second request goes to the instance-2 , it doesn't give the correct result as we didn't set the flag on instance-2.
+* So as a best practice its recommended to move the state to a database.
+* When the first time a request comes, we generate a token and save it to the db.
+* The application expects the same token for subsequent requests and validates from db.
+* As we are not storing any state in our application, Application is called Stateless application and Database is called StateFul Application.
+* 
+
+
 ## ConfigMaps and Secrets
+
+* When we develop any application we should not hard code the properties which change for each environment instead we should configure those properties so that we don;t need to rebuild the image.
+* 3 ways to Configure Data:
+  a) Passing Arguments
+  b) Configuration Files
+  c) Environment Variables
+* Hard cording this data even in the pod definition is not a good idea as we need different pod definitions for each environment.
+* Make the configuration data in common place and refer to to the data from the pod descriptor.
+* For this purpose k8s provides two special types of volumes which are ConfigMap and Secret.
 
 ## Resource Management
 
+* Once an application is scheduled on to a node it starts consuming node resources.
+* It's not just one application that gets deployed to k8s. 
+* So we should be extra cautious when deploying our application to k8s such that our application uses Computing resources like CPU and memory wisely and our application performs well and doesn't impact other applications.
+* 
+* 
+* 
+
 ## Advanced Scheduling
 
+* K8s scheduler is responsible for scheduling pods onto the nodes 
+* 
 
 ## AutoScaling
 
@@ -504,9 +537,25 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 ## Daemon sets
 
-* Node specific tasks such as collecting logs, metrics
+* Node specific tasks such as collecting logs, metrics for each node in such cases using deployments or replica sets does not gaurantee that the Pod runs on every single node as nodes may get added to the cluster dynamically.
+* We have a k8s cluster with multiple nodes. How do we monitor these nodes to see if they are running out of memory or if the CPU is utilized to max.
+* We must some agent on each node so that it can collect the metrics from each node and save them to some storage so that we can monitor them.
+* But the nodes are created dynamically, we cannot manually create agents on the nodes.
+* That is the reason Deamon Sets came into picture. We can run a pod on each node of the cluster.
+* If a new node is added to the cluster a new pod will be spun up on the newely added node.
+* If the node is removed from the cluster, the pod running on that node will be garbage collected.
+* Therefore with daemon set we make sure that a pod runs on each node always.
+* The key difference between a daemon set and deployment is that daemon set ensures that there is one pod per node whereas deployment or replica set can have multiple replicas per node.
+* 
+* 
 
 
 
 
 ## Jobs and CronJobs
+
+* If we want to run our pods only once like taking the DB backup or sending emails in a batch.
+* Such process shouldn't be running continuously. They will run just for a certain amount of time and run at particular times.
+* For these processes having controllers like deployment is a bad idea as it makes sure the Pod runs continuously.
+* 
+* 
