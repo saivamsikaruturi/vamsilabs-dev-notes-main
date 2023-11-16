@@ -90,7 +90,6 @@ plugins:
       size: [800, 600]
       extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg']
 
-
 nav:
   - Home: index.md
   - Learning: learning.md
