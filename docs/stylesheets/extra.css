@@ -30,7 +30,7 @@
     --md-footer-fg-color--lighter: hsla(0, 0%, 100%, 0.3);
 }
 
-.foo {
-    text-align: left;
-    width: 20px;
+img {
+    max-width: 100%;
+    height: auto;
 }
