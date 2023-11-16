@@ -482,8 +482,10 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 **HPA**
 
-* Let's say our application is an e-commerce application and 
+* Let's say our application is an e-commerce application and. 
+
 ![hpa.PNG](hpa.PNG)
+
 
 ![hpapods.PNG](hpapods.PNG)
 
@@ -501,6 +503,8 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 
 ## Daemon sets
+
+* Node specific tasks such as collecting logs, metrics
 
 
 
