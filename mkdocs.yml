@@ -88,8 +88,10 @@ plugins:
       source-dir: assets-large
       target-dir: assets
       enable_cache: True
-      size: [ 800, 600 ]
-      extensions: [ '.jpg', '.jpeg', '.png', '.gif', '.svg' ]
+      size: [800, 600]
+      extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg']
+  - glightbox
+
 
 
 nav:
