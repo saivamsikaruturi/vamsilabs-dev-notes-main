@@ -84,11 +84,13 @@ markdown_extensions:
 
 plugins:
   - search
-  - glightbox
   - resize-images:
+      source-dir: assets-large
+      target-dir: assets
       enable_cache: True
-      size: [800, 600]
-      extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg']
+      size: [ 800, 600 ]
+      extensions: [ '.jpg', '.jpeg', '.png', '.gif', '.svg' ]
+
 
 nav:
   - Home: index.md
