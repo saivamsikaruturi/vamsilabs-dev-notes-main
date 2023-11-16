@@ -368,8 +368,6 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 ![clusterIpName.PNG](clusterIpName.PNG)
 
 
-                 kubectl port-forward service/nginx-service 8083:8082
-
 ![clusterIPPortF.PNG](clusterIPPortF.PNG)
 
 ![clusterR.PNG](clusterR.PNG)
@@ -408,8 +406,14 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 ![ingress.PNG](ingress.PNG)
 
 * One option to expose our applications outside of the cluster is using node port services.
-* With Node port services on each port on each node and exposing it to the outside of the cluster. The good thing with this is  user can call any node ip in the cluster using thar port and the request gets forward to the correct port but the bad part is the port's value must be 30000-32767 and the node ip change on restarting the node and it's not secure to open ports on the node.
-* In ingress we declare which request should go to which service.
+* With Node port services on each port on each node and exposing it to the outside of the cluster. 
+* The good thing with this is  user can call any node ip in the cluster using thar port and the request gets forward to the correct port but the bad part is the port's value must be 30000-32767 and the node ip change on restarting the node and it's not secure to open ports on the node.
+* In ingress, we declare which request should go to which service.
+* The rules we defined to which service it routes are known as Ingress Rules.
+* But writing these ingress rules is not enough. There should be some component to read these rules and process them. That component is known as Ingress Contoller.
+* To process these rules we must deploy ingress controller  into our cluster for these declaration and act accordingly.
+* Now whenever we make a request ingress controllers inspect http request direct that request to the correct pod based on the ingress rules
+
 
 ![ingressrules.png](ingressrules.png)
 
@@ -417,9 +421,16 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 ** install ingress controller in ubuntu:
       
-    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/cloud/deploy.yaml
-  
 
+     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.1/deploy/static/provider/cloud/deploy.yaml
+
+![ingressPos.PNG](ingressPos.PNG)
+
+
+![nginxcontroller.PNG](nginxcontroller.PNG)
+
+* we cannot access the site since nginx-demo.com is not a valid dns.
+* 
 
 ## Namespaces
 
@@ -432,20 +443,66 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 ## StatefulSets
 
-## ConfigMaps and Secrests
+## ConfigMaps and Secrets
 
 ## Resource Management
 
-## Advanaced Scheduling
+## Advanced Scheduling
 
 
 ## AutoScaling
 
+* Using deployments, we can scale the pods manually.
+* Whenever there is unusual traffic we can scale our deployments accordingly. But monitoring our traffic continuously and manually scaling-up our application to handle such traffic spikes is a tedious process.
+* There is a way to monitor our pods and scale them automatically whenever there is an increase in CPU usage, memory or queries per second (qps). This is called Auto Scaling.
+* Scaling automatically based on some metrics.
+
+
+**Types of AutoScalers**
+
+* HPA (Horizontal Pod AutoScaler) :
+  * It increases the number of replicas whenever there is a spike in CPU, memory or some other metric. That way the load is distributed among the pods.
+  * As we are increasing the number of pods this is called scaling up.
+  * Increasing number of replicas with HPA is not always a solution.
+  * For example: we can make a database handle more connections by increasing the memory and CPU.
+  * In such cases we need to increase the resources of existing pods instead of creating new pods.
+  
+* VPA (Vertical Pod AutoScaler)
+  * With VPA we can analyze the resources of a deployment and adjust them accordingly to handle the lod.
+  * We increase the resources of existing pods instead of creating new pods.
+
+* CA (Cluster AutoScaler)
+  * Finally, if there is no capacity in the cluster it doesn't make any sense to increase the number of pods with HPA or increase the resources with VPA.
+  * We should be able to add nodes to the cluster to accomodate more number of pods.
+  * It adds the pods, if there is any pods stuck in pending state because of lack of resources.
+
+* Auto Scaling means not just increasing the resources or creating replicas.
+* The auto scalers can scale down as well, means decreases the no. of pods and resources.
+
+
+**HPA**
+
+* Let's say our application is an e-commerce application and 
+![hpa.PNG](hpa.PNG)
+
+![hpapods.PNG](hpapods.PNG)
+
+
 
 ## RBAC
 
+* There may be chances of deleting the resources accidentally.
+* So its wise to impose restrictions to create, modify and delete resources based on some role.
+* For example: we should ensure that developers can only deploy certain applications to a given namespace or the IT teams can have only read access for monitoring tasks and admin can do everything.
+* we cannot create users in k8s, because k8s doesn't manage users and should be managed by external identity platforms like keycloak ,AWS IAM.
+* Authorization and Authentication is handled by k8s.
+* When we perform any operation against our cluster the request goes to the API server. 
+
+
 
 ## Daemon sets
+
+
 
 
 ## Jobs and CronJobs
