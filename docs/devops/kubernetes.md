@@ -251,7 +251,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
         kubctl delete -f pod.yml
 
-## Replica Sets and Deployments
+## Replica Sets and Deployments ![rs.png](rs.png) ![deploysets.png](deploysets.png)
 
 * What happens if the pod goes down ? Users cannot access our application
 * But in production, we should ensure that our application is highly available.
@@ -320,7 +320,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 ![deployments1.PNG](deplyments1.PNG)
 
 
-## Services
+## Services ![serviceimg.png](serviceimg.png)
 
 * All the pods are non-permanent resources and ther ip address keeps on changing and when we try to access with old ip it fails to connect.
 * So, we cannot rely on their ips to communicate if you want to access the services in a pod.
@@ -458,7 +458,8 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * 
 
 
-## ConfigMaps and Secrets ![configMapimage.png](configMapimage.png)  ![secrets.png](secrets.png)
+## ConfigMaps and Secrets ![configMapimage.png](configMapimage.png) ![secrets.png](secrets.png)
+
 
 * When we develop any application we should not hard code the properties which change for each environment instead we should configure those properties so that we don;t need to rebuild the image.
 * 3 ways to Configure Data:
