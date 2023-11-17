@@ -176,7 +176,7 @@
 kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  etc] [pods,services] [name of the resource] [-o -f]
 
 
-## Pods
+## Pods ![podimage.png](podimage.png)
 
 * It is an encapsulated layer over/around the containers.
 * A pod can have one or more containers.
@@ -458,7 +458,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * 
 
 
-## ConfigMaps and Secrets
+## ConfigMaps and Secrets ![img_1.png](img_1.png)  ![img_2.png](img_2.png)
 
 * When we develop any application we should not hard code the properties which change for each environment instead we should configure those properties so that we don;t need to rebuild the image.
 * 3 ways to Configure Data:
