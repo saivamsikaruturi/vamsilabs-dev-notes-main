@@ -458,7 +458,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * 
 
 
-## ConfigMaps and Secrets ![img_1.png](img_1.png)  ![img_2.png](img_2.png)
+## ConfigMaps and Secrets ![configMapimage.png](configMapimage.png)  ![secrets.png](secrets.png)
 
 * When we develop any application we should not hard code the properties which change for each environment instead we should configure those properties so that we don;t need to rebuild the image.
 * 3 ways to Configure Data:
