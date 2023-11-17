@@ -187,7 +187,7 @@ nav:
       - Tools: devops/devops.md
       - Linux: devops/linux.md
       - Docker: devops/docker.md
-      - devops/kubernetes.md
+      - Kubernetes: devops/kubernetes.md
       - Ansible: devops/ansible.md
       - AWS: devops/aws.md
   - Misc:
