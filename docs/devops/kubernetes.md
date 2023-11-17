@@ -1,4 +1,5 @@
 
+![k8simg.png](k8simg.png)
 * Kubernetes is an open-source system for automating deployment, scaling and management of containerized applications.
 
 **Problem Statement 1**: (Monitoring,Self-Healing and High Availability)
@@ -401,7 +402,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 
 
-## Ingress
+## Ingress ![ingx.png](ingx.png)
 
 ![ingress.PNG](ingress.PNG)
 
@@ -432,19 +433,19 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * we cannot access the site since nginx-demo.com is not a valid dns.
 
 
-## Namespaces
+## Namespaces ![ns.png](ns.png)
 
 * when we have so many kubernetes resources of multiple applications it is tough to maintain those resources.
 * To avoid this issue there should be a way to organize those resources to help different project teams to share a kubernetes cluster.
 * There comes a concept called Namespaces.
 
-## Volumes
+## Volumes ![volumes.png](volumes.png)
 
 * When a pod is deleted all the data associated with that pod is deleted.
 * How to persist the data even if the pod gets deleted.
 
 
-## StatefulSets
+## StatefulSets ![sts.png](sts.png)
 
 * Applications which stores the state of the current request,the next request us dependent on the state of the previous request
   is known as StateFul Application.
@@ -494,7 +495,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 **Types of AutoScalers**
 
-* HPA (Horizontal Pod AutoScaler) :
+* HPA (Horizontal Pod AutoScaler) : ![hpaimg.png](hpaimg.png)
   * It increases the number of replicas whenever there is a spike in CPU, memory or some other metric. That way the load is distributed among the pods.
   * As we are increasing the number of pods this is called scaling up.
   * Increasing number of replicas with HPA is not always a solution.
@@ -536,7 +537,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 
 
-## Daemon sets
+## Daemon sets ![dsimg.png](dsimg.png)
 
 * Node specific tasks such as collecting logs, metrics for each node in such cases using deployments or replica sets does not gaurantee that the Pod runs on every single node as nodes may get added to the cluster dynamically.
 * We have a k8s cluster with multiple nodes. How do we monitor these nodes to see if they are running out of memory or if the CPU is utilized to max.
@@ -553,7 +554,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 
 
 
-## Jobs and CronJobs
+## Jobs and CronJobs ![jobimg.png](jobimg.png) ![cronjob.img.png](cronjob.img.png)
 
 * If we want to run our pods only once like taking the DB backup or sending emails in a batch.
 * Such process shouldn't be running continuously. They will run just for a certain amount of time and run at particular times.
