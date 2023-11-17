@@ -1,5 +1,5 @@
 
-![k8simg.png](k8simg.png)
+![k8sicon.png](k8sicon.png)
 
 * Kubernetes is an open-source system for automating deployment, scaling and management of containerized applications.
 
