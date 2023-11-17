@@ -1,5 +1,6 @@
 
 ![k8simg.png](k8simg.png)
+
 * Kubernetes is an open-source system for automating deployment, scaling and management of containerized applications.
 
 **Problem Statement 1**: (Monitoring,Self-Healing and High Availability)
