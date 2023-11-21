@@ -124,6 +124,8 @@ nav:
       - Differences in Collections: java/DiffCollections.md
       - Concurrent Collections: java/ConcurrentCollections.md
       - MultiThreading: java/MultiThreading.md
+  - Security:
+      - OAuth2: security/Oauth.md
   - StreamApi:
       - StreamApiQuestions: stream api/streamapi.md
   - Solid Principles:
