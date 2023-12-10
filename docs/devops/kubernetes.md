@@ -526,16 +526,85 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 ![hpapods.PNG](hpapods.PNG)
 
 
+**VPA**
+
+
 
 ## RBAC
 
-* There may be chances of deleting the resources accidentally.
-* So its wise to impose restrictions to create, modify and delete resources based on some role.
+* We will be having may users accessing the k8s resources. When we don't have restrictions to the cluster there may be chances of deleting the resources accidentally.
+* So it's wise to impose restrictions to create, modify and delete resources based on some role.
 * For example: we should ensure that developers can only deploy certain applications to a given namespace or the IT teams can have only read access for monitoring tasks and admin can do everything.
 * we cannot create users in k8s, because k8s doesn't manage users and should be managed by external identity platforms like keycloak ,AWS IAM.
 * Authorization and Authentication is handled by k8s.
 * When we perform any operation against our cluster the request goes to the API server. 
+* RBAC
+* ABAC
+* Node Authorization
+* We cannot create users like we created pods,services etc. Because k8s doesn't manage users and should be managed by external identity platforms like key cloak, AWS IAM.
+* However, Authentication and authorization are handled by k8s.
+* When we perform any operation against our cluster the request goes to the API Server.
+* API server first authenticates if you are a valid user or not if you are valid user then it authorizes if you are allowed to perform an action, if we are allowed then we will get our result.
 
+
+          openssl genrsa -out vamsi.key 2048
+
+          openssl req -new -key vamsi.key -out vamsi,csr -subj "/CN=vamsi/O=dev/O=example.org"
+
+          k8s@ubuntu:~$ ls | grep vamsi
+          vamsi.csr
+          vamsi.key
+
+
+          k8s@ubuntu:~$ openssl x509 -req -CA ~/.minikube/ca.crt -CAkey ~/.minikube/ca.key -CAcreateserial -days 730 -in vamsi.csr -out vamsi.crt
+          Signature ok
+          subject=CN = vamsi, O = dev, O = example.org
+          Getting CA Private Key
+
+          k8s@ubuntu:~$ kubectl config set-credentials vamsi --client-certificate=vamsi.crt --client-key=vamsi.key
+          User "vamsi" set.
+
+          k8s@ubuntu:~$ kubectl config set-context vamsi-minikube --cluster=minikube --user=vamsi --namespace=default
+          Context "vamsi-minikube" created.
+
+          k8s@ubuntu:~$ kubectl  config get-contexts
+          CURRENT   NAME             CLUSTER    AUTHINFO   NAMESPACE
+          *         minikube         minikube   minikube   default
+                    vamsi-minikube   minikube   vamsi  
+
+          k8s@ubuntu:~$ kubectl config use-context vamsi-minikube
+          Switched to context "vamsi-minikube".
+
+
+          k8s@ubuntu:~$ kubectl get pods
+          Error from server (Forbidden): pods is forbidden: User "vamsi" cannot list resource "pods" in API group "" in the namespace "default"
+
+* valid user but not authorized to perform anything as an administrator. we should give him certain permissions.
+
+Role and Role Binding:
+
+* In k8s we can give the permissions to a user with roles and role binding.
+* role manifest file
+[role.yml](https://github.com/vamsi1998123/K8S/blob/main/role.yaml)
+
+         k8s@ubuntu:~$ kubectl apply -f role.yaml
+         role.rbac.authorization.k8s.io/pod-reader created
+
+         k8s@ubuntu:~$ kubectl get roles
+         NAME         CREATED AT
+         pod-reader   2023-12-10T08:49:57Z
+
+*  Subject (role, user group or service account) + Role (create,read,update or delete) = Role Binding
+![user.png](user.png)                            +  ![role.png](role.png)                 ![rb.png](rb.png)
+                                                    
+![usergroup.png](usergroup.png)
+
+![sa.png](sa.png)
+
+[rolebinding.yaml](https://github.com/vamsi1998123/K8S/blob/main/rolebinding.yaml)
+      
+        k8s@ubuntu:~$ kubectl apply -f rolebinding.yaml
+        clusterrolebinding.rbac.authorization.k8s.io/pod-reader-global created
 
 
 ## Daemon sets ![dsimg.png](dsimg.png)
@@ -547,7 +616,7 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 * That is the reason Deamon Sets came into picture. We can run a pod on each node of the cluster.
 * If a new node is added to the cluster a new pod will be spun up on the newely added node.
 * If the node is removed from the cluster, the pod running on that node will be garbage collected.
-* Therefore with daemon set we make sure that a pod runs on each node always.
+* Therefore, with daemon set we make sure that a pod runs on each node always.
 * The key difference between a daemon set and deployment is that daemon set ensures that there is one pod per node whereas deployment or replica set can have multiple replicas per node.
 * 
 * 
