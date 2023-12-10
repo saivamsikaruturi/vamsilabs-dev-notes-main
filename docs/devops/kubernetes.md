@@ -595,7 +595,8 @@ Role and Role Binding:
          pod-reader   2023-12-10T08:49:57Z
 
 *  Subject (role, user group or service account) + Role (create,read,update or delete) = Role Binding
-![user.png](user.png)                            +  ![role.png](role.png)                 ![rb.png](rb.png)
+
+![user.png](user.png)                            +  ![role.png](role.png)=          ![rb.png](rb.png)
                                                     
 ![usergroup.png](usergroup.png)
 
