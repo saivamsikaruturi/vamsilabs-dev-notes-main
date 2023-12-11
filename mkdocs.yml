@@ -194,7 +194,7 @@ nav:
       - AWS: devops/aws.md
   - Misc:
       - CleanArchitecture: misc/clean-architecture.md
-    small: true
+        small: true
 # Customization
 extra:
   manifest: "manifest.webmanifest"
