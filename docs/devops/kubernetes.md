@@ -608,6 +608,14 @@ Role and Role Binding:
         clusterrolebinding.rbac.authorization.k8s.io/pod-reader-global created
 
 
+        k8s@ubuntu:~$ kubectl get pods
+        NAME                           READY   STATUS    RESTARTS         AGE
+        debug                          0/1     Error     0                24d
+        nginx-pod1                     1/1     Running   10 (4h16m ago)   48d
+
+
+
+
 ## Daemon sets ![dsimg.png](dsimg.png)
 
 * Node specific tasks such as collecting logs, metrics for each node in such cases using deployments or replica sets does not gaurantee that the Pod runs on every single node as nodes may get added to the cluster dynamically.
@@ -631,4 +639,20 @@ Role and Role Binding:
 * Such process shouldn't be running continuously. They will run just for a certain amount of time and run at particular times.
 * For these processes having controllers like deployment is a bad idea as it makes sure the Pod runs continuously.
 * 
+
+## Helm Charts
+
+![hemlproblem1.PNG](hemlproblem1.PNG)
+
+![helmsol.PNG](helmsol.PNG)
+* Helm is open source
+* It is Package manager for Kubernetes.
+* There are two helm version i.e. helm2 and helm3 (3.10.0)
+* If you are working on ubuntu the default package manager is APT (Advanced Package Tool). 
+* Basically, the package manager is deals with the installation of a specific package.
+* Even in k8s, we do some mandatory installations. like setup of monitoring setup (Prometheus and Grafana) or logging setup like elastic search.
+* So why everybody has to use prometheus deployment.yml, service.yml. Instead, what if Prometheus provides an easy way to install Prometheus.
+* For this reason, there is an evolution  of a concept called package Management in k8s.
+* We can install all these mandatory setups using a simple package manager Helm.
+* By using the helm chart with small minor modifications, we can install the setup.
 * 
