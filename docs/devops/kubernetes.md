@@ -642,9 +642,16 @@ Role and Role Binding:
 
 ## Helm Charts
 
+Problem Statement 1:
+
 ![hemlproblem1.PNG](hemlproblem1.PNG)
 
 ![helmsol.PNG](helmsol.PNG)
+
+
+Problen Statement 2:
+
+
 * Helm is open source
 * It is Package manager for Kubernetes.
 * There are two helm version i.e. helm2 and helm3 (3.10.0)
@@ -655,4 +662,19 @@ Role and Role Binding:
 * For this reason, there is an evolution  of a concept called package Management in k8s.
 * We can install all these mandatory setups using a simple package manager Helm.
 * By using the helm chart with small minor modifications, we can install the setup.
-* 
+
+
+
+      k8s@ubuntu:~$ helm create todo-api
+      Creating todo-api
+      k8s@ubuntu:~$ ls
+      deployment.yml   get-docker.sh          Music                Public             servicehpa.yaml            service.yaml   trafficgenerator.yaml   vamsi.key
+      Desktop          hpadeployment.yaml     nginx-ingress.yaml   replicaset.yml     serviceLoad.yaml           snap           vamsi.crt               Videos
+      Documents        hpa.yaml               Pictures             rolebinding.yaml  'serviceNode (copy).yaml'   Templates      vamsi,csr               wrk
+      Downloads        minikube-linux-amd64   pod.yml              role.yaml          serviceNode.yaml           todo-api       vamsi.csr
+      k8s@ubuntu:~$ cd todo-api
+      k8s@ubuntu:~/todo-api$ ls
+      charts  Chart.yaml  templates  values.yaml
+      k8s@ubuntu:~/todo-api$ code ,
+      k8s@ubuntu:~/todo-api$ code .
+      k8s@ubuntu:~/todo-api$ 
