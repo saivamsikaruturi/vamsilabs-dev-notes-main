@@ -665,16 +665,15 @@ Problen Statement 2:
 
 
 
-      k8s@ubuntu:~$ helm create todo-api
-      Creating todo-api
-      k8s@ubuntu:~$ ls
-      deployment.yml   get-docker.sh          Music                Public             servicehpa.yaml            service.yaml   trafficgenerator.yaml   vamsi.key
-      Desktop          hpadeployment.yaml     nginx-ingress.yaml   replicaset.yml     serviceLoad.yaml           snap           vamsi.crt               Videos
-      Documents        hpa.yaml               Pictures             rolebinding.yaml  'serviceNode (copy).yaml'   Templates      vamsi,csr               wrk
-      Downloads        minikube-linux-amd64   pod.yml              role.yaml          serviceNode.yaml           todo-api       vamsi.csr
-      k8s@ubuntu:~$ cd todo-api
-      k8s@ubuntu:~/todo-api$ ls
-      charts  Chart.yaml  templates  values.yaml
-      k8s@ubuntu:~/todo-api$ code ,
-      k8s@ubuntu:~/todo-api$ code .
-      k8s@ubuntu:~/todo-api$ 
+        k8s@ubuntu:~$ helm create todo-api
+        Creating todo-api
+        k8s@ubuntu:~$ ls
+        deployment.yml   get-docker.sh          Music                Public             servicehpa.yaml            service.yaml   trafficgenerator.yaml   vamsi.key
+        Desktop          hpadeployment.yaml     nginx-ingress.yaml   replicaset.yml     serviceLoad.yaml           snap           vamsi.crt               Videos
+        Documents        hpa.yaml               Pictures             rolebinding.yaml  'serviceNode (copy).yaml'   Templates      vamsi,csr               wrk
+        Downloads        minikube-linux-amd64   pod.yml              role.yaml          serviceNode.yaml           todo-api       vamsi.csr
+        k8s@ubuntu:~$ cd todo-api
+        k8s@ubuntu:~/todo-api$ ls
+        charts  Chart.yaml  templates  values.yaml
+        k8s@ubuntu:~/todo-api$ code .
+        k8s@ubuntu:~/todo-api$ 
