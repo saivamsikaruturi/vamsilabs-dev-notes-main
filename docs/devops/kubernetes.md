@@ -633,35 +633,35 @@ Role and Role Binding:
 * Networking apps.
 
 
-       k8s@ubuntu:~$ kubectl apply -f daemonset.yml
-       daemonset.apps/node-exporter created
-       k8s@ubuntu:~$ kubectl get pods
-       NAME                  READY   STATUS    RESTARTS   AGE
-       node-exporter-5fnkr   1/1     Running   0          16s
-       k8s@ubuntu:~$ minikube  node add
-       😄  Adding node m03 to cluster minikube
-       👍  Starting worker node minikube-m03 in cluster minikube
-       🚜  Pulling base image ...
-       🔥  Creating docker container (CPUs=2, Memory=2200MB) ...\
-       🐳  Preparing Kubernetes v1.27.4 on Docker 24.0.4 ...
-       🔎  Verifying Kubernetes components...
-       🏄  Successfully added m03 to minikube!
-       k8s@ubuntu:~$ kubectl get nodes
-       NAME           STATUS   ROLES           AGE   VERSION
-       minikube       Ready    control-plane   99m   v1.27.4
-       minikube-m02   Ready    <none>          98m   v1.27.4
-       k8s@ubuntu:~$ kubectl get pods -o wide
-       NAME                  READY   STATUS    RESTARTS      AGE     IP           NODE           NOMINATED NODE   READINESS GATES
-       node-exporter-5fnkr   1/1     Running   0             2m48s   10.244.1.2   minikube-m02   <none>           <none>
-       node-exporter-qqpzg   1/1     Running   2 (11s ago)   38s     10.244.2.2   minikube   <none>           <none>
-       k8s@ubuntu:~$ kubectl delete node minikube-m02
-       node "minikube-m02" deleted
-       k8s@ubuntu:~$ kubectl get pods -o wide
-       NAME                  READY   STATUS    RESTARTS       AGE     IP           NODE           NOMINATED NODE   READINESS GATES
-       node-exporter-qqpzg   1/1     Running   0              5m40s   10.244.0.3   minikube       <none>           <none>
-       k8s@ubuntu:~$ kubectl port-forward node-exporter-qqpzg 9100:9100
-       Forwarding from 127.0.0.1:9100 -> 9100
-       Forwarding from [::1]:9100 -> 9100
+         k8s@ubuntu:~$ kubectl apply -f daemonset.yml
+         daemonset.apps/node-exporter created
+         k8s@ubuntu:~$ kubectl get pods
+         NAME                  READY   STATUS    RESTARTS   AGE
+         node-exporter-5fnkr   1/1     Running   0          16s
+         k8s@ubuntu:~$ minikube  node add
+         😄  Adding node m03 to cluster minikube
+         👍  Starting worker node minikube-m03 in cluster minikube
+         🚜  Pulling base image ...
+         🔥  Creating docker container (CPUs=2, Memory=2200MB) ...\
+         🐳  Preparing Kubernetes v1.27.4 on Docker 24.0.4 ...
+         🔎  Verifying Kubernetes components...
+         🏄  Successfully added m03 to minikube!
+         k8s@ubuntu:~$ kubectl get nodes
+         NAME           STATUS   ROLES           AGE   VERSION
+         minikube       Ready    control-plane   99m   v1.27.4
+         minikube-m02   Ready    <none>          98m   v1.27.4
+         k8s@ubuntu:~$ kubectl get pods -o wide
+         NAME                  READY   STATUS    RESTARTS      AGE     IP           NODE           NOMINATED NODE   READINESS GATES
+         node-exporter-5fnkr   1/1     Running   0             2m48s   10.244.1.2   minikube-m02   <none>           <none>
+         node-exporter-qqpzg   1/1     Running   2 (11s ago)   38s     10.244.2.2   minikube   <none>           <none>
+         k8s@ubuntu:~$ kubectl delete node minikube-m02
+         node "minikube-m02" deleted
+         k8s@ubuntu:~$ kubectl get pods -o wide
+         NAME                  READY   STATUS    RESTARTS       AGE     IP           NODE           NOMINATED NODE   READINESS GATES
+         node-exporter-qqpzg   1/1     Running   0              5m40s   10.244.0.3   minikube       <none>           <none>
+         k8s@ubuntu:~$ kubectl port-forward node-exporter-qqpzg 9100:9100
+         Forwarding from 127.0.0.1:9100 -> 9100
+         Forwarding from [::1]:9100 -> 9100
 
 
 ![daemonsets.PNG](daemonsets.PNG)
