@@ -112,6 +112,109 @@ Infinite Dynamo (graph)
 
 ## Joins
 
+![joins.jpeg](joins.jpeg)
+
+![usertable.PNG](usertable.PNG)
+
+![ordertable.PNG](ordertable.PNG)
+
+
+**Natural Join**
+
+       select u.user_id, u.user_name, o.user_id,o.order_id 
+       from user_table  u 
+       natural join order_table o
+
+![innerjoin.PNG](innerjoin.PNG)
+
+**Inner Join**
+
+       select u.user_id, u.user_name, o.user_id,o.order_id 
+       from user_table  u 
+       inner join order_table o 
+       on u.user_id = o.user_id
+
+![innerjoin.PNG](innerjoin.PNG)
+
+
+JOIN:
+
+JOIN is a keyword used to combine rows from two or more tables based on a related column.
+The JOIN operation is not restricted to any specific type, so it might refer to different types of joins, including INNER JOIN, LEFT JOIN, RIGHT JOIN, or FULL JOIN. If the type of join is not specified, the default is usually an INNER JOIN.
+INNER JOIN:
+
+INNER JOIN is the most common type of join. It returns only the rows where there is a match in both tables based on the specified condition.
+The syntax for INNER JOIN is as follows:
+sql
+Copy code
+SELECT *
+FROM table1
+INNER JOIN table2 ON table1.column_name = table2.column_name;
+NATURAL JOIN:
+
+NATURAL JOIN is a type of join that automatically matches the columns with the same name in both tables.
+The syntax for NATURAL JOIN is simpler than that of INNER JOIN because it doesn't require specifying the columns to join on. However, it can be less explicit and might lead to unexpected results if the table structures change.
+sql
+Copy code
+SELECT *
+FROM table1
+NATURAL JOIN table2;
+Example:
+Consider two tables, employees and departments, with a common column department_id.
+
+Using INNER JOIN:
+
+sql
+Copy code
+SELECT *
+FROM employees
+INNER JOIN departments ON employees.department_id = departments.department_id;
+Using NATURAL JOIN:
+
+sql
+Copy code
+SELECT *
+FROM employees
+NATURAL JOIN departments;
+It's essential to carefully choose the type of join based on the specific requirements of your query and the relationship between the tables. While INNER JOIN and NATURAL JOIN can be convenient, they have their advantages and disadvantages, and understanding their behavior is crucial for writing efficient and accurate SQL queries
+
+
+
+## Join vs Union
+
+JOIN:
+
+The JOIN operation is used to combine rows from two or more tables based on a related column between them.
+It is employed when you want to retrieve data from multiple tables based on a common condition or relationship.
+There are different types of joins, including INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL JOIN, each with its specific behavior.
+Example of INNER JOIN:
+
+sql
+Copy code
+SELECT *
+FROM table1
+INNER JOIN table2 ON table1.column_name = table2.column_name;
+UNION:
+
+The UNION operation is used to combine the result sets of two or more SELECT statements into a single result set.
+It is employed when you want to combine rows from different tables or queries that have similar structures.
+The columns in the SELECT statements being unioned must have the same data types in corresponding positions.
+Duplicate rows are automatically eliminated in the result set unless UNION ALL is used.
+Example of UNION:
+
+sql
+Copy code
+SELECT column1, column2
+FROM table1
+UNION
+SELECT column1, column2
+FROM table2;
+Key differences:
+
+JOIN is used to retrieve data from multiple tables based on a common condition, while UNION is used to combine the results of two or more SELECT statements.
+JOIN operates on rows, combining columns from different tables based on a specified condition, while UNION operates on columns, combining rows from different SELECT statements with similar structures.
+The result of a JOIN is a single table containing columns from both tables, while the result of a UNION is a single table with rows from the combined result sets.
+
 
 ## Aggregate Functions
 
@@ -233,3 +336,8 @@ Using common type element
     SELECT Salary FROM
     (SELECT Salary FROM Employee ORDER BY salary DESC LIMIT 2) AS Emp
     ORDER BY salary LIMIT 1;
+
+
+## Stored Procedure
+
+* 
