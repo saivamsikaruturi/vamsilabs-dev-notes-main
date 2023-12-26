@@ -107,7 +107,7 @@ Infinite Dynamo (graph)
 
 
 
-![flow.jpg](flow.jpg)
+![dbflow.PNG](dbflow.PNG)
 
 
 ## Joins
