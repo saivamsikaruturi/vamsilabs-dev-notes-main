@@ -36,3 +36,4 @@ mkdocs-glightbox==0.3.4
 mkdocs-minify-plugin==0.7.1
 mkdocs-exclude==1.0.2
 mkdocs-resize-images==1.0.1
+pymdownx.highlight==9.4
