@@ -80,7 +80,10 @@ markdown_extensions:
   - pymdownx.highlight:
       linenums: true
       linenums_style: pymdownx-inline
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - admonition
