@@ -6,6 +6,24 @@
 }
 
 
+/* Style code blocks */
+.md-typeset pre code {
+    display: block;
+    font-family: Menlo, Monaco, 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #e6695b; /* Text color */
+    background-color: #ffffff; /* Background color */
+    border: 1px solid #dddddd; /* Border color */
+    border-radius: 4px; /* Optional: Add rounded corners */
+    padding: 10px; /* Adjust padding as needed */
+    overflow-x: auto;
+}
+
+.md-typeset pre code .keyword { color: #008080; }
+.md-typeset pre code .comment { color: #696969; }
+.md-typeset pre code .string { color: #a31515; }
+.md-typeset pre code .number { color: #09885a; }
 
 
 header {

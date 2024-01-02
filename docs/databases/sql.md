@@ -85,16 +85,18 @@ Infinite Dynamo (graph)
 * We can use "where" condition and delete a particular row.
 * DELETE may leave fragmented space that requires additional maintenance to reclaim.
 
-
+``` sql
           delete from Student;
           delete from Student where id = 10;
-
+``` 
 **Drop**
 
 * It is a DDL statement
 * Deletes the entire table along with the structure.
 
+``` sql
            drop table Student;
+```
 
 **Truncate**
 
@@ -216,6 +218,16 @@ JOIN operates on rows, combining columns from different tables based on a specif
 The result of a JOIN is a single table containing columns from both tables, while the result of a UNION is a single table with rows from the combined result sets.
 
 
+## WHERE VS HAVING
+
+SELECT product, region, SUM(total_sales) as total
+FROM sales
+WHERE sales_date >= '2022-01-01' AND sales_date <= '2022-12-31'
+GROUP BY product, region
+HAVING SUM(total_sales) > 1000;
+
+
+
 ## Aggregate Functions
 
 
@@ -261,7 +273,16 @@ The result of a JOIN is a single table containing columns from both tables, whil
 
 ## Nth highest salary
 
-    select max(salary) from employee where salary < (Select max(salary) from employee where salary)
+
+``` sql
+
+      create table empsalary( id  int ,  salary int);
+      insert into empsalary values(1,1000);
+      insert into empsalary values(2,1000);
+      insert into empsalary  values(3,10000);
+```
+
+select max(salary) from empsalary where salary < (select max(salary) from empsalary)
 
   (or)
 

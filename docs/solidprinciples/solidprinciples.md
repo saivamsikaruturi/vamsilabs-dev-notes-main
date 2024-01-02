@@ -11,6 +11,10 @@ It states that every java class must perform a single Functionality. Implementat
 
 It states that according to the new requirements the module should be open for extension but closed for new modification.
 
+
+
+``` JAVA
+
     class CashPayment{
 
     public void acceptPayment(){
@@ -54,6 +58,7 @@ It states that according to the new requirements the module should be open for e
     processor.processPayment(new CashPayment());
 
     }
+```
 
 **Leskov's Substitution Principle**
 

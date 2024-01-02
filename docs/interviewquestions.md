@@ -7,6 +7,24 @@
   String[] args- command line arguments
 
 
+## Can we overload main method ?
+
+* It is allowed to overload main method
+
+      class Overload {
+        void main(){
+       // logic 
+        }
+
+      public static void main(){
+    
+       }
+    
+        }
+
+* There won't be any compile time error. But it looks for standard main method.
+* If you want to execute other main method, call it explicitly.
+
 ## System.out.println()
  
   example: 
@@ -61,6 +79,38 @@ int i = 9;: This assigns the decimal value 9 to the variable i. The number 9 is 
 
 int i = 09;: This is not a valid integer initialization in Java. In Java, if a numeric literal starts with a leading zero (0), it is interpreted as an octal (base 8) number. However, octal numbers can only include digits from 0 to 7. Since 9 is not a valid octal digit, the code int i = 09; will result in a compilation error.
 
+
+
+## application.yml vs application.properties
+
+application.properties.
+ 1. Data is stored in key-value fashion.
+2. Sequential format
+
+Advantages
+1. Easy to modify
+
+Disadvantages
+1. Repetition in keys
+2. On increase in properties files, it becomes difficult to read.
+3.Need to write separate .properties file for each environment.
+
+
+application.yml file
+1. Yaml stands for Yet Another Markup Language.
+2. Stores in key-value
+3. Hierarchical format.
+
+Advantages:
+1. Easy to modify
+2. Easy to understand as it followy hierarchial approach.
+3. No repetition in keys.
+4. MultiLanuage support.
+5. We can have array, List and Map also in yaml.
+6. Can have multiple profiles in single .yml file.
+
+Disadvantage:
+1. Complex identation formatting.
 
 
 ## Is Java Pass by Value or Pass by reference ??

@@ -671,7 +671,8 @@ Role and Role Binding:
 * If we want to run our pods only once like taking the DB backup or sending emails in a batch.
 * Such process shouldn't be running continuously. They will run just for a certain amount of time and run at particular times.
 * For these processes having controllers like deployment is a bad idea as it makes sure the Pod runs continuously.
-* 
+* Lifecycle:
+* when a k8s job is created 
 
 ## Helm Charts
 
