@@ -6,7 +6,7 @@ if (localStorage.getItem("dark-mode") === "enabled") {
     body.classList.add("dark-mode");
 }
 
-// Toggle dark mode
+//Toggle dark mode
 darkModeToggle.addEventListener("click", () => {
     if (body.classList.contains("dark-mode")) {
         body.classList.remove("dark-mode");
@@ -18,6 +18,3 @@ darkModeToggle.addEventListener("click", () => {
 });
 
 
-document$.subscribe(() => {
-    hljs.highlightAll()
-})
