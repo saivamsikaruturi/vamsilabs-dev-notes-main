@@ -85,8 +85,11 @@ Infinite Dynamo (graph)
 * We can use "where" condition and delete a particular row.
 * DELETE may leave fragmented space that requires additional maintenance to reclaim.
 
-``` sql
+```sql
           delete from Student;
+```          
+
+```sql          
           delete from Student where id = 10;
 ``` 
 **Drop**
