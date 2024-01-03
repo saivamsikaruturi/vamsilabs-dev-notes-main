@@ -77,7 +77,10 @@ markdown_extensions:
   - pymdownx.smartsymbols
   - pymdownx.tabbed
   - pymdownx.tilde
-  - pymdownx.highlight
+  - pymdownx.highlight:
+      linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences:
