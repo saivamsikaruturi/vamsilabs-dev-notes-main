@@ -112,12 +112,12 @@ Infinite Dynamo (graph)
 
 
 
-![dbflow.PNG](dbflow.PNG)
+![newdbflow.PNG](newdbflow.PNG)
 
 
 ## Joins
 
-![UI25E.jpg](UI25E.jpg)
+![joins2.jpg](joins2.jpg)
 
 ![usertable.PNG](usertable.PNG)
 
@@ -161,7 +161,7 @@ ex: SQL Query to retrieve name of all the employees who are also manager from em
 
 **Cross Join**
 
-![crossjoin.PNG](crossjoin.PNG)
+![crossjoin1.jpg](crossjoin1.jpg)
 
       select * from engfiledetails e cross join iedinstance i 
 
