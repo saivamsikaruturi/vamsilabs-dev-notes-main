@@ -6,13 +6,12 @@
 }
 
 
- Style code blocks
 .md-typeset pre code {
     display: block;
     font-family: Menlo, Monaco, 'Courier New', monospace;
     font-size: 14px;
     line-height: 1.6;
-    color: #e6695b; /* Text color */
+    color:#ff0617; /* Text color */
     background-color: #ffffff; /* Background color */
     border: 1px solid #dddddd; /* Border color */
     border-radius: 4px; /* Optional: Add rounded corners */
@@ -20,6 +19,13 @@
     overflow-x: auto;
     font-weight: bold;
 
+}
+
+.markdown-body {
+    --md-code-background: #e3dcef;
+    --md-code-text: #4a2b7b;
+    --md-code-tabs: #c6b8dd;
+    --md-code-radius: 4px;
 }
 
 .md-typeset pre code .keyword { color: #008080; }

@@ -125,7 +125,7 @@ Infinite Dynamo (graph)
 * It is used when you want to combine rows from the same table based on a related column.
 * To perform a self join, you need to use table aliases to create two or more refernces to the same table within the SQL query.
 
-```postgresql
+```sql
 
       select id 
       from emp e1 inner join emp e2

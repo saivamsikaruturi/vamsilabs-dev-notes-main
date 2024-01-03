@@ -13,13 +13,13 @@ It states that according to the new requirements the module should be open for e
 
 
 
-  ``` JAVA
+```java
 
     class CashPayment{
 
     public void acceptPayment(){
 
-    s.out.pln(“cash”);
+        System.out.println("cash");
 
     }
 
@@ -29,8 +29,7 @@ It states that according to the new requirements the module should be open for e
 
     public void acceptPayment(){
 
-    s.out.pln(“card”);
-
+        System.out.println("card");
     }
 
     }
@@ -49,7 +48,7 @@ It states that according to the new requirements the module should be open for e
 
     }
 
-    }
+    
 
     Main method(){
 
@@ -58,7 +57,8 @@ It states that according to the new requirements the module should be open for e
     processor.processPayment(new CashPayment());
 
     }
-  ```
+    }
+```    
 
 **Leskov's Substitution Principle**
 
