@@ -117,7 +117,7 @@ Infinite Dynamo (graph)
 
 ## Joins
 
-![joins2.jpg](joins2.jpg)
+![sqljoinss.jpg](sqljoinss.jpg)
 
 ![usertable.PNG](usertable.PNG)
 
