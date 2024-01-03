@@ -78,7 +78,9 @@ markdown_extensions:
   - pymdownx.tabbed
   - pymdownx.tilde
   - pymdownx.highlight:
-  - pymdownx.inlinehilite
+      linenums: true
+  - pymdownx.inlinehilite:
+
   - pymdownx.snippets
   - pymdownx.superfences:
       custom_fences:
