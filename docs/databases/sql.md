@@ -271,9 +271,6 @@ HAVING SUM(total_sales) > 1000;
 
 
 
-
-
-
 ## Nth highest salary
 
 
@@ -313,35 +310,18 @@ Using not in:
      select max(salary) from empsalary e where salary 
      not in (select max(salary) from empsalary e )
 
+
+## Duplicate rows in a table
+
+    select salary , count(*) from empsalary e group by salary having count(*)>1
+
+## Delete duplicate rows from a table
+
+    delete from empsalary where salary  in 
+    (select salary from (select salary , count(*) from empsalary e group by salary having count(*)>1 ) as temp)
+
+
 ## Maximum marks from each department
-
-    CREATE TABLE STUDENT ( ROLL_NO INT PRIMARY KEY, NAME VARCHAR(20));
-
-    INSERT INTO STUDENT VALUES (1,'NIKHIL');
-
-    INSERT INTO STUDENT VALUES (2,'VARUN');
-
-    INSERT INTO STUDENT VALUES (3,'NISHANT');
-
-    INSERT INTO STUDENT VALUES (4,'VISHAL');
-
-
-    CREATE TABLE MARKS ( ROLL_NO INT, SUBJECT VARCHAR(20), MARKS INT);
-
-    INSERT INTO MARKS VALUES('1','MATHS','92');
-
-    INSERT INTO MARKS VALUES('1','SCIENCE','80');
-
-    INSERT INTO MARKS VALUES('1','ENGLISH','98');
-
-    INSERT INTO MARKS VALUES('1','HINDI','81');
-
-    INSERT INTO MARKS VALUES('2','MATHS','89');
-
-    INSERT INTO MARKS VALUES('2','SCIENCE','100');
-
-    INSERT INTO MARKS VALUES('2','ENGLISH','81');
-
 
      select s.ROLL_NO,s.NAME,d.MARKS,d.SUBJECT from STUDENT s join MARKS d
 
@@ -360,22 +340,6 @@ Using not in:
     join department on e.dept_id=d.id
 
     group by e.dept_id;
-
-## Delete duplicate rows from a table
-
-Using common type element
-
-    With CTE as (Select * ROW NUMBER() OVER(Partition BY first name, last name order by first name, last name) 
-    rn from table_name );
-
-    delete from CTE where rn>1;
-
-
-## 2nd Highest Salary
-
-    SELECT Salary FROM
-    (SELECT Salary FROM Employee ORDER BY salary DESC LIMIT 2) AS Emp
-    ORDER BY salary LIMIT 1;
 
 
 ## Stored Procedure
