@@ -14,6 +14,7 @@ It states that according to the new requirements the module should be open for e
 
 
 ```java
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ abstract class Employee {
     int id;
     String name;
 
-    // setters and getters
+   
 
     public abstract double calculateBonus(float salary);
 
@@ -60,7 +61,6 @@ public class Main {
         employees.add(new TemporaryEmployee(2, "Krishna"));
     }
 }
-
 ```    
 
 **Leskov's Substitution Principle**
