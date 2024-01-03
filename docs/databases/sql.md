@@ -126,6 +126,7 @@ Infinite Dynamo (graph)
 * To perform a self join, you need to use table aliases to create two or more refernces to the same table within the SQL query.
 
 ```postgresql
+
       select id 
       from emp e1 inner join emp e2
       on t1.name = t2.name
