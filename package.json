@@ -1,0 +1,26 @@
+{
+  "name": "vamsilabs-dev-notes-main",
+  "version": "1.0.0",
+  "description": "My Tech Notes for Quick Reference ==================================",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vamsi1998123/sivalabs-dev-notes-main.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vamsi1998123/sivalabs-dev-notes-main/issues"
+  },
+  "homepage": "https://github.com/vamsi1998123/sivalabs-dev-notes-main#readme",
+  "devDependencies": {
+    "netlify-plugin-lighthouse": "^0.1.3"
+  }
+}
