@@ -14,50 +14,53 @@ It states that according to the new requirements the module should be open for e
 
 
 ```java
+import java.util.ArrayList;
+import java.util.List;
 
-    class CashPayment{
+abstract class Employee {
+    int id;
+    String name;
 
-    public void acceptPayment(){
+    // setters and getters
 
-        System.out.println("cash");
+    public abstract double calculateBonus(float salary);
 
+    public abstract boolean isEligibleForInsurance();
+}
+
+public class PermanentEmployee extends Employee {
+    @Override
+    public boolean isEligibleForInsurance() {
+        return true;
     }
 
+    @Override
+    public double calculateBonus(float salary) {
+        return salary * 0.1;
+    }
+}
+
+public class TemporaryEmployee extends Employee {
+    @Override
+    public boolean isEligibleForInsurance() {
+        return false;
     }
 
-    class CreditCardPayment{
-
-    public void acceptPayment(){
-
-        System.out.println("card");
+    @Override
+    public double calculateBonus(float salary) {
+        return salary * 0.5;
     }
+}
 
+public class Main {
+    public static void main(String[] args) {
+        List<Employee> employees = new ArrayList<>();
+
+        employees.add(new PermanentEmployee(1, "Sai"));
+        employees.add(new TemporaryEmployee(2, "Krishna"));
     }
+}
 
-    public interface IPay{
-
-    void acceptPayment();
-
-    }
-
-    public class PaymentProcessor{
-
-    void processPayment(IPay pay){
-
-    pay.acceptPayment();
-
-    }
-
-    
-
-    Main method(){
-
-    PaymentProcessor processor=new PaymentProcessor();
-
-    processor.processPayment(new CashPayment());
-
-    }
-    }
 ```    
 
 **Leskov's Substitution Principle**
