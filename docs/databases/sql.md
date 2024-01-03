@@ -117,12 +117,7 @@ Infinite Dynamo (graph)
 
 ## Joins
 
-![sqljoinss.jpg](sqljoinss.jpg)
-
-![usertable.PNG](usertable.PNG)
-
-![ordertable.PNG](ordertable.PNG)
-
+![joins3.jpg](joins3.jpg)
 
 ** Self Join**
 
