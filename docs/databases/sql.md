@@ -285,17 +285,33 @@ HAVING SUM(total_sales) > 1000;
       insert into empsalary  values(3,10000);
 ```
 
-select max(salary) from empsalary where salary < (select max(salary) from empsalary)
+Using max function:
 
-  (or)
+     select max(salary) from empsalary where salary < 
+     (select max(salary) from empsalary)
 
-    select max(salary) from employee group by marks order by marks desc limit 1,1;    
+Using Limit:
 
-  i.e( n-1,1) if 3rd highest(2,1)
+    SELECT * from empsalary e ORDER BY salary DESC limit 1,1; -->( for my sql 2nd highest salary)
 
-  (or)
+     SELECT * FROM empsalary e ORDER BY salary DESC OFFSET 2 LIMIT 1; (in postgres)
 
-    select top 1 salary from(select top 3 salary from employee order by desc) order by asc;
+Without using Limit:
+
+    select distinct(salary) from empsalary e where n-1 =
+    (select count(salary) from empsalary e2  where e2.salary > e.salary)
+
+for second highest it is 2-1 = where 1 = (select count(salary) from empsalary e2  where e2.salary > e.salary)
+    
+Using dense_rank:
+
+    select distinct(salary) from (select salary, dense_rank() 
+    over(order by salary desc) as salary_rank from empsalary) as temp where salary_rank = 2
+
+Using not in:
+
+     select max(salary) from empsalary e where salary 
+     not in (select max(salary) from empsalary e )
 
 ## Maximum marks from each department
 
