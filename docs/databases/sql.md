@@ -112,24 +112,25 @@ Infinite Dynamo (graph)
 
 
 
-![newdbflow.PNG](newdbflow.PNG)
+![flows.jpg](flows.jpg)
 
 
 ## Joins
 
-![joins3.jpg](joins3.jpg)
+![joins4.jpg](joins4.jpg)
 
-** Self Join**
+**Self Join**
 
 * It is a type of join operation where a table is joined with itself.
 * It is used when you want to combine rows from the same table based on a related column.
 * To perform a self join, you need to use table aliases to create two or more refernces to the same table within the SQL query.
 
+```postgresql
       select id 
       from emp e1 inner join emp e2
       on t1.name = t2.name
       where salary > 50000;
-
+```
 ex: SQL Query to retrieve name of all the employees who are also manager from employee table.
 
      select distinct name 
