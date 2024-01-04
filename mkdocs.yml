@@ -78,7 +78,11 @@ markdown_extensions:
   - pymdownx.tabbed
   - pymdownx.tilde
   - pymdownx.highlight:
-      linenums: true
+      extend_pygments_lang:
+        - name: java
+          lang: java
+          options:
+            python3: true
       linenums_style: pymdownx-inline
   - pymdownx.inlinehilite
   - pymdownx.snippets
