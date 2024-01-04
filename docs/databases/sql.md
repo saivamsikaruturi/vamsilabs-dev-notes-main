@@ -150,17 +150,15 @@ ex: SQL Query to retrieve name of all the employees who are also manager from em
 
 ![innerjoin.PNG](innerjoin.PNG)
 
-```python
-def fn():
-    pass
-```
 
 **Inner Join**
 
+```sql
        select u.user_id, u.user_name, o.user_id,o.order_id 
        from user_table  u 
        inner join order_table o 
        on u.user_id = o.user_id
+```       
 
 ![innerjoin.PNG](innerjoin.PNG)
 
@@ -168,8 +166,9 @@ def fn():
 
 ![crossjoin1.jpg](crossjoin1.jpg)
 
-      select * from engfiledetails e cross join iedinstance i 
-
+```sql
+      select * from engfiledetails e cross join iedinstance i
+```
 
 JOIN:
 
@@ -189,27 +188,28 @@ NATURAL JOIN:
 NATURAL JOIN is a type of join that automatically matches the columns with the same name in both tables.
 The syntax for NATURAL JOIN is simpler than that of INNER JOIN because it doesn't require specifying the columns to join on. However, it can be less explicit and might lead to unexpected results if the table structures change.
 sql
-Copy code
-SELECT *
-FROM table1
-NATURAL JOIN table2;
+
+```sql
+       SELECT *
+       FROM table1
+       NATURAL JOIN table2;
+```
 Example:
 Consider two tables, employees and departments, with a common column department_id.
 
 Using INNER JOIN:
 
-sql
-Copy code
+```sql
 SELECT *
 FROM employees
 INNER JOIN departments ON employees.department_id = departments.department_id;
 Using NATURAL JOIN:
-
-sql
-Copy code
+```
+```sql
 SELECT *
 FROM employees
 NATURAL JOIN departments;
+```
 It's essential to carefully choose the type of join based on the specific requirements of your query and the relationship between the tables. While INNER JOIN and NATURAL JOIN can be convenient, they have their advantages and disadvantages, and understanding their behavior is crucial for writing efficient and accurate SQL queries
 
 
@@ -252,12 +252,13 @@ The result of a JOIN is a single table containing columns from both tables, whil
 
 ## WHERE VS HAVING
 
+```sql
 SELECT product, region, SUM(total_sales) as total
 FROM sales
 WHERE sales_date >= '2022-01-01' AND sales_date <= '2022-12-31'
 GROUP BY product, region
 HAVING SUM(total_sales) > 1000;
-
+```
 
 
 ## Aggregate Functions
@@ -313,63 +314,72 @@ HAVING SUM(total_sales) > 1000;
 
 Using max function:
 
+```sql
      select max(salary) from empsalary where salary < 
      (select max(salary) from empsalary)
+```
 
 Using Limit:
 
+```sql
     SELECT * from empsalary e ORDER BY salary DESC limit 1,1; -->( for my sql 2nd highest salary)
 
      SELECT * FROM empsalary e ORDER BY salary DESC OFFSET 2 LIMIT 1; (in postgres)
+```
 
 Without using Limit:
 
+```sql
     select distinct(salary) from empsalary e where n-1 =
     (select count(salary) from empsalary e2  where e2.salary > e.salary)
+```
 
 for second highest it is 2-1 = where 1 = (select count(salary) from empsalary e2  where e2.salary > e.salary)
     
 Using dense_rank:
 
+```sql
     select distinct(salary) from (select salary, dense_rank() 
     over(order by salary desc) as salary_rank from empsalary) as temp where salary_rank = 2
+```
 
 Using not in:
 
+```sql
      select max(salary) from empsalary e where salary 
      not in (select max(salary) from empsalary e )
-
+```
 
 ## Duplicate rows in a table
 
+```sql
     select salary , count(*) from empsalary e group by salary having count(*)>1
+```
 
 ## Delete duplicate rows from a table
 
+```sql
     delete from empsalary where salary  in 
     (select salary from (select salary , count(*) from empsalary e group by salary having count(*)>1 ) as temp)
-
+```
 
 ## Maximum marks from each department
 
+```sql
      select s.ROLL_NO,s.NAME,d.MARKS,d.SUBJECT from STUDENT s join MARKS d
-
      on s.ROLL_NO=d.ROLL_NO
-
      where d.marks=(select max(MARKS) from MARKS dd
-
     group by dd.SUBJECT having dd.SUBJECT =d.SUBJECT)
+```
 
 ## Count of employees in each department
 
+```sql
     select count(*), dept_name
-
     from employee
-
     join department on e.dept_id=d.id
-
     group by e.dept_id;
-
+```
 
 ## Stored Procedure
 

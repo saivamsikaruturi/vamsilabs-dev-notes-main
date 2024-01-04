@@ -25,9 +25,9 @@ It states that according to the new requirements the module should be open for e
     public abstract double calculateBonus(float salary);
 
     public abstract boolean isEligibleForInsurance();
-}
+    }
 
-public class PermanentEmployee extends Employee {
+    public class PermanentEmployee extends Employee {
     @Override
     public boolean isEligibleForInsurance() {
         return true;
@@ -37,9 +37,9 @@ public class PermanentEmployee extends Employee {
     public double calculateBonus(float salary) {
         return salary * 0.1;
     }
-}
+    }
 
-public class TemporaryEmployee extends Employee {
+    public class TemporaryEmployee extends Employee {
     @Override
     public boolean isEligibleForInsurance() {
         return false;
@@ -49,23 +49,21 @@ public class TemporaryEmployee extends Employee {
     public double calculateBonus(float salary) {
         return salary * 0.5;
     }
-}
+    }
 
-public class Main {
+    public class Main {
     public static void main(String[] args) {
         List<Employee> employees = new ArrayList<>();
 
         employees.add(new PermanentEmployee(1, "Sai"));
         employees.add(new TemporaryEmployee(2, "Krishna"));
     }
-}
+    }
 ```    
 
 **Leskov's Substitution Principle**
 
-It applies to inheritance in such a way that the derived classes must be completely substitutable for this base classes. In other words Class A is a sub type of class B, then we should be able to replace B with A without interrupting the behaviour of the program.
-
-``` JAVA
+```java
 
     abstract class Employee{
 
@@ -138,6 +136,8 @@ It states that the larger interfaces split into smaller ones. Because the implem
 
 It states that we must use abstraction (abstract classes and interfaces) instead of concrete implementations. High level modules should not depend on the low level module but should not depend on the abstraction.
 
+
+```java
     public class Book{
 
     void seeReviews(){
@@ -193,3 +193,4 @@ It states that we must use abstraction (abstract classes and interfaces) instead
     }
 
     }
+``` 
