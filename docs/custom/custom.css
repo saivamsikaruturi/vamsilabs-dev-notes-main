@@ -8,18 +8,18 @@
 
 .md-typeset pre code {
     display: block;
-    font-family: Menlo, Monaco, 'Courier New', monospace;
+    font-family: 'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace;
     font-size: 14px;
     line-height: 1.6;
-    color:#ff0617; /* Text color */
-    background-color: #ffffff; /* Background color */
-    border: 1px solid #dddddd; /* Border color */
+    color: #C3C3C3; /* Text color */
+    background-color: #2B2B2B; /* Background color */
+    border: 1px solid #3A3A3A; /* Border color */
     border-radius: 4px; /* Optional: Add rounded corners */
     padding: 10px; /* Adjust padding as needed */
     overflow-x: auto;
-    font-weight: bold;
-
+    font-weight: normal; /* Adjust font weight as needed */
 }
+
 
 .markdown-body {
     --md-code-background: #e3dcef;

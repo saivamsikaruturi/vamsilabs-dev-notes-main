@@ -134,16 +134,19 @@ Infinite Dynamo (graph)
 ```
 ex: SQL Query to retrieve name of all the employees who are also manager from employee table.
 
+```sql
      select distinct name 
      from employee e1 join employee e2
      on e1.id = e2.manager_id;
-
+```
 
 **Natural Join**
 
+```sql
        select u.user_id, u.user_name, o.user_id,o.order_id 
        from user_table  u 
        natural join order_table o
+```
 
 ![innerjoin.PNG](innerjoin.PNG)
 
