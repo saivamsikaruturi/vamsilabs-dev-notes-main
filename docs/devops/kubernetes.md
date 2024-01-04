@@ -151,6 +151,7 @@
 * 20 GB of free disk space
 * Docker or VM manager
 
+```bash
       minikube start --nodes 2 -p local-cluster --driver=docker
       minikube status -p local-cluster
 
@@ -164,7 +165,7 @@
       type: Worker
       host: Running
       kubelet: Running
-
+```
 * Create a cluster using minikube
        
            minikube start --nodes 2 -p local-cluster --driver=docker
@@ -698,7 +699,7 @@ Problen Statement 2:
 * By using the helm chart with small minor modifications, we can install the setup.
 
 
-
+```bash
         k8s@ubuntu:~$ helm create todo-api
         Creating todo-api
         k8s@ubuntu:~$ ls
@@ -711,3 +712,4 @@ Problen Statement 2:
         charts  Chart.yaml  templates  values.yaml
         k8s@ubuntu:~/todo-api$ code .
         k8s@ubuntu:~/todo-api$ 
+```
