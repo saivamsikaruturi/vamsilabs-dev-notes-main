@@ -150,6 +150,11 @@ ex: SQL Query to retrieve name of all the employees who are also manager from em
 
 ![innerjoin.PNG](innerjoin.PNG)
 
+```python
+def fn():
+    pass
+```
+
 **Inner Join**
 
        select u.user_id, u.user_name, o.user_id,o.order_id 
