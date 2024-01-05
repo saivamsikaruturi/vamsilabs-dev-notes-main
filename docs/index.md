@@ -1,6 +1,9 @@
 
 Welcome to My Tech Notes
 
+-[JAVA 11](ttps://vamsilabs-master-notes.netlify.app/java/java11)
+-[JAVA 17](https://vamsilabs-master-notes.netlify.app/java/Java17/)
+
 ## My favorite development tools
 
 ## CommandLine Tools

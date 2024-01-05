@@ -128,6 +128,7 @@ nav:
       - Garbage Collection: java/GarbageCollection.md
       - Serialization: java/Serialization.md
   - Java 8: java/Java8.md
+  - Java 11: java/java11.md
   - Java 17: java/Java17.md
   - Advanced Java:
       - Exception Handling: java/ExceptionHandling.md
