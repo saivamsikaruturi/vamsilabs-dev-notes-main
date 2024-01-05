@@ -86,3 +86,5 @@ Compacting: compact the memory by moving around the objects and making the alloc
   * Low Pauses with fragmentation.
   * Parallelism and Concurrency together.
   * Better heap Utilization.
+
+* JAVA_OPTS: "-XX:+UseZGC -Xms512m -Xmx1024m"
