@@ -25,7 +25,14 @@ class StripExample {
    * stripLeading();
    * stripTrailing();
    * repeat();
+* Pattern Recognizing Methods
+var str = Pattern.compile("aba").asMatchPredicate();
 
+str.test(aabb);
+Output: false
+
+str.test(aba);
+Output: true
 * Files.readString(),Files.writeString()
 * HTTP Client API : In previous versions of Java, the most commonly used libraries for HTTP communication were Apache HttpClient and the legacy HttpURLConnection class. While these libraries served their purpose, they had limitations. The APIs were often complex, lacking flexibility, and struggled to keep up with modern web standards.
 * making it asynchronous and non-blocking by default. This means that applications can send HTTP requests and continue their execution without waiting for the responses, leading to improved performance and responsiveness.
