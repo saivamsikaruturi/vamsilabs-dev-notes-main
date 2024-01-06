@@ -74,9 +74,7 @@ Infinite Dynamo (graph)
 | This will be fast in searching for the range of values.              | This will be fast in searching for the values that are not in the range.                   |
 | Leaf node of clustered index contains table data.                    | Leaf nodes of non-clustered index contains pointers to get the pointers that contain data. |
 
-
 ## Delete, Drop and Truncate
-
 
 **Delete:**
 
@@ -86,12 +84,16 @@ Infinite Dynamo (graph)
 * DELETE may leave fragmented space that requires additional maintenance to reclaim.
 
 ```sql
-          delete from Student;
+          delete
+          from Student;
 ```          
 
 ```sql          
-          delete from Student where id = 10;
+          delete
+          from Student
+          where id = 10;
 ``` 
+
 **Drop**
 
 * It is a DDL statement
@@ -105,15 +107,12 @@ Infinite Dynamo (graph)
 
 * It is a DDL statement.
 * It will also delete the rows, but it will delete all the rows at once.
-* However, TRUNCATE is generally faster than DELETE because it deallocates the space used by the table and its data in a more efficient way.
-      
+* However, TRUNCATE is generally faster than DELETE because it deallocates the space used by the table and its data in a
+  more efficient way.
+
           truncate table Student;
 
-
-
-
 ![flows.jpg](flows.jpg)
-
 
 ## Joins
 
@@ -123,41 +122,44 @@ Infinite Dynamo (graph)
 
 * It is a type of join operation where a table is joined with itself.
 * It is used when you want to combine rows from the same table based on a related column.
-* To perform a self join, you need to use table aliases to create two or more refernces to the same table within the SQL query.
+* To perform a self join, you need to use table aliases to create two or more refernces to the same table within the SQL
+  query.
 
 ```sql
 
-      select id 
-      from emp e1 inner join emp e2
-      on t1.name = t2.name
-      where salary > 50000;
+select id
+from emp e1
+         inner join emp e2
+                    on t1.name = t2.name
+where salary > 50000;
 ```
+
 ex: SQL Query to retrieve name of all the employees who are also manager from employee table.
 
 ```sql
-     select distinct name 
-     from employee e1 join employee e2
-     on e1.id = e2.manager_id;
+     select distinct name
+     from employee e1
+              join employee e2
+                   on e1.id = e2.manager_id;
 ```
 
 **Natural Join**
 
 ```sql
-       select u.user_id, u.user_name, o.user_id,o.order_id 
-       from user_table  u 
-       natural join order_table o
+       select u.user_id, u.user_name, o.user_id, o.order_id
+       from user_table u
+                natural join order_table o
 ```
 
 ![innerjoin.PNG](innerjoin.PNG)
 
-
 **Inner Join**
 
 ```sql
-       select u.user_id, u.user_name, o.user_id,o.order_id 
-       from user_table  u 
-       inner join order_table o 
-       on u.user_id = o.user_id
+       select u.user_id, u.user_name, o.user_id, o.order_id
+       from user_table u
+                inner join order_table o
+                           on u.user_id = o.user_id
 ```       
 
 ![innerjoin.PNG](innerjoin.PNG)
@@ -167,16 +169,27 @@ ex: SQL Query to retrieve name of all the employees who are also manager from em
 ![crossjoin1.jpg](crossjoin1.jpg)
 
 ```sql
-      select * from engfiledetails e cross join iedinstance i
+      select *
+      from engfiledetails e
+               cross join iedinstance i
 ```
+
+**Left Join**
+
+**Right Join**
+
+**Full Outer Join**
 
 JOIN:
 
 JOIN is a keyword used to combine rows from two or more tables based on a related column.
-The JOIN operation is not restricted to any specific type, so it might refer to different types of joins, including INNER JOIN, LEFT JOIN, RIGHT JOIN, or FULL JOIN. If the type of join is not specified, the default is usually an INNER JOIN.
+The JOIN operation is not restricted to any specific type, so it might refer to different types of joins, including
+INNER JOIN, LEFT JOIN, RIGHT JOIN, or FULL JOIN. If the type of join is not specified, the default is usually an INNER
+JOIN.
 INNER JOIN:
 
-INNER JOIN is the most common type of join. It returns only the rows where there is a match in both tables based on the specified condition.
+INNER JOIN is the most common type of join. It returns only the rows where there is a match in both tables based on the
+specified condition.
 The syntax for INNER JOIN is as follows:
 sql
 Copy code
@@ -186,14 +199,16 @@ INNER JOIN table2 ON table1.column_name = table2.column_name;
 NATURAL JOIN:
 
 NATURAL JOIN is a type of join that automatically matches the columns with the same name in both tables.
-The syntax for NATURAL JOIN is simpler than that of INNER JOIN because it doesn't require specifying the columns to join on. However, it can be less explicit and might lead to unexpected results if the table structures change.
+The syntax for NATURAL JOIN is simpler than that of INNER JOIN because it doesn't require specifying the columns to join
+on. However, it can be less explicit and might lead to unexpected results if the table structures change.
 sql
 
 ```sql
        SELECT *
        FROM table1
-       NATURAL JOIN table2;
+                NATURAL JOIN table2;
 ```
+
 Example:
 Consider two tables, employees and departments, with a common column department_id.
 
@@ -202,17 +217,19 @@ Using INNER JOIN:
 ```sql
 SELECT *
 FROM employees
-INNER JOIN departments ON employees.department_id = departments.department_id;
+         INNER JOIN departments ON employees.department_id = departments.department_id;
 Using NATURAL JOIN:
 ```
+
 ```sql
 SELECT *
 FROM employees
-NATURAL JOIN departments;
+         NATURAL JOIN departments;
 ```
-It's essential to carefully choose the type of join based on the specific requirements of your query and the relationship between the tables. While INNER JOIN and NATURAL JOIN can be convenient, they have their advantages and disadvantages, and understanding their behavior is crucial for writing efficient and accurate SQL queries
 
-
+It's essential to carefully choose the type of join based on the specific requirements of your query and the
+relationship between the tables. While INNER JOIN and NATURAL JOIN can be convenient, they have their advantages and
+disadvantages, and understanding their behavior is crucial for writing efficient and accurate SQL queries
 
 ## Join vs Union
 
@@ -220,7 +237,8 @@ JOIN:
 
 The JOIN operation is used to combine rows from two or more tables based on a related column between them.
 It is employed when you want to retrieve data from multiple tables based on a common condition or relationship.
-There are different types of joins, including INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL JOIN, each with its specific behavior.
+There are different types of joins, including INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL JOIN, each with its specific
+behavior.
 Example of INNER JOIN:
 
 sql
@@ -245,26 +263,44 @@ SELECT column1, column2
 FROM table2;
 Key differences:
 
-JOIN is used to retrieve data from multiple tables based on a common condition, while UNION is used to combine the results of two or more SELECT statements.
-JOIN operates on rows, combining columns from different tables based on a specified condition, while UNION operates on columns, combining rows from different SELECT statements with similar structures.
-The result of a JOIN is a single table containing columns from both tables, while the result of a UNION is a single table with rows from the combined result sets.
-
+JOIN is used to retrieve data from multiple tables based on a common condition, while UNION is used to combine the
+results of two or more SELECT statements.
+JOIN operates on rows, combining columns from different tables based on a specified condition, while UNION operates on
+columns, combining rows from different SELECT statements with similar structures.
+The result of a JOIN is a single table containing columns from both tables, while the result of a UNION is a single
+table with rows from the combined result sets.
 
 ## WHERE VS HAVING
 
 ```sql
 SELECT product, region, SUM(total_sales) as total
 FROM sales
-WHERE sales_date >= '2022-01-01' AND sales_date <= '2022-12-31'
+WHERE sales_date >= '2022-01-01'
+  AND sales_date <= '2022-12-31'
 GROUP BY product, region
 HAVING SUM(total_sales) > 1000;
 ```
 
-
 ## Aggregate Functions
 
-
 ## SubQuery
+* It is a SELECT query within another query
+* Sub query used for filtering in the where (or) having clause is known as **Inner Query**.
+* Sub query inside another Sub query is **Nested query**.
+* Scalar Sub Query
+   * Returns a single value.
+   * mostly aggregate functions (count,max,min,sum,avg)
+   * operators >,<,>=,<=
+```sql
+    select  name from employee
+    where salary <
+          (select avg(salary))
+          from employee
+```
+
+* Multiple Sub Query
+   * 
+* Correlated Sub Query
 
 ## Normalization
 
@@ -273,6 +309,7 @@ HAVING SUM(total_sales) > 1000;
 * There is a step-by-step process you need to follow in order to normalize your database
 
 **Different levels of normalization:**
+
 * 1 NF, 2NF, 3NF, 4NF, 5NF, BCNF (Boyce-Codd NF)
 
 **1NF**
@@ -291,18 +328,13 @@ HAVING SUM(total_sales) > 1000;
 * Must be in 2NF.
 * Avoid Transitive dependencies.
 
-
 ## Indexing
 
 1. How Table data(rows) are actually stored?
 2. What type of indexing present?
 3. Understanding the data structure used for indexing and how it works?
 
-
-
-
 ## Nth highest salary
-
 
 ``` sql
 
@@ -315,61 +347,86 @@ HAVING SUM(total_sales) > 1000;
 Using max function:
 
 ```sql
-     select max(salary) from empsalary where salary < 
-     (select max(salary) from empsalary)
+     select max(salary)
+     from empsalary
+     where salary <
+           (select max(salary) from empsalary)
 ```
 
 Using Limit:
 
 ```sql
-    SELECT * from empsalary e ORDER BY salary DESC limit 1,1; -->( for my sql 2nd highest salary)
+    SELECT *
+    from empsalary e
+    ORDER BY salary DESC limit 1,1; -->( for my sql 2nd highest salary)
 
-     SELECT * FROM empsalary e ORDER BY salary DESC OFFSET 2 LIMIT 1; (in postgres)
+SELECT *
+FROM empsalary e
+ORDER BY salary DESC
+OFFSET 2 LIMIT 1;
+    (in postgres)
 ```
 
 Without using Limit:
 
 ```sql
-    select distinct(salary) from empsalary e where n-1 =
-    (select count(salary) from empsalary e2  where e2.salary > e.salary)
+    select distinct(salary)
+    from empsalary e
+    where n - 1 =
+          (select count(salary) from empsalary e2 where e2.salary > e.salary)
 ```
 
-for second highest it is 2-1 = where 1 = (select count(salary) from empsalary e2  where e2.salary > e.salary)
-    
+for second highest it is 2-1 = where 1 = (select count(salary) from empsalary e2 where e2.salary > e.salary)
+
 Using dense_rank:
 
 ```sql
-    select distinct(salary) from (select salary, dense_rank() 
-    over(order by salary desc) as salary_rank from empsalary) as temp where salary_rank = 2
+    select distinct(salary)
+    from (select salary,
+                 dense_rank()
+                     over(order by salary desc) as salary_rank
+          from empsalary) as temp
+    where salary_rank = 2
 ```
 
 Using not in:
 
 ```sql
-     select max(salary) from empsalary e where salary 
-     not in (select max(salary) from empsalary e )
+     select max(salary)
+     from empsalary e
+     where salary
+               not in (select max(salary) from empsalary e)
 ```
 
 ## Duplicate rows in a table
 
 ```sql
-    select salary , count(*) from empsalary e group by salary having count(*)>1
+    select salary, count(*)
+    from empsalary e
+    group by salary
+    having count(*) > 1
 ```
 
 ## Delete duplicate rows from a table
 
 ```sql
-    delete from empsalary where salary  in 
-    (select salary from (select salary , count(*) from empsalary e group by salary having count(*)>1 ) as temp)
+    delete
+    from empsalary
+    where salary in
+          (select salary from (select salary, count(*) from empsalary e group by salary having count(*) > 1) as temp)
 ```
 
 ## Maximum marks from each department
 
 ```sql
-     select s.ROLL_NO,s.NAME,d.MARKS,d.SUBJECT from STUDENT s join MARKS d
-     on s.ROLL_NO=d.ROLL_NO
-     where d.marks=(select max(MARKS) from MARKS dd
-    group by dd.SUBJECT having dd.SUBJECT =d.SUBJECT)
+     select s.ROLL_NO, s.NAME, d.MARKS, d.SUBJECT
+     from STUDENT s
+              join MARKS d
+                   on s.ROLL_NO = d.ROLL_NO
+     where d.marks = (select max(MARKS)
+                      from MARKS dd
+                      group by dd.SUBJECT
+                      having dd.SUBJECT = d.SUBJECT)
 ```
 
 ## Count of employees in each department
@@ -377,7 +434,7 @@ Using not in:
 ```sql
     select count(*), dept_name
     from employee
-    join department on e.dept_id=d.id
+             join department on e.dept_id = d.id
     group by e.dept_id;
 ```
 
