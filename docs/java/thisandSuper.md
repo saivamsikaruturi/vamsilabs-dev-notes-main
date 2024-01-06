@@ -1,4 +1,5 @@
-    public class ThisAndSuperkeyword extends Super {
+```java
+public class ThisAndSuperkeyword extends Super {
 
     public static void main(String[] args) {
 
@@ -55,8 +56,9 @@
 
 
     }
+```
 
-
+```console
     super
     no arg constructor
     single param constructor
@@ -64,3 +66,4 @@
     this.a:: 1
     present:: 20
     super.a:: 100
+```
