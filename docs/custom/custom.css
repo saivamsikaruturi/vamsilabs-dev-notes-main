@@ -68,3 +68,57 @@ header {
     background-color: #d52a2a;
     color: #fff;
 }
+
+/* Reset default margin and padding */
+body, h1, h2, h3, p, ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Apply a box-sizing border-box model to all elements */
+* {
+    box-sizing: border-box;
+}
+
+/* Position the navigation menu at the top */
+#nav {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    overflow: auto; /* Add vertical scrollbar if needed */
+}
+
+/* Style for each navigation item */
+#nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+    justify-content: center;
+    align-items: center;
+    max-width: 100px; /* Set a maximum width for the navigation bar */
+    margin: 0 auto; /* Center the navigation bar */
+    padding: 0;
+}
+
+#nav li {
+    margin: 0 10px; /* Reduce margin for a more compact layout */
+    padding: 10px; /* Adjust padding for a more compact layout */
+    font-size: 8px; /* Adjust font size for better visibility */
+}
+
+#nav a {
+    text-decoration: none;
+    color: white; /* Use white for link color */
+}
+
+#nav a:hover {
+    color: #f00; /* Change to your preferred hover color */
+}
+
+/* Apply responsive design for smaller screens */
+@media only screen and (max-width: 600px) {
+    #nav li {
+        margin: 10px 0; /* Add space between stacked items */
+    }
+}
