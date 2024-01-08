@@ -14,6 +14,8 @@
 
 **How Oauth 2.0 works ?**
 
+![oauth.PNG](oauth.PNG)
+
 * The application requests authorization to access service resources from the user
 
 * If the user authorized the request, the application receives an authorization grant
