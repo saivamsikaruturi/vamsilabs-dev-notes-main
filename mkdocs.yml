@@ -102,6 +102,9 @@ plugins:
       size: [800, 600]
       extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg']
   - glightbox
+  - termynal:
+      title: bash
+      buttons: windows
 
 
 
@@ -190,6 +193,7 @@ nav:
   - MicroServices:
       - Basic Terminology: microservices/microservices.md
       - CQRS: CQRS.md
+      - Saga Design Pattern: microservices/SagaDesignPattern.md
   - System Design:
       - Https: https.md
       - Cap Theorem: capTheorem.md
