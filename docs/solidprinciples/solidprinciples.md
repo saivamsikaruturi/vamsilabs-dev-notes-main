@@ -5,11 +5,12 @@
 
 **Single Responsibility Principle**
 
-It states that every java class must perform a single Functionality. Implementation of multiple Functionalities in a single class will mashup the code.
+* It states that every java class must perform a single Functionality. 
+* Implementation of multiple Functionalities in a single class will mashup the code.
 
 **Open and Close Principle**
 
-It states that according to the new requirements the module should be open for extension but closed for new modification.
+* It states that according to the new requirements the module should be open for extension but closed for new modification.
 
 
 
@@ -62,6 +63,8 @@ It states that according to the new requirements the module should be open for e
 ```    
 
 **Leskov's Substitution Principle**
+
+*any parent class `class P` object should be replacable with any child class `class C extends P` object
 
 ```java
 
@@ -130,11 +133,11 @@ It states that according to the new requirements the module should be open for e
 
 **Interface Segregation Principle**
 
-It states that the larger interfaces split into smaller ones. Because the implementation classes use only the methods thar are required. We should not force the client to use the methods that they do not want to use the methods that they do not want to use.
+* It states that the larger interfaces split into smaller ones. Because the implementation classes use only the methods thar are required. We should not force the client to use the methods that they do not want to use the methods that they do not want to use.
 
 **Dependency Inversion Principle**
 
-It states that we must use abstraction (abstract classes and interfaces) instead of concrete implementations. High level modules should not depend on the low level module but should not depend on the abstraction.
+* It states that we must use abstraction (abstract classes and interfaces) instead of concrete implementations. High level modules should not depend on the low level module but should not depend on the abstraction.
 
 
 ```java
