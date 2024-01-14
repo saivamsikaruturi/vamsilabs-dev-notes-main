@@ -15,6 +15,14 @@ Example: Out of memory error
 
 ## Difference Between Checked and Unchecked Exceptions
 
+
+Checked Exceptions: Except for RuntimeException, Error, and their subclasses, all other exceptions are called checked exceptions. It means that it is compulsary for the user to check i.e, to handle an exception. If a method throws a checked exception then the method must take the responsibilty to deal with it. The method must either catch the exception and take appropriate action, or pass the execution on to its caller.
+Examples : IOException, ClassNotFoundException, InterruptedException, CloneNotSupportException
+
+Unchecked Exception: Exception defined by Error and RuntimeException classes and their subclasses are known as unchecked exceptions. It means that it is not mandatory for a method to deal with such kinds of exceptions, The compiler doesn’t check if a method handles or throws this exception. Such exceptions are either irrecoverable and the program should not attempt to deal with them or they cannot be treatedas exceptions.
+Examples- NullPointerException, ArrayIndexOutofBoundsException,
+ArithematicException, NumberFormatException etc
+
 - Every Exception occurs at Run Time only.
 - The Exceptions which are checked by compiler for smooth execution of program at Runtime are known as Checked Exceptions. These exceptions must be caught.
 - We will get compile time error if we don’t handle these exceptions.

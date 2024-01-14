@@ -1,3 +1,12 @@
+
+* super is for the parent class.
+* this is for the child class.
+* The super keyword is used to access variables from the super/parent class.
+* The super() method is used to access the super class methods and its constructors.
+* this keyword is used to access variables from the child class.
+* this() method is used to invoke another constructor within the same class.
+
+
 ```java
 public class ThisAndSuperkeyword extends Super {
 
@@ -58,7 +67,8 @@ public class ThisAndSuperkeyword extends Super {
     }
 ```
 
-```console
+<!-- termynal -->
+```
     super
     no arg constructor
     single param constructor

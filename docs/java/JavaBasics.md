@@ -99,6 +99,22 @@ There are 11 methods in object class.
 | Cannot take constructor                                                                                                               | Can take constructor                                                                                                                                                                                                                                                     |
 
 
+* When to use Interface and when Abstract class in real applications?
+
+* An interface is a good choice when you know a method has to be there, but it can be implemented differently by independent derived classes.
+      public class FixedBilling
+      {
+       
+       }
+      
+       public class VariableBilling
+       {
+       
+       }
+
+* Abstract class is a good choice when you are sure some methods are concrete/defined and must be implemented in the same way in all derived classes.
+* 
+
 ## Upcasting and Downcasting
 
 ![img_6.png](img_6.png)

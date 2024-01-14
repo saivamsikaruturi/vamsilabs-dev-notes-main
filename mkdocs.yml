@@ -194,6 +194,7 @@ nav:
       - Basic Terminology: microservices/microservices.md
       - CQRS: CQRS.md
       - Saga Design Pattern: microservices/SagaDesignPattern.md
+      - Circuit Breaker DP:  microservices/CircuitBreaker.md
   - System Design:
       - Https: https.md
       - Cap Theorem: capTheorem.md
