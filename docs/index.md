@@ -27,46 +27,28 @@ Welcome to My Tech Notes
 - [Java 8](https://vamsilabs-master-notes.netlify.app/java/Java8/)
 -[JAVA 11](https://vamsilabs-master-notes.netlify.app/java/java11)
 -[JAVA 17](https://vamsilabs-master-notes.netlify.app/java/Java17/)
+
+
 - [Advanced Java](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling/)
     - [Exception Handling](java/ExceptionHandling.md)
     - [Collections](java/Collections.md)
     - [Differences in Collections](java/DiffCollections.md)
     - [Concurrent Collections](java/ConcurrentCollections.md)
     - [MultiThreading](java/MultiThreading.md)
+
+## Security
+
 - [Security](https://vamsilabs-master-notes.netlify.app/security/Oauth/)
     - [OAuth2](security/Oauth.md)
+
+## Stream Api
+
 - [StreamApi](https://vamsilabs-master-notes.netlify.app/stream%20api/streamapi/)
     - [StreamApiQuestions](stream api/streamapi.md)
-- [Solid Principles](https://vamsilabs-master-notes.netlify.app/solidprinciples/solidprinciples/)
-    - [Solid Principles](solidprinciples/solidprinciples.md)
-- [Design Patterns](https://vamsilabs-master-notes.netlify.app/designpatterns/dp/
-    - [Introduction](designpatterns/dp.md)
-    - [Creational Design Patterns](designpatterns/creationalDesignPatterns/CreationalDesignPatterns.md)
-        - [Singleton](designpatterns/creationalDesignPatterns/singletondesignpattern.md)
-        - [Factory](designpatterns/creationalDesignPatterns/FactoryDesignPattern.md)
-        - [Abstract Factory](designpatterns/creationalDesignPatterns/AbstractFactoryDesignPattern.md)
-        - [Builder](designpatterns/creationalDesignPatterns/BuilderDesignPattern.md)
-        - [Prototype](designpatterns/creationalDesignPatterns/PrototypeDesignPattern.md)
-    - [Structural Design Patterns](designpatterns/structuralDesignPatterns/flyweightdesignpattern.md)
-        - [FlyWeight](designpatterns/structuralDesignPatterns/flyweightdesignpattern.md)
-        - [Facade](designpatterns/structuralDesignPatterns/facadedesignpattern.md)
-        - [Decorator](designpatterns/structuralDesignPatterns/DecoratorDesignPattern.md)
-        - [Proxy](designpatterns/structuralDesignPatterns/Proxydesignpattern.md)
-        - [Composite](designpatterns/structuralDesignPatterns/CompositeDesignPattern.md)
-        - [Adapter](designpatterns/structuralDesignPatterns/AdapterDesignPattern.md)
-        - [Bridge](designpatterns/structuralDesignPatterns/BridgeDesignPattern.md)
-    - [Behavioural Design Patterns](designpatterns/behaviouralDesignPatterns/ObserverDesignPattern.md)
-        - [Observer](designpatterns/behaviouralDesignPatterns/ObserverDesignPattern.md)
-        - [Strategy](designpatterns/behaviouralDesignPatterns/StrategyDp.md)
-        - [Command](designpatterns/behaviouralDesignPatterns/CommandDp.md)
-        - [Iterator](designpatterns/behaviouralDesignPatterns/Iterator.md)
-        - [State](designpatterns/behaviouralDesignPatterns/StateDp.md)
-        - [Template](designpatterns/behaviouralDesignPatterns/TemplateDp.md)
-        - [Chain Of Responsibility](designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern.md)
-        - [Mediator](designpatterns/behaviouralDesignPatterns/MediatorDp.md)
-        - [Memento](designpatterns/behaviouralDesignPatterns/MementoDp.md)
-        - [Visitor](designpatterns/behaviouralDesignPatterns/VisitorDp.md)
-        - [Interpreter](designpatterns/behaviouralDesignPatterns/Interpreter.md)
+
+## LLD 
+- [Solid Principles](https://vamsilabs-master-notes.netlify.app/solidprinciples/solidprinciples/)  [Design Patterns](https://vamsilabs-master-notes.netlify.app/designpatterns/dp/)
+  
 - [SpringBoot](https://vamsilabs-master-notes.netlify.app/springboot/introduction/)
     - [Introduction](springboot/introduction.md)
     - [AutoConfiguration](springboot/AutoConfiguration.md)
@@ -74,20 +56,9 @@ Welcome to My Tech Notes
     - [IOC and Dependency Injection](springboot/SpringIOC.md)
     - [Rest API Best Practices](springboot/restapibestpractices.md)
     - [Spring Boot 3](springboot/SpringBoot3.md)
-- [Junit](https://vamsilabs-master-notes.netlify.app/junit/junit/)
-    - [Basics](junit/junit.md)
-- [DataBases](https://vamsilabs-master-notes.netlify.app/databases/sql/)
-    - [Neo4j](databases/neo4j.md)
-    - [SQL](databases/sql.md)
-- [Kafka](https://vamsilabs-master-notes.netlify.app/Kafka/kafka/)
-    - [Kafka Basics](Kafka/kafka.md)
-- [Postgresql](postgresql/postgresql.md)
-    - [Replication & Sharding](postgresql/postgresql.md)
-- [MicroServices](https://vamsilabs-master-notes.netlify.app/microservices/microservices/)
-    - [Basic Terminology](microservices/microservices.md)
-    - [CQRS](CQRS.md)
-    - [Saga Design Pattern](microservices/SagaDesignPattern.md)
-    - [Circuit Breaker DP](microservices/CircuitBreaker.md)
+
+## HLD
+
 - [System Design](https://vamsilabs-master-notes.netlify.app/https/)
     - [Https](https.md)
     - [Cap Theorem](capTheorem.md)
@@ -104,6 +75,21 @@ Welcome to My Tech Notes
     - [AWS](devops/aws.md)
 - [Misc](misc/clean-architecture.md)
     - [CleanArchitecture](misc/clean-architecture.md)
+
+## Testing 
+
+- [Junit](https://vamsilabs-master-notes.netlify.app/junit/junit/)
+
+## DataBases 
+- [DataBases](https://vamsilabs-master-notes.netlify.app/databases/sql/)  [Postgresql](postgresql/postgresql.md)
+    
+## Message Queues
+- [Kafka](https://vamsilabs-master-notes.netlify.app/Kafka/kafka/)
+   
+## MicroServices
+- [MicroServices](https://vamsilabs-master-notes.netlify.app/microservices/microservices/)
+
+
 
 
 ## My favorite development tools
