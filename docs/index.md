@@ -9,53 +9,23 @@ Welcome to My Tech Notes
 
 ## JAVA 
 
-- [Java](https://vamsilabs-master-notes.netlify.app/java/ecosystem/)
-    - [Ecosystem](java/ecosystem.md)
-    - [Maven](java/maven.md)
-    - [Gradle](java/gradle.md)
-    - [Java Basics](java/JavaBasics.md)
-    - [JVM](java/Jvm.md)
-    - [OOPS](java/oops.md)
-    - [Constructors](java/Constructors.md)
-    - [This and Super](java/thisandSuper.md)
-    - [Access Modifiers](java/AccessModifiers.md)
-    - [Strings](java/Strings.md)
-    - [Wrapper Classes](java/WrapperClasses.md)
-    - [Cloning](java/Cloning.md)
-    - [Garbage Collection](java/GarbageCollection.md)
-    - [Serialization](java/Serialization.md)
-- [Java 8](https://vamsilabs-master-notes.netlify.app/java/Java8/)
--[JAVA 11](https://vamsilabs-master-notes.netlify.app/java/java11)
--[JAVA 17](https://vamsilabs-master-notes.netlify.app/java/Java17/)
-
-
-- [Advanced Java](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling/)
-    - [Exception Handling](java/ExceptionHandling.md)
-    - [Collections](java/Collections.md)
-    - [Differences in Collections](java/DiffCollections.md)
-    - [Concurrent Collections](java/ConcurrentCollections.md)
-    - [MultiThreading](java/MultiThreading.md)
+- [Java](https://vamsilabs-master-notes.netlify.app/java/ecosystem/) - [Java 8](https://vamsilabs-master-notes.netlify.app/java/Java8/) -[JAVA 11](https://vamsilabs-master-notes.netlify.app/java/java11) -[JAVA 17](https://vamsilabs-master-notes.netlify.app/java/Java17/) - [Advanced Java](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling/) - [Exception Handling](java/ExceptionHandling.md) - [Collections](java/Collections.md) - [Differences in Collections](java/DiffCollections.md) - [Concurrent Collections](java/ConcurrentCollections.md) - [MultiThreading](java/MultiThreading.md)
 
 ## Security
 
 - [Security](https://vamsilabs-master-notes.netlify.app/security/Oauth/)
-    - [OAuth2](security/Oauth.md)
+
 
 ## Stream Api
 
 - [StreamApi](https://vamsilabs-master-notes.netlify.app/stream%20api/streamapi/)
-    - [StreamApiQuestions](stream api/streamapi.md)
+
+## Spring Boot
+- [SpringBoot](https://vamsilabs-master-notes.netlify.app/springboot/introduction/)
 
 ## LLD 
 - [Solid Principles](https://vamsilabs-master-notes.netlify.app/solidprinciples/solidprinciples/)  [Design Patterns](https://vamsilabs-master-notes.netlify.app/designpatterns/dp/)
-  
-- [SpringBoot](https://vamsilabs-master-notes.netlify.app/springboot/introduction/)
-    - [Introduction](springboot/introduction.md)
-    - [AutoConfiguration](springboot/AutoConfiguration.md)
-    - [Annotations](springboot/Annotations.md)
-    - [IOC and Dependency Injection](springboot/SpringIOC.md)
-    - [Rest API Best Practices](springboot/restapibestpractices.md)
-    - [Spring Boot 3](springboot/SpringBoot3.md)
+
 
 ## HLD
 
@@ -66,6 +36,9 @@ Welcome to My Tech Notes
     - [Load Balancing](loadbalancer.md)
     - [Distributed Caching](distributedCaching.md)
     - [Redis](redis.md)
+
+## DevOps
+
 - [DevOps](devops/devops.md)
     - [Tools](devops/devops.md)
     - [Linux](devops/linux.md)
