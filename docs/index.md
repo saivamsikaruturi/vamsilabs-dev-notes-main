@@ -9,26 +9,22 @@ Welcome to My Tech Notes
 
 ## JAVA 
 
-- [Java](https://vamsilabs-master-notes.netlify.app/java/ecosystem/) - [Java 8](https://vamsilabs-master-notes.netlify.app/java/Java8/) -[JAVA 11](https://vamsilabs-master-notes.netlify.app/java/java11) -[JAVA 17](https://vamsilabs-master-notes.netlify.app/java/Java17/) - [Advanced Java](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling/) - [Exception Handling](java/ExceptionHandling.md) - [Collections](java/Collections.md) - [Differences in Collections](java/DiffCollections.md) - [Concurrent Collections](java/ConcurrentCollections.md) - [MultiThreading](java/MultiThreading.md)
-
-## Security
-
-- [Security](https://vamsilabs-master-notes.netlify.app/security/Oauth/)
-
+  * [Java](https://vamsilabs-master-notes.netlify.app/java/ecosystem/)    * [Java 8](https://vamsilabs-master-notes.netlify.app/java/Java8/)    * [JAVA 11](https://vamsilabs-master-notes.netlify.app/java/java11)   * [JAVA 17](https://vamsilabs-master-notes.netlify.app/java/Java17/)  * [Advanced Java](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling/) 
+  * [Exception Handling](java/ExceptionHandling.md)  *  [Collections](java/Collections.md) * [Differences in Collections](java/DiffCollections.md) * [Concurrent Collections](java/ConcurrentCollections.md) * [MultiThreading](java/MultiThreading.md)
 
 ## Stream Api
-
 - [StreamApi](https://vamsilabs-master-notes.netlify.app/stream%20api/streamapi/)
 
 ## Spring Boot
 - [SpringBoot](https://vamsilabs-master-notes.netlify.app/springboot/introduction/)
 
+## Security
+- [Security](https://vamsilabs-master-notes.netlify.app/security/Oauth/)
+
 ## LLD 
 - [Solid Principles](https://vamsilabs-master-notes.netlify.app/solidprinciples/solidprinciples/)  [Design Patterns](https://vamsilabs-master-notes.netlify.app/designpatterns/dp/)
 
-
 ## HLD
-
 - [System Design](https://vamsilabs-master-notes.netlify.app/https/)
     - [Https](https.md)
     - [Cap Theorem](capTheorem.md)
@@ -38,19 +34,10 @@ Welcome to My Tech Notes
     - [Redis](redis.md)
 
 ## DevOps
-
-- [DevOps](devops/devops.md)
-    - [Tools](devops/devops.md)
-    - [Linux](devops/linux.md)
-    - [Docker](devops/docker.md)
-    - [Kubernetes](devops/kubernetes.md)
-    - [Ansible](devops/ansible.md)
-    - [AWS](devops/aws.md)
-- [Misc](misc/clean-architecture.md)
-    - [CleanArchitecture](misc/clean-architecture.md)
+*  [DevOps](devops/devops.md)   * [Tools](devops/devops.md)   * [Linux](devops/linux.md)  * [Docker](devops/docker.md)
+*  [Kubernetes](devops/kubernetes.md)   * [Ansible](devops/ansible.md)   * [AWS](devops/aws.md) * [Misc](misc/clean-architecture.md)
 
 ## Testing 
-
 - [Junit](https://vamsilabs-master-notes.netlify.app/junit/junit/)
 
 ## DataBases 
