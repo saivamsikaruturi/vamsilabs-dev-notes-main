@@ -1,9 +1,15 @@
 /* Position the navigation menu at the top */
 #nav {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Keeps the nav centered */
     align-items: center;
     padding: 10px 0;
+    position: fixed; /* Makes the nav stick to the top */
+    width: 100%; /* Ensures nav spans the full width */
+    top: 0; /* Align to the top */
+    background-color: #ffffff; /* Change nav background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a shadow for depth */
+    z-index: 1000; /* Ensure it's above other content */
 }
 
 /* Style for each navigation item */
@@ -21,13 +27,24 @@
 #nav a {
     text-decoration: none;
     color: #333;
+    font-weight: bold; /* Makes the text bold */
+    padding: 5px 10px; /* Adds padding around the links */
+    border-radius: 5px; /* Rounds the corners */
+    transition: color 0.3s, background-color 0.3s; /* Smooth transition for hover */
 }
 
 #nav a:hover {
-    color: #f00; /* Change to your preferred hover color */
+    color: #fff; /* Changes text color on hover */
+    background-color: #f00; /* Add background color on hover */
 }
 
+/* Sets the navbar styling */
 .navbar {
-    background-color: #333;
+    background-color: #555; /* Darkens the navbar color for contrast */
     color: white;
+}
+
+/* Fixes the body padding issue when nav is fixed */
+body {
+    padding-top: 60px; /* Adjust to the height of your nav bar */
 }
