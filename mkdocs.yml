@@ -202,6 +202,7 @@ nav:
       - Load Balancing: loadbalancer.md
       - Distributed Caching: distributedCaching.md
       - Redis: redis.md
+      - SQL VS NO SQL: sqlvsnosql.md
   - DevOps:
       - Tools: devops/devops.md
       - Linux: devops/linux.md
