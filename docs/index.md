@@ -9,11 +9,11 @@
 - 1️⃣1️⃣ [Java 11](https://vamsilabs-master-notes.netlify.app/java/java11)
 - 1️⃣7️⃣ [Java 17](https://vamsilabs-master-notes.netlify.app/java/Java17/)
 - 🚀 [Advanced Java](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling/)
-- 🎲 [Exception Handling](https://www.taskade.com/d/java/ExceptionHandling.md)
-- 🧩 [Collections](https://www.taskade.com/d/java/Collections.md)
-- 🔀 [Differences in Collections](https://www.taskade.com/d/java/DiffCollections.md)
-- 📊 [Concurrent Collections](https://www.taskade.com/d/java/ConcurrentCollections.md)
-- 🧵 [MultiThreading](https://www.taskade.com/d/java/MultiThreading.md)
+- 🎲 [Exception Handling](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling)
+- 🧩 [Collections](https://vamsilabs-master-notes.netlify.app/java/collections/)
+- 🔀 [Differences in Collections](https://vamsilabs-master-notes.netlify.app/java/DiffCollections)
+- 📊 [Concurrent Collections](https://vamsilabs-master-notes.netlify.app/java/ConcurrentCollections)
+- 🧵 [MultiThreading](https://vamsilabs-master-notes.netlify.app/java/MultiThreading)
 
 🌊 **Stream API** 🌊
 
@@ -35,24 +35,24 @@
 🏛 **High-Level Design (HLD)** 🏛
 
 - 🏰 [System Design](https://vamsilabs-master-notes.netlify.app/https/)
-- 🔐 [HTTPS](https://www.taskade.com/d/https.md)
-- ⚖️ [CAP Theorem](https://www.taskade.com/d/capTheorem.md)
-- 🚦 [Rate Limiter](https://www.taskade.com/d/ratelimiting.md)
-- ⚙️ [Load Balancing](https://www.taskade.com/d/loadbalancer.md)
-- 🌩️ [Distributed Caching](https://www.taskade.com/d/distributedCaching.md)
-- 💾 [Redis](https://www.taskade.com/d/redis.md)
-- 🧮 [SQL VS NO SQL](https://www.taskade.com/d/sqlvsnosql.md)
+- 🔐 [HTTPS](https://vamsilabs-master-notes.netlify.app/https)
+- ⚖️ [CAP Theorem](https://vamsilabs-master-notes.netlify.app/capTheorem)
+- 🚦 [Rate Limiter](https://vamsilabs-master-notes.netlify.app/ratelimiting)
+- ⚙️ [Load Balancing](https://vamsilabs-master-notes.netlify.app/loadbalancer)
+- 🌩️ [Distributed Caching](https://vamsilabs-master-notes.netlify.app/distributedCaching)
+- 💾 [Redis](https://vamsilabs-master-notes.netlify.app/redis)
+- 🧮 [SQL VS NO SQL](https://vamsilabs-master-notes.netlify.app/sqlvsnosql)
 
 🛠️ **DevOps** 🛠️
 
-- 🤖 [DevOps](https://www.taskade.com/d/devops/devops.md)
-- 🧰 [Tools](https://www.taskade.com/d/devops/devops.md)
-- 🐧 [Linux](https://www.taskade.com/d/devops/linux.md)
-- 🐳 [Docker](https://www.taskade.com/d/devops/docker.md)
-- ☸️ [Kubernetes](https://www.taskade.com/d/devops/kubernetes.md)
-- ♾ [Ansible](https://www.taskade.com/d/devops/ansible.md)
-- ☁️ [AWS](https://www.taskade.com/d/devops/aws.md)
-- 🧹 [Misc](https://www.taskade.com/d/misc/clean-architecture.md)
+- 🤖 [DevOps](https://vamsilabs-master-notes.netlify.app/devops/devops)
+- 🧰 [Tools](https://vamsilabs-master-notes.netlify.app/devops/devops)
+- 🐧 [Linux](https://vamsilabs-master-notes.netlify.app/devops/linux)
+- 🐳 [Docker](https://vamsilabs-master-notes.netlify.app/devops/docker)
+- ☸️ [Kubernetes](https://vamsilabs-master-notes.netlify.app/devops/kubernetes)
+- ♾ [Ansible](https://vamsilabs-master-notes.netlify.app/devops/ansible)
+- ☁️ [AWS](https://vamsilabs-master-notes.netlify.app/devops/aws)
+- 🧹 [Misc](https://vamsilabs-master-notes.netlify.app/misc/clean-architecture)
 
 🧪 **Testing** 🧪
 
@@ -61,7 +61,7 @@
 💽 **Databases** 💽
 
 - 🏦 [Databases](https://vamsilabs-master-notes.netlify.app/databases/sql/)
-- 🗄️ [PostgreSQL](https://www.taskade.com/d/postgresql/postgresql.md)
+- 🗄️ [PostgreSQL](https://vamsilabs-master-notes.netlify.app/postgresql/postgresql)
 
 📡 **Message Queues** 📡
 
