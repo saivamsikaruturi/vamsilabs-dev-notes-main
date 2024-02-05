@@ -1,67 +1,92 @@
-# Welcome to My Tech Notes
+🌐 Welcome to My Tech Notes 🌐
 
- Java
+🔥 Java Ecosystem 🔥
 
-- [Java Ecosystem](https://vamsilabs-master-notes.netlify.app/java/ecosystem/)   • [Java 8](https://vamsilabs-master-notes.netlify.app/java/Java8/)   • [Java 11](https://vamsilabs-master-notes.netlify.app/java/java11)   • [Java 17](https://vamsilabs-master-notes.netlify.app/java/Java17/)   • [Advanced Java](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling/)   • [Exception Handling](java/ExceptionHandling.md) • [Collections](java/Collections.md) • [Differences in Collections](java/DiffCollections.md) • [Concurrent Collections](java/ConcurrentCollections.md) • [MultiThreading](java/MultiThreading.md)
+☕️ Java Ecosystem
+🔟 Java 8
+1️⃣1️⃣ Java 11
+1️⃣7️⃣ Java 17
+🚀 Advanced Java
+🎲 Exception Handling
+🧩 Collections
+🔀 Differences in Collections
+📊 Concurrent Collections
+🧵 MultiThreading
+🌊 Stream API 🌊
 
- Stream API
+🏞️ Stream API
+🌱 Spring Boot 🌱
 
-- [Stream API](https://vamsilabs-master-notes.netlify.app/stream%20api/streamapi/)
+🚀 Introduction to Spring Boot
+🔒 Security 🔒
 
- Spring Boot
+🛡️ Security
+🔧 Low-Level Design (LLD) 🔧
 
-- [Introduction to Spring Boot](https://vamsilabs-master-notes.netlify.app/springboot/introduction/)
+🛠️ Solid Principles
+🏗️ Design Patterns
+🏛 High-Level Design (HLD) 🏛
 
- Security
+🏰 System Design
+🔐 HTTPS
+⚖️ CAP Theorem
+🚦 Rate Limiter
+⚙️ Load Balancing
+🌩️ Distributed Caching
+💾 Redis
+🧮 SQL VS NO SQL
+🛠️ DevOps 🛠️
 
-- [Security](https://vamsilabs-master-notes.netlify.app/security/Oauth/)
+🤖 DevOps
+🧰 Tools
+🐧 Linux
+🐳 Docker
+☸️ Kubernetes
+♾ Ansible
+☁️ AWS
+🧹 Misc
+🧪 Testing 🧪
 
- Low-Level Design (LLD)
+🩺 JUnit
+💽 Databases 💽
 
-- [Solid Principles](https://vamsilabs-master-notes.netlify.app/solidprinciples/solidprinciples/)  • [Design Patterns](https://vamsilabs-master-notes.netlify.app/designpatterns/dp/)
+🏦 Databases
+🗄️ PostgreSQL
+📡 Message Queues 📡
 
- High-Level Design (HLD)
+📤 Kafka
+🕸️ Microservices 🕸️
 
-- [System Design](https://vamsilabs-master-notes.netlify.app/https/) • [HTTPS](https.md) • [CAP Theorem](capTheorem.md) • [Rate Limiter](ratelimiting.md) • [Load Balancing](loadbalancer.md) • [Distributed Caching](distributedCaching.md) • [Redis](redis.md)
+🖧 Microservices
+⚒️ My Favorite Development Tools ⚒️
 
- DevOps
+CommandLine Tools
 
-- [DevOps](devops/devops.md) • [Tools](devops/devops.md) • [Linux](devops/linux.md) • [Docker](devops/docker.md) • [Kubernetes](devops/kubernetes.md) • [Ansible](devops/ansible.md) • [AWS](devops/aws.md) • [Misc](misc/clean-architecture.md)
+🖥️ Babun
+⌨️ iTerm2
+💻 Oh-My-Zsh
+📦 SdkMan
 
- Testing
+Editors
 
-- [JUnit](https://vamsilabs-master-notes.netlify.app/junit/junit/)
+✏️ Visual Studio Code
+🎨 Atom
+🖋️ Sublime Text
+Task Tracking Tools
 
- Databases
+🗒️ Asana
+📔 Evernote
+📌 Trello
+Utilities
 
-- [Databases](https://vamsilabs-master-notes.netlify.app/databases/sql/) • [PostgreSQL](postgresql/postgresql.md)
+📬 Postman
+💤 Insomnia
+🔐 Bitwarden
+🧠 SimpleMind
+🎥 GIF Brewery
+📦 Rambox
+Static Site Generators
 
- Message Queues
-
-- [Kafka](https://vamsilabs-master-notes.netlify.app/Kafka/kafka/)
-
- Microservices
-
-- [Microservices](https://vamsilabs-master-notes.netlify.app/microservices/microservices/)
-
- My Favorite Development Tools
-
-# CommandLine Tools
-
-- [Babun](http://babun.github.io/) • [iTerm2](http://www.iterm2.com/) • [Oh-My-Zsh](http://ohmyz.sh/) • [SdkMan](https://sdkman.io/)
-
-# Editors
-
-- [Visual Studio Code](https://code.visualstudio.com/) • [Atom](https://atom.io/) • [Sublime Text](https://www.sublimetext.com/3)
-
-# Task Tracking Tools
-
-- [Asana](https://app.asana.com) • [Evernote](https://evernote.com/) • [Trello](https://trello.com/)
-
-# Utilities
-
-- [Postman](https://www.getpostman.com/apps) • [Insomnia](https://insomnia.rest/) • [Bitwarden](https://bitwarden.com/) • [SimpleMind](https://simplemind.eu/) • [GIF Brewery](http://gifbrewery.com/) • [Rambox](http://rambox.pro/)
-
-# Static Site Generators
-
-- [Hugo](https://gohugo.io/) • [Jekyll](https://jekyllrb.com/) • [MkDocs](http://www.mkdocs.org/)
+🚀 Hugo
+💎 Jekyll
+📚 MkDocs

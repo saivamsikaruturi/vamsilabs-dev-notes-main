@@ -16,6 +16,15 @@ Inheritance : Acquiring the properties of Parent class to Child class
 
 Polymorphism: A method can exist in different format within the same class or Super and Sub Classes for doing same action in different ways or doing different action.
 
+**Method Overloading**
+
+*  
+
+
+**Method Overriding**
+
+* Overriding is used to modify and provide a new implementation of the method inherited from a base class.
+
 Inheritance:
 
 There are 4 types of inheritance

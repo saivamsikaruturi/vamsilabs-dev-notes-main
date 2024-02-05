@@ -122,6 +122,27 @@ Since there is no implementation of m2() method in both classes ,compiler throws
     }
     }
 
+* Default methods of an interface are the concrete methods for which implementing classes need not to give implementation. They inherit default implementation.
+* Default methods are introduced to add extra features to current interfaces without disrupting their existing implementations. 
+* For example, stream() is a default method which is added to Collection interface in Java 8. 
+* If stream() would have been added as abstract method, then all classes implementing Collection interface must have implemented stream() method which may have irritated existing users.
+* To overcome such issues, default methods are introduced to interfaces from Java 8.
+
+
+To solve the diamond problem, Java 8 proposes 3 rules to follow. They are,
+
+Rule 1 : Select classes over interfaces
+
+If your class inherit multiple methods with same signature then a method from super class is selected (Remember a class can inherit only one class).
+
+Rule 2 : Select most specific interfaces than general interfaces.
+
+If your class doesn’t extend any class and inherit multiple methods with same signature from multiple interfaces which belong to same hierarchy, then a method from most specific interface is selected.
+
+Rule 3 : InterfaceName.super.methodName()
+
+If your class doesn’t extend any class and inherit multiple methods with same signature from multiple interfaces which doesn’t belong to same hierarchy, then override that method and from within body explicitly call desired method as InterfaceName.super.methodName()
+
 ## Static Method in Interfaces
 
 Q. What is the purpose of introducing static methods in java interface ?
