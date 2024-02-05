@@ -1,124 +1,48 @@
-
-
-.md-nav--primary .md-nav__link[for=__toc] > .md-nav__icon,
-.md-nav--primary .md-nav__link[for=__toc] ~ .md-nav {
-    display: none;
-}
-
-
-.md-typeset pre code {
-    display: block;
-    font-family: 'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace;
-    font-size: 14px;
-    line-height: 1.6;
-    color: #C3C3C3; /* Text color */
-    background-color: #2B2B2B; /* Background color */
-    border: 1px solid #3A3A3A; /* Border color */
-    border-radius: 4px; /* Optional: Add rounded corners */
-    padding: 10px; /* Adjust padding as needed */
-    overflow-x: auto;
-    font-weight: normal; /* Adjust font weight as needed */
-}
-
-
-.markdown-body {
-    --md-code-background: #e3dcef;
-    --md-code-text: #4a2b7b;
-    --md-code-tabs: #c6b8dd;
-    --md-code-radius: 4px;
-}
-
-.md-typeset pre code .keyword { color: #008080; }
-.md-typeset pre code .comment { color: #696969; }
-.md-typeset pre code .string { color: #a31515; }
-.md-typeset pre code .number { color: #09885a; }
-
-
-header {
-    background-color: #e6695b; /* Replace with your desired color */
-}
-
-.md-nav.md-right {
-    position: fixed; /* Fixed position on the right side */
-    top: 0;
-    right: 0;
-    height: 100%; /* Make it full height */
-    width: 300px; /* Adjust the width as needed */
-    background-color: #f0f0f0; /* Background color for the TOC */
-    overflow-y: auto; /* Add vertical scrolling if needed */
-    border-left: 1px solid #ddd; /* Optional: Add a border */
-}
-
-.md-grid {
-    max-width: 1440px;
-}
-
-/* Style TOC links */
-.md-nav.md-right ul li {
-    padding: 1000px;
-    accent-color: #d52a2a;
-}
-
-/* Optional: Style TOC link hover and active states */
-.md-nav.md-right ul li:hover {
-    background-color: #d3e156;
-}
-
-.md-nav.md-right ul li.active {
-    background-color: #d52a2a;
-    color: #fff;
-}
-
-/* Reset default margin and padding */
-body, h1, h2, h3, p, ul {
-    margin: 0;
-    padding: 0;
-}
-
-/* Apply a box-sizing border-box model to all elements */
-* {
-    box-sizing: border-box;
-}
-
-/* Position the navigation menu at the top */
-#nav {
-    background-color: #333;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-    overflow: auto; /* Add vertical scrollbar if needed */
-}
-
-/* Style for each navigation item */
 #nav ul {
     list-style: none;
     display: flex;
     flex-wrap: wrap; /* Allow items to wrap onto the next line */
     justify-content: center;
     align-items: center;
-    max-width: 100px; /* Set a maximum width for the navigation bar */
+    max-width: 800px; /* Increased to fit content - Adjust as needed */
     margin: 0 auto; /* Center the navigation bar */
     padding: 0;
 }
 
 #nav li {
-    margin: 0 10px; /* Reduce margin for a more compact layout */
-    padding: 10px; /* Adjust padding for a more compact layout */
-    font-size: 8px; /* Adjust font size for better visibility */
+    margin: 0 20px; /* Increase margin for better spacing */
+    padding: 5px 10px; /* Adjusted for better spacing and clickability */
+    font-size: 16px; /* Increase font size for better visibility */
 }
 
-#nav a {
-    text-decoration: none;
-    color: white; /* Use white for link color */
+.md-typeset pre code {
+    padding: 16px; /* Increased padding for code blocks */
 }
 
-#nav a:hover {
-    color: #f00; /* Change to your preferred hover color */
+/* Adjust padding for the TOC items. The original 1000px seems to be a mistake. */
+.md-nav.md-right ul li {
+    padding: 5px 15px; /* Adjust padding for better spacing */
 }
 
-/* Apply responsive design for smaller screens */
+/* If the 'accent-color' was meant to be 'accent-color' for the TOC items, it should be applied differently, possibly like this: */
+.md-nav.md-right ul li::before {
+    content: ""; /* Adjust the color as needed, this example may not be suitable for all browsers */
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    margin-right: 0.5em;
+    background-color: #d52a2a;
+    border-radius: 50%;
+    margin-top: 1px; /* Center the dot vertically with the text */
+}
+
 @media only screen and (max-width: 600px) {
+    #nav ul {
+        max-width: 100%; /* Allow nav to fill the available space */
+    }
+
     #nav li {
-        margin: 10px 0; /* Add space between stacked items */
+        margin: 5px; /* Decrease margin for smaller screens */
+        font-size: 14px; /* Adjust font size for smaller screens */
     }
 }
