@@ -243,3 +243,32 @@ forEach(),toArray(),reduce(),collect(),min(),max(),count(),anyMatch(),allMatch()
      String s=”java”;
 
      Arrays.*stream* (s.split ("")).collect(Collectors.groupingBy (Function.*identity* (),Collectors.*counting* ())).entrySet ().stream ().filter (e->e.getValue ()>1).forEach (System.out::println);
+
+**27. get duplicates from a list**
+
+      //duplicate elements
+        Arrays.asList(1,2,4,5,2,6,1).stream().filter(e->!set.add(e)).forEach(System.out::print);
+
+        // without set
+        List<Integer> duplicates = Arrays.asList(1, 2, 4, 5, 2, 6, 1).stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream().filter(e -> e.getValue() > 1).map(e -> e.getKey()).collect(Collectors.toList());
+      
+
+**28. get unique elements from a list**
+      
+        List<Integer> unique = Arrays.asList(1, 2, 4, 5, 2, 6, 1).stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream().filter(e -> e.getValue() == 1).map(e -> e.getKey()).collect(Collectors.toList());
+       
+
+**29. get first non-repeated character from a string**
+
+         Character character = s.chars().mapToObj(e -> (char) e).collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+                .entrySet().stream().filter(e -> e.getValue() == 1).map(e -> e.getKey()).findFirst().orElse(null);
+
+**30.get first repeated character from a string**
+
+        Character character = s.chars().mapToObj(e -> (char) e).collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+                .entrySet().stream().filter(e -> e.getValue() >1).map(e -> e.getKey()).findFirst().orElse(null);
+       
