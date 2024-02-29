@@ -38,9 +38,9 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
 
 3. Field Injection:
 
-   * Dependencies are injected directly into the fields of the class.
-   * While convenient, it is often considered less preferable than constructor injection as it makes testing and mocking more difficult.
-   * Example:
+    * Dependencies are injected directly into the fields of the class.
+    * While convenient, it is often considered less preferable than constructor injection as it makes testing and mocking more difficult.
+    * Example:
 
           @Service
           public class MyService {
@@ -50,9 +50,9 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
 
 4. Method Injection:
 
-   * Dependencies are injected through a method.
-   * This is less common than constructor or setter injection.
-   * Example:
+    * Dependencies are injected through a method.
+    * This is less common than constructor or setter injection.
+    * Example:
 
           @Service
           public class MyService {
