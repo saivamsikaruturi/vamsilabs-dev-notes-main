@@ -179,6 +179,7 @@ nav:
       - AutoConfiguration: springboot/AutoConfiguration.md
       - Annotations: springboot/Annotations.md
       - IOC and Dependency Injection: springboot/SpringIOC.md
+      - Types of DI: springboot/TypesOfDi.md
       - Rest API Best Practices: springboot/restapibestpractices.md
       - Spring Boot 3: springboot/SpringBoot3.md
   - Junit:
