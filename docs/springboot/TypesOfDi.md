@@ -3,9 +3,9 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
 
 1. Constructor Injection:
 
-   * In this type, dependencies are injected through the constructor of the class.
-   * It is considered a best practice because it ensures that the required dependencies are provided at the time of object creation.
-   *  Example:
+    * In this type, dependencies are injected through the constructor of the class.
+    * It is considered a best practice because it ensures that the required dependencies are provided at the time of object creation.
+    *  Example:
 
 
             @Service
@@ -22,9 +22,9 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
 
 2. Setter Injection:
 
-   * Dependencies are injected using setter methods.
-   * This allows for flexibility as it is possible to change the dependencies at runtime.
-   * Example:
+    * Dependencies are injected using setter methods.
+    * This allows for flexibility as it is possible to change the dependencies at runtime.
+    * Example:
 
          @Service
          public class MyService {
@@ -48,7 +48,7 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
           private MyRepository myRepository;
           }
 
-3. Method Injection:
+4. Method Injection:
 
    * Dependencies are injected through a method.
    * This is less common than constructor or setter injection.
