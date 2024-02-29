@@ -6,16 +6,19 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
    • It is considered a best practice because it ensures that the required dependencies are provided at the time of object creation.
    • Example:
 
-       @Service
-       public class MyService {
-       private final MyRepository myRepository;
 
-       @Autowired
-       public MyService(MyRepository myRepository) {
-           this.myRepository = myRepository;
-       }
-   }
-   } }
+            @Service
+            public class MyService {
+            private final MyRepository myRepository;
+
+            @Autowired
+            public MyService(MyRepository myRepository) {
+            this.myRepository = myRepository;
+            }
+            }
+   
+
+
 2. Setter Injection:
    • Dependencies are injected using setter methods.
    • This allows for flexibility as it is possible to change the dependencies at runtime.
