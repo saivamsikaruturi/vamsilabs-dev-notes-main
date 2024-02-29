@@ -28,39 +28,40 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
          public class MyService {
          private MyRepository myRepository;
 
-       @Autowired
-       public void setMyRepository(MyRepository myRepository) {
+          @Autowired
+          public void setMyRepository(MyRepository myRepository) {
            this.myRepository = myRepository;
-       }
-       }
-   • Field Injection:
+          }
+         }
+
+3. Field Injection:
    • Dependencies are injected directly into the fields of the class.
    • While convenient, it is often considered less preferable than constructor injection as it makes testing and mocking more difficult.
    • Example:
 
-       @Service
-       public class MyService {
-       @Autowired
-       private MyRepository myRepository;
-       }
+          @Service
+          public class MyService {
+          @Autowired
+          private MyRepository myRepository;
+          }
 
 3. Method Injection:
    • Dependencies are injected through a method.
    • This is less common than constructor or setter injection.
    • Example:
 
-       @Service
-       public class MyService {
-       private MyRepository myRepository;
+          @Service
+          public class MyService {
+          private MyRepository myRepository;
 
-       @Autowired
-       public void injectDependency(MyRepository myRepository) {
+          @Autowired
+          public void injectDependency(MyRepository myRepository) {
            this.myRepository = myRepository;
-       }
-       }
+          }
+          }
 
 
-	Constructor Based Dependency Injection is Recommended
+## Constructor Based Dependency Injection is Recommended
 	
 	• All dependencies are available at initialization time.
 	• Immutability and avoid NullPointerException.
