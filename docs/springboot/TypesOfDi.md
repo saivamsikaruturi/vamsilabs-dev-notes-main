@@ -26,15 +26,15 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
     * This allows for flexibility as it is possible to change the dependencies at runtime.
     * Example:
 
-         @Service
-         public class MyService {
-         private MyRepository myRepository;
+            @Service
+            public class MyService {
+            private MyRepository myRepository;
 
-          @Autowired
-          public void setMyRepository(MyRepository myRepository) {
-           this.myRepository = myRepository;
-          }
-         }
+            @Autowired
+            public void setMyRepository(MyRepository myRepository) {
+            this.myRepository = myRepository;
+            }
+            }
 
 3. Field Injection:
 
@@ -42,11 +42,11 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
     * While convenient, it is often considered less preferable than constructor injection as it makes testing and mocking more difficult.
     * Example:
 
-          @Service
-          public class MyService {
-          @Autowired
-          private MyRepository myRepository;
-          }
+            @Service
+            public class MyService {
+            @Autowired
+            private MyRepository myRepository;
+            }
 
 4. Method Injection:
 
@@ -54,15 +54,15 @@ In Spring Boot, Dependency Injection (DI) is a design pattern that allows the co
     * This is less common than constructor or setter injection.
     * Example:
 
-          @Service
-          public class MyService {
-          private MyRepository myRepository;
+            @Service
+            public class MyService {
+            private MyRepository myRepository;
 
-          @Autowired
-          public void injectDependency(MyRepository myRepository) {
-           this.myRepository = myRepository;
-          }
-          }
+            @Autowired
+            public void injectDependency(MyRepository myRepository) {
+            this.myRepository = myRepository;
+            }
+            }
 
 
 ## Constructor Based Dependency Injection is Recommended
