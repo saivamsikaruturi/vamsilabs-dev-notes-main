@@ -26,8 +26,9 @@ STEPS:
 2. Add the dependency in the pom.xml
 3. spring-cloud-starter-netflix-eureka-server
 4. Add the annotation @EnableEurekaServer.
-5. Add the properties in yml file.
-6.     eureka:
+5. Add the properties in yml file. 
+
+       eureka:
          instance:
            hostname: localhost
              client:
@@ -38,9 +39,9 @@ STEPS:
          port: 8761
 
 
-7.In the micro service (client) add the dependency .
+6.In the micro service (client) add the dependency .
   spring-cloud-starter-netflix-eureka-client.
-8.Add the annotation 
+7.Add the annotation 
   @EnableEurekaServer – spring boot 2
   @EnableDiscoveryServer – spring boot 3
 
