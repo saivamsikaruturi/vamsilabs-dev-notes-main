@@ -28,6 +28,7 @@ STEPS:
 4. Add the annotation @EnableEurekaServer.
 5. Add the properties in yml file. 
 
+
        eureka:
          instance:
            hostname: localhost
