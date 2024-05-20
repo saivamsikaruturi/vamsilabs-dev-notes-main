@@ -193,6 +193,7 @@ nav:
       - Replication & Sharding: postgresql/postgresql.md
   - MicroServices:
       - Basic Terminology: microservices/microservices.md
+      - API GATEWAY: microservices/APIGATEWAY.md
       - Service Discovery and Registry: microservices/ServiceDiscovery.md
       - CQRS: CQRS.md
       - Saga Design Pattern: microservices/SagaDesignPattern.md
