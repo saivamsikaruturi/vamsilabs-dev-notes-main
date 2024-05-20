@@ -11,21 +11,21 @@
 
 * Hystrix circuit Breaker will tolerate failures up to a threshold. Beyond that, it leaves the circuit open. Which means, it will forward all subsequent calls to the fallback method, to prevent future failures. This creates a time buffer for the related service to recover from its failing state.
 
-Problem with Synchronous Communication
-Synchronous communication between microservices can lead to several issues:
+## Problem with Synchronous Communication
+* Synchronous communication between microservices can lead to several issues:
+* Service Downtime: The inventory service may be down.
+* Slow Responses: The inventory service may respond slowly to the order service due to API performance or database calls.
+* Performance Impact: Slow or unresponsive services can negatively impact the overall application performance.
+* To address these issues, we need to make our system resilient. Resilience is the ability of a system to recover or adapt to difficult situations. One way to achieve resilience is by implementing the Circuit Breaker pattern.
 
-Service Downtime: The inventory service may be down.
-Slow Responses: The inventory service may respond slowly to the order service due to API performance or database calls.
-Performance Impact: Slow or unresponsive services can negatively impact the overall application performance.
-To address these issues, we need to make our system resilient. Resilience is the ability of a system to recover or adapt to difficult situations. One way to achieve resilience is by implementing the Circuit Breaker pattern.
+## Circuit Breaker States
+* The Circuit Breaker pattern has three main states:
 
-Circuit Breaker States
-The Circuit Breaker pattern has three main states:
+**Closed**: Normal operation. Requests flow freely between services.
+**Open**: The circuit breaker stops allowing requests due to detected failures or slow responses.
+**Half-Open**: The circuit breaker allows a limited number of test requests to determine if the issue is resolved.
 
-Closed: Normal operation. Requests flow freely between services.
-Open: The circuit breaker stops allowing requests due to detected failures or slow responses.
-Half-Open: The circuit breaker allows a limited number of test requests to determine if the issue is resolved.
-State Transitions
+## State Transitions
 Closed to Open: When the failure threshold is met (e.g., a certain number of failed requests), the circuit breaker opens.
 Open to Half-Open: After a predefined period, the circuit breaker transitions to the half-open state to test if the issue is resolved.
 Half-Open to Open: If the test requests fail, the circuit breaker reopens.
@@ -75,8 +75,43 @@ Add the following properties to your application.yml file:
              permittedNumberOfCallsInHalfOpenState: 3
              automaticTransitionFromOpenToHalfOpenEnabled: true
 
+•	For understanding the different states of Circuit Breaker then
+
+        registerHealthIndicator: true
+
+•	    For storing the states of CB of max-size , can define the no.of states we can see.
+
+        event-consumer-buffer-size: 10
+
+•	 Circuit Breaker will change the state from closed to open if the request is not successful.
+     i.e If 5 requests are failing then the state will change to Open, for counting these requests which are failed, sliding window type is property.
+
+        slidingWindowType: COUNT_BASED
+
+•	Maximum requests required to change from open to closed , can be defined by.
+         
+       slidingWindowSize: 5
+
+•	After a certain percentage of maximum failed requests the state from closed to open should be changed.
+
+      failureRateThreshold: 50
+
+•	Time required to change from open to Half-Open state.
+
+        waitDurationInOpenState: 5s
+
+•	Maximum that can be allowed to be taken in Half open state.
+
+        permittedNumberOfCallsInHalfOpenState: 3
+
+•	The state from open to Half-open must be changed automatically.
+
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+
 Step 3: Implement Circuit Breaker in Controller or Service Layer
-Add the @CircuitBreaker annotation to your controller or service method, along with a fallback method:
+
+   Add the @CircuitBreaker annotation to your controller or service method, along with a fallback method:
 
 
 
@@ -90,10 +125,13 @@ Add the @CircuitBreaker annotation to your controller or service method, along w
       return "Oops! Something went wrong, please try after sometime";
          }
 
+Monitoring Circuit Breaker States
+You can check the states of the circuit breaker using the actuator endpoint:
+
+      http://localhost:portNo/actuator/circuitbreakers
 
 
-
-Step 4: Configure TimeLimiter and Retry Properties
+Step 4: Configure TimeLimiter 
 Add the following properties to your application.yml file to configure timeouts and retries:
 
  
@@ -114,6 +152,10 @@ Add the following properties to your application.yml file to configure timeouts 
     return CompletableFuture.supplyAsync(()->"Oops! Something went wrong, please try after sometime");
     }
 
+## Retry
+*	If the 2nd microservice is not responding the first microservice will send the request again to the 2nd service without the interference of the client.
+*	This mechanism is called Retry.
+
 
     retry:
       instances:
@@ -121,10 +163,6 @@ Add the following properties to your application.yml file to configure timeouts 
           max-attempts: 3
           wait-duration: 5s
 
-Monitoring Circuit Breaker States
-You can check the states of the circuit breaker using the actuator endpoint:
 
-
-http://localhost:portNo/actuator/circuitbreakers
-Summary
+## Summary
 By implementing the Circuit Breaker pattern with Spring Boot and Resilience4j, we can enhance the resilience of our application. The circuit breaker monitors the interaction between services and halts requests when a service is down or slow, allowing the system to recover gracefully and maintain performance. Additionally, using timeouts and retries further improves the robustness of the application.

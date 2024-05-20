@@ -29,15 +29,15 @@ STEPS:
 5. Add the properties in yml file. 
 
 
-       eureka:
-         instance:
-           hostname: localhost
-             client:
-               register-with-eureka: false
-                 fetch-registry: false
+         eureka:
+           instance:
+             hostname: localhost
+               client:
+                 register-with-eureka: false
+                   fetch-registry: false
 
-       server:
-         port: 8761
+         server:
+           port: 8761
 
 
 6.In the micro service (client) add the dependency .
