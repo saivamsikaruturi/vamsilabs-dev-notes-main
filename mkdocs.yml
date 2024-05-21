@@ -193,11 +193,20 @@ nav:
       - Replication & Sharding: postgresql/postgresql.md
   - MicroServices:
       - Basic Terminology: microservices/microservices.md
+      - Inter-Service Communication: microservices/InterServiceCommunication.md
+      - Async-Communication Using Kafka: microservices/AsyncCommunicationUsingKafka.md
       - API GATEWAY: microservices/APIGATEWAY.md
       - Service Discovery and Registry: microservices/ServiceDiscovery.md
+      - Circuit Breaker DP:  microservices/CircuitBreaker.md
+      - Logging: microservices/logging.md
+      - Distributed Tracing: microservices/zipkin.md
+      - Cloud Config Server: microservices/cloudconfig.md
+      - Open Api: microservices/open api.md
+      - Observability: microservices/observability.md
+      - Centralized Logging: microservices/cl.md
       - CQRS: CQRS.md
       - Saga Design Pattern: microservices/SagaDesignPattern.md
-      - Circuit Breaker DP:  microservices/CircuitBreaker.md
+
   - System Design:
       - Https: https.md
       - Cap Theorem: capTheorem.md

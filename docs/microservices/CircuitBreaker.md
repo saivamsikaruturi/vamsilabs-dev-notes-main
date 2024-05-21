@@ -11,40 +11,45 @@
 
 * Hystrix circuit Breaker will tolerate failures up to a threshold. Beyond that, it leaves the circuit open. Which means, it will forward all subsequent calls to the fallback method, to prevent future failures. This creates a time buffer for the related service to recover from its failing state.
 
-## Problem with Synchronous Communication
-* Synchronous communication between microservices can lead to several issues:
-* Service Downtime: The inventory service may be down.
-* Slow Responses: The inventory service may respond slowly to the order service due to API performance or database calls.
-* Performance Impact: Slow or unresponsive services can negatively impact the overall application performance.
-* To address these issues, we need to make our system resilient. Resilience is the ability of a system to recover or adapt to difficult situations. One way to achieve resilience is by implementing the Circuit Breaker pattern.
+The problem with Sync Communication is
+a)	The inventory service may be down.
+b)	The inventory service may respond slowly to the order service, the remote service calls can be slow due to api performance or database calls.
+c)	This is not a good thing for the app performance.
+d)	So our System/app should be Resilience.
 
-## Circuit Breaker States
-* The Circuit Breaker pattern has three main states:
+Resilience should be able to recover or act accordingly to the difficult situations.
 
-**Closed**: Normal operation. Requests flow freely between services.
-**Open**: The circuit breaker stops allowing requests due to detected failures or slow responses.
-**Half-Open**: The circuit breaker allows a limited number of test requests to determine if the issue is resolved.
+We have some set of States for the circuit Breaker.
 
-## State Transitions
-Closed to Open: When the failure threshold is met (e.g., a certain number of failed requests), the circuit breaker opens.
-Open to Half-Open: After a predefined period, the circuit breaker transitions to the half-open state to test if the issue is resolved.
-Half-Open to Open: If the test requests fail, the circuit breaker reopens.
-Half-Open to Closed: If the test requests succeed, the circuit breaker closes, and normal operation resumes.
+![cbstates.png](cbstates.png)
 
-Implementing Circuit Breaker with Spring Boot and Resilience4j
-Step 1: Add Dependencies
-Add the following dependencies to your pom.xml file:
+Closed: If the communication between the Services and working perfectly then it is in closed state.
 
-    <dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
-    <version>3.1.1</version>
-    </dependency>
+•	If the inventory Service is not responding to the Order Service due to network issues, service not available situations then circuit breaker will go into the state of Open.
+•	So, in this state there is no meaning of requesting the inventory Service api’s.
+•	So the inventory Service won’t allow any calls from Order Service.
+•	We can configure that for certain amount of time don’t allow the requests to inventory service.
+•	In this case we can send some custom logic or message which is handled by FallBackMethod.
+•	After some certain duration in Open state, it moves to the Half Open state.
+•	So in this state, the inventory service will start taking the requests to the inventory service.
+•	It will check whether the requests are going through.
+•	If the requests are still not going through, it will change the state to Open and executes the Fall Back Logic.
+•	If the requests are going through then the state will move to Closed.
+Implementing Fallback mechanism :
+a)	Add  the below dependencies
 
-    <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-actuator</artifactId>
-    </dependency>
+
+      <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+      <version>3.1.1</version>
+      </dependency>
+
+     <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-actuator</artifactId>
+     </dependency>
+
 
 Step 2: Configure Properties
 Add the following properties to your application.yml file:
@@ -61,7 +66,7 @@ Add the following properties to your application.yml file:
       health:
         show-details: always
 
-# Resilience4j properties
+## Resilience4j properties
      resilience4j:
        circuitbreaker:
          instances:
@@ -132,6 +137,13 @@ You can check the states of the circuit breaker using the actuator endpoint:
 
 
 Step 4: Configure TimeLimiter 
+
+•	The inventory service may not respond in time due to network issue or database performance issues or api performance issues.
+•	So in this case we can introduce the concept of timeout, if the request to the 2nd microservice is not responding or the response time for the request id more.
+•	Order service will wait for certain duration of time for the response of inventory service.
+•	After that duration, it will not wait for the response, it will terminate the call.
+
+
 Add the following properties to your application.yml file to configure timeouts and retries:
 
  
@@ -156,13 +168,13 @@ Add the following properties to your application.yml file to configure timeouts 
 *	If the 2nd microservice is not responding the first microservice will send the request again to the 2nd service without the interference of the client.
 *	This mechanism is called Retry.
 
-
     retry:
       instances:
         inventory:
           max-attempts: 3
           wait-duration: 5s
 
+and add the annotation @Retry(name = "inventory")
 
 ## Summary
 By implementing the Circuit Breaker pattern with Spring Boot and Resilience4j, we can enhance the resilience of our application. The circuit breaker monitors the interaction between services and halts requests when a service is down or slow, allowing the system to recover gracefully and maintain performance. Additionally, using timeouts and retries further improves the robustness of the application.
