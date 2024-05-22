@@ -31,41 +31,43 @@ KafkaTemplate (producer)
 
 * in producer microservice
 
-      spring:
-        kafka:
-          bootstrapServers: localhost:9092
-          producer:
-            keySerializer: org.apache.kafka.common.serialization.StringSerializer
-            valueSerializer: org.springframework.kafka.support.serializer.JsonSerializer
-            properties:
-              spring:
-                json:
-                  type:
-                    mapping: event:com.example.orderservice.event.OrderPlacedEvent
-          template:
-            defaultTopic: notificationTopic
+            spring:
+              kafka:
+                bootstrapServers: localhost:9092
+                producer:
+                  keySerializer: org.apache.kafka.common.serialization.StringSerializer
+                  valueSerializer: org.springframework.kafka.support.serializer.JsonSerializer
+                  properties:
+                    spring:
+                      json:
+                        type:
+                          mapping: event:com.example.orderservice.event.OrderPlacedEvent
+                template:
+                  defaultTopic: notificationTopic
 
-  @Autowired
-  KafkaTemplate<String,OrderPlacedEvent> kafkaTemplate;
+* In the service layer
+
+           @Autowired
+           KafkaTemplate<String,OrderPlacedEvent> kafkaTemplate;
 
                 kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
 
 
 * in consumer microservice
 
-       kafka:
-         bootstrapServers: localhost:9092
-         consumer:
-           groupId: notificationId
-           keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
-           valueDeserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-           properties:
-             spring:
-               json:
-                 type:
-                   mapping: event:com.example.notificationservice.OrderPlacedEvent
-         template:
-           defaultTopic: notificationTopic
+              kafka:
+                bootstrapServers: localhost:9092
+                consumer:
+                  groupId: notificationId
+                  keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+                  valueDeserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+                  properties:
+                    spring:
+                      json:
+                        type:
+                          mapping: event:com.example.notificationservice.OrderPlacedEvent
+                template:
+                  defaultTopic: notificationTopic
 
 * In service layer       
          
