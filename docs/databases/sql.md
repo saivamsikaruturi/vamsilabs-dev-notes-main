@@ -142,7 +142,7 @@ Here are the example tables:
 | 104      | Furniture   | 4       |
 
 
-1. INNER JOIN
+1. **INNER JOIN**
    This join returns only the rows where there is a match between the users and orders tables based on the user_id.
 
 ```sql
@@ -164,7 +164,7 @@ Output
 Number of rows: 3
 
 
-2. LEFT JOIN (or LEFT OUTER JOIN)
+2. **LEFT JOIN (or LEFT OUTER JOIN)**
    This join returns all rows from the users table and the matched rows from the orders table. If there is no match, the result is NULL on the side of the orders table.
 
 ```sql
@@ -185,7 +185,7 @@ Output
 
 Number of rows: 4
 
-3. RIGHT JOIN (or RIGHT OUTER JOIN)
+3. **RIGHT JOIN (or RIGHT OUTER JOIN)**
    This join returns all rows from the orders table and the matched rows from the users table. If there is no match, the result is NULL on the side of the users table.
 
 ```sql
@@ -205,7 +205,8 @@ Output
 | null | null  | null            | 104      | Furniture   |
 
 Number of rows: 4
-4. FULL OUTER JOIN
+
+4. **FULL OUTER JOIN**
    This join returns all rows when there is a match in either the users or orders tables. If there is no match, the result is NULL on the side where there is no match.
 
 ```sql
@@ -226,7 +227,8 @@ Output
 | null | null    | null              | 104      | Furniture   |
 
 Number of rows: 5
-5. CROSS JOIN
+
+5. **CROSS JOIN**
    This join returns the Cartesian product of the users and orders tables, which means each row from the users table is combined with each row from the orders table.
 
 ```sql
@@ -254,7 +256,8 @@ Output
 | 3  | Charlie | charlie@gmail.com | 104      | Furniture   |
 
 Number of rows: 12
-6. SELF JOIN
+
+6. **SELF JOIN**
    This join is used to join a table with itself. Here, we'll demonstrate finding pairs of users, which might not be directly relevant to orders, but is useful to understand the concept.
 
 | emp_id | name    | manager_id |
@@ -283,16 +286,15 @@ Output
 | 5      | James   | 2          | Sara         |
 
 Number of rows: 6
-These examples should give you a clear understanding of how different types of joins work in SQL and the kind of results you can expect from each.
-
 
 * It's essential to carefully choose the type of join based on the specific requirements of your query and the
-relationship between the tables. While INNER JOIN and NATURAL JOIN can be convenient, they have their advantages and
-disadvantages, and understanding their behavior is crucial for writing efficient and accurate SQL queries
+  relationship between the tables.
+* While INNER JOIN and NATURAL JOIN can be convenient, they have their advantages and
+  disadvantages, and understanding their behavior is crucial for writing efficient and accurate SQL queries
 
 ## Join vs Union
 
-JOIN:
+**JOIN**:
 
 * The JOIN operation is used to combine rows from two or more tables based on a related column between them.
 * It is employed when you want to retrieve data from multiple tables based on a common condition or relationship.
@@ -305,7 +307,7 @@ SELECT *
 FROM table1
 INNER JOIN table2 ON table1.column_name = table2.column_name;
 ```
-UNION:
+**UNION**:
 * The UNION operation is used to combine the result sets of two or more SELECT statements into a single result set.
 * It is employed when you want to combine rows from different tables or queries that have similar structures.
 * The columns in the SELECT statements being unioned must have the same data types in corresponding positions.
