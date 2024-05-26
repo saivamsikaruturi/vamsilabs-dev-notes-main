@@ -142,7 +142,7 @@ Here are the example tables:
 | 104      | Furniture   | 4       |
 
 
-1. **INNER JOIN**
+1.**INNER JOIN**
    This join returns only the rows where there is a match between the users and orders tables based on the user_id.
 
 ```sql
@@ -205,7 +205,7 @@ Output
 
 Number of rows: 4
 
-4. **FULL OUTER JOIN**
+4.**FULL OUTER JOIN**
    This join returns all rows when there is a match in either the users or orders tables. If there is no match, the result is NULL on the side where there is no match.
 
 ```sql
@@ -227,7 +227,7 @@ Output
 
 Number of rows: 5
 
-5. **CROSS JOIN**
+5.**CROSS JOIN**
    This join returns the Cartesian product of the users and orders tables, which means each row from the users table is combined with each row from the orders table.
 
 ```sql
@@ -255,7 +255,7 @@ Output
 
 Number of rows: 12
 
-6. **SELF JOIN**
+6.**SELF JOIN**
    This join is used to join a table with itself. Here, we'll demonstrate finding pairs of users, which might not be directly relevant to orders, but is useful to understand the concept.
 
 | emp_id | name    | manager_id |
