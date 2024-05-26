@@ -256,7 +256,7 @@ Output
 Number of rows: 12
 
 6.**SELF JOIN**
-   This join is used to join a table with itself. Here, we'll demonstrate finding pairs of users, which might not be directly relevant to orders, but is useful to understand the concept.
+   This join is used to join a table with itself.
 
 | emp_id | name    | manager_id |
 |--------|---------|------------|
@@ -306,6 +306,7 @@ FROM table1
 INNER JOIN table2 ON table1.column_name = table2.column_name;
 ```
 **UNION**:
+
 * The UNION operation is used to combine the result sets of two or more SELECT statements into a single result set.
 * It is employed when you want to combine rows from different tables or queries that have similar structures.
 * The columns in the SELECT statements being unioned must have the same data types in corresponding positions.
