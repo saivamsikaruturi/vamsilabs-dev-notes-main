@@ -164,11 +164,10 @@ Output
 Number of rows: 3
 
 
-2. **LEFT JOIN (or LEFT OUTER JOIN)**
+2.**LEFT JOIN (or LEFT OUTER JOIN)**
    This join returns all rows from the users table and the matched rows from the orders table. If there is no match, the result is NULL on the side of the orders table.
 
 ```sql
-Copy code
 SELECT users.id, users.name, users.email, orders.order_id, orders.order_name
 FROM users
 LEFT JOIN orders ON users.id = orders.user_id;
@@ -185,7 +184,7 @@ Output
 
 Number of rows: 4
 
-3. **RIGHT JOIN (or RIGHT OUTER JOIN)**
+3.**RIGHT JOIN (or RIGHT OUTER JOIN)**
    This join returns all rows from the orders table and the matched rows from the users table. If there is no match, the result is NULL on the side of the users table.
 
 ```sql
@@ -232,7 +231,6 @@ Number of rows: 5
    This join returns the Cartesian product of the users and orders tables, which means each row from the users table is combined with each row from the orders table.
 
 ```sql
-Copy code
 SELECT users.id, users.name, users.email, orders.order_id, orders.order_name
 FROM users
 CROSS JOIN orders;
