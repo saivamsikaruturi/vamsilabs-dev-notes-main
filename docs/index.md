@@ -14,6 +14,7 @@
 - 🔀[Differences in Collections](https://vamsilabs-master-notes.netlify.app/java/DiffCollections)
 - 📊[Concurrent Collections](https://vamsilabs-master-notes.netlify.app/java/ConcurrentCollections)
 - 🧵[MultiThreading](https://vamsilabs-master-notes.netlify.app/java/MultiThreading)
+-  [DeadLocks](https://vamsilabs-master-notes.netlify.app/java/deadLocks)
 
 🌊**Stream API**🌊
 
