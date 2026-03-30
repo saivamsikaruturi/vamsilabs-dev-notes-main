@@ -1,50 +1,281 @@
-/* Position the navigation menu at the top */
-#nav {
-    display: flex;
-    justify-content: center; /* Keeps the nav centered */
-    align-items: center;
-    padding: 10px 0;
-    position: fixed; /* Makes the nav stick to the top */
-    width: 100%; /* Ensures nav spans the full width */
-    top: 0; /* Align to the top */
-    background-color: #ffffff; /* Change nav background */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a shadow for depth */
-    z-index: 1000; /* Ensure it's above other content */
+/* ============================================
+   CUSTOM THEME ENHANCEMENTS
+   ============================================ */
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 120px;
 }
 
-/* Style for each navigation item */
-#nav ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
+/* ============================================
+   HEADER & NAVIGATION
+   ============================================ */
+
+/* Enhanced header with gradient */
+.md-header {
+    background: linear-gradient(135deg, #008080 0%, #20b2aa 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-#nav li {
-    margin: 0 15px;
+/* Navigation tabs styling */
+.md-tabs {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, transparent 100%);
 }
 
-#nav a {
+.md-tabs__link {
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.md-tabs__link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.md-tabs__link--active {
+    color: #cddc39 !important;
+    font-weight: 700;
+}
+
+/* ============================================
+   CONTENT AREA ENHANCEMENTS
+   ============================================ */
+
+/* Better content spacing */
+.md-content {
+    max-width: 850px;
+}
+
+.md-content__inner {
+    padding-top: 2rem;
+}
+
+/* Enhanced code blocks */
+.highlight {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 1.5em 0;
+}
+
+pre code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+/* Inline code styling */
+code {
+    background-color: rgba(0, 128, 128, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+/* ============================================
+   ADMONITIONS (CALLOUTS)
+   ============================================ */
+
+.admonition {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 1.5em 0;
+}
+
+/* Custom admonition colors */
+.admonition.note {
+    border-left: 4px solid #2196f3;
+}
+
+.admonition.tip {
+    border-left: 4px solid #00bfa5;
+}
+
+.admonition.warning {
+    border-left: 4px solid #ff9800;
+}
+
+.admonition.danger {
+    border-left: 4px solid #f44336;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+.md-typeset table:not([class]) {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.md-typeset table:not([class]) th {
+    background: linear-gradient(135deg, #008080 0%, #20b2aa 100%);
+    color: white;
+    font-weight: 600;
+}
+
+.md-typeset table:not([class]) tr:hover {
+    background-color: rgba(0, 128, 128, 0.05);
+}
+
+/* ============================================
+   SEARCH
+   ============================================ */
+
+.md-search__input {
+    border-radius: 24px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.md-search__input:hover {
+    background-color: white;
+}
+
+/* ============================================
+   SIDEBAR NAVIGATION
+   ============================================ */
+
+.md-nav__link--active {
+    color: #008080;
+    font-weight: 700;
+}
+
+.md-nav__link:hover {
+    color: #008080;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.md-footer {
+    background: linear-gradient(135deg, #008080 0%, #20b2aa 100%);
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #008080 0%, #20b2aa 100%);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #006666;
+}
+
+/* ============================================
+   HEADINGS
+   ============================================ */
+
+.md-typeset h1 {
+    font-weight: 700;
+    color: #008080;
+    border-bottom: 3px solid #008080;
+    padding-bottom: 0.5rem;
+}
+
+.md-typeset h2 {
+    font-weight: 600;
+    color: #20b2aa;
+    border-left: 4px solid #008080;
+    padding-left: 1rem;
+}
+
+.md-typeset h3 {
+    font-weight: 600;
+    color: #5f9ea0;
+}
+
+/* ============================================
+   LINKS
+   ============================================ */
+
+.md-typeset a {
+    color: #008080;
     text-decoration: none;
-    color: #333;
-    font-weight: bold; /* Makes the text bold */
-    padding: 5px 10px; /* Adds padding around the links */
-    border-radius: 5px; /* Rounds the corners */
-    transition: color 0.3s, background-color 0.3s; /* Smooth transition for hover */
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
 }
 
-#nav a:hover {
-    color: #fff; /* Changes text color on hover */
-    background-color: #f00; /* Add background color on hover */
+.md-typeset a:hover {
+    color: #20b2aa;
+    border-bottom-color: #20b2aa;
 }
 
-/* Sets the navbar styling */
-.navbar {
-    background-color: #555; /* Darkens the navbar color for contrast */
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media screen and (max-width: 76.1875em) {
+    .md-nav--primary .md-nav__title {
+        background: linear-gradient(135deg, #008080 0%, #20b2aa 100%);
+    }
+}
+
+/* ============================================
+   DARK MODE ADJUSTMENTS
+   ============================================ */
+
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: #008080;
+    --md-accent-fg-color: #cddc39;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h1 {
+    color: #20b2aa;
+    border-bottom-color: #20b2aa;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h2 {
+    color: #5f9ea0;
+    border-left-color: #20b2aa;
+}
+
+/* ============================================
+   CUSTOM BADGES
+   ============================================ */
+
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    font-size: 0.75em;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 12px;
+    margin: 0 0.25em;
+}
+
+.badge-java {
+    background-color: #007396;
     color: white;
 }
 
-/* Fixes the body padding issue when nav is fixed */
-body {
-    padding-top: 60px; /* Adjust to the height of your nav bar */
+.badge-spring {
+    background-color: #6db33f;
+    color: white;
+}
+
+.badge-advanced {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.badge-new {
+    background-color: #4ecdc4;
+    color: white;
 }
