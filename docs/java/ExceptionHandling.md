@@ -1,159 +1,321 @@
-## Exception
+# Exception Handling in Java
 
-- An Unwanted , unexpected event that disturbs the normal flow of the program is called Exception.
-- The main purpose of Exception Handling is graceful termination of the program.
+Exceptions are events that **disrupt the normal flow** of a program. Proper exception handling is the difference between a service that crashes at 3 AM and one that degrades gracefully.
 
-## Difference Between Error and Exception
-
-- In most of the cases exceptions are caused by our program and these are recoverable
-
-Example FileNotFoundException
-
-- Most of the time errors are not caused by a program these are due to lack of system resources. Errors are not recoverable
-
-Example: Out of memory error
-
-## Difference Between Checked and Unchecked Exceptions
-
-
-Checked Exceptions: Except for RuntimeException, Error, and their subclasses, all other exceptions are called checked exceptions. It means that it is compulsary for the user to check i.e, to handle an exception. If a method throws a checked exception then the method must take the responsibilty to deal with it. The method must either catch the exception and take appropriate action, or pass the execution on to its caller.
-Examples : IOException, ClassNotFoundException, InterruptedException, CloneNotSupportException
-
-Unchecked Exception: Exception defined by Error and RuntimeException classes and their subclasses are known as unchecked exceptions. It means that it is not mandatory for a method to deal with such kinds of exceptions, The compiler doesn’t check if a method handles or throws this exception. Such exceptions are either irrecoverable and the program should not attempt to deal with them or they cannot be treatedas exceptions.
-Examples- NullPointerException, ArrayIndexOutofBoundsException,
-ArithematicException, NumberFormatException etc
-
-- Every Exception occurs at Run Time only.
-- The Exceptions which are checked by compiler for smooth execution of program at Runtime are known as Checked Exceptions. These exceptions must be caught.
-- We will get compile time error if we don’t handle these exceptions.
-- Ex: FileNotFoundException, Interrupted Exception, SQL Exception
-- The exceptions which are not checked by compiler are known as unchecked exceptions.
-- Compiler does not produce any error whether you handle or not during compile time.
-- Ex: Null Pointer Exception, Index Out of Bound Exception , Arithmetic Exception
-
-| Checked Exceptions                                                                                          | Unchecked Exceptions                                                                                                                          |
-|-------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| They are known at compile time.                                                                             | They are known at run time.                                                                                                                   |
-| They are checked at compile time.                                                                           | They are not checked at compile time. Because they occur only at run time.                                                                    |
-| These are compile time exceptions.                                                                          | These are run time exceptions.                                                                                                                |
-| If these exceptions are not handled properly in the application, they give compile time error.              | If these exceptions are not handled properly, they don’t give compile time error. But application will be terminated prematurely at run time. |
-| All sub classes of java.lang.Exception Class except sub classes of RunTimeException are checked exceptions. | All sub classes of RunTimeException and sub classes of java.lang.Error are unchecked exceptions.                                              |
-
-## Difference Between ClassNotFoundException and NoClassDefFoundError
-
-| Class Not Found Exception | NoClassDefFound Error |
-| --- | --- |
-| It occurs when JVM tries to load a class which is not available in the class path | It occurs when class was present during the compile time and not present during run time. |
-| Checked Exception | Linkage Error. |
+---
 
 ## Exception Hierarchy
 
-![img_15.png](img_15.png)
-Purpose and Speciality of Finally Block in Exception:
+```
+                        Throwable
+                            │
+               ┌────────────┼────────────┐
+               │                         │
+            Error                    Exception
+         (unrecoverable)                 │
+               │                ┌────────┼────────┐
+        StackOverflowError      │                 │
+        OutOfMemoryError   RuntimeException   Checked Exceptions
+                                │                 │
+                         NullPointerException  IOException
+                         ArrayIndexOutOfBounds ClassNotFoundException
+                         ClassCastException    SQLException
+                         ArithmeticException   InterruptedException
+                         IllegalArgumentException
+```
 
-     try {
+---
 
-     open db connection
+## Checked vs Unchecked Exceptions
 
-     Read Data
+| Feature | Checked | Unchecked (Runtime) |
+|---|---|---|
+| Checked at | **Compile time** | **Runtime** |
+| Must handle? | Yes (`try-catch` or `throws`) | No (optional) |
+| Extends | `Exception` (not RuntimeException) | `RuntimeException` |
+| Examples | `IOException`, `SQLException`, `ClassNotFoundException` | `NullPointerException`, `ArrayIndexOutOfBoundsException` |
+| Caused by | External factors (file not found, network down) | Programming bugs (null access, bad index) |
+| Best practice | Handle or propagate meaningfully | Fix the code, don't just catch |
 
-     }
+---
 
-     catch (Exception e){
+## try-catch-finally
 
-     handling code
+```java
+try {
+    FileReader reader = new FileReader("data.txt");
+    int data = reader.read();
+} catch (FileNotFoundException e) {
+    System.out.println("File not found: " + e.getMessage());
+} catch (IOException e) {
+    System.out.println("IO error: " + e.getMessage());
+} finally {
+    // ALWAYS executes (even if exception is thrown or return is called)
+    System.out.println("Cleanup done");
+}
+```
 
-     }
+### Multi-catch (Java 7+)
 
-    finally {
+```java
+try {
+    // risky code
+} catch (IOException | SQLException e) {
+    log.error("Data access error", e);
+}
+```
 
-    close db connection ( i.e clean up code)
+### finally Execution Rules
 
+| Scenario | Does `finally` run? |
+|---|---|
+| No exception | Yes |
+| Exception caught | Yes |
+| Exception not caught | Yes |
+| `return` in try/catch | Yes (before the return completes) |
+| `System.exit()` called | **No** |
+| JVM crashes | **No** |
+
+---
+
+## try-with-resources (Java 7+)
+
+Automatically closes resources that implement `AutoCloseable`. No need for `finally`.
+
+```java
+// BEFORE — verbose, error-prone
+BufferedReader reader = null;
+try {
+    reader = new BufferedReader(new FileReader("data.txt"));
+    String line = reader.readLine();
+} catch (IOException e) {
+    log.error("Read failed", e);
+} finally {
+    if (reader != null) {
+        try { reader.close(); } catch (IOException e) { /* swallowed */ }
+    }
+}
+
+// AFTER — clean, safe
+try (BufferedReader reader = new BufferedReader(new FileReader("data.txt"))) {
+    String line = reader.readLine();
+} catch (IOException e) {
+    log.error("Read failed", e);
+}
+// reader is automatically closed here
+```
+
+### Multiple resources
+
+```java
+try (Connection conn = dataSource.getConnection();
+     PreparedStatement ps = conn.prepareStatement(sql);
+     ResultSet rs = ps.executeQuery()) {
+    while (rs.next()) {
+        // process results
+    }
+}
+// all three are closed in reverse order: rs → ps → conn
+```
+
+---
+
+## throw vs throws
+
+| Keyword | Purpose | Where used |
+|---|---|---|
+| `throw` | Actually throws an exception object | Inside method body |
+| `throws` | Declares that a method might throw exceptions | Method signature |
+
+```java
+// throws — declaration
+public void readFile(String path) throws IOException {
+    // throw — action
+    if (path == null) {
+        throw new IllegalArgumentException("Path cannot be null");
+    }
+    Files.readString(Path.of(path));
+}
+```
+
+---
+
+## Custom Exceptions
+
+Create custom exceptions for domain-specific error handling.
+
+```java
+// Checked exception
+public class OrderNotFoundException extends Exception {
+    private final String orderId;
+
+    public OrderNotFoundException(String orderId) {
+        super("Order not found: " + orderId);
+        this.orderId = orderId;
     }
 
--- The main objective of finally block is to maintain clean up code.
+    public String getOrderId() { return orderId; }
+}
 
--- This block is executed always irrespective of whether exception is raised or not.
+// Unchecked exception
+public class InsufficientBalanceException extends RuntimeException {
+    private final double balance;
+    private final double required;
 
+    public InsufficientBalanceException(double balance, double required) {
+        super(String.format("Insufficient balance: %.2f, required: %.2f", balance, required));
+        this.balance = balance;
+        this.required = required;
+    }
+}
+```
 
- 
-      try{
+### When to use checked vs unchecked for custom exceptions
 
-      int a=10/00;
+| Use checked when | Use unchecked when |
+|---|---|
+| Caller **can** and **should** recover | Error is a **programming bug** |
+| External system failure (DB down, API timeout) | Invalid argument, null pointer, bad state |
+| You want the compiler to force handling | Recovery is not realistic |
 
-      System.out.println (a);
+---
 
-      }
+## Exception Handling Best Practices
 
-      catch (Exception e){
+### 1. Never catch `Exception` or `Throwable` (too broad)
 
-      System.out.println (e);
+```java
+// BAD — catches everything including NullPointerException
+try {
+    processOrder(order);
+} catch (Exception e) {
+    log.error("Something went wrong", e);
+}
 
-      }
+// GOOD — catch specific exceptions
+try {
+    processOrder(order);
+} catch (OrderNotFoundException e) {
+    return ResponseEntity.notFound().build();
+} catch (PaymentException e) {
+    return ResponseEntity.status(502).body("Payment failed");
+}
+```
 
-      catch (ArithmeticException e1){
+### 2. Never swallow exceptions
 
-      System.out.println (e1);
+```java
+// BAD — exception is silently ignored
+try {
+    connection.close();
+} catch (SQLException e) {
+    // empty catch block — you'll never know this failed
+}
 
-      }
+// GOOD — at minimum, log it
+try {
+    connection.close();
+} catch (SQLException e) {
+    log.warn("Failed to close connection", e);
+}
+```
 
-ans: Compilation Fails because Arithmetic Exception has already been caught by Exception. So ,First Child Exception should be declared.
+### 3. Throw early, catch late
 
-## Try with Resources
+```java
+// THROW EARLY — validate at the entry point
+public void transfer(Account from, Account to, double amount) {
+    if (from == null || to == null) throw new IllegalArgumentException("Accounts required");
+    if (amount <= 0) throw new IllegalArgumentException("Amount must be positive");
+    // ... proceed with valid inputs
+}
 
-Database connections or file resources or network related resources are actually closed in finally block .So when we open any resources that must be closed in finally block.
+// CATCH LATE — handle at the right abstraction level (e.g., controller)
+@PostMapping("/transfer")
+public ResponseEntity<?> transfer(@RequestBody TransferRequest req) {
+    try {
+        accountService.transfer(req.getFrom(), req.getTo(), req.getAmount());
+        return ResponseEntity.ok().build();
+    } catch (InsufficientBalanceException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
+```
 
-    try(BufferedReader br1 = new BufferedReader (new FileReader ("C:\\Users\\karukris\\Documents\\file.txt"**)))
-    {
-    
-     System.***out***.println ("Try with resources");
-    
-     }
+### 4. Use exceptions for exceptional conditions, not control flow
 
-## Throw vs Throws
+```java
+// BAD — using exceptions as control flow
+try {
+    int value = Integer.parseInt(input);
+} catch (NumberFormatException e) {
+    value = 0;  // using exception to handle "not a number"
+}
 
-| throw                                                   | throws                                          |
-|---------------------------------------------------------|-------------------------------------------------|
-| throw keyword is used to explicitly throw an exception. | throws keyword is used to declare an exception. |
-| throw is used with in method.                           | Throws is used with the method signature.       |
-| throw is followed by instance.                          | Throws is followed by a class.                  |
-| We can’t declare multiple exceptions.                   | We can declare multiple exceptions.             |
-| Checked exceptions can’t be propagated using throw.     | Both checked and unchecked exceptions.          |
-| Void m(){                                               |                                                 |
+// GOOD — check first
+if (input.matches("-?\\d+")) {
+    int value = Integer.parseInt(input);
+} else {
+    value = 0;
+}
+```
 
-throw new ArithmeticException(“arithmetic exception”);
-} | void m() throws ArithmeticException{
-} |
+---
 
-## Final, Finally and Finalize
+## Exception Handling in Spring Boot
 
-final**:**
+```java
+// Global exception handler
+@RestControllerAdvice
+public class GlobalExceptionHandler {
 
-- classes --- when a class a declared with final , the class cannot be extended.
-- methods --- method cannot be overridden when it is declared as final.
-- variables --- cannot be reassigned.
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(OrderNotFoundException e) {
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(new ErrorResponse("NOT_FOUND", e.getMessage()));
+    }
 
-finally:
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(IllegalArgumentException e) {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(new ErrorResponse("BAD_REQUEST", e.getMessage()));
+    }
 
-- It is a block always associated with try and catch
-- finally block is mainly for cleanup code . i.e to close file and db connections
-- finally block is always executed .
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneric(Exception e) {
+        log.error("Unexpected error", e);
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ErrorResponse("INTERNAL_ERROR", "Something went wrong"));
+    }
+}
 
-finalize()
+record ErrorResponse(String code, String message) {}
+```
 
-In order to destroy the objects in the code , Garbage Collector will call the finalize() method.
+---
 
-Protected void finalize() throws Throwable
+## Interview Questions
 
-## Exceptions Methods
+??? question "1. What is the difference between `final`, `finally`, and `finalize()`?"
+    `final` — keyword: variables can't be reassigned, methods can't be overridden, classes can't be extended. `finally` — block: always executes after try/catch for cleanup. `finalize()` — method called by GC before collecting an object (deprecated in Java 9, removed in Java 18 — use `try-with-resources` or `Cleaner` instead).
 
-Following is the list of important methods available in the Throwable class.
+??? question "2. Can a finally block override a return value?"
+    **Yes.** If both `try` and `finally` have `return` statements, the `finally` return wins. But this is terrible practice — never return from `finally`.
+    ```java
+    int test() {
+        try { return 1; }
+        finally { return 2; }  // returns 2 — never do this
+    }
+    ```
 
-| sr.no | Method                                     | Description                                                                                                                                                                                                        |
-|-------|--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1     | public String getMessage()                 | Returns a detailed message about the exception that has occurred. This message is initialized in the Throwable constructor.                                                                                        |
-| 2     | public Throwable getCause()                | Returns the cause of the exception as represented by a Throwable object.                                                                                                                                           |
-| 3     | public String toString()                   | Returns the name of the class concatenated with the result of getMessage().                                                                                                                                        |
-| 4     | public void printStackTrace()              | Prints the result of toString() along with the stack trace to System.err, the error output stream.                                                                                                                 |
-| 5     | public StackTraceElement[] getStackTrace() | Returns an array containing each element on the stack trace. The element at index 0 represents the top of the call stack, and the last element in the array represents the method at the bottom of the call stack. |
-| 6     | public Throwable fillInStackTrace()        | Fills the stack trace of this Throwable object with the current stack trace, adding to any previous information in the stack trace.                                                                                |
+??? question "3. What happens if an exception is thrown in a catch block?"
+    The original exception is lost unless you chain it. Use `throw new CustomException("msg", originalException)` to preserve the cause chain. If a `finally` block also throws, the catch exception is suppressed (available via `getSuppressed()` in Java 7+).
+
+??? question "4. Why should you prefer unchecked exceptions for programming errors?"
+    Checked exceptions force every caller up the stack to either handle or declare them, cluttering code with `try-catch` or `throws` for errors that can't be meaningfully recovered from (like `NullPointerException`). Unchecked exceptions propagate naturally and should be fixed by fixing the code, not by catching them.
+
+??? question "5. How do you handle exceptions in a microservices architecture?"
+    Use `@RestControllerAdvice` for centralized exception handling. Map domain exceptions to HTTP status codes (404 for not found, 400 for validation errors, 502 for downstream failures). Log with correlation IDs for distributed tracing. For async communication (Kafka), use dead-letter queues for unprocessable messages. Never expose internal stack traces to clients.

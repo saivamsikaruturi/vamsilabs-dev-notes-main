@@ -1,48 +1,891 @@
-#nav ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap; /* Allow items to wrap onto the next line */
-    justify-content: center;
-    align-items: center;
-    max-width: 800px; /* Increased to fit content - Adjust as needed */
-    margin: 0 auto; /* Center the navigation bar */
-    padding: 0;
+/* ==========================================================================
+   VAMSI TECH NOTES — DESIGN SYSTEM
+   Teal / Emerald palette · Clean & modern
+   ========================================================================== */
+
+/* --- DESIGN TOKENS (Light Mode) --- */
+:root {
+  --vtn-brand: #0D9488;
+  --vtn-brand-light: #14B8A6;
+  --vtn-brand-dark: #0F766E;
+  --vtn-accent: #F59E0B;
+  --vtn-accent-light: #FBBF24;
+  --vtn-success: #10B981;
+  --vtn-warning: #F59E0B;
+  --vtn-danger: #EF4444;
+  --vtn-info: #3B82F6;
+  --vtn-surface: #FFFFFF;
+  --vtn-surface-dim: #F8FAFC;
+  --vtn-surface-hover: #F0FDFA;
+  --vtn-text: #1E293B;
+  --vtn-text-muted: #64748B;
+  --vtn-border: #E2E8F0;
+  --vtn-gradient: linear-gradient(135deg, #0D9488 0%, #0EA5E9 100%);
+  --vtn-gradient-subtle: linear-gradient(135deg, rgba(13, 148, 136, 0.06) 0%, rgba(14, 165, 233, 0.06) 100%);
+  --vtn-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --vtn-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --vtn-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --vtn-radius: 10px;
+  --vtn-radius-sm: 6px;
+  --vtn-radius-xs: 4px;
+
+  --md-primary-fg-color: #0D9488;
+  --md-primary-fg-color--light: #14B8A6;
+  --md-primary-fg-color--dark: #0F766E;
+  --md-primary-bg-color: #FFFFFF;
+  --md-accent-fg-color: #F59E0B;
+  --md-text-link-color: #0D9488;
 }
 
-#nav li {
-    margin: 0 20px; /* Increase margin for better spacing */
-    padding: 5px 10px; /* Adjusted for better spacing and clickability */
-    font-size: 16px; /* Increase font size for better visibility */
+/* --- DESIGN TOKENS (Dark / Slate Mode) --- */
+[data-md-color-scheme="slate"] {
+  --vtn-brand: #2DD4BF;
+  --vtn-brand-light: #5EEAD4;
+  --vtn-brand-dark: #14B8A6;
+  --vtn-accent: #FBBF24;
+  --vtn-accent-light: #FCD34D;
+  --vtn-success: #34D399;
+  --vtn-warning: #FBBF24;
+  --vtn-danger: #F87171;
+  --vtn-info: #60A5FA;
+  --vtn-surface: #0F172A;
+  --vtn-surface-dim: #1E293B;
+  --vtn-surface-hover: #1A3A3A;
+  --vtn-text: #F1F5F9;
+  --vtn-text-muted: #94A3B8;
+  --vtn-border: #334155;
+  --vtn-gradient: linear-gradient(135deg, #14B8A6 0%, #38BDF8 100%);
+  --vtn-gradient-subtle: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(56, 189, 248, 0.1) 100%);
+  --vtn-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --vtn-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --vtn-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+
+  --md-primary-fg-color: #14B8A6;
+  --md-primary-fg-color--light: #2DD4BF;
+  --md-primary-fg-color--dark: #0D9488;
+  --md-primary-bg-color: #0F172A;
+  --md-accent-fg-color: #FBBF24;
+  --md-text-link-color: #2DD4BF;
+  --md-default-bg-color: #0F172A;
+  --md-default-fg-color: #F1F5F9;
+  --md-default-fg-color--light: #CBD5E1;
+  --md-default-fg-color--lighter: #94A3B8;
+  --md-default-fg-color--lightest: #64748B;
+  --md-code-bg-color: #1E293B;
+  --md-code-fg-color: #E2E8F0;
+  --md-footer-bg-color: #0F172A;
+  --md-footer-bg-color--dark: #020617;
+  --md-typeset-a-color: #2DD4BF;
 }
 
-.md-typeset pre code {
-    padding: 16px; /* Increased padding for code blocks */
+/* ==========================================================================
+   GLOBAL
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Adjust padding for the TOC items. The original 1000px seems to be a mistake. */
-.md-nav.md-right ul li {
-    padding: 5px 15px; /* Adjust padding for better spacing */
+/* ==========================================================================
+   CONTENT WIDTH — wide but centered, works at any zoom
+   ========================================================================== */
+
+.md-grid {
+  max-width: 90rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* If the 'accent-color' was meant to be 'accent-color' for the TOC items, it should be applied differently, possibly like this: */
-.md-nav.md-right ul li::before {
-    content: ""; /* Adjust the color as needed, this example may not be suitable for all browsers */
-    display: inline-block;
-    width: 0.5em;
-    height: 0.5em;
-    margin-right: 0.5em;
-    background-color: #d52a2a;
-    border-radius: 50%;
-    margin-top: 1px; /* Center the dot vertically with the text */
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+.md-header {
+  background: var(--vtn-gradient);
+  box-shadow: 0 2px 16px rgba(13, 148, 136, 0.3);
+  backdrop-filter: blur(12px);
 }
 
-@media only screen and (max-width: 600px) {
-    #nav ul {
-        max-width: 100%; /* Allow nav to fill the available space */
-    }
+.md-header__title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
 
-    #nav li {
-        margin: 5px; /* Decrease margin for smaller screens */
-        font-size: 14px; /* Adjust font size for smaller screens */
-    }
+.md-header__topic:first-child {
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   NAVIGATION TABS — compact so all items fit
+   ========================================================================== */
+
+.md-tabs {
+  background: rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.md-tabs__list {
+  white-space: nowrap;
+}
+
+.md-tabs__link {
+  font-weight: 600;
+  font-size: 0.76rem;
+  letter-spacing: 0.01em;
+  opacity: 0.88;
+  transition: all 0.2s ease;
+  padding: 0.5rem 0.8rem;
+}
+
+.md-tabs__link:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.md-tabs__link--active {
+  opacity: 1;
+  font-weight: 700;
+  position: relative;
+}
+
+.md-tabs__link--active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 3px;
+  background: var(--vtn-accent);
+  border-radius: 3px 3px 0 0;
+}
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+
+.md-nav__link {
+  font-size: 0.8rem;
+  border-radius: var(--vtn-radius-xs);
+  transition: all 0.15s ease;
+  padding: 0.28rem 0.65rem;
+  margin: 0;
+  color: var(--vtn-text);
+}
+
+.md-nav__link:hover {
+  color: var(--vtn-brand);
+  background: rgba(13, 148, 136, 0.06);
+}
+
+.md-nav__link--active {
+  color: var(--vtn-brand) !important;
+  font-weight: 700;
+  background: rgba(13, 148, 136, 0.08);
+  border-left: 3px solid var(--vtn-brand);
+  padding-left: calc(0.65rem - 3px);
+}
+
+.md-nav__item--nested > .md-nav__link {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--vtn-text-muted);
+  margin-top: 0.4rem;
+}
+
+.md-nav--secondary .md-nav__title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--vtn-text-muted);
+}
+
+/* ==========================================================================
+   TYPOGRAPHY
+   ========================================================================== */
+
+.md-typeset {
+  font-size: 0.84rem;
+  line-height: 1.75;
+  color: var(--vtn-text);
+}
+
+.md-typeset h1 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--vtn-brand);
+  margin-bottom: 1.2rem;
+  line-height: 1.25;
+}
+
+.md-typeset h2 {
+  font-weight: 700;
+  color: var(--vtn-text);
+  margin-top: 2.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--vtn-border);
+  position: relative;
+}
+
+.md-typeset h2::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: var(--vtn-brand);
+  border-radius: 2px;
+}
+
+.md-typeset h3 {
+  font-weight: 600;
+  color: var(--vtn-brand-dark);
+}
+
+[data-md-color-scheme="slate"] .md-typeset h3 {
+  color: var(--vtn-brand-light);
+}
+
+.md-typeset h4 {
+  font-weight: 600;
+  color: var(--vtn-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.82rem;
+}
+
+/* ==========================================================================
+   LINKS
+   ========================================================================== */
+
+.md-typeset a:not(.md-button):not(.md-nav__link):not(.vtn-card) {
+  color: var(--vtn-brand);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(13, 148, 136, 0.4);
+  transition: all 0.2s ease;
+}
+
+.md-typeset a:not(.md-button):not(.md-nav__link):not(.vtn-card):hover {
+  color: var(--vtn-brand-light);
+  border-bottom-style: solid;
+  border-bottom-color: var(--vtn-brand);
+}
+
+/* ==========================================================================
+   CODE
+   ========================================================================== */
+
+.md-typeset pre {
+  border-radius: var(--vtn-radius);
+  box-shadow: var(--vtn-shadow-sm);
+  border: 1px solid var(--vtn-border);
+  margin: 1.2em 0;
+}
+
+.md-typeset pre > code {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 0.82em;
+  line-height: 1.7;
+  padding: 1em 1.2em;
+  border-radius: var(--vtn-radius);
+}
+
+.md-typeset code:not(pre code) {
+  background: var(--vtn-surface-hover);
+  padding: 0.15em 0.4em;
+  border-radius: var(--vtn-radius-xs);
+  font-size: 0.88em;
+  font-weight: 500;
+  border: 1px solid var(--vtn-border);
+  color: var(--vtn-brand-dark);
+}
+
+[data-md-color-scheme="slate"] .md-typeset code:not(pre code) {
+  color: var(--vtn-brand-light);
+  background: var(--vtn-surface-dim);
+}
+
+.highlight .filename {
+  background: var(--vtn-brand);
+  color: white;
+  font-weight: 600;
+  padding: 0.35em 1em;
+  border-radius: var(--vtn-radius) var(--vtn-radius) 0 0;
+  font-size: 0.78em;
+}
+
+.md-clipboard {
+  color: var(--vtn-text-muted) !important;
+  transition: color 0.2s ease;
+}
+
+.md-clipboard:hover {
+  color: var(--vtn-brand) !important;
+}
+
+/* ==========================================================================
+   ADMONITIONS
+   ========================================================================== */
+
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: var(--vtn-radius);
+  border: 1px solid var(--vtn-border);
+  box-shadow: var(--vtn-shadow-sm);
+  overflow: hidden;
+  margin: 1.2em 0;
+  border-left: 4px solid;
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-weight: 700;
+}
+
+.md-typeset .note { border-left-color: var(--vtn-info); }
+.md-typeset .tip, .md-typeset .hint { border-left-color: var(--vtn-success); }
+.md-typeset .warning, .md-typeset .caution { border-left-color: var(--vtn-warning); }
+.md-typeset .danger, .md-typeset .error { border-left-color: var(--vtn-danger); }
+.md-typeset .abstract, .md-typeset .summary { border-left-color: var(--vtn-accent); }
+.md-typeset .example { border-left-color: var(--vtn-brand); }
+
+/* ==========================================================================
+   TABLES
+   ========================================================================== */
+
+.md-typeset table:not([class]) {
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  border: 1px solid #CBD5E1;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.md-typeset table:not([class]) th {
+  background: #1E293B;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid #334155;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+  background: #334155;
+  color: #F1F5F9;
+  border-color: #475569;
+}
+
+.md-typeset table:not([class]) td {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid #E2E8F0;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) td {
+  border-color: #334155;
+}
+
+.md-typeset table:not([class]) tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.md-typeset table:not([class]) tr:hover td {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tr:hover td {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ==========================================================================
+   SEARCH
+   ========================================================================== */
+
+.md-search__input {
+  border-radius: 20px !important;
+  font-weight: 500;
+}
+
+.md-search-result__meta {
+  color: var(--vtn-brand);
+  font-weight: 600;
+}
+
+.md-search-result__article {
+  border-radius: var(--vtn-radius-sm);
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.md-footer {
+  background: var(--vtn-gradient);
+}
+
+.md-footer-meta {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   TABLE OF CONTENTS
+   ========================================================================== */
+
+.md-nav--secondary .md-nav__link--active {
+  color: var(--vtn-brand);
+  font-weight: 600;
+  border-left: 2px solid var(--vtn-brand);
+  padding-left: calc(0.6rem - 2px);
+}
+
+/* ==========================================================================
+   CONTENT TABS
+   ========================================================================== */
+
+.md-typeset .tabbed-labels > label {
+  font-weight: 600;
+  font-size: 0.82rem;
+  transition: all 0.2s ease;
+}
+
+.md-typeset .tabbed-labels > label:hover {
+  color: var(--vtn-brand);
+}
+
+.md-typeset .tabbed-labels > label.tabbed-labels__active,
+.md-typeset .tabbed-set > input:checked + label {
+  color: var(--vtn-brand);
+  border-color: var(--vtn-brand);
+}
+
+/* ==========================================================================
+   TASK LISTS
+   ========================================================================== */
+
+.md-typeset .task-list-indicator::before {
+  background-color: var(--vtn-border);
+}
+
+.md-typeset [type="checkbox"]:checked + .task-list-indicator::before {
+  background-color: var(--vtn-brand);
+}
+
+.md-typeset [type="checkbox"] {
+  accent-color: var(--vtn-brand);
+}
+
+.md-typeset .task-list-control [type="checkbox"]:checked ~ .task-list-indicator::before {
+  background-color: var(--vtn-brand);
+}
+
+/* ==========================================================================
+   SCROLLBAR
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vtn-brand);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vtn-brand-dark);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media screen and (max-width: 76.1875em) {
+  .md-nav--primary .md-nav__title {
+    background: var(--vtn-gradient);
+    color: white;
+    font-weight: 700;
+  }
+
+  .md-nav--primary .md-nav__title .md-nav__icon::after {
+    color: white;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .md-typeset h1 { font-size: 1.5rem; }
+  .md-typeset { font-size: 0.8rem; }
+}
+
+/* ==========================================================================
+   BACK TO TOP
+   ========================================================================== */
+
+.md-top {
+  background: var(--vtn-brand);
+  color: white;
+  border-radius: 20px;
+  font-weight: 600;
+  box-shadow: var(--vtn-shadow-md);
+}
+
+.md-top:hover {
+  background: var(--vtn-brand-dark);
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.md-typeset .md-button {
+  border-radius: var(--vtn-radius-sm);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.md-typeset .md-button--primary {
+  background: var(--vtn-brand);
+  border-color: var(--vtn-brand);
+  color: white;
+}
+
+.md-typeset .md-button--primary:hover {
+  background: var(--vtn-brand-dark);
+  border-color: var(--vtn-brand-dark);
+}
+
+/* ==========================================================================
+   PROGRESS BAR
+   ========================================================================== */
+
+.md-progress {
+  background: var(--vtn-accent);
+}
+
+/* ==========================================================================
+   ANNOTATIONS
+   ========================================================================== */
+
+.md-annotation__index {
+  background: var(--vtn-brand) !important;
+}
+
+/* ==========================================================================
+   TOOLTIPS
+   ========================================================================== */
+
+.md-tooltip {
+  border-radius: var(--vtn-radius-sm);
+  box-shadow: var(--vtn-shadow-lg);
+}
+
+/* ==========================================================================
+   SELECTION
+   ========================================================================== */
+
+::selection {
+  background: rgba(13, 148, 136, 0.2);
+}
+
+[data-md-color-scheme="slate"] ::selection {
+  background: rgba(45, 212, 191, 0.25);
+}
+
+/* ==========================================================================
+   HOMEPAGE
+   ========================================================================== */
+
+/* --- Hero --- */
+
+.vtn-hero {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  margin-bottom: 2rem;
+  background: var(--vtn-gradient);
+  border-radius: var(--vtn-radius);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.vtn-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
+}
+
+.vtn-hero h1 {
+  color: white !important;
+  font-size: 2.2rem !important;
+  margin-bottom: 0.4rem !important;
+  position: relative;
+  -webkit-text-fill-color: white !important;
+}
+
+.vtn-hero p {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1rem;
+  max-width: 550px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.vtn-hero strong {
+  color: white;
+}
+
+.vtn-hero .vtn-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.vtn-hero .vtn-stat-number {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: white;
+  display: block;
+  line-height: 1.2;
+  -webkit-text-fill-color: white !important;
+}
+
+.vtn-hero .vtn-stat-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --- Section headers on homepage --- */
+
+.vtn-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vtn-text-muted);
+  margin: 2.5rem 0 1rem;
+  padding-left: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vtn-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--vtn-border);
+}
+
+/* --- Card grid: compact 3-across --- */
+
+.vtn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 900px) {
+  .vtn-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media screen and (max-width: 550px) {
+  .vtn-grid { grid-template-columns: 1fr; }
+}
+
+/* --- Individual card --- */
+
+.vtn-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--vtn-surface);
+  border: 1px solid var(--vtn-border);
+  border-radius: var(--vtn-radius);
+  padding: 0.8rem 1rem;
+  text-decoration: none !important;
+  color: var(--vtn-text) !important;
+  transition: all 0.2s ease;
+  min-height: 0;
+}
+
+.vtn-card:hover {
+  border-color: var(--vtn-brand);
+  box-shadow: var(--vtn-shadow-md);
+  transform: translateY(-2px);
+  background: var(--vtn-surface-hover);
+}
+
+.vtn-card-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  width: 2rem;
+  text-align: center;
+}
+
+.vtn-card-body {
+  min-width: 0;
+}
+
+.vtn-card-title {
+  font-weight: 700;
+  font-size: 0.84rem;
+  line-height: 1.3;
+  color: var(--vtn-text);
+}
+
+.vtn-card-desc {
+  font-size: 0.72rem;
+  color: var(--vtn-text-muted);
+  line-height: 1.4;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Badges --- */
+
+.vtn-badge {
+  display: inline-block;
+  padding: 0.15em 0.5em;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 3px;
+  margin-left: 0.3em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+}
+
+.vtn-badge-new { background: var(--vtn-accent); color: #1E293B; }
+.vtn-badge-hot { background: #EF4444; color: white; }
+
+/* ==========================================================================
+   QUESTION ADMONITIONS (Behavioral interview page)
+   ========================================================================== */
+
+.md-typeset .admonition.question,
+.md-typeset details.question {
+  border-left-color: var(--vtn-brand);
+  background: var(--vtn-surface-dim);
+}
+
+.md-typeset .admonition.question > .admonition-title,
+.md-typeset details.question > summary {
+  background: rgba(13, 148, 136, 0.08);
+  color: var(--vtn-text);
+  font-size: 0.84rem;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.question,
+[data-md-color-scheme="slate"] .md-typeset details.question {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* ==========================================================================
+   RIGHT-SIDE TOC — cleaner labels, tighter spacing
+   ========================================================================== */
+
+.md-nav--secondary {
+  border-left: 1px solid var(--vtn-border);
+}
+
+.md-nav--secondary .md-nav__item {
+  padding: 0;
+}
+
+.md-nav--secondary .md-nav__link {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.6rem;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   CONTENT BODY — tighten paragraph spacing
+   ========================================================================== */
+
+.md-typeset p {
+  margin-bottom: 0.8em;
+}
+
+.md-typeset li {
+  margin-bottom: 0.25em;
+}
+
+.md-typeset ul, .md-typeset ol {
+  margin-bottom: 0.8em;
+}
+
+/* ==========================================================================
+   HORIZONTAL RULES — subtle separator
+   ========================================================================== */
+
+.md-typeset hr {
+  border: none;
+  border-top: 1px solid var(--vtn-border);
+  margin: 1.8em 0;
+}
+
+/* ==========================================================================
+   BLOCKQUOTES — refined styling
+   ========================================================================== */
+
+.md-typeset blockquote {
+  border-left: 3px solid var(--vtn-brand);
+  padding: 0.4em 1em;
+  margin: 1em 0;
+  background: var(--vtn-surface-dim);
+  border-radius: 0 var(--vtn-radius-xs) var(--vtn-radius-xs) 0;
+  font-style: italic;
+  color: var(--vtn-text-muted);
+}
+
+/* ==========================================================================
+   PAGE-WIDE CONSISTENCY — uniform max widths for content elements
+   ========================================================================== */
+
+.md-content__inner {
+  padding-bottom: 2rem;
+}
+
+.md-typeset img {
+  border-radius: var(--vtn-radius-sm);
+  box-shadow: var(--vtn-shadow-sm);
+}
+
+/* ==========================================================================
+   PRINT
+   ========================================================================== */
+
+@media print {
+  .md-typeset h1 {
+    color: #0D9488;
+  }
 }

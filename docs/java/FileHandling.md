@@ -1,132 +1,661 @@
-IOException :
-An IOException is any unexpected problem the JVM encounters while attempting to run a program.
-When an IOException is thrown, it means that whatever is throwing the exception (perhaps a try{}-catch block that reads
-data from a file) can throw an IOException, for example if the file is not found, corrupted, etc, or when the file is
-otherwise unable to be read, or any other of a list of issues that can occur with the IO package and it's extensions.
+# File Handling in Java
 
-Streams :
-In its most basic form a stream simply represents a sequence of data (bytes or unicode characters) in some sort of a sequential queue.
-Java programs perform I/O through streams. A stream is an abstraction that either produces or consumes information.
-A stream is linked to a physical device by the Java I/O system.
-Java implements streams within class hierarchies defined in the java.io package.
-The same I/O classes and methods can be applied to different types of devices.
+## What is File Handling?
 
-Java defines two types of streams:
--Byte streams provide a convenient means for handling input and output of bytes.
-Byte streams contain binary data this useful for things such as reading and writing to files - just imagine opening up an image file in a text editor, that is a good representation of byte data.
-EXAMPLE : Use a byte stream ex : InputStream etc and type 'ᛞ'. This exceeds the 256 limit of 8-bit characters hence it will show some other
-value. If we type 'ᛞ' in char-stream such as InputStreamReader it will show 'ᛞ' only.
+File handling means **reading from** and **writing to** files on your computer using Java. This is how programs save data permanently — even after the program closes.
 
-OutputStream os = System.out;
-os.write('ᛞ');  // will not show anything (or garbage) cuz range exceeded. ᛞ is Unicode.
+**Real-world analogy**: Think of a file like a **notebook**. You can open it, write something, read what's written, and close it. Java gives you tools (classes) to do exactly this with files on disk.
 
+---
 
--Character streams provide a convenient means for handling input and output of characters. They use Unicode and,
-therefore, can be internationalized, good candidate for things like keyboard input and console output.
-Also, in some cases, character streams are more efficient than byte streams.
+## The Big Picture
 
-Byte streams are defined by using two class hierarchies.
-At the top are two abstract classes: InputStream and OutputStream.
-Each of these abstract classes has several concrete subclasses that handle the differences among various devices,
-such as disk files, network connections, and even memory buffers.
-The abstract classes InputStream and OutputStream define several key methods that the other stream classes implement.
-Two of the most important methods are read( ) and write( )
+```
+                    Java I/O
+                       │
+            ┌──────────┴──────────┐
+        Byte Streams         Character Streams
+        (binary data)        (text data)
+            │                      │
+     ┌──────┴──────┐       ┌──────┴──────┐
+ InputStream  OutputStream  Reader      Writer
+     │              │         │           │
+ FileInput     FileOutput  FileReader  FileWriter
+ Stream         Stream        │           │
+     │              │     BufferedReader BufferedWriter
+ Buffered      Buffered
+ InputStream   OutputStream
+```
 
-Character streams are defined by using two class hierarchies.
-At the top are two abstract classes: Reader and Writer.
-Two of the most important methods are read( ) and write( ).
+### When to use which?
 
-The Predefined Streams :
-System.out refers to the standard output stream. By default, this is the console.
-System.in refers to standard input, which is the keyboard by default.
-System.err refers to the standard error stream, which also is the console by default.
-System.in is an object of type InputStream; System.out and System.err are objects of type PrintStream.
-These are byte streams.
+| Stream Type | Use For | Examples |
+|---|---|---|
+| **Byte streams** | Images, PDFs, videos, any binary file | `FileInputStream`, `FileOutputStream` |
+| **Character streams** | Text files, CSVs, logs, config files | `FileReader`, `FileWriter` |
+| **Buffered streams** | Better performance (reads/writes in chunks) | `BufferedReader`, `BufferedWriter` |
 
-NOTE : Names of character streams typically end with Reader/Writer & names of byte streams end with InputStream/OutputStream.
+!!! tip "Rule of thumb"
+    Working with **text**? Use character streams (`Reader`/`Writer`).
+    Working with **anything else**? Use byte streams (`InputStream`/`OutputStream`).
+    **Always** wrap in a buffered stream for performance.
 
-InputStreamReader Class :
-EXTENDS READER : Abstract class for reading character streams.
-int read() : The character read, as an integer in the range 0 to 65535 (0x00-0xffff),
-or -1 if the end of the stream has been reached
-Primarily it is used to convert byte streams to character streams.
-java.io.InputStreamReader has several overloaded constructors with each taking an InputStream (like System.in, or FileInputStream) as the first parameter.
-The InputStreamReader class has a method called close() that will close the stream and releases any system resources associated with it.
-The close() method should always be called once you are done with the input stream.
-In Java 7 a new feature called try-with-resources was introduced.
-Specifically a resource is an object that must be closed after the program is finished with it.
-The try-with-resources statement ensures that each resource is closed at the end of the statement.
-How do we know if a class is a resource? Simple, if it implements java.lang.AutoCloseable,
-the class can be considered a resource.
+---
 
-try-with-resources :
-The try-with-resources statement is a try statement that declares one or more resources.
-A resource is an object that must be closed after the program is finished with it.
-The try-with-resources statement ensures that each resource is closed at the end of the statement.
-Any object that implements java.lang.AutoCloseable, which includes all objects which implement java.io.Closeable,
-can be used as a resource.
+## 1. The `File` Class
 
-FileReader Class :
-The purpose of the FileReader class is to simply read character based files.
-The FileReader class implements AutoClosable so we can use the try-with-resources type exception handling.
-It also interesting to note that the FileReader class does not define or override any public methods,
-so it inherits all of its methods from its superclass InputStreamReader; InputStreamReader is a subclass of Reader
-which is a subclass of Object and that describes the class hierarchy.
+The `File` class represents a **file or directory path**. It doesn't read or write content — it just gives you info about the file.
 
-Object -> Reader -> InputStreamReader -> FileReader
+```java
+import java.io.File;
 
-BufferedReader Class : BufferedReader(Reader inputReader)
-IT EXTENDS READER. HENCE HAS IT'S OWN read() which is same as InputStreamReader.
-The BufferedReader class is used to read text from a character stream.
-The BufferedReader class has the same read() method that both InputStreamReader and FileReader use to read a single byte at a time.
-The BufferedReader class introduces a method named readLine() which will read an entire line of text which is a huge improvement.
-The BufferedReader class implements AutoClosable so we can use the try-with-resources type exception handling.
+File file = new File("notes.txt");
 
-To obtain a character-based stream that is attached to the console, wrap System.in in a BufferedReader object.
-InputStreamReader(InputStream inputStream)
-BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-NOTE : new InputStreamReader(System.in) converts byte stream into char stream.
-AND then br is reading that char stream. Which is what we want!
-After this statement executes, br is a character-based stream that is linked to the console through System.in.
+System.out.println("Exists: " + file.exists());
+System.out.println("Name: " + file.getName());
+System.out.println("Path: " + file.getAbsolutePath());
+System.out.println("Is File: " + file.isFile());
+System.out.println("Is Directory: " + file.isDirectory());
+System.out.println("Size: " + file.length() + " bytes");
+```
 
-Writer Classes :
+### Creating files and directories
 
-OutputStreamWriter Class :
-EXTENDS WRITER
-Used to write to character streams.
-The OutputStreamWriter class implements AutoClosable so we can use the try-with-resources type exception handling.
-There are only four public methods in the OutputStreamWriter class: close(), flush(), getEncoding(), and write().
-The write() method has three overloaded versions :
--write(int a)   : writes a single character to character stream.
-Characters being written is contained in 16 lower bits of the ‘char’ integer value,
-rest of the 16 higher bits are ignored by the method.
--write(String str)
--write(char cbuf[])
+```java
+File file = new File("myfile.txt");
+if (file.createNewFile()) {
+    System.out.println("File created!");
+} else {
+    System.out.println("File already exists.");
+}
 
-FileWriter Class :
-EXTENDS OutputStreamWriter
-The purpose of the FileWriter class is to simply write character based files.
-The FileWriter class implements AutoClosable so we can use the try-with-resources type exception handling.
-FileWriter class does not define or override any public methods, so it inherits all of its methods from its superclass OutputStreamWriter.
+File dir = new File("myFolder");
+dir.mkdir();   // creates one directory
 
-Object -> Writer -> OutputStreamWriter -> FileWriter
+File nested = new File("a/b/c");
+nested.mkdirs();  // creates all parent directories too
+```
 
-BufferedWriter Class :
-The BufferedWriter class is used to write text to a character stream.
-The BufferedWriter class has three overloaded versions of the write() method.
-The BufferedWriter class introduces a method named newLine() which means that you will not have to hardcode in the "\r\n" into your output stream anymore.
-The BufferedWriter class implements AutoClosable so we can use the try-with-resources type exception handling.
+### Listing files in a directory
 
+```java
+File folder = new File("/Users/vamsi/projects");
+String[] files = folder.list();
 
-File Class :
+for (String name : files) {
+    System.out.println(name);
+}
+```
 
-Consider this Windows hard coded path represented as a string: "c:\\Java\\BW\\Sample.txt". If a user attempted to run
-your program on a Linux or UNIX OS, your program will fail miserably. That is because the directory separator is '/' in
-UNIX as opposed to '\' in Windows. The file class provides us with several tools to dynamically create our directory
-and file structure.
+### Cross-platform paths
 
-Constructors:
-File(File parent, String child)
-File(String pathname)   // not very useful for multi-platform
-File(String parent, String child)
-File(URI uri)
+```java
+// BAD — Windows-only
+File f1 = new File("C:\\Users\\docs\\file.txt");
+
+// GOOD — works everywhere
+File f2 = new File("Users" + File.separator + "docs" + File.separator + "file.txt");
+
+// ALSO GOOD — Java handles forward slashes on all platforms
+File f3 = new File("Users/docs/file.txt");
+```
+
+---
+
+## 2. Writing to Files
+
+### Using `FileWriter` (simple text)
+
+```java
+import java.io.FileWriter;
+import java.io.IOException;
+
+try (FileWriter writer = new FileWriter("hello.txt")) {
+    writer.write("Hello, World!\n");
+    writer.write("This is line 2.\n");
+}
+// file is automatically closed thanks to try-with-resources
+```
+
+### Using `BufferedWriter` (better performance)
+
+```java
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+try (BufferedWriter writer = new BufferedWriter(new FileWriter("notes.txt"))) {
+    writer.write("First line");
+    writer.newLine();  // platform-independent new line
+    writer.write("Second line");
+    writer.newLine();
+    writer.write("Third line");
+}
+```
+
+### Appending to a file (not overwriting)
+
+```java
+// The second argument 'true' means APPEND mode
+try (FileWriter writer = new FileWriter("log.txt", true)) {
+    writer.write("New log entry\n");
+}
+```
+
+!!! warning "Without `true`, `FileWriter` overwrites the entire file!"
+
+---
+
+## 3. Reading from Files
+
+### Using `FileReader` + `BufferedReader` (recommended)
+
+```java
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+try (BufferedReader reader = new BufferedReader(new FileReader("notes.txt"))) {
+    String line;
+    while ((line = reader.readLine()) != null) {
+        System.out.println(line);
+    }
+}
+```
+
+`readLine()` reads one full line at a time and returns `null` when the file ends.
+
+### Reading character by character
+
+```java
+try (FileReader reader = new FileReader("notes.txt")) {
+    int ch;
+    while ((ch = reader.read()) != -1) {
+        System.out.print((char) ch);
+    }
+}
+```
+
+`read()` returns an `int` (0-65535 for valid chars, `-1` for end of file).
+
+---
+
+## 4. Byte Streams (for binary files)
+
+### Writing bytes
+
+```java
+import java.io.FileOutputStream;
+
+try (FileOutputStream fos = new FileOutputStream("data.bin")) {
+    byte[] data = {72, 101, 108, 108, 111};  // "Hello" in ASCII
+    fos.write(data);
+}
+```
+
+### Reading bytes
+
+```java
+import java.io.FileInputStream;
+
+try (FileInputStream fis = new FileInputStream("data.bin")) {
+    int b;
+    while ((b = fis.read()) != -1) {
+        System.out.print((char) b);
+    }
+}
+```
+
+### Copying a file (byte by byte with buffer)
+
+```java
+import java.io.*;
+
+try (
+    BufferedInputStream in = new BufferedInputStream(new FileInputStream("photo.jpg"));
+    BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("photo_copy.jpg"))
+) {
+    byte[] buffer = new byte[4096];
+    int bytesRead;
+    while ((bytesRead = in.read(buffer)) != -1) {
+        out.write(buffer, 0, bytesRead);
+    }
+}
+```
+
+---
+
+## 5. Byte Streams vs Character Streams
+
+| Feature | Byte Streams | Character Streams |
+|---|---|---|
+| Unit | 1 byte (8 bits) | 1 character (16 bits, Unicode) |
+| Base classes | `InputStream` / `OutputStream` | `Reader` / `Writer` |
+| File classes | `FileInputStream` / `FileOutputStream` | `FileReader` / `FileWriter` |
+| Use for | Binary data (images, zip, pdf) | Text data (txt, csv, json) |
+| Handles Unicode | No — may corrupt multi-byte chars | Yes — handles all Unicode |
+
+**Example of the problem with byte streams and Unicode:**
+
+```java
+// The character 'ᛞ' is a multi-byte Unicode character
+// Byte stream will corrupt it:
+OutputStream os = new FileOutputStream("test.bin");
+os.write('ᛞ');  // WRONG — only writes the lower 8 bits, data is lost
+
+// Character stream handles it correctly:
+Writer w = new FileWriter("test.txt");
+w.write('ᛞ');   // CORRECT — writes full Unicode character
+```
+
+---
+
+## 6. `try-with-resources`
+
+Before Java 7, you had to manually close streams in a `finally` block. This was verbose and error-prone.
+
+### Old way (Java 6 and earlier)
+
+```java
+BufferedReader reader = null;
+try {
+    reader = new BufferedReader(new FileReader("file.txt"));
+    String line = reader.readLine();
+} catch (IOException e) {
+    e.printStackTrace();
+} finally {
+    if (reader != null) {
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### New way (Java 7+)
+
+```java
+try (BufferedReader reader = new BufferedReader(new FileReader("file.txt"))) {
+    String line = reader.readLine();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+// reader is AUTOMATICALLY closed, even if an exception occurs
+```
+
+Any class that implements `AutoCloseable` (or `Closeable`) can be used in try-with-resources.
+
+---
+
+## 7. Modern File Handling with `java.nio` (Java 7+)
+
+The `java.nio.file` package provides a simpler, more powerful API.
+
+### Reading an entire file
+
+```java
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+// Read all lines into a List
+List<String> lines = Files.readAllLines(Path.of("notes.txt"));
+lines.forEach(System.out::println);
+
+// Read entire file as a single String (Java 11+)
+String content = Files.readString(Path.of("notes.txt"));
+System.out.println(content);
+```
+
+### Writing to a file
+
+```java
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+// Write lines
+List<String> lines = List.of("Line 1", "Line 2", "Line 3");
+Files.write(Path.of("output.txt"), lines);
+
+// Write a string (Java 11+)
+Files.writeString(Path.of("output.txt"), "Hello, NIO!");
+
+// Append
+Files.writeString(Path.of("output.txt"), "\nAppended text",
+    java.nio.file.StandardOpenOption.APPEND);
+```
+
+### File operations
+
+```java
+import java.nio.file.*;
+
+Path source = Path.of("file.txt");
+Path target = Path.of("backup/file.txt");
+
+// Copy
+Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+
+// Move / rename
+Files.move(source, Path.of("renamed.txt"));
+
+// Delete
+Files.deleteIfExists(Path.of("temp.txt"));
+
+// Check existence
+boolean exists = Files.exists(Path.of("notes.txt"));
+```
+
+### Walking a directory tree
+
+```java
+import java.nio.file.*;
+
+// List all .java files recursively
+Files.walk(Path.of("src"))
+     .filter(p -> p.toString().endsWith(".java"))
+     .forEach(System.out::println);
+```
+
+---
+
+## 8. Class Hierarchy Summary
+
+### Reader side (character input)
+
+```
+Object
+  └── Reader (abstract)
+        ├── InputStreamReader
+        │     └── FileReader
+        ├── BufferedReader
+        └── StringReader
+```
+
+### Writer side (character output)
+
+```
+Object
+  └── Writer (abstract)
+        ├── OutputStreamWriter
+        │     └── FileWriter
+        ├── BufferedWriter
+        └── StringWriter
+```
+
+### InputStream side (byte input)
+
+```
+Object
+  └── InputStream (abstract)
+        ├── FileInputStream
+        ├── BufferedInputStream
+        ├── ByteArrayInputStream
+        └── ObjectInputStream
+```
+
+### OutputStream side (byte output)
+
+```
+Object
+  └── OutputStream (abstract)
+        ├── FileOutputStream
+        ├── BufferedOutputStream
+        ├── ByteArrayOutputStream
+        └── ObjectOutputStream
+```
+
+---
+
+## 9. Common Exceptions
+
+| Exception | When it occurs |
+|---|---|
+| `FileNotFoundException` | File doesn't exist or can't be opened |
+| `IOException` | General I/O failure (disk full, permission denied, etc.) |
+| `SecurityException` | No permission to access the file |
+| `NoSuchFileException` | NIO version of file not found |
+
+---
+
+## 10. Best Practices
+
+- **Always close streams** — use try-with-resources
+- **Use buffered streams** — `BufferedReader`/`BufferedWriter` instead of raw `FileReader`/`FileWriter`
+- **Prefer `java.nio`** for new code — `Files.readString()`, `Files.write()` are simpler
+- **Use `Path.of()`** instead of `new File()` for new code
+- **Handle encoding explicitly** when it matters: `new InputStreamReader(fis, StandardCharsets.UTF_8)`
+- **Don't read huge files entirely into memory** — use `BufferedReader.readLine()` or `Files.lines()` for streaming
+
+---
+
+## Interview Questions (Product Company Level)
+
+### Output & Tricky Questions
+
+**Q1: What does this print?**
+
+```java
+try (FileWriter fw = new FileWriter("test.txt")) {
+    fw.write("Hello");
+}
+
+try (FileWriter fw = new FileWriter("test.txt")) {
+    fw.write("World");
+}
+
+System.out.println(Files.readString(Path.of("test.txt")));
+```
+
+??? note "Answer"
+    **Output**: `World`
+
+    The second `FileWriter` opens in **overwrite mode** (default). It erases "Hello" and writes "World". To keep both, the second one should be `new FileWriter("test.txt", true)` for append mode.
+
+---
+
+**Q2: Is there a resource leak here?**
+
+```java
+BufferedReader br = new BufferedReader(new FileReader("data.txt"));
+String line = br.readLine();
+if (line.equals("STOP")) {
+    return;
+}
+br.close();
+```
+
+??? note "Answer"
+    Yes, **two bugs**:
+
+    1. If `line` is `null` (empty file), `line.equals("STOP")` throws `NullPointerException` and `br` is never closed.
+    2. If `line` equals "STOP", the method returns early and `br.close()` is skipped — resource leak.
+
+    **Fix**: Use try-with-resources, and use `"STOP".equals(line)` to avoid NPE:
+
+    ```java
+    try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
+        String line = br.readLine();
+        if ("STOP".equals(line)) {
+            return;  // br still gets closed automatically
+        }
+    }
+    ```
+
+---
+
+**Q3: What happens if two threads write to the same file simultaneously using `FileWriter`?**
+
+??? note "Answer"
+    **Data corruption / interleaving**. `FileWriter` is not thread-safe. The writes from both threads will be mixed randomly. In production you must either:
+
+    - Use `synchronized` blocks around file writes
+    - Use `FileChannel` with file locks: `channel.lock()`
+    - Use a `BlockingQueue` where one thread handles all writes
+    - Use `Files.write()` with `StandardOpenOption.APPEND` (atomic on most OS for small writes)
+
+---
+
+**Q4: What is the output?**
+
+```java
+try (BufferedWriter bw = new BufferedWriter(new FileWriter("out.txt"))) {
+    bw.write("Line 1");
+    bw.newLine();
+    bw.write("Line 2");
+}
+
+try (BufferedReader br = new BufferedReader(new FileReader("out.txt"))) {
+    System.out.println(br.readLine());
+    System.out.println(br.readLine());
+    System.out.println(br.readLine());
+}
+```
+
+??? note "Answer"
+    ```
+    Line 1
+    Line 2
+    null
+    ```
+
+    The file has two lines. The third `readLine()` returns `null` because end-of-file is reached. This is how you detect EOF — check for `null`.
+
+---
+
+### Scenario-Based Questions (Amazon, Google, Flipkart)
+
+**Q5: You're building an order processing service at Amazon. Each order is a JSON line in a file. The file can be 50 GB. How do you process it?**
+
+??? note "Answer"
+    Never load the entire file. Stream it line-by-line:
+
+    ```java
+    try (Stream<String> lines = Files.lines(Path.of("orders.jsonl"))) {
+        lines.parallel()
+             .map(this::parseOrder)
+             .filter(order -> order.getStatus() == Status.PENDING)
+             .forEach(this::processOrder);
+    }
+    ```
+
+    Key decisions:
+
+    - `Files.lines()` returns a **lazy Stream** — only one line in memory at a time
+    - `.parallel()` uses ForkJoinPool for throughput on multi-core machines
+    - Try-with-resources ensures the file handle is released even on failure
+    - For even larger scale, use `FileChannel` with `MappedByteBuffer` for memory-mapped I/O
+
+---
+
+**Q6: At Uber, you need to write a log aggregator that tails a growing log file in real-time (like `tail -f`). How?**
+
+??? note "Answer"
+    Two approaches:
+
+    **Approach 1: Polling with `RandomAccessFile`**
+    ```java
+    RandomAccessFile raf = new RandomAccessFile("app.log", "r");
+    long lastPosition = 0;
+
+    while (true) {
+        raf.seek(lastPosition);
+        String line;
+        while ((line = raf.readLine()) != null) {
+            process(line);
+        }
+        lastPosition = raf.getFilePointer();
+        Thread.sleep(500);
+    }
+    ```
+
+    **Approach 2: `WatchService` for file change events**
+    ```java
+    WatchService watcher = FileSystems.getDefault().newWatchService();
+    dir.register(watcher, StandardWatchEventKinds.ENTRY_MODIFY);
+    // on each MODIFY event, read new bytes from last known position
+    ```
+
+    Approach 1 is simpler and more reliable. `WatchService` can miss events under high load on some OS.
+
+---
+
+**Q7: You need to copy a 5 GB video file. Compare `FileInputStream`/`FileOutputStream` vs `FileChannel.transferTo()`. Which is faster and why?**
+
+??? note "Answer"
+    `FileChannel.transferTo()` is **significantly faster**.
+
+    ```java
+    // Slow: user-space copy
+    try (var in = new FileInputStream("video.mp4");
+         var out = new FileOutputStream("copy.mp4")) {
+        byte[] buf = new byte[8192];
+        int n;
+        while ((n = in.read(buf)) != -1) out.write(buf, 0, n);
+    }
+
+    // Fast: zero-copy via OS kernel
+    try (var src = FileChannel.open(Path.of("video.mp4"));
+         var dst = FileChannel.open(Path.of("copy.mp4"),
+             StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
+        src.transferTo(0, src.size(), dst);
+    }
+    ```
+
+    `transferTo()` uses **zero-copy** — the OS moves data directly between file descriptors in kernel space without copying it into Java heap. For a 5 GB file, this means ~50% less CPU usage and much faster I/O.
+
+---
+
+**Q8: How would you design a CSV parser at Google Sheets that handles files with millions of rows, quoted fields, and multi-line values?**
+
+??? note "Answer"
+    Don't use `split(",")` — it breaks on quoted commas. Design:
+
+    1. Use `BufferedReader` for streaming (not `readAllLines`)
+    2. Implement a state machine: `NORMAL`, `IN_QUOTES`
+    3. Handle edge cases: escaped quotes (`""`), newlines inside quotes, BOM markers
+
+    ```java
+    try (BufferedReader br = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+        CSVParser parser = new CSVParser(br);
+        List<String> row;
+        while ((row = parser.nextRow()) != null) {
+            process(row);
+        }
+    }
+    ```
+
+    Or use a battle-tested library like **OpenCSV** or **Apache Commons CSV** in production. Writing your own is a great interview exercise but risky in production.
+
+---
+
+### Rapid-Fire
+
+**Q9: `Scanner` vs `BufferedReader` — which is faster for reading a file?**
+
+> `BufferedReader` is **much faster**. `Scanner` uses regex internally to parse tokens, which adds overhead. For large files, `BufferedReader` can be 5-10x faster.
+
+**Q10: What is the default buffer size of `BufferedReader`?**
+
+> **8192 characters** (8 KB). You can customize it: `new BufferedReader(reader, 65536)` for 64 KB.
+
+**Q11: Can you read a file and write to the same file simultaneously?**
+
+> Not safely with standard streams — you'll corrupt the file or get an exception. Use `RandomAccessFile` for in-place reads/writes, or read into memory, modify, then write back.
+
+**Q12: What is the difference between `FileNotFoundException` and `NoSuchFileException`?**
+
+> `FileNotFoundException` is from `java.io` (thrown by `FileInputStream`, `FileReader`). `NoSuchFileException` is from `java.nio.file` (thrown by `Files.newBufferedReader()`, `Files.readString()`). Same concept, different packages.
+
+**Q13: How does `Files.readAllBytes()` differ from `Files.readString()`?**
+
+> `readAllBytes()` returns `byte[]` (raw bytes, no encoding). `readString()` returns `String` (applies UTF-8 encoding by default). Use `readAllBytes()` for binary files, `readString()` for text.
+
+**Q14: What happens if you forget to call `flush()` on a `BufferedWriter` and the program crashes?**
+
+> Data still in the buffer is **lost** — it was never written to disk. `close()` calls `flush()` internally, but a crash skips both. For critical data (like financial transactions), call `flush()` after every write, or use `FileChannel.force(true)` to sync to disk.
+
+**Q15: In a microservice, you need to write audit logs. File vs Database — which would you choose and why?**
+
+> **File** for high-throughput, append-only audit logs (structured as JSON lines). Databases add latency per write and connection overhead. Write to a local file asynchronously, then ship to a centralized system (ELK, Splunk, CloudWatch) via a log shipper. For compliance queries later, ingest into a database/data lake in batch.

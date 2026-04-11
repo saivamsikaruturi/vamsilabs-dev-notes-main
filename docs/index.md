@@ -1,111 +1,245 @@
-#
+---
+hide:
+  - navigation
+  - toc
+---
 
-🌐**Welcome to My Tech Notes**🌐
+<div class="vtn-hero" markdown>
 
-🔥**Java Ecosystem**🔥
+# Vamsi Tech Notes
 
-- ☕️[Java Ecosystem](https://vamsilabs-master-notes.netlify.app/java/ecosystem/)
-- 🔟[Java 8](https://vamsilabs-master-notes.netlify.app/java/Java8/)
-- 1️⃣1️⃣[Java 11](https://vamsilabs-master-notes.netlify.app/java/java11)
-- 1️⃣7️⃣[Java 17](https://vamsilabs-master-notes.netlify.app/java/Java17/)
-- 🚀[Advanced Java](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling/)
-- 🎲[Exception Handling](https://vamsilabs-master-notes.netlify.app/java/ExceptionHandling)
-- 🧩[Collections](https://vamsilabs-master-notes.netlify.app/java/collections/)
-- 🔀[Differences in Collections](https://vamsilabs-master-notes.netlify.app/java/DiffCollections)
-- 📊[Concurrent Collections](https://vamsilabs-master-notes.netlify.app/java/ConcurrentCollections)
-- 🧵[MultiThreading](https://vamsilabs-master-notes.netlify.app/java/MultiThreading)
--  [DeadLocks](https://vamsilabs-master-notes.netlify.app/java/deadLocks)
+Your go-to developer reference for Java, Spring Boot, System Design, Microservices, DevOps, and modern engineering.
 
-🌊**Stream API**🌊
+<div class="vtn-stats">
+  <div class="vtn-stat">
+    <span class="vtn-stat-number">100+</span>
+    <span class="vtn-stat-label">Articles</span>
+  </div>
+  <div class="vtn-stat">
+    <span class="vtn-stat-number">15+</span>
+    <span class="vtn-stat-label">Topics</span>
+  </div>
+  <div class="vtn-stat">
+    <span class="vtn-stat-number">23</span>
+    <span class="vtn-stat-label">Design Patterns</span>
+  </div>
+</div>
 
-- 🏞️[Stream API](https://vamsilabs-master-notes.netlify.app/stream%20api/streamapi/)
+</div>
 
-🌱**Spring Boot**🌱
+<div class="vtn-section-title">Core Engineering</div>
 
-- 🚀[Introduction to Spring Boot](https://vamsilabs-master-notes.netlify.app/springboot/introduction/)
+<div class="vtn-grid" markdown>
 
-🔒**Security**🔒
+<a class="vtn-card" href="java/ecosystem/">
+  <span class="vtn-card-icon">:fontawesome-brands-java:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Java</span><span class="vtn-card-desc">Core, JVM, Collections, Multithreading</span></span>
+</a>
 
-- 🛡️[Security](https://vamsilabs-master-notes.netlify.app/security/Oauth/)
+<a class="vtn-card" href="springboot/introduction/">
+  <span class="vtn-card-icon">:material-leaf:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Spring Boot</span><span class="vtn-card-desc">IoC, Annotations, REST APIs, Boot 3</span></span>
+</a>
 
-🔧**Low-Level Design (LLD)**🔧
+<a class="vtn-card" href="microservices/microservices/">
+  <span class="vtn-card-icon">:material-hub:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Microservices</span><span class="vtn-card-desc">Gateway, Discovery, Saga, CQRS</span></span>
+</a>
 
-- 🛠️[Solid Principles](https://vamsilabs-master-notes.netlify.app/solidprinciples/solidprinciples/)
-- 🏗️[Design Patterns](https://vamsilabs-master-notes.netlify.app/designpatterns/dp/)
+<a class="vtn-card" href="designpatterns/dp/">
+  <span class="vtn-card-icon">:material-puzzle:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Design Patterns</span><span class="vtn-card-desc">All 23 GoF — Creational, Structural, Behavioral</span></span>
+</a>
 
-🏛**High-Level Design (HLD)**🏛
+<a class="vtn-card" href="lld/lld-roadmap/">
+  <span class="vtn-card-icon">:material-map-marker-path:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">LLD Roadmap <span class="vtn-badge vtn-badge-hot">HOT</span></span><span class="vtn-card-desc">Complete roadmap, resources, 35+ interview Qs</span></span>
+</a>
 
-- 🏰[System Design](https://vamsilabs-master-notes.netlify.app/https/)
-- 🔐[HTTPS](https://vamsilabs-master-notes.netlify.app/https)
-- ⚖️[CAP Theorem](https://vamsilabs-master-notes.netlify.app/capTheorem)
-- 🚦[Rate Limiter](https://vamsilabs-master-notes.netlify.app/ratelimiting)
-- ⚙️[Load Balancing](https://vamsilabs-master-notes.netlify.app/loadbalancer)
-- 🌩️[Distributed Caching](https://vamsilabs-master-notes.netlify.app/distributedCaching)
-- 💾[Redis](https://vamsilabs-master-notes.netlify.app/redis)
-- 🧮[SQL VS NO SQL](https://vamsilabs-master-notes.netlify.app/sqlvsnosql)
+<a class="vtn-card" href="solidprinciples/solidprinciples/">
+  <span class="vtn-card-icon">:material-shield-check:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">SOLID Principles</span><span class="vtn-card-desc">SRP, OCP, LSP, ISP, DIP</span></span>
+</a>
 
-🛠️**DevOps**🛠️
+<a class="vtn-card" href="stream api/streamapi/">
+  <span class="vtn-card-icon">:material-waves:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Stream API</span><span class="vtn-card-desc">Java streams, lambdas, functional ops</span></span>
+</a>
 
-- 🤖[DevOps](https://vamsilabs-master-notes.netlify.app/devops/devops)
-- 🧰[Tools](https://vamsilabs-master-notes.netlify.app/devops/devops)
-- 🐧[Linux](https://vamsilabs-master-notes.netlify.app/devops/linux)
-- 🐳[Docker](https://vamsilabs-master-notes.netlify.app/devops/docker)
-- ☸️[Kubernetes](https://vamsilabs-master-notes.netlify.app/devops/kubernetes)
-- ♾[Ansible](https://vamsilabs-master-notes.netlify.app/devops/ansible)
-- ☁️[AWS](https://vamsilabs-master-notes.netlify.app/devops/aws)
-- 🧹[Misc](https://vamsilabs-master-notes.netlify.app/misc/clean-architecture)
+</div>
 
-🧪**Testing**🧪
+<div class="vtn-section-title">System Design</div>
 
-- 🩺[JUnit](https://vamsilabs-master-notes.netlify.app/junit/junit/)
+<div class="vtn-grid" markdown>
 
-💽**Databases**💽
+<a class="vtn-card" href="https/">
+  <span class="vtn-card-icon">:material-sitemap:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">System Design</span><span class="vtn-card-desc">HTTPS, CAP, Rate Limiting, Caching</span></span>
+</a>
 
-- 🏦[Databases](https://vamsilabs-master-notes.netlify.app/databases/sql/)
-- 🗄️[PostgreSQL](https://vamsilabs-master-notes.netlify.app/postgresql/postgresql)
+<a class="vtn-card" href="apidesign/apidesign/">
+  <span class="vtn-card-icon">:material-api:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">API Design <span class="vtn-badge vtn-badge-new">NEW</span></span><span class="vtn-card-desc">REST, versioning, pagination, HATEOAS</span></span>
+</a>
 
-📡**Message Queues**📡
+<a class="vtn-card" href="graphql/graphql/">
+  <span class="vtn-card-icon">:material-graphql:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">GraphQL <span class="vtn-badge vtn-badge-new">NEW</span></span><span class="vtn-card-desc">Queries, mutations, subscriptions, SDL</span></span>
+</a>
 
-- 📤[Kafka](https://vamsilabs-master-notes.netlify.app/Kafka/kafka/)
+<a class="vtn-card" href="loadbalancer/">
+  <span class="vtn-card-icon">:material-scale-balance:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Load Balancing</span><span class="vtn-card-desc">Algorithms, L4 vs L7, health checks</span></span>
+</a>
 
-🕸️**Microservices**🕸️
+<a class="vtn-card" href="redis/">
+  <span class="vtn-card-icon">:material-flash:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Redis</span><span class="vtn-card-desc">Caching, pub/sub, data structures</span></span>
+</a>
 
-- 🖧[Microservices](https://vamsilabs-master-notes.netlify.app/microservices/microservices/)
-- [Service Discovery]
+<a class="vtn-card" href="sqlvsnosql/">
+  <span class="vtn-card-icon">:material-database-search:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">SQL vs NoSQL</span><span class="vtn-card-desc">When to pick what and trade-offs</span></span>
+</a>
 
-⚒️**My Favorite Development Tools**⚒️
+</div>
 
-**CommandLine Tools**
+<div class="vtn-section-title">Data & Messaging</div>
 
-- 🖥️[Babun](http://babun.github.io/)
-- ⌨️[iTerm2](http://www.iterm2.com/)
-- 💻[Oh-My-Zsh](http://ohmyz.sh/)
-- 📦[SdkMan](https://sdkman.io/)
+<div class="vtn-grid" markdown>
 
-**Editors**
+<a class="vtn-card" href="databases/sql/">
+  <span class="vtn-card-icon">:material-database:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">SQL</span><span class="vtn-card-desc">Queries, joins, indexes, optimization</span></span>
+</a>
 
-- ✏️[Visual Studio Code](https://code.visualstudio.com/)
-- 🎨[Atom](https://atom.io/)
-- 🖋️[Sublime Text](https://www.sublimetext.com/3)
+<a class="vtn-card" href="postgresql/postgresql/">
+  <span class="vtn-card-icon">:material-elephant:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">PostgreSQL</span><span class="vtn-card-desc">Replication, sharding, tuning</span></span>
+</a>
 
-**Task Tracking Tools**
+<a class="vtn-card" href="Kafka/kafka/">
+  <span class="vtn-card-icon">:material-message-fast:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Kafka</span><span class="vtn-card-desc">Topics, partitions, consumer groups</span></span>
+</a>
 
-- 🗒️[Asana](https://app.asana.com/)
-- 📔[Evernote](https://evernote.com/)
-- 📌[Trello](https://trello.com/)
+</div>
 
-**Utilities**
+<div class="vtn-section-title">DevOps & Cloud</div>
 
-- 📬[Postman](https://www.getpostman.com/apps)
-- 💤[Insomnia](https://insomnia.rest/)
-- 🔐[Bitwarden](https://bitwarden.com/)
-- 🧠[SimpleMind](https://simplemind.eu/)
-- 🎥[GIF Brewery](http://gifbrewery.com/)
-- 📦[Rambox](http://rambox.pro/)
+<div class="vtn-grid" markdown>
 
-**Static Site Generators**
+<a class="vtn-card" href="devops/docker/">
+  <span class="vtn-card-icon">:fontawesome-brands-docker:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Docker</span><span class="vtn-card-desc">Containers, Compose, multi-stage builds</span></span>
+</a>
 
-- 🚀[Hugo](https://gohugo.io/)
-- 💎[Jekyll](https://jekyllrb.com/)
-- 📚[MkDocs](http://www.mkdocs.org/)
+<a class="vtn-card" href="devops/kubernetes/">
+  <span class="vtn-card-icon">:material-kubernetes:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Kubernetes</span><span class="vtn-card-desc">Pods, services, deployments, Helm</span></span>
+</a>
 
+<a class="vtn-card" href="devops/aws/">
+  <span class="vtn-card-icon">:fontawesome-brands-aws:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">AWS</span><span class="vtn-card-desc">EC2, S3, Lambda, ECS, CloudFormation</span></span>
+</a>
+
+<a class="vtn-card" href="cicd/cicd/">
+  <span class="vtn-card-icon">:material-infinity:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">CI/CD <span class="vtn-badge vtn-badge-new">NEW</span></span><span class="vtn-card-desc">Jenkins, GitHub Actions, deploy strategies</span></span>
+</a>
+
+<a class="vtn-card" href="devops/linux/">
+  <span class="vtn-card-icon">:fontawesome-brands-linux:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Linux</span><span class="vtn-card-desc">Commands, shell scripting, permissions</span></span>
+</a>
+
+<a class="vtn-card" href="devops/ansible/">
+  <span class="vtn-card-icon">:material-cog-transfer:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Ansible</span><span class="vtn-card-desc">Playbooks, roles, automation</span></span>
+</a>
+
+</div>
+
+<div class="vtn-section-title">Languages</div>
+
+<div class="vtn-grid" markdown>
+
+<a class="vtn-card" href="golang/introduction/">
+  <span class="vtn-card-icon">:fontawesome-brands-golang:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Go</span><span class="vtn-card-desc">Goroutines, channels, interfaces</span></span>
+</a>
+
+<a class="vtn-card" href="python/introduction/">
+  <span class="vtn-card-icon">:fontawesome-brands-python:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Python</span><span class="vtn-card-desc">Fundamentals, data structures, scripting</span></span>
+</a>
+
+<a class="vtn-card" href="typescript/introduction/">
+  <span class="vtn-card-icon">:material-language-typescript:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">TypeScript</span><span class="vtn-card-desc">Types, generics, decorators</span></span>
+</a>
+
+<a class="vtn-card" href="rust/introduction/">
+  <span class="vtn-card-icon">:fontawesome-brands-rust:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Rust <span class="vtn-badge vtn-badge-new">NEW</span></span><span class="vtn-card-desc">Ownership, borrowing, zero-cost abstractions</span></span>
+</a>
+
+<a class="vtn-card" href="kotlin/introduction/">
+  <span class="vtn-card-icon">:material-language-kotlin:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Kotlin</span><span class="vtn-card-desc">Null safety, coroutines, JVM</span></span>
+</a>
+
+<a class="vtn-card" href="ruby/introduction/">
+  <span class="vtn-card-icon">:material-diamond-stone:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Ruby</span><span class="vtn-card-desc">Dynamic typing, Rails, metaprogramming</span></span>
+</a>
+
+</div>
+
+<div class="vtn-section-title">More</div>
+
+<div class="vtn-grid" markdown>
+
+<a class="vtn-card" href="aiml/aiml/">
+  <span class="vtn-card-icon">:material-robot:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">AI & ML <span class="vtn-badge vtn-badge-new">NEW</span></span><span class="vtn-card-desc">LLMs, RAG, transformers, MLOps</span></span>
+</a>
+
+<a class="vtn-card" href="security/Oauth/">
+  <span class="vtn-card-icon">:material-shield-lock:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Security</span><span class="vtn-card-desc">OAuth 2.0, JWT, auth patterns</span></span>
+</a>
+
+<a class="vtn-card" href="junit/junit/">
+  <span class="vtn-card-icon">:material-test-tube:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Testing</span><span class="vtn-card-desc">JUnit 5, TDD, mocking, integration</span></span>
+</a>
+
+<a class="vtn-card" href="git/">
+  <span class="vtn-card-icon">:fontawesome-brands-git-alt:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Git</span><span class="vtn-card-desc">Branching, rebasing, workflows</span></span>
+</a>
+
+<a class="vtn-card" href="behavioral/behavioral/">
+  <span class="vtn-card-icon">:material-account-voice:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Behavioral — Amazon LPs <span class="vtn-badge vtn-badge-hot">HOT</span></span><span class="vtn-card-desc">14 Leadership Principles with STAR answers</span></span>
+</a>
+
+<a class="vtn-card" href="interviewquestions/">
+  <span class="vtn-card-icon">:material-chat-question:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Interview Prep</span><span class="vtn-card-desc">Common questions & answers</span></span>
+</a>
+
+<a class="vtn-card" href="misc/clean-architecture/">
+  <span class="vtn-card-icon">:material-layers-outline:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Clean Architecture</span><span class="vtn-card-desc">Layers, boundaries, dependency rule</span></span>
+</a>
+
+</div>
+
+<div style="text-align: center; margin: 2.5rem 0 1rem; color: var(--vtn-text-muted); font-size: 0.8rem;" markdown>
+
+:material-github: [GitHub](https://github.com/vamsi1998123/vamsilabs-dev-notes-main) · :material-linkedin: [LinkedIn](https://www.linkedin.com/in/vamsi-karuturi-2a117215b/)
+
+</div>

@@ -1,155 +1,218 @@
+# Strings in Java
 
+Strings are the most used data type in Java. Understanding how they work internally — immutability, String Pool, and comparison — is critical for interviews and writing efficient code.
 
-* String is a sequence of individual character.
-    
+---
 
+## Creating Strings — Two Ways
 
-      String s1 = "ABC";
-      String s2 = new String("XYZ");
+```java
+String s1 = "Hello";             // String literal → goes to String Pool
+String s2 = new String("Hello"); // new keyword → goes to Heap (separate object)
+```
 
-![Strings11.PNG](Strings11.PNG)
+```
+    String Pool (inside Heap)              Heap
+    ─────────────────────────              ────
+    ┌─────────┐
+    │ "Hello" │ ◄─── s1 points here
+    └─────────┘
+                                    ┌──────────────┐
+                                    │ String obj   │ ◄─── s2 points here
+                                    │ value="Hello"│      (different object!)
+                                    └──────────────┘
+```
 
-## Why Strings are Immutable?
+---
 
-     String s1  = "ABC";
-            s1  = "XYZ";
-     String s2  = "ABC";
-   
-![Strings22.PNG](Strings22.PNG)
+## Why Strings Are Immutable
 
-* When the existing string ref is changed, it will not change the existing object, and it will create a new literal and "S1" points to the new literal.
-* If we create a new String literal s2 with "ABC", As ABC literal is available S2 points to ABC.
+Once a `String` is created, its value **cannot be changed**. Any modification creates a **new String object**.
 
-   
-## == and .equals
+```java
+String s1 = "ABC";
+s1 = "XYZ";  // s1 now points to a NEW object "XYZ"
+              // "ABC" still exists in the pool (unchanged)
+```
 
-![Strings33.PNG](Strings33.PNG)
+```
+    Before:  s1 ──────► "ABC"
+    After:   s1 ──────► "XYZ"   (new object)
+                        "ABC"   (still in pool, no reference)
+```
 
-    String s1 = "ABC";
-    String s2 = "ABC";
+### Why Java made Strings immutable
 
-* == operator for address comparison.
-* .equals for value comparison.
+| Reason | Explanation |
+|---|---|
+| **String Pool sharing** | Multiple variables can point to the same String safely |
+| **Thread safety** | Immutable objects are inherently thread-safe |
+| **Security** | Class names, URLs, file paths, passwords can't be tampered with |
+| **hashCode caching** | hashCode is calculated once and cached — perfect for HashMap keys |
+| **Class loading** | JVM loads classes by name (Strings) — mutation could break classloading |
 
-      s1 == s2  ---> true
+---
 
-* Because s1 and s2 points to the same address.
+## `==` vs `.equals()`
 
-         String s3 = "ABC";
-         String s4 = new String("ABC");
+| Operator | Compares | Use for |
+|---|---|---|
+| `==` | **References** (memory addresses) | Checking if two variables point to the same object |
+| `.equals()` | **Values** (character content) | Checking if two strings have the same text |
 
-         s3 == s4 --> false
-         s3.equals(s4) ---> true
-         s1 == s3 ---> true
-         s3 == s2 ---> true
-         s2 == s4 ---> false
+```java
+String s1 = "ABC";
+String s2 = "ABC";
+String s3 = new String("ABC");
 
+s1 == s2        // true  (same pool object)
+s1 == s3        // false (different objects)
+s1.equals(s3)   // true  (same value)
+s1.equals(s2)   // true  (same value)
+```
 
+**Rule**: Always use `.equals()` to compare String values. Never use `==`.
 
-## Advantages of Immutability
+---
 
-1.Saving Heap Space
+## String Pool (intern())
 
-2.Good for HashMap Key
+The String Pool is a special memory area where Java stores **one copy of each unique literal**. This saves memory when the same string appears many times.
 
-3.password and username
+```java
+String s1 = "Hello";
+String s2 = "Hello";
+// s1 == s2 → true (both point to the same pool entry)
 
-4.good for multiple thread operation , Thread safe.
+String s3 = new String("Hello");
+String s4 = s3.intern();  // adds to pool or returns existing entry
+// s1 == s4 → true (intern() returns the pool reference)
+```
 
-  Even if some thread modifies the value, an entirely new String is created without affecting the original one.
+---
 
+## String vs StringBuilder vs StringBuffer
 
-## Difference between String ,String Buffer and String Builder
+| Feature | String | StringBuilder | StringBuffer |
+|---|---|---|---|
+| Mutability | Immutable | Mutable | Mutable |
+| Thread-safe | Yes (immutable) | No | Yes (synchronized) |
+| Performance | Slow for concatenation | Fastest | Slower than StringBuilder |
+| Use when | Value won't change | Single-threaded string building | Multi-threaded string building |
 
-| String | String Buffer | String Builder |
-| --- | --- | --- |
-| Immutable | Mutable | Mutable |
-| Intialization is mandatory | Not mandatory | Not mandatory |
-| Synchronized | Synchronized | Not Synchronized |
-| Thread safe | Thread safe | Not Thread safe |
-| Less performance | Less performance | Best Performance. Recommended while using Multi Threading |
+### Why StringBuilder matters
 
+```java
+// BAD — creates a new String object every iteration (O(n²) memory)
+String result = "";
+for (int i = 0; i < 10000; i++) {
+    result += i + ", ";  // new String created each time!
+}
 
-## why char[] is preferred more than String while storing passwords?
+// GOOD — modifies the same buffer (O(n) memory)
+StringBuilder sb = new StringBuilder();
+for (int i = 0; i < 10000; i++) {
+    sb.append(i).append(", ");
+}
+String result = sb.toString();
+```
 
-* In Java, using char[] is often considered a better practice than using String for storing passwords because String objects are immutable, meaning they cannot be changed once created. This immutability poses a security risk when it comes to storing sensitive information like passwords.
+The bad version creates ~10,000 intermediate String objects. The good version uses **one buffer**.
 
-* When a password is stored as a String, it remains in memory until it is garbage collected, and during this time, it can be accessed by other parts of the program. This makes it potentially vulnerable to unauthorized access and increases the chances of the password being inadvertently leaked.
+---
 
-* On the other hand, char[] arrays are mutable, and you can manually overwrite the contents of the array after using it, ensuring that the password is no longer present in memory. By explicitly clearing the array after using the password, you reduce the window of opportunity for an attacker to retrieve the password from memory.
+## Essential String Methods
 
-        char[] password = {'s', 'e', 'c', 'r', 'e', 't'};
+```java
+String s = "Hello, World!";
 
-        // Use the password...
- 
-        // Clear the password from memory
-      
-        Arrays.fill(password, '\0');
+s.length()                    // 13
+s.charAt(0)                   // 'H'
+s.substring(0, 5)             // "Hello"
+s.indexOf("World")            // 7
+s.contains("World")           // true
+s.toUpperCase()               // "HELLO, WORLD!"
+s.toLowerCase()               // "hello, world!"
+s.trim()                      // removes leading/trailing whitespace
+s.strip()                     // Unicode-aware trim (Java 11+)
+s.replace("World", "Java")   // "Hello, Java!"
+s.split(", ")                 // ["Hello", "World!"]
+s.startsWith("Hello")         // true
+s.endsWith("!")               // true
+s.isEmpty()                   // false
+s.isBlank()                   // false (Java 11+)
+s.toCharArray()               // char[] {'H','e','l','l','o',...}
 
-* By using char[] instead of String, you have more control over the lifespan of the password in memory, minimizing the chances of it being exposed to potential attackers. 
+String.valueOf(42)            // "42" (int to String)
+String.join(", ", "a", "b")  // "a, b"
+```
 
-* However, it's worth noting that this approach does not completely eliminate the risks associated with password storage, and it's essential to follow other security best practices such as hashing and salting passwords before storing them.
+---
 
-## Rules For Creating Immutable Class
+## Why `char[]` Is Preferred for Passwords
 
-1.Make the class as final.
+`String` stays in memory until GC collects it — you can't erase it. `char[]` can be **zeroed out manually**.
 
-2.make the variables as private and final
+```java
+char[] password = {'s', 'e', 'c', 'r', 'e', 't'};
 
-3.create a constructor
+// authenticate with password...
 
-4.only getters no setters
+// Immediately clear from memory
+Arrays.fill(password, '\0');
+```
 
-    import java.util.ArrayList;
-    import java.util.List;
+With `String`, the password sits in the String Pool (potentially for the entire JVM lifetime) and can be extracted from heap dumps.
 
-    public final class Immutable {
-    private int id;
-    private String name;
-    private List<String hobbies;
+---
 
-    public int getId() {
-        return id;
+## Creating an Immutable Class
+
+If String is immutable because of its design, you can apply the same pattern to your own classes:
+
+```java
+public final class Money {
+    private final String currency;
+    private final double amount;
+    private final List<String> tags;
+
+    public Money(String currency, double amount, List<String> tags) {
+        this.currency = currency;
+        this.amount = amount;
+        this.tags = new ArrayList<>(tags);  // defensive copy IN
     }
 
-    public String getName() {
-        return name;
-    }
-    
-    public List<String getHobbies() {
-       List<String objects = new ArrayList< ();
-        for(String hobby:hobbies){
-            objects.add(hobby);
-        }
-        return objects;
-    }
+    public String getCurrency() { return currency; }
+    public double getAmount() { return amount; }
 
-    @Override
-    public String toString() {
-        return "Immutable{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", hobbies=" + hobbies +
-                '}';
+    public List<String> getTags() {
+        return Collections.unmodifiableList(tags);  // defensive copy OUT
     }
+}
+```
 
-    public Immutable(int id, String name, List<String hobbyList) {
-        this.id = id;
-        this.name = name;
-        this.hobbies = new ArrayList< ();
-        for(String hobby: hobbyList){
-            hobbies.add(hobby);
-        }
+**Rules**: `final` class, `private final` fields, no setters, defensive copies for mutable objects (in constructor and getters).
 
-    }
+---
 
-    public static void main(String[] args) {
-        List<Stringh=new ArrayList< ();
-        h.add("cycling");
-        h.add("music");
-        Immutable immutable=new Immutable (1,"Sai",h);
-        h.add ("test");
-        System.out.println (immutable);
+## Interview Questions
 
-    }
-    }
+??? question "1. How many String objects are created by `String s = new String(\"Hello\")`?"
+    **Two** (if "Hello" doesn't already exist in the pool). One in the **String Pool** (for the literal "Hello") and one in the **Heap** (for the `new` keyword). If "Hello" is already in the pool, then only one new object is created on the heap.
+
+??? question "2. What is the output?"
+    ```java
+    String s1 = "Hello";
+    String s2 = "Hel" + "lo";
+    System.out.println(s1 == s2);
+    ```
+    **Output**: `true`. The compiler performs **constant folding** — it evaluates `"Hel" + "lo"` at compile time to `"Hello"`. So both `s1` and `s2` point to the same pool entry. But if one part is a variable (e.g., `String a = "Hel"; String s2 = a + "lo";`), the result is `false` because concatenation with a variable happens at runtime.
+
+??? question "3. Why is String a popular HashMap key?"
+    Because String is **immutable**, its `hashCode()` is calculated once and **cached**. This makes HashMap lookups O(1) with minimal overhead. If String were mutable, changing a key after insertion would break the HashMap because it would be in the wrong bucket.
+
+??? question "4. What happens when you call `intern()` on a String?"
+    `intern()` checks the String Pool. If an equal string exists, it returns the pool reference. If not, it adds the string to the pool and returns that reference. This is useful for reducing memory when you have many duplicate strings (e.g., parsing a CSV where "USA" appears 1 million times).
+
+??? question "5. Your application creates millions of small Strings in a loop and runs out of memory. How do you fix it?"
+    Use `StringBuilder` to avoid creating intermediate String objects. If strings are duplicated, use `intern()` or a `HashSet` to deduplicate. For very large-scale string processing, consider `byte[]` instead of `String` to reduce memory (a `String` has ~40 bytes of overhead per instance). Profile with a heap dump and Eclipse MAT to identify the actual leak.

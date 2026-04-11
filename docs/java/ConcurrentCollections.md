@@ -1,114 +1,219 @@
+# Concurrent Collections in Java
 
-## Need of Concurrent Collections:
+Regular collections (`ArrayList`, `HashMap`, `HashSet`) are **not thread-safe**. When multiple threads read and write to them simultaneously, you get corrupted data or `ConcurrentModificationException`. Concurrent collections solve this problem.
 
-1. Multiple threads can operate simultaneously , there may be data inconsistency
-2. Performance is not up to the mark.
-3. While one thread is iterating a collection object , by mistake if other thread trying to modify the collection immediately iterator fails by raising Concurrent Modification Exception.
+---
 
-        
-         ArrayList<String> al = new ArrayList< ();
+## The Problem
 
-        al.add("CTS");
+```java
+// This WILL throw ConcurrentModificationException
+List<String> list = new ArrayList<>(List.of("A", "B", "C"));
 
-        al.add("TCS");
+// Thread 1: iterating
+for (String s : list) {
+    System.out.println(s);
+}
 
-        al.add("CAPGEMINI");
+// Thread 2: modifying (simultaneously)
+list.add("D");  // ConcurrentModificationException!
+```
 
-        al.add("Infosys");
+---
 
-        for(String hs:al){
+## Solutions at a Glance
 
-        if(hs.equals ("Infosys")){
- 
-        al.remove (hs);
+| Problem | Bad solution | Good solution |
+|---|---|---|
+| Thread-safe list | `Collections.synchronizedList()` | `CopyOnWriteArrayList` |
+| Thread-safe set | `Collections.synchronizedSet()` | `CopyOnWriteArraySet`, `ConcurrentSkipListSet` |
+| Thread-safe map | `Collections.synchronizedMap()` / `Hashtable` | `ConcurrentHashMap` |
+| Thread-safe queue | — | `ConcurrentLinkedQueue`, `BlockingQueue` |
 
-        }
-        }
+**Why are `synchronized` wrappers bad?** They lock the **entire collection** on every operation. One thread reading blocks all other threads from reading or writing. Very slow under contention.
 
-Exception in thread "main" java.util.ConcurrentModificationException
+---
 
-      Map<String, Long phoneBook = new HashMap<String, Long();
-      phoneBook.put("Vikram",8149101254L);
-      phoneBook.put("Mike",9020341211L);
-      phoneBook.put("Jim",7788111284L);
-      Iterator<String keyIterator1 = phoneBook.keySet().iterator();
-      while (keyIterator1.hasNext()){
-      String key = keyIterator1.next();
-      if("Vikram".equals(key)){
-      phoneBook.put("John",9220341211L);
-      }
-      }
+## ConcurrentHashMap
 
-1. Concurrent Hash Map
-2. CopyOnWriteArrayList
-3. CopyOnWrite HashSet
+The most important concurrent collection. Used heavily in production systems.
 
-## Concurrent HashMap
+### How It Works
 
-- Underlying Data Structure is Hash table
-- Concurrent HashMap allows concurrent Read and Thread Safe Update Operation
-- To Perform Read Operation Thread won’t require any Lock. But to Perform Update Operation Thread requires Lock .But it is the lock of only a particular part of Map (Bucket Level Lock).
-- Instead of Whole Map Concurrent Update achieved by Internally dividing Map into Similar Portion which is defined by Concurrency Level.
-- The Default Concurrency Level is 16.
-- So Concurrent Hash Map allows Simultaneous Read operations and 16 write/update operations.
-- It never throws Concurrent Modified Exception.
+```
+    Hashtable / synchronizedMap:        ConcurrentHashMap:
+    ─────────────────────────           ──────────────────
+    ONE lock for entire map             MANY locks (one per segment/bucket)
 
-  ![Image-Concurrent-Hashmap.png](Image-Concurrent-Hashmap.png)
-  16-- concurrency level.
+    Thread-1: lock(map) → read          Thread-1: lock(bucket-3) → read
+    Thread-2: BLOCKED                   Thread-2: lock(bucket-7) → write  (parallel!)
+    Thread-3: BLOCKED                   Thread-3: lock(bucket-3) → BLOCKED (same bucket)
+```
 
-## Difference Between Concurrent Hash Map and Concurrent HashMap
+- **Java 7**: Segment-based locking (16 segments by default)
+- **Java 8+**: Per-bucket locking using CAS (Compare-And-Swap) operations + `synchronized` blocks. Even more fine-grained.
 
-| HashMap | Concurrent Hash Map |
-| --- | --- |
-| It is not Thread Safe | It is Thread Safe |
-| Relatively Performance is High because Threads are not required to wait to Operate on Hash Map. | Relatively Performance is Low because Some Times Threads are required to wait to Operate on Concurrent Hash Map |
-| While One Thread iterating Hash Map the other threads are not allowed to modify map objects otherwise we will get CME. | While One Thread iterating Hash Map the other threads are not allowed to modify map objects otherwise we won’t get CME. |
-| Iterator of Hash map is fail fast | Iterator of `Concurrent Hash map is fail safe. |
-| Null values are allowed | Null values |
+### Key Operations
+
+```java
+ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+
+// Basic operations (thread-safe)
+map.put("Java", 1);
+map.get("Java");
+map.remove("Java");
+
+// Atomic compound operations (key differentiator)
+map.putIfAbsent("Java", 1);       // only puts if key doesn't exist
+map.computeIfAbsent("Java", k -> expensiveCompute(k));  // lazy computation
+map.computeIfPresent("Java", (k, v) -> v + 1);          // atomic update
+map.merge("Java", 1, Integer::sum);                       // atomic merge
+
+// Atomic counter pattern
+map.compute("pageViews", (key, val) -> val == null ? 1 : val + 1);
+```
+
+### ConcurrentHashMap vs Hashtable vs synchronizedMap
+
+| Feature | `Hashtable` | `synchronizedMap` | `ConcurrentHashMap` |
+|---|---|---|---|
+| Lock granularity | Entire table | Entire map | Per-bucket (fine-grained) |
+| Null keys/values | No | Depends on backing map | No |
+| Iteration | Fail-fast | Fail-fast | **Weakly consistent** (no exception) |
+| Performance | Slow | Slow | Fast under contention |
+| Read locking | Yes | Yes | **No** (reads are lock-free) |
+
+---
 
 ## CopyOnWriteArrayList
 
-Collection(I)
+Creates a **new copy of the internal array** on every write operation. Reads are always lock-free.
 
-List(I)
+```java
+CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<>();
+list.add("A");
+list.add("B");
 
-CopyOnWriteArrayList (C)
-![img_18.png](img_18.png)
+// Safe to iterate while another thread modifies
+for (String s : list) {
+    System.out.println(s);  // reads the snapshot — never throws CME
+}
+```
 
-It is a thread safe version of ArrayList , As the name indicates CopyOnWriteArrayList creates a cloned copy of underlying ArrayList for Every Update Operation. At Certain Point Both will Synchronized Automatically Which is taken care by JVM internally.
+### When to Use
 
-- As Update operation will be performed on cloned copy there is no effect for the threads which performs Read Operation
-- It is costly to use because for every update Operation a cloned copy will be created. Hence it is the best option if several Read operations and less Write operations. Because if more Write operations are there then more cloned copies are created. Then performance will be degraded.
-- Insertion Order is Preserved
-- Duplicates are Allowed.
+| Use when | Don't use when |
+|---|---|
+| Reads >>> Writes (e.g., listener lists, config) | Frequent writes (copying the array on every write is expensive) |
+| Small lists (< 100 elements) | Large lists (copying 10,000 elements per write is slow) |
+| Need safe iteration without locking | Need fast concurrent writes |
 
-![img_19.png](img_19.png)
+**Real-world example**: Spring's event listener registry uses `CopyOnWriteArrayList` because listeners are registered once but invoked on every event.
 
-        CopyOnWriteArrayList<String al = new CopyOnWriteArrayList< ();
-        al.add("CTS");
-        al.add("TCS");
-        al.add("CAPGEMINI");
-        al.add("Infosys");
-        for(String hs:al){
-        if(hs.equals ("Infosys")){
-        al.remove (hs);
-        }
-        }
-        System.out.println (al);   
-        }
+---
 
-## CopyOnWriteArraySet
+## BlockingQueue — Producer-Consumer Pattern
 
+`BlockingQueue` blocks the calling thread when the queue is full (for `put`) or empty (for `take`).
 
-Collection(I)
+```
+    Producer ──put()──► [BlockingQueue] ──take()──► Consumer
+                          (blocks if full)            (blocks if empty)
+```
 
-Set(I)
+### Implementations
 
-CopyOnWriteArraySet (C)
+| Type | Bounded? | Ordering | Best for |
+|---|---|---|---|
+| `ArrayBlockingQueue` | Yes (fixed size) | FIFO | Bounded producer-consumer |
+| `LinkedBlockingQueue` | Optional | FIFO | High-throughput queues |
+| `PriorityBlockingQueue` | No | Priority | Task scheduling |
+| `SynchronousQueue` | No (size 0) | Direct handoff | Thread pools (Executors) |
+| `DelayQueue` | No | Delayed | Scheduled tasks |
 
-It is a thread safe version of Set , As the name indicates CopyOnWriteArrayList creates a cloned copy of underlying ArrayList for Every Update Operation. At Certain Point Both will Synchronized Automatically Which is taken care by JVM internally.
+### Producer-Consumer Example
 
-- As Update operation will be performed on cloned copy there is no effect for the threads which performs Read Operation
-- It is costly to use because for every update Operation a cloned copy will be created. Hence it is the best option if several Read operations and less Write operations. Because if more Write operations are there then more cloned copies are created. Then performance will be degraded.
-- Insertion Order is Preserved
-- Duplicates are Not Allowed.
+```java
+BlockingQueue<String> queue = new ArrayBlockingQueue<>(10);
+
+// Producer thread
+new Thread(() -> {
+    try {
+        queue.put("Task-1");  // blocks if queue is full
+        queue.put("Task-2");
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+    }
+}).start();
+
+// Consumer thread
+new Thread(() -> {
+    try {
+        String task = queue.take();  // blocks if queue is empty
+        process(task);
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+    }
+}).start();
+```
+
+---
+
+## ConcurrentLinkedQueue
+
+Non-blocking, lock-free queue using CAS operations. Best for high-throughput scenarios where you don't need blocking behavior.
+
+```java
+ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();
+queue.offer("A");
+queue.offer("B");
+String head = queue.poll();  // "A" (returns null if empty, never blocks)
+```
+
+---
+
+## ConcurrentSkipListMap / ConcurrentSkipListSet
+
+Thread-safe **sorted** collections (like `TreeMap`/`TreeSet` but concurrent).
+
+```java
+ConcurrentSkipListMap<String, Integer> map = new ConcurrentSkipListMap<>();
+map.put("Banana", 2);
+map.put("Apple", 5);
+map.put("Cherry", 1);
+// Iterates in sorted order: Apple, Banana, Cherry
+```
+
+---
+
+## Choosing the Right Concurrent Collection
+
+| Need | Use |
+|---|---|
+| Thread-safe map, high concurrency | `ConcurrentHashMap` |
+| Thread-safe sorted map | `ConcurrentSkipListMap` |
+| Thread-safe list, mostly reads | `CopyOnWriteArrayList` |
+| Producer-consumer pattern | `ArrayBlockingQueue` / `LinkedBlockingQueue` |
+| Non-blocking queue | `ConcurrentLinkedQueue` |
+| Thread-safe sorted set | `ConcurrentSkipListSet` |
+
+---
+
+## Interview Questions
+
+??? question "1. Why does ConcurrentHashMap not allow null keys or values?"
+    Because `null` is ambiguous in concurrent contexts. If `map.get(key)` returns `null`, you can't tell if the key doesn't exist or if the value is `null` — and in a concurrent map, you can't use `containsKey()` + `get()` atomically (another thread might modify between the two calls). HashMap doesn't have this problem because it's single-threaded.
+
+??? question "2. Can you iterate over a ConcurrentHashMap while another thread modifies it?"
+    **Yes.** ConcurrentHashMap iterators are **weakly consistent** — they reflect the state at (or after) the time the iterator was created. They never throw `ConcurrentModificationException`. They might or might not reflect concurrent modifications made after the iterator was created.
+
+??? question "3. How would you implement a thread-safe counter using ConcurrentHashMap?"
+    Use `compute()` or `merge()`:
+    ```java
+    ConcurrentHashMap<String, Long> counters = new ConcurrentHashMap<>();
+    counters.merge("pageViews", 1L, Long::sum);  // atomic increment
+    ```
+    Or for simple counters, use `AtomicLong` or `LongAdder` (faster under high contention).
+
+??? question "4. What is the difference between `ArrayBlockingQueue` and `LinkedBlockingQueue`?"
+    `ArrayBlockingQueue` has a **fixed capacity** (must specify at creation), uses a single lock for put and take. `LinkedBlockingQueue` has **optional capacity** (defaults to `Integer.MAX_VALUE`), uses **two separate locks** (one for put, one for take) so producers and consumers can work in parallel. LinkedBlockingQueue generally has higher throughput.

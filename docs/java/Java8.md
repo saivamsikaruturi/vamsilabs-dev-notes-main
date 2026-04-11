@@ -1,432 +1,356 @@
-## JAVA 8 Features
+# Java 8 — The Most Important Java Release
 
-1.Functional Interfaces
+Java 8 introduced **functional programming** to Java. Lambdas, Streams, and Optional are used in every modern Java codebase. This is the version most interview questions target.
 
-2.Lambda Expressions
+---
 
-3.Default Methods in Interfaces
+## Features at a Glance
 
-4.Static Methods in Interfaces
+| Feature | What changed |
+|---|---|
+| **Lambda Expressions** | Pass behavior as arguments |
+| **Functional Interfaces** | Interfaces with exactly one abstract method |
+| **Stream API** | Declarative data processing pipelines |
+| **Optional** | Eliminate null checks, model absence |
+| **Default Methods** | Add methods to interfaces without breaking implementations |
+| **Method References** | Shorthand for lambdas |
+| **Date/Time API** | Immutable, thread-safe replacements for `Date`/`Calendar` |
 
-5.Predefined Interfaces
+---
 
-6.Method Reference ,Constructor Reference
+## Functional Interfaces
 
-7.Stream API
+An interface with **exactly one abstract method**. Annotated with `@FunctionalInterface`.
 
-8.Date and Time API
+```java
+@FunctionalInterface
+public interface Calculator {
+    int compute(int a, int b);
+}
 
-9.Optional Class
+// Use with lambda
+Calculator add = (a, b) -> a + b;
+Calculator multiply = (a, b) -> a * b;
 
-## Functional Programming
+add.compute(10, 20);      // 30
+multiply.compute(10, 20);  // 200
+```
 
-From Java 8 Version ,Using Functional Programming we can pass a function as an argument to a method
+### Built-in Functional Interfaces
 
-    class Calculator{
+| Interface | Method | Input → Output | Example |
+|---|---|---|---|
+| `Predicate<T>` | `test(T)` | `T → boolean` | Filtering |
+| `Function<T, R>` | `apply(T)` | `T → R` | Transformation |
+| `Consumer<T>` | `accept(T)` | `T → void` | Side effects (printing, logging) |
+| `Supplier<T>` | `get()` | `() → T` | Lazy creation |
+| `BiFunction<T, U, R>` | `apply(T, U)` | `(T, U) → R` | Two-arg transformation |
+| `UnaryOperator<T>` | `apply(T)` | `T → T` | Same-type transformation |
+| `BinaryOperator<T>` | `apply(T, T)` | `(T, T) → T` | Reducing two values |
 
-    static void evaluate(Addition a ){
+```java
+Predicate<String> isLong = s -> s.length() > 10;
+Function<String, Integer> toLength = String::length;
+Consumer<String> printer = System.out::println;
+Supplier<LocalDate> today = LocalDate::now;
 
-    a.add(10,20);
+isLong.test("Hello");           // false
+toLength.apply("Hello");        // 5
+printer.accept("Hello");        // prints "Hello"
+today.get();                    // 2024-01-15
+```
 
+---
+
+## Lambda Expressions
+
+Lambdas are anonymous functions. They implement the single abstract method of a functional interface.
+
+```java
+// Anonymous inner class (before Java 8)
+Comparator<String> comp = new Comparator<String>() {
+    @Override
+    public int compare(String a, String b) {
+        return a.length() - b.length();
     }
+};
 
-    Addition addNumbers =(a,b)-(a+b); Functional Programming
+// Lambda (Java 8)
+Comparator<String> comp = (a, b) -> a.length() - b.length();
+```
 
-    System.out.println(addNumbers.add(1,2));
+### Lambda Syntax
 
-**Definition of Functional Interface:**
+```java
+// No parameters
+Runnable r = () -> System.out.println("Running");
 
-Only one abstract method in interface is called Functional Interface.
+// One parameter (parentheses optional)
+Consumer<String> c = s -> System.out.println(s);
 
-Examples of Functional Interface :
+// Multiple parameters
+BiFunction<Integer, Integer, Integer> add = (a, b) -> a + b;
 
-Comparable
+// Multi-line body (needs braces and return)
+Function<String, String> process = s -> {
+    String trimmed = s.trim();
+    return trimmed.toUpperCase();
+};
+```
 
-Comparator
+---
 
-Runnable
+## Method References
 
-Callable
+Shorthand for lambdas that just call an existing method.
 
-**Why Functional Interface**
+| Type | Syntax | Lambda equivalent |
+|---|---|---|
+| Static method | `ClassName::method` | `x -> ClassName.method(x)` |
+| Instance method (of object) | `object::method` | `x -> object.method(x)` |
+| Instance method (of parameter) | `ClassName::method` | `(x) -> x.method()` |
+| Constructor | `ClassName::new` | `x -> new ClassName(x)` |
 
-- Functional Interface is used for enabling Functional Programming in Java.
-- Functional Interface is also used for defining Lambda Expressions to pass a function directly as an argument.
+```java
+// Static method reference
+Function<String, Integer> parse = Integer::parseInt;
 
-        @FunctionalInterface
-        interface Addition(){
+// Instance method of parameter
+Function<String, String> upper = String::toUpperCase;
 
-        void add(int a ,int b);
- 
-        void add(int a, int b ,int c); ----- compiler will start throwing error , only one abstract method should be there
-       
-      }
+// Constructor reference
+Supplier<ArrayList<String>> newList = ArrayList::new;
 
+// Usage
+List<String> names = Arrays.asList("alice", "bob", "charlie");
+names.stream().map(String::toUpperCase).forEach(System.out::println);
+```
 
-**@FunctionInterface**
+---
 
-@FunctionInterface is a marker annotation to mark the interface as a functional Interface explicitly
+## Default & Static Methods in Interfaces
 
-Two ways of creating Functional Interface
+### Default methods — add behavior to interfaces without breaking existing code
 
-1.Creating as Effective Functional Interface
+```java
+public interface Sortable {
+    void sort();
 
-2.Forcing it to be a Functional Interface
-
-**Annonymous Inner Class:**
-
-i.e Inner Class without Name , only one time use (instant use)
-
-## LAMBDA EXPRESSIONS
-
-- It is an anonymous function without name, return type and modifiers.
-- To enable functional programming
-- By using “--”
-
-    
-        public int getSum(int a ,int b){
-
-        System.out.println(a+b);
-
-        }
-
-        ()-System.out.println(“Java Programming”);
-
-        (int a ,int b)- System.out.println(a+b);
-
-## Default Method in Interfaces
-
-Default method came into picture for solving limitation of interfaces. For adding more functionality methods in interface without breaking the implementation classes functionality.
-
-    interface Example{
-    abstract void m1();
-    abstract void m2();
+    default void sortAndPrint() {
+        sort();
+        System.out.println("Sorted!");
     }
+}
+```
 
-    class Sample implements Example{ 
-    public void m1(){
+**Why it was added**: To allow adding methods to interfaces like `Collection` (e.g., `stream()`, `forEach()`) without breaking millions of existing implementations.
+
+### Static methods in interfaces
+
+```java
+public interface Validator {
+    boolean validate(String input);
+
+    static Validator emailValidator() {
+        return input -> input.contains("@");
     }
-    }
+}
+
+Validator v = Validator.emailValidator();
+v.validate("test@email.com");  // true
+```
 
-    class Demo implements Example
-    {
-    public void m1(){
-    }
-    }
+---
 
-Since there is no implementation of m2() method in both classes ,compiler throws error. So, in java 8 concept of default method is introduced.
+## Stream API
+
+Streams provide a **declarative way to process collections** — filter, transform, aggregate — without manual loops.
 
-     interface** Example{
-     abstract **void** m1();
-     default **void** m2(){
-    }
-    }
+```
+    Source ──► Filter ──► Map ──► Reduce ──► Result
+    (List)    (keep some) (transform) (combine)
+```
 
-* Default methods of an interface are the concrete methods for which implementing classes need not to give implementation. They inherit default implementation.
-* Default methods are introduced to add extra features to current interfaces without disrupting their existing implementations. 
-* For example, stream() is a default method which is added to Collection interface in Java 8. 
-* If stream() would have been added as abstract method, then all classes implementing Collection interface must have implemented stream() method which may have irritated existing users.
-* To overcome such issues, default methods are introduced to interfaces from Java 8.
+### Creating Streams
 
+```java
+List<String> list = List.of("Java", "Python", "Go");
+list.stream();                    // from collection
+Stream.of("A", "B", "C");        // from values
+Arrays.stream(new int[]{1, 2});   // from array
+IntStream.range(1, 10);           // from range
+```
 
-To solve the diamond problem, Java 8 proposes 3 rules to follow. They are,
+### Intermediate Operations (lazy — don't execute until terminal op)
 
-Rule 1 : Select classes over interfaces
+| Operation | What it does |
+|---|---|
+| `filter(Predicate)` | Keep elements matching condition |
+| `map(Function)` | Transform each element |
+| `flatMap(Function)` | Flatten nested streams |
+| `distinct()` | Remove duplicates |
+| `sorted()` | Sort elements |
+| `peek(Consumer)` | Debug — view elements without modifying |
+| `limit(n)` | Take first N elements |
+| `skip(n)` | Skip first N elements |
 
-If your class inherit multiple methods with same signature then a method from super class is selected (Remember a class can inherit only one class).
+### Terminal Operations (trigger execution)
 
-Rule 2 : Select most specific interfaces than general interfaces.
+| Operation | What it does |
+|---|---|
+| `collect(Collector)` | Collect into a collection |
+| `forEach(Consumer)` | Perform action on each element |
+| `count()` | Count elements |
+| `reduce(BinaryOperator)` | Combine all elements into one |
+| `findFirst()` | Get first element (Optional) |
+| `anyMatch(Predicate)` | Check if any element matches |
+| `allMatch(Predicate)` | Check if all elements match |
+| `toArray()` | Convert to array |
 
-If your class doesn’t extend any class and inherit multiple methods with same signature from multiple interfaces which belong to same hierarchy, then a method from most specific interface is selected.
+### Common Patterns
 
-Rule 3 : InterfaceName.super.methodName()
+```java
+List<Employee> employees = getEmployees();
 
-If your class doesn’t extend any class and inherit multiple methods with same signature from multiple interfaces which doesn’t belong to same hierarchy, then override that method and from within body explicitly call desired method as InterfaceName.super.methodName()
+// Filter + Collect
+List<Employee> engineers = employees.stream()
+    .filter(e -> e.getDepartment().equals("Engineering"))
+    .collect(Collectors.toList());
 
-## Static Method in Interfaces
+// Map + Collect
+List<String> names = employees.stream()
+    .map(Employee::getName)
+    .collect(Collectors.toList());
 
-Q. What is the purpose of introducing static methods in java interface ?
+// Group by department
+Map<String, List<Employee>> byDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::getDepartment));
 
-Java interface static methods are good for providing utility methods, for example null check, collection sorting etc. Java interface static method helps us in providing security by not allowing implementation classes to override them.
+// Sum salaries
+double totalSalary = employees.stream()
+    .mapToDouble(Employee::getSalary)
+    .sum();
 
-Q. What will happen if I override static method ?
+// Find highest salary
+Optional<Employee> topEarner = employees.stream()
+    .max(Comparator.comparing(Employee::getSalary));
 
-Try to add @Override annotation to the method, it will result in compiler time error.
+// Comma-separated names
+String nameList = employees.stream()
+    .map(Employee::getName)
+    .collect(Collectors.joining(", "));
+```
 
-Q. Is it possible to have multiple static methods in an interface?
+For the complete Stream API deep-dive, see the dedicated [Stream API](../stream%20api/streamapi.md) page.
 
-Yes,
+---
 
-    interface Example
-    {
-     static public boolean isNull(String input)
-    {
+## Optional — Kill the NullPointerException
 
-        if(input!=null){return false;
-        }
-        return true;
+`Optional<T>` is a container that may or may not hold a value. It forces you to handle absence explicitly.
 
-    } 
-    }    
-     public class Sample {
-     public static void main(String[] args) {
-        System.out.println (Example.isNull("ok"));
-    }  
-    }
+### Creating Optional
 
+```java
+Optional<String> present = Optional.of("Hello");        // must be non-null
+Optional<String> nullable = Optional.ofNullable(null);   // allows null
+Optional<String> empty = Optional.empty();               // explicitly empty
+```
 
- 
-## Predefined Interfaces
+### Using Optional (the right way)
 
-1.Predicate
+```java
+// BAD — defeats the purpose
+if (optional.isPresent()) {
+    return optional.get();
+}
 
-2.Function
+// GOOD — functional style
+optional.ifPresent(value -> System.out.println(value));
 
-3.Consumer
+String result = optional.orElse("default");
 
-4.Supplier
+String result = optional.orElseGet(() -> computeExpensiveDefault());
 
-Two Argument Predefined Functional Interface:
+String result = optional.orElseThrow(
+    () -> new NotFoundException("Not found"));
 
-1.BiPredicate
+// Transform
+Optional<Integer> length = optional.map(String::length);
 
-2.BiFunction
+// Chain
+String city = getUser()
+    .flatMap(User::getAddress)
+    .flatMap(Address::getCity)
+    .orElse("Unknown");
+```
 
-3.BiConsumer
+### `orElse` vs `orElseGet`
 
-Predicate:
+```java
+// orElse — ALWAYS evaluates the fallback (even if value is present)
+optional.orElse(expensiveCall());  // expensiveCall() runs regardless
 
-Conditional checks
+// orElseGet — ONLY evaluates fallback if value is absent (lazy)
+optional.orElseGet(() -> expensiveCall());  // runs only if empty
+```
 
-Input
+---
 
-Boolean is return type.
+## Date and Time API (`java.time`)
 
-test()
+The old `Date` and `Calendar` classes were mutable, not thread-safe, and poorly designed. Java 8 replaced them with an immutable, thread-safe API.
 
-      String[] res={"vamsi","General","sai"};
-      Predicate<String employeePredicate=e-e.length()>4;
-      for(String s1:res){if(employeePredicate.test (s1))
-      {
-      System.out.println (s1);
-      }
-      }
+| Class | What it represents | Example |
+|---|---|---|
+| `LocalDate` | Date without time | `2024-01-15` |
+| `LocalTime` | Time without date | `14:30:45` |
+| `LocalDateTime` | Date + time | `2024-01-15T14:30:45` |
+| `ZonedDateTime` | Date + time + timezone | `2024-01-15T14:30:45+05:30[Asia/Kolkata]` |
+| `Instant` | Timestamp (epoch seconds) | `2024-01-15T09:00:45Z` |
+| `Duration` | Time-based amount | `PT2H30M` (2 hours 30 min) |
+| `Period` | Date-based amount | `P1Y2M3D` (1 year 2 months 3 days) |
 
-Function:
+```java
+// Creating
+LocalDate today = LocalDate.now();
+LocalDate birthday = LocalDate.of(1998, 3, 15);
+LocalDate parsed = LocalDate.parse("2024-01-15");
 
-Input and Output
+// Manipulation (returns new object — immutable!)
+LocalDate tomorrow = today.plusDays(1);
+LocalDate lastMonth = today.minusMonths(1);
 
-Output type is return type.
+// Comparison
+today.isBefore(tomorrow);  // true
+today.isAfter(birthday);   // true
 
-apply()
+// Formatting
+String formatted = today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-    Function<String,Integer function=fn-fn.length ();
-    System.out.println(function.apply("durga"));
+// Duration between
+long days = ChronoUnit.DAYS.between(birthday, today);
 
-Consumer:
+// Timezone conversion
+ZonedDateTime ist = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+ZonedDateTime pst = ist.withZoneSameInstant(ZoneId.of("America/Los_Angeles"));
+```
 
-Input
+---
 
-Void is return type
+## Interview Questions
 
-Accept()
+??? question "1. What is the difference between `map()` and `flatMap()` in Streams?"
+    `map()` transforms each element 1-to-1: `Stream<T> → Stream<R>`. `flatMap()` transforms each element to a stream and flattens all streams into one: `Stream<T> → Stream<R>` where each T produces multiple R's. Example: `list.stream().flatMap(s -> Arrays.stream(s.split(" ")))` splits sentences into words.
 
-       Consumer<String consumer=cn-System.out.println (cn);
-       consumer.accept ("Capgemini");
+??? question "2. Can a functional interface have multiple methods?"
+    Yes — it can have multiple **default** methods and **static** methods. It must have **exactly one abstract method**. It also inherits `equals()`, `hashCode()`, and `toString()` from `Object`, which don't count.
 
-        Consumer<Employee emp1=emp123-{
-        System.out.println (emp123.getEmpName ());
-        System.out.println (emp123.getEmpId ());
-        };
-        for(Employee employee:employeeList){
-        emp1.accept(employee);
-        }
+??? question "3. What is the difference between `Stream.of()` and `Arrays.stream()`?"
+    `Stream.of(array)` treats the entire array as a single element (gives `Stream<int[]>`). `Arrays.stream(array)` gives `IntStream` for int arrays. For object arrays, both work the same. Always use `Arrays.stream()` for primitive arrays.
 
-Supplier:
+??? question "4. Why is `Optional.get()` considered bad practice?"
+    `get()` throws `NoSuchElementException` if empty — no better than a NullPointerException. Use `orElse()`, `orElseGet()`, `orElseThrow()`, or `ifPresent()` instead. They force you to handle the empty case explicitly.
 
-It does not require any input , but returns output.
-
-get()
-
-      Supplier<Date date=()-**new** Date ();
-      System.out.println (date.get ());
-
-//otp generation
-
-       Supplier<String otp=()-{
-       String otp1="";
-       for(int i=0;i<=6;i++){
-       otp1=otp1+(int)(Math.random ()10);
-       }
-       return otp1;
-       };
-       System.out.println (otp.get ());
-
-## Method and Constructor Reference
-
-- Method Reference and Constructor Reference is alternative to Lambda Expressions.
-- Method Reference is used for Code Reusability
-- A short end way of writing a lambda expression that will refer to the existing method.
-- ::--- Method Reference Operator
-
-Types of Method References:
-
-1.Static Method Reference --- className::method name
-
-2.Instance Method Reference --- object reference :: method name
-
-3.Constructor Reference --- className :: new
-
-If the method returns object ,then we should use constructor reference.
-
-     public interface FunctionalInterface {
-     void add(int x,int y);
-     }
-
-        public class Test {void add(int x,int y){
-        System.out.println (x+y);
-        }
-
-        public class MR {public static void main(String[] args) {
-        Test t1=new Test ();
-        FunctionalInterface function1 =t1::add;
-        function1.add (10,20);
-        }
-        }
-
-Constructor Reference:
-
-    public interface FunctionalInterface {
-    public Test get();
-    }
-
-        class Test {
-        Test(){
-        System.out.println ("hello");
-        }
-        }
-
-        public class MR {public static void main(String[] args) {
-        FunctionalInterface f=Test::new;
-        Test s=f.get ();
-        }
-        }
-
-  Wherever fn interface , we can use lambda expressions
-
-  Function<String,Intgeger f =s-s.length
-  
-## STREAM API 
-[STREAM API QUESTIONS](https://vamsilabs-master-notes.netlify.app/stream%20api/streamapi/)
-
-## DATE AND TIME API
-
- * java.time package
- * LocalTime ,LocalDate,LocalDateTime ,ZonedDateTime, Period ,Duration.
-
-old and new java 8 existing date/time api's
-
- * Thread Safety
-
- * Api's design and understanding 
-
- * Timezone handling.
-
-
-Local Date, Local Time and LocalDateTime:
-java.util.date,java.util.timestamp, java.util.calender only for basic operations.
-
-java.util.time package , it is loosely based and the library is joda-time api.
-
-
-    LocalDate date = LocalDate.now();  ---> 2023-06-02.
-    LocalDate date1 = LocalDate.of(2023,06,02);
-    LocalDate date2 = LocalDate.parse("2023-06-02");
-    LocalDate date3 =date2.plusDays(1);  --> 2023-06-03
-    boolean isBefore = LocalDate.parse("2023-06-02").isBefore(LocalDate.parse("2023-06-03");
-    boolean isAfter = LocalDate.parse("2023-06-02").isAfter(LocalDate.parse("2023-06-03");
-
-
-    LocalTime now = LocalTime.now();
-    LocalTime now1 = LocalTime.of(6,30);
-    LocalTime now2 = LocalTime.parse("6:30");
-
-    LocalDateTime time = LocalDateTime.now();
-    LocalDateTime time1 = LocalTime.parse(" 2023-06-02T6:30:45");
-    LocalDate date4 = LocalDateTime.now().toLocalDate();
-
-    ZoneId zoneId = ZoneId.of("Asia/Kolkatta");
-    ZonedDateTime dateTime =  ZonedDateTime.of(LocalDateTime.now(),zoneId);
-
-    int duration = Duration.between(LocalTime.of(6,30),LodalTime.of(6,29)).getSeconds();   
-
-    LocalDateTime dataTime = LocalDateTime.of(2015,Month.JANUARY,25,6,30);
-    String format = LocalDateTime.format(DateTimeFormatter.ISO_DATE);
-    LocalDateTime dateTime1 =  dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-
-
-## Optional Class
-
-* Optional is final class in java 8.
-* To handle values as 'available' or 'not available' instead of checking null values.
-
-Different ways to create an optional object.
-
-1.Optional.empty()
-
-2.Optional.of()
-
-3.Optional.ofNullable()
-
-Optional.empty(): This method returns an empty optional object, indicating that it doesn't contain any value. It is often used to initialize an optional object when you know it should be empty. For example:
-
-
-    Optional<String> emptyOptional = Optional.empty();
-
-Optional.of(value): This method creates an optional object that contains a non-null value. It throws a NullPointerException if the provided value is null. For example:
-
-     String name = "John";
-
-     Optional<String> optionalName = Optional.of(name);
-
-Optional.ofNullable(value): This method creates an optional object that contains a value, which can be null. If the provided value is null, it returns an empty optional. If the value is non-null, it creates an optional containing that value. This method is useful when you are not certain if the value can be null. For example:
-
-
-      String city = null;
-
-      Optional<String> optionalCity = Optional.ofNullable(city);
-
-In summary, Optional.empty() creates an empty optional, Optional.of(value) creates an optional with a non-null value, and Optional.ofNullable(value) creates an optional that may or may not contain a value (even if the value is null).
-
-*To get value from optional object we can use get() method
-
-    System.out.println(optionalName.get());
-
-
-4.ifPresent (consumer)
-   If a value is present , it invokes the specified consumer with the value, otherwise does nothing.
-    
-     optionalName.ifPresent(s-> System.out.println(s.toUpperCase());
-
-5.orElse()
-    Returns the value if present ,otherwise returns other value.
-  
-    Optional<String> empty = Optional.empty();
-   
-     System.out.println(empty.orElse("default"));
-
-6.orElseGet (supplier)
-   Returns the value if present , otherwise invokes the supplier.
-   
-     Optional<Date> emptyDate=Optional.empty();
-   
-     System.out.println(emptyDate.orElseGet()->new Date());
-
-7.orElseThrow (supplier)
-  Returns the contained value, if present, otherwise throws an exception to be created by the provided supplier.
-  
-     emptyDate.orElse(InvalidDateException:: new);
-  
-
-
+??? question "5. Your Stream pipeline processes 10 million records. How do you optimize it?"
+    Use `parallelStream()` for CPU-bound operations on large datasets. Avoid parallel streams for I/O-bound tasks or small datasets (thread overhead > benefit). Use `collect(Collectors.toUnmodifiableList())` instead of `collect(Collectors.toList())` for immutability. Use primitive streams (`mapToInt`, `mapToDouble`) to avoid autoboxing. Consider short-circuiting operations (`findFirst`, `anyMatch`) when you don't need all results.

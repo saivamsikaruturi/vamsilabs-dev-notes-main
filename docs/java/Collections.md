@@ -1,186 +1,285 @@
+# Java Collections Framework
+
+The Collections Framework is a unified architecture for storing and manipulating groups of objects. It's one of the most asked topics in Java interviews.
 
+---
 
-## Difference between Collection and Collections
+## Collection Hierarchy
 
-- Collection is an interface whereas collections is an utility class
-- If you want to represent a group of individual object as a single entity then use collection
-- Collections class has methods that can be performed on the collection like collections.sort(), min(), max (), reverseOrder(), emptylist(), addAll().
+```
+                          Iterable
+                             │
+                         Collection
+                             │
+            ┌────────────────┼────────────────┐
+            │                │                │
+           List             Set             Queue
+            │                │                │
+     ┌──────┼──────┐   ┌────┼────┐     ┌────┼────┐
+     │      │      │   │    │    │     │         │
+ ArrayList  │  Vector HashSet│ TreeSet PriorityQ │
+        LinkedList    │    LinkedHashSet    ArrayDeque
+                      │
+                  SortedSet
 
-## Collection Hierarchy 
-![img_16.png](img_16.png)
+                          Map (separate hierarchy)
+                           │
+                ┌──────────┼──────────┐
+                │          │          │
+            HashMap    TreeMap    Hashtable
+                │
+          LinkedHashMap
+```
 
+---
 
-## Linked Hash Set
+## Collection vs Collections
 
-- Child class of Hash Set
-- It is used when duplicates are not allowed and insertion order should be preserved.
-- Underlying data structure is Hash table and linked list.
-- For Cache based applications
+| `Collection` | `Collections` |
+|---|---|
+| **Interface** — root of the collection hierarchy | **Utility class** — static helper methods |
+| `List`, `Set`, `Queue` extend it | `sort()`, `min()`, `max()`, `unmodifiableList()` |
+
+---
+
+## List — Ordered, Allows Duplicates
+
+### ArrayList
 
+- **Backed by**: Dynamic array
+- **Best for**: Random access (`get(i)` is O(1))
+- **Worst at**: Insertions/deletions in the middle (O(n) — shifts elements)
+
+```java
+List<String> list = new ArrayList<>();
+list.add("Java");
+list.add("Python");
+list.add("Java");     // duplicates allowed
+list.get(0);          // O(1) — "Java"
+list.remove(1);       // O(n) — shifts elements
+```
+
+### LinkedList
+
+- **Backed by**: Doubly-linked list
+- **Best for**: Frequent insertions/deletions at head/tail
+- **Worst at**: Random access (`get(i)` is O(n) — traverses nodes)
+
+```java
+LinkedList<String> list = new LinkedList<>();
+list.addFirst("First");  // O(1)
+list.addLast("Last");    // O(1)
+list.get(5);             // O(n) — must traverse
+```
+
+### ArrayList vs LinkedList
+
+| Operation | ArrayList | LinkedList |
+|---|---|---|
+| `get(index)` | O(1) | O(n) |
+| `add(end)` | O(1) amortized | O(1) |
+| `add(middle)` | O(n) | O(1) if you have the node |
+| `remove(middle)` | O(n) | O(1) if you have the node |
+| Memory | Less (contiguous array) | More (node + 2 pointers per element) |
+
+**Rule of thumb**: Use `ArrayList` unless you have a specific reason for `LinkedList`. ArrayList is almost always faster in practice due to CPU cache friendliness.
+
+---
 
-## What is the contract between hashCode() and equals() method
+## Set — No Duplicates
 
-- Whenever it is invoked on the same object more than once during execution of Java application the hashCode method must consistently return the same hashCode value
-- if 2 objects are equal according to equals method then hashCode method return the same hash code for the 2 objects
-- if the hash code value is same for both the object that doesn't mean that both objects are equal.
+### HashSet
 
-**Why we should override hash code and equals method??**
+- **Backed by**: `HashMap` internally
+- **Order**: No guaranteed order
+- **Null**: Allows one null element
+- **Performance**: O(1) for add, remove, contains
 
-hashcode -based on memory address
+### LinkedHashSet
+
+- **Backed by**: `LinkedHashMap`
+- **Order**: Maintains **insertion order**
+- **Use case**: When you need uniqueness + predictable iteration order
 
-equals—based on references
+### TreeSet
 
-contract b/w hash code and equals: if the hashcodes are same , then only equals method will be called.
+- **Backed by**: Red-Black Tree (`TreeMap`)
+- **Order**: **Sorted** (natural order or custom `Comparator`)
+- **Performance**: O(log n) for add, remove, contains
+- **Null**: Does NOT allow null
+
+```java
+Set<Integer> set = new TreeSet<>();
+set.add(30); set.add(10); set.add(20);
+System.out.println(set);  // [10, 20, 30] — sorted
+```
+
+---
+
+## Map — Key-Value Pairs
 
-1.if we don’t override hashcode
+### HashMap
 
--  it generates the hashcode based on the memory address and as we using new keyword , the address will be different and the hashcodes are different . so equals method won’t be called and the same objects will be inserted which results in duplicates.
+- **Backed by**: Array of buckets + linked lists (or trees when bucket > 8 elements)
+- **Order**: No guaranteed order
+- **Null**: One null key, multiple null values
+- **Performance**: O(1) average for get/put
 
-2. if we don’t override equals
+### How HashMap Works Internally
 
--  if the hashcodes are same then equals method will be called , as we have not overridden equals method. Object class equal method compares the references and the references will be different , so it returns false , which results duplicates.
+```
+    Index:  [0]  [1]  [2]  [3]  [4]  [5]  [6]  [7]
+             │         │
+             ▼         ▼
+          [K1,V1]   [K3,V3]──►[K4,V4]  (collision → linked list)
+             │
+             ▼
+          [K2,V2]  (collision → linked list, then tree if > 8)
+```
+
+1. `hashCode()` of key → determines **bucket index**
+2. If bucket is empty → insert directly
+3. If bucket has entries → check `equals()` for duplicate key
+4. If same key → **replace** value
+5. If different key → **chain** (linked list, or red-black tree if chain > 8)
 
-
-
-Why we should override and equals method?
-
-Student s1=new Student(“Sai”,1);
-
-Student s2=new Student(“Sai”,2);
-
-Set<Studentset=new HashSet<();
-
-set.add(s1);
-
-set.add(s2);
-
-- The hash code will be different
-- The size of the set will be 2. Because we didn’t override equals and hash code in Student class and it will invoke objects class equals and that will consider these as distinct objects .
-- Because the references are different and points to 2 separate objects in heap memory .This is a bad behaviour in an application and which is cause for few side effects like memory data redundancy etc.
-- You overcome this issue it's always best practice to override equals and hashCode in custom classes.
-
-## Cursors in Java
-
-To retrieve elements one by one from collection.
-
-There are 3 coursers in java
-
-1.Enumeration
-
-2.Iterator
-
-3.List Iterator
-
-Enumeration :
-
-- It is used to get Objects one by one from the old Collection Objects like vector and it is introduced in 1.0 v.
-- Enumeration e =v.elements();
-- It defines the following two methods.
-- public boolean hasMoreElements();
-- public Objects nextElements();
-
-Iterator:
-
-1.We can apply Iterator concept for any Collection Object .Hence it is universal Cursor.
-
-2. By Using Iterator we can both perform read and remove operations.
-
-3.We can create iterator object by using iterator() method of Collection interface.
-
-Iterator itr =C.iterator(); C is any collection object.
-
-Methods:
-
-1. public boolean hasNext();
-2. public Object next();
-3. public void remove();
-
-Limitations of Iterator:
-
-1.We can move only towards forward direction and cannot move to the backward direction. Hence these are single direction cursors.
-
-2. By using iterator we can perform only read and remove operations and we can’t perform replacement of new Objects.
-
-List Iterator:
-
-1.By using List Iterator we can move either to the forward direction or the backward direction . Hence these are called as Bidirection cursor.
-
-2.By using List Iterator we can perform replacement and addition of new Objects in addition read and remove operations.
-
-Methods:
-
-1.public boolean hasNext();
-
-2. public Object next();
-
-3. public
-
-int nextIndex();
-
-4. public boolean hasPrevious();
-
-5.public Object previous();
-
-6.public int previousIndex();
-
-7.public void remove();
-
-8. public void set(Object new);
-
-9.public void add(Object new);
-
-
-
-## Working of HashMap
-
-
-![img_4.png](img_4.png)
-
-                    Internal Working of Hash Map
-
-Hash set underlying data structure is Hash table . Hash set works on principle of Hashing.
-
-1.when we are added the values into Hash map we should add both key and value.
-
-2. .hashCode() method calculates the hash code of the key
-
-3. Using the Hash code , bucket index will be calculated
-
-4. If there is no Hash Collison then it adds the key value pair into the first node of the bucket.
-
-5. If there is hash collision , then it compare the content of value using Equals method
-
-6.If both the values are not same ,then it adds in the next node.
-
-7.If the values are same then it adds to the linked list by replacing the existing equal node.
-
-**HashCode:**
-
-Providing Memory Identification Number which is given by JVM without checking content
-
-**Equals Method:**
-
-Compares the content or value comparison.
-
-Hash Collision:
-
-Hash collision means getting the same bucket number.
-
-**Java 8 Enhancement to HashMap:**
-
-map.get(“EA”);
-
-Step 1: calculates hash code
-
-Step 2: gets the bucket index
-
-Step 3: traverses through the nodes in the bucket
-
-So it takes time to traverse through all the nodes. Performance Degradation
-
--  In java 8 , after reaching some threshold of nodes , linked list is converted to tree . the threshold is called Treefy thresholding
-
-Uses Compare to for find the order.
-
-![img_5.png](img_5.png)
-
+### The hashCode/equals Contract
+
+| Rule | Meaning |
+|---|---|
+| If `a.equals(b)` → `a.hashCode() == b.hashCode()` | Equal objects MUST have the same hash code |
+| If `a.hashCode() == b.hashCode()` → `a.equals(b)` might be false | Same hash doesn't mean equal (collisions exist) |
+| Override both or neither | Breaking this contract breaks HashMap |
+
+```java
+public class Employee {
+    private int id;
+    private String name;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee e)) return false;
+        return id == e.id && Objects.equals(name, e.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+}
+```
+
+### LinkedHashMap
+
+- Maintains **insertion order** (or access order for LRU cache)
+- Slightly slower than HashMap due to maintaining linked list
+
+### TreeMap
+
+- **Sorted** by key (natural order or custom `Comparator`)
+- O(log n) for all operations
+- Does NOT allow null keys
+
+---
+
+## Queue and Deque
+
+### PriorityQueue
+
+- Elements ordered by **priority** (natural order or Comparator)
+- NOT FIFO — highest priority element comes out first
+- Backed by: min-heap
+
+```java
+PriorityQueue<Integer> pq = new PriorityQueue<>();
+pq.add(30); pq.add(10); pq.add(20);
+pq.poll();  // 10 (smallest = highest priority)
+pq.poll();  // 20
+```
+
+### ArrayDeque
+
+- Double-ended queue — add/remove from both ends
+- **Faster** than `LinkedList` as a queue and stack
+- No null elements
+
+```java
+Deque<String> stack = new ArrayDeque<>();
+stack.push("A"); stack.push("B");
+stack.pop();  // "B" (LIFO)
+
+Deque<String> queue = new ArrayDeque<>();
+queue.offer("A"); queue.offer("B");
+queue.poll();  // "A" (FIFO)
+```
+
+---
+
+## Fail-Fast vs Fail-Safe Iterators
+
+| Type | Behavior | Example |
+|---|---|---|
+| **Fail-Fast** | Throws `ConcurrentModificationException` if collection is modified during iteration | `ArrayList`, `HashMap`, `HashSet` |
+| **Fail-Safe** | Works on a copy, no exception | `CopyOnWriteArrayList`, `ConcurrentHashMap` |
+
+```java
+// Fail-Fast — throws exception
+List<String> list = new ArrayList<>(List.of("A", "B", "C"));
+for (String s : list) {
+    if (s.equals("B")) list.remove(s);  // ConcurrentModificationException!
+}
+
+// Safe way — use Iterator.remove()
+Iterator<String> it = list.iterator();
+while (it.hasNext()) {
+    if (it.next().equals("B")) it.remove();  // safe
+}
+```
+
+---
+
+## Choosing the Right Collection
+
+| Need | Use |
+|---|---|
+| Ordered list, fast random access | `ArrayList` |
+| Frequent add/remove at ends | `LinkedList` or `ArrayDeque` |
+| Unique elements, no order | `HashSet` |
+| Unique elements, sorted | `TreeSet` |
+| Unique elements, insertion order | `LinkedHashSet` |
+| Key-value pairs, fast lookup | `HashMap` |
+| Key-value pairs, sorted keys | `TreeMap` |
+| Key-value pairs, insertion order | `LinkedHashMap` |
+| Priority-based processing | `PriorityQueue` |
+| Stack (LIFO) | `ArrayDeque` |
+| Queue (FIFO) | `ArrayDeque` or `LinkedList` |
+| Thread-safe list | `CopyOnWriteArrayList` |
+| Thread-safe map | `ConcurrentHashMap` |
+
+---
+
+## Interview Questions
+
+??? question "1. How does HashMap handle collisions?"
+    When two keys have the same bucket index (hash collision), HashMap stores them as a **linked list** in that bucket. Since Java 8, when a bucket has more than 8 entries, the linked list converts to a **red-black tree** (O(log n) lookup instead of O(n)). When it shrinks below 6, it converts back to a linked list.
+
+??? question "2. Why should you override both hashCode() and equals()?"
+    If you override `equals()` but not `hashCode()`, two equal objects could end up in **different buckets** in a HashMap, making `map.get(key)` fail even though the key exists. The contract requires: if `a.equals(b)` is true, then `a.hashCode()` must equal `b.hashCode()`.
+
+??? question "3. What is the difference between `Comparable` and `Comparator`?"
+    `Comparable` — the class itself defines its natural ordering via `compareTo()`. One sorting logic per class. `Comparator` — an external class defines ordering via `compare()`. Multiple sorting strategies possible. Use `Comparable` for the default order, `Comparator` for alternate orders.
+
+??? question "4. Why is HashMap not thread-safe? What happens in concurrent access?"
+    Multiple threads can simultaneously modify the internal array, leading to: lost updates (one write overwrites another), infinite loops (in Java 7 due to rehashing), corrupted data. Use `ConcurrentHashMap` for thread-safe access or `Collections.synchronizedMap()` (but that's slower due to full locking).
+
+??? question "5. How would you implement an LRU Cache using Java collections?"
+    Use `LinkedHashMap` with `accessOrder=true` and override `removeEldestEntry()`:
+    ```java
+    Map<K, V> lru = new LinkedHashMap<>(capacity, 0.75f, true) {
+        protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+            return size() > capacity;
+        }
+    };
+    ```
+    For thread-safe LRU, wrap it in `Collections.synchronizedMap()` or use `ConcurrentHashMap` with a custom eviction strategy.
