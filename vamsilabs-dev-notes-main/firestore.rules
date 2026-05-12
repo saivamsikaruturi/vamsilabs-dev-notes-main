@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Page views — authenticated users can write their own
+    match /pageViews/{doc} {
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read: if request.auth != null && request.auth.token.email == 'krishnavamsikaruturi8@gmail.com';
+    }
+
+    // Users collection — users can write their own doc, admin can read all
+    match /users/{userId} {
+      allow write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && request.auth.token.email == 'krishnavamsikaruturi8@gmail.com';
+    }
+
+    // Engagement — authenticated users can write their own
+    match /engagement/{doc} {
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read: if request.auth != null && request.auth.token.email == 'krishnavamsikaruturi8@gmail.com';
+    }
+  }
+}

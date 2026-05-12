@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+<!-- Header auth button styles -->
+<style>
+.vtn-header-auth {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+}
+.vtn-header-signin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #D4682A 0%, #E8752F 100%);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(212, 104, 42, 0.3);
+}
+.vtn-header-signin:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(212, 104, 42, 0.4);
+}
+.vtn-header-signin svg {
+  width: 14px;
+  height: 14px;
+}
+.vtn-header-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem 0.25rem 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-default-fg-color);
+  background: var(--md-default-fg-color--lightest);
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+.vtn-header-user:hover {
+  background: var(--md-default-fg-color--lighter);
+}
+.vtn-header-user img {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+}
+.vtn-header-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.3rem;
+  background: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  padding: 0.5rem;
+  display: none;
+  min-width: 160px;
+  z-index: 100;
+}
+.vtn-header-dropdown.active {
+  display: block;
+}
+.vtn-header-dropdown-item {
+  display: block;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  color: var(--md-default-fg-color);
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.vtn-header-dropdown-item:hover {
+  background: var(--md-default-fg-color--lightest);
+}
+.vtn-header-dropdown-email {
+  padding: 0.3rem 0.8rem 0.5rem;
+  font-size: 0.7rem;
+  color: var(--md-default-fg-color--light);
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  margin-bottom: 0.3rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+<div class="vtn-mark-complete-wrapper" id="mark-complete-wrapper" style="display:none;">
+  <button class="vtn-mark-btn" id="mark-complete-btn" onclick="toggleMarkComplete()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+    Mark as Complete
+  </button>
+</div>
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Inject auth button into header nav
+  const headerNav = document.querySelector('.md-header__inner');
+  if (!headerNav) return;
+
+  const authContainer = document.createElement('div');
+  authContainer.className = 'vtn-header-auth';
+  authContainer.style.position = 'relative';
+  authContainer.innerHTML = `
+    <button class="vtn-header-signin" id="header-signin-btn" onclick="headerSignIn()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Sign In
+    </button>
+    <button class="vtn-header-user" id="header-user-btn" style="display:none;" onclick="toggleHeaderDropdown()">
+      <img id="header-user-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Crect fill='%23D4682A' width='22' height='22' rx='11'/%3E%3C/svg%3E" alt="">
+      <span id="header-user-name">User</span>
+    </button>
+    <div class="vtn-header-dropdown" id="header-dropdown">
+      <div class="vtn-header-dropdown-email" id="header-dropdown-email"></div>
+      <button class="vtn-header-dropdown-item" onclick="signOut(); toggleHeaderDropdown();">Sign Out</button>
+    </div>
+  `;
+  headerNav.appendChild(authContainer);
+
+  // Close dropdown on outside click
+  document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('header-dropdown');
+    const userBtn = document.getElementById('header-user-btn');
+    if (dropdown && !dropdown.contains(e.target) && !userBtn.contains(e.target)) {
+      dropdown.classList.remove('active');
+    }
+  });
+
+  // Listen for auth state changes
+  initFirebase().then(() => {
+    auth.onAuthStateChanged(function(user) {
+      const signinBtn = document.getElementById('header-signin-btn');
+      const userBtn = document.getElementById('header-user-btn');
+      const avatar = document.getElementById('header-user-avatar');
+      const name = document.getElementById('header-user-name');
+      const email = document.getElementById('header-dropdown-email');
+
+      if (user) {
+        signinBtn.style.display = 'none';
+        userBtn.style.display = 'inline-flex';
+        if (user.photoURL) avatar.src = user.photoURL;
+        name.textContent = user.displayName || user.email.split('@')[0];
+        email.textContent = user.email;
+      } else {
+        signinBtn.style.display = 'inline-flex';
+        userBtn.style.display = 'none';
+      }
+    });
+  }).catch(() => {});
+});
+
+function headerSignIn() {
+  signInWithGoogle();
+}
+
+function toggleHeaderDropdown() {
+  const dropdown = document.getElementById('header-dropdown');
+  if (dropdown) dropdown.classList.toggle('active');
+}
+</script>
+{% endblock %}

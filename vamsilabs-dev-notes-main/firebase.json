@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/firebase/firebase-tools/master/schema/firebase-config.json",
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "auth": {
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Vamsi Tech Notes",
+        "supportEmail": "krishnavamsikaruturi8@gmail.com"
+      }
+    }
+  }
+}

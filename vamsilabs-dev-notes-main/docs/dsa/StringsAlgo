@@ -1,0 +1,82 @@
+Sliding Window Algorithm
+String Hashing / rolling hash
+Rabin karp Matching Algorithm
+
+KMP Algorithm
+
+
+/****************************************************************
+
+ Following is the class structure of the Node class:
+
+ static class Node
+ {
+     int data;
+     Node next;
+     Node()
+     {
+         this.data = 0;
+         this.next = null;
+     }
+     Node(int data)
+     {
+         this.data = data;
+         this.next = null;
+     }
+     Node(int data, Node next)
+     {
+         this.data = data;
+         this.next = next;
+     }
+ };
+
+
+ *****************************************************************/
+public class Solution {
+    static class Stack {
+     Node head;
+        Stack()
+        {
+           head = null;
+        }
+
+        int getSize()
+        {
+             int size = 0;
+            Node current = head;
+            while (current != null) {
+                size++;
+                current = current.next;
+            }
+            return size;
+        }
+
+        boolean isEmpty()
+        {
+        return head==null;
+        }
+
+        void push(int data)
+        {
+           Node node = new Node(data);
+           node.next = head;
+          head=node;
+        }
+
+        void pop()
+        {
+           if (head != null) {
+        int val = head.data;
+        head = head.next;
+    }
+        }
+
+        int getTop()
+        {
+            if(head!=null){
+           return head.data;
+            }
+            return -1;
+        }
+    }
+}
