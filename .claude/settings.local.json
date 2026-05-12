@@ -57,7 +57,10 @@
       "Bash(git push *)",
       "Bash(gh auth *)",
       "Read(//Users/vkaruturi/Documents/projects/**)",
-      "Bash(zip -r vamsilabs-dev-notes-main.zip vamsilabs-dev-notes-main -x \"vamsilabs-dev-notes-main/node_modules/*\" -x \"vamsilabs-dev-notes-main/.venv/*\" -x \"vamsilabs-dev-notes-main/site/*\" -x \"vamsilabs-dev-notes-main/.git/*\")"
+      "Bash(zip -r vamsilabs-dev-notes-main.zip vamsilabs-dev-notes-main -x \"vamsilabs-dev-notes-main/node_modules/*\" -x \"vamsilabs-dev-notes-main/.venv/*\" -x \"vamsilabs-dev-notes-main/site/*\" -x \"vamsilabs-dev-notes-main/.git/*\")",
+      "Bash(curl -s https://vamsilabs-dev-notes.netlify.app)",
+      "Bash(curl -s https://vamsilabs-dev-notes.netlify.app/custom/auth.js)",
+      "Bash(curl -s https://vamsilabs-dev-notes.netlify.app/)"
     ]
   }
 }
