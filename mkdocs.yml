@@ -3,8 +3,8 @@ site_description: "A comprehensive developer reference for Java, Spring Boot, Sy
 site_author: "Vamsi Karuturi"
 site_url: "https://vamsilabs-dev-notes.netlify.app"
 
-repo_name: "vamsi1998123/vamsilabs-dev-notes-main"
-repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
+# repo_name: "vamsi1998123/vamsilabs-dev-notes-main"
+# repo_url: "https://github.com/vamsi1998123/vamsilabs-dev-notes-main"
 
 copyright: "&copy; 2024 - 2026 Vamsi Karuturi"
 
@@ -13,7 +13,7 @@ theme:
   custom_dir: docs/custom
   language: en
   font:
-    text: Inter
+    text: Source Serif 4
     code: JetBrains Mono
   icon:
     repo: fontawesome/brands/github
@@ -50,6 +50,7 @@ theme:
     - navigation.top
     - navigation.indexes
     - navigation.footer
+    - navigation.path
     - search.highlight
     - search.share
     - search.suggest
@@ -61,6 +62,7 @@ extra_css:
 
 extra_javascript:
   - custom/theme-toggle.js
+  - custom/auth.js
 
 markdown_extensions:
   - abbr
@@ -121,6 +123,12 @@ plugins:
   - termynal:
       title: bash
       buttons: windows
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+      enabled: !ENV [ENABLE_GIT_DATES, true]
 
 nav:
   - Home: index.md
@@ -162,7 +170,7 @@ nav:
           - Collections Framework: java/Collections.md
           - Comparable vs Comparator: java/ComparableComparator.md
           - Collections Compared: java/DiffCollections.md
-          - Stream API: stream api/streamapi.md
+          - Stream API: stream-api/streamapi.md
       - Concurrency:
           - Multithreading: java/MultiThreading.md
           - Locks: java/Locks.md
@@ -184,17 +192,48 @@ nav:
           - Annotations: springboot/Annotations.md
           - IoC & DI: springboot/SpringIOC.md
           - Types of DI: springboot/TypesOfDi.md
+          - Bean Lifecycle & Scopes: springboot/bean-lifecycle.md
+          - AOP (Aspect-Oriented): springboot/aop.md
+          - Design Patterns in Spring: springboot/design-patterns.md
+          - Spring Data JPA: springboot/spring-data-jpa.md
+          - Transactions: springboot/transactions.md
+          - Validation & Data Binding: springboot/validation.md
           - REST API Practices: springboot/restapibestpractices.md
+          - Exception Handling: springboot/exceptionhandling.md
+          - Profiles: springboot/profiles.md
+          - Caching: springboot/caching.md
+          - Events & Listeners: springboot/events.md
+          - WebFlux & Reactive: springboot/webflux.md
+          - Async & Scheduling: springboot/async.md
+          - Security: springboot/security.md
+          - Database Migrations: springboot/database-migrations.md
+          - Actuator & Monitoring: springboot/actuator.md
+          - Testing: springboot/testing.md
           - Spring Boot 3: springboot/SpringBoot3.md
       - Microservices:
           - Fundamentals: microservices/microservices.md
+          - Design Principles: microservices/design-principles.md
           - Inter-Service Comm.: microservices/InterServiceCommunication.md
+          - gRPC Communication: microservices/grpc.md
           - Async Comm. (Kafka): microservices/AsyncCommunicationUsingKafka.md
+          - Event-Driven Architecture: microservices/event-driven.md
           - API Gateway: microservices/APIGATEWAY.md
+          - API Gateway Patterns: microservices/api-gateway-patterns.md
+          - API Versioning: microservices/api-versioning.md
           - Service Discovery: microservices/ServiceDiscovery.md
           - Circuit Breaker: microservices/CircuitBreaker.md
-          - Observability: microservices/Observability.md
+          - Resilience Patterns: microservices/resilience-patterns.md
           - Saga Pattern: microservices/SagaDesignPattern.md
+          - Distributed Transactions: microservices/distributed-transactions.md
+          - Data Management: microservices/data-management.md
+          - Config Management: microservices/config-management.md
+          - Service Mesh: microservices/service-mesh.md
+          - Deployment Strategies: microservices/deployment-strategies.md
+          - Logging & Monitoring: microservices/logging-monitoring.md
+          - Observability: microservices/Observability.md
+          - Containerization: microservices/containerization.md
+          - Testing Microservices: microservices/testing-microservices.md
+          - Security: microservices/security-microservices.md
           - CQRS: CQRS.md
   - Low Level Design:
       - LLD Roadmap: lld/lld-roadmap.md
@@ -243,7 +282,7 @@ nav:
       - SQL Fundamentals: databases/sql.md
       - PostgreSQL: postgresql/postgresql.md
       - Neo4j: databases/neo4j.md
-      - Kafka: Kafka/kafka.md
+      - Kafka: kafka-messaging/kafka.md
       - Security:
           - OAuth 2.0: security/Oauth.md
           - JWT: security/JWT.md
@@ -257,14 +296,16 @@ nav:
       - Ansible: devops/ansible.md
       - AWS: devops/aws.md
       - CI/CD Pipelines: cicd/cicd.md
+  - AI & ML:
+      - Overview: aiml/aiml.md
   - Languages:
-      - AI & ML: aiml/aiml.md
       - Golang: golang/introduction.md
       - Python: python/introduction.md
       - Kotlin: kotlin/introduction.md
       - TypeScript: typescript/introduction.md
       - Rust: rust/introduction.md
       - Ruby: ruby/introduction.md
+  - Admin: admin.md
 
 extra:
   social:

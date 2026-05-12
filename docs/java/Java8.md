@@ -36,6 +36,40 @@ add.compute(10, 20);      // 30
 multiply.compute(10, 20);  // 200
 ```
 
+### Functional Interfaces at a Glance
+
+```mermaid
+graph LR
+    subgraph FunctionalInterfaces["Core Functional Interfaces"]
+        direction TB
+        P["Predicate&lt;T&gt;<br/><b>T → boolean</b><br/>test()"]
+        F["Function&lt;T, R&gt;<br/><b>T → R</b><br/>apply()"]
+        C["Consumer&lt;T&gt;<br/><b>T → void</b><br/>accept()"]
+        S["Supplier&lt;T&gt;<br/><b>() → T</b><br/>get()"]
+    end
+
+    IN["Input T"] -->|"passes value"| P
+    IN -->|"passes value"| F
+    IN -->|"passes value"| C
+    NOTHING["No Input"] -->|"triggers"| S
+
+    P -->|"returns"| BOOL["boolean"]
+    F -->|"returns"| R["R (transformed)"]
+    C -->|"returns"| VOID["void (side effect)"]
+    S -->|"returns"| T["T (new value)"]
+
+    style P fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style C fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
+    style S fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style BOOL fill:#e1f5fe,stroke:#0288d1
+    style R fill:#f3e5f5,stroke:#7b1fa2
+    style VOID fill:#fff3e0,stroke:#ef6c00
+    style T fill:#e8f5e9,stroke:#388e3c
+    style IN fill:#fce4ec,stroke:#c62828,stroke-width:2px
+    style NOTHING fill:#f5f5f5,stroke:#616161
+```
+
 ### Built-in Functional Interfaces
 
 | Interface | Method | Input → Output | Example |
@@ -166,6 +200,59 @@ v.validate("test@email.com");  // true
 
 Streams provide a **declarative way to process collections** — filter, transform, aggregate — without manual loops.
 
+```mermaid
+graph LR
+    subgraph Source["Data Source"]
+        S1["Collection<br/>Array<br/>Stream.of()"]
+    end
+
+    subgraph Intermediate["Intermediate Operations<br/><i>(Lazy - not executed until terminal op)</i>"]
+        direction TB
+        F["filter()"]
+        M["map()"]
+        FM["flatMap()"]
+        D["distinct()"]
+        SO["sorted()"]
+    end
+
+    subgraph Terminal["Terminal Operation<br/><i>(Triggers execution)</i>"]
+        direction TB
+        COL["collect()"]
+        RED["reduce()"]
+        FE["forEach()"]
+        CNT["count()"]
+    end
+
+    subgraph Result["Result"]
+        R["List / Map / Value"]
+    end
+
+    S1 ==>|"creates stream"| F
+    F -->|"keeps matching"| M
+    M -->|"transforms"| FM
+    FM -->|"flattens"| D
+    D -->|"removes dups"| SO
+
+    SO ==>|"triggers pipeline"| COL
+    SO ==>|"triggers pipeline"| RED
+    SO ==>|"triggers pipeline"| FE
+    SO ==>|"triggers pipeline"| CNT
+    COL --> R
+    RED --> R
+
+    style S1 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style F fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    style M fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    style FM fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    style D fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    style SO fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    style COL fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style RED fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style FE fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style CNT fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
+```
+
 ```
     Source ──► Filter ──► Map ──► Reduce ──► Result
     (List)    (keep some) (transform) (combine)
@@ -241,13 +328,54 @@ String nameList = employees.stream()
     .collect(Collectors.joining(", "));
 ```
 
-For the complete Stream API deep-dive, see the dedicated [Stream API](../stream%20api/streamapi.md) page.
+For the complete Stream API deep-dive, see the dedicated [Stream API](../stream-api/streamapi.md) page.
 
 ---
 
 ## Optional — Kill the NullPointerException
 
 `Optional<T>` is a container that may or may not hold a value. It forces you to handle absence explicitly.
+
+```mermaid
+flowchart TD
+    subgraph OptionalFlow["Optional Flow — Preventing NullPointerException"]
+        START["Optional&lt;T&gt; received"] --> CHECK{{"Value<br/>present?"}}
+
+        CHECK -->|"YES"| PRESENT["Value is Present"]
+        CHECK -->|"NO"| EMPTY["Optional is Empty"]
+
+        PRESENT --> MAP["map(Function)<br/><i>Transform the value</i>"]
+        PRESENT --> FLATMAP["flatMap(Function)<br/><i>Chain Optional-returning ops</i>"]
+        PRESENT --> GET["get()<br/><i>Unwrap directly</i>"]
+        PRESENT --> IFPRESENT["ifPresent(Consumer)<br/><i>Perform action</i>"]
+
+        EMPTY --> ORELSE["orElse(default)<br/><i>Return fallback value</i>"]
+        EMPTY --> ORELSEGET["orElseGet(Supplier)<br/><i>Lazy fallback computation</i>"]
+        EMPTY --> ORELSETHROW["orElseThrow(Supplier)<br/><i>Throw custom exception</i>"]
+
+        MAP --> RESULT["Safe Result"]
+        FLATMAP --> RESULT
+        GET --> RESULT
+        IFPRESENT --> RESULT
+        ORELSE --> RESULT
+        ORELSEGET --> RESULT
+        ORELSETHROW --> EXCEPTION["Exception Thrown"]
+    end
+
+    style CHECK fill:#fff3e0,stroke:#e65100,stroke-width:3px
+    style PRESENT fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style EMPTY fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style MAP fill:#e8f5e9,stroke:#388e3c
+    style FLATMAP fill:#e8f5e9,stroke:#388e3c
+    style GET fill:#e8f5e9,stroke:#388e3c
+    style IFPRESENT fill:#e8f5e9,stroke:#388e3c
+    style ORELSE fill:#fce4ec,stroke:#ad1457
+    style ORELSEGET fill:#fce4ec,stroke:#ad1457
+    style ORELSETHROW fill:#fce4ec,stroke:#ad1457
+    style RESULT fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    style EXCEPTION fill:#f44336,stroke:#b71c1c,color:#fff
+    style START fill:#ede7f6,stroke:#4527a0,stroke-width:2px
+```
 
 ### Creating Optional
 

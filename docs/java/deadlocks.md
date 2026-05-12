@@ -6,6 +6,23 @@ A deadlock occurs when **two or more threads are blocked forever**, each waiting
 
 ## How Deadlocks Happen
 
+```mermaid
+graph LR
+    subgraph DeadlockCycle["Deadlock — Circular Dependency"]
+        TA["Thread A<br/><b>Holds Lock 1</b>"] -->|"Waits for<br/>Lock 2"| TB["Thread B<br/><b>Holds Lock 2</b>"]
+        TB -->|"Waits for<br/>Lock 1"| TA
+    end
+
+    L1["Lock 1"] -.->|"owned by"| TA
+    L2["Lock 2"] -.->|"owned by"| TB
+
+    style TA fill:#ffcdd2,stroke:#c62828,stroke-width:3px
+    style TB fill:#bbdefb,stroke:#1565c0,stroke-width:3px
+    style L1 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style L2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style DeadlockCycle fill:#fce4ec,stroke:#d32f2f,stroke-width:2px
+```
+
 ```
     Thread-1                          Thread-2
     ────────                          ────────
@@ -84,6 +101,33 @@ Break **any one** condition and deadlocks become impossible.
 ---
 
 ## Prevention Strategies
+
+```mermaid
+flowchart TD
+    subgraph PreventionTree["Deadlock Prevention — Decision Tree"]
+        START["Deadlock Risk<br/>Detected"] --> Q1{{"Multiple locks<br/>needed?"}}
+
+        Q1 -->|"YES"| S1["<b>Lock Ordering</b><br/>Always acquire locks in<br/>the same global order<br/><i>(break circular wait)</i>"]
+        Q1 -->|"Can avoid"| S4["<b>Use Higher-Level<br/>Concurrency</b><br/>ConcurrentHashMap,<br/>BlockingQueue<br/><i>(avoid locks entirely)</i>"]
+
+        S1 --> Q2{{"Ordering not<br/>feasible?"}}
+
+        Q2 -->|"YES"| S2["<b>tryLock with Timeout</b><br/>Give up after N ms,<br/>release & retry<br/><i>(break no preemption)</i>"]
+        Q2 -->|"Alternative"| S3["<b>Acquire All at Once</b><br/>Lock everything or nothing,<br/>no partial holding<br/><i>(break hold and wait)</i>"]
+
+        S2 --> DETECT["<b>Deadlock Detection</b><br/>ThreadMXBean monitoring<br/>jstack thread dumps<br/><i>(last resort — detect & recover)</i>"]
+        S3 --> DETECT
+    end
+
+    style START fill:#ffcdd2,stroke:#c62828,stroke-width:3px
+    style Q1 fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Q2 fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style S1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style S2 fill:#bbdefb,stroke:#1565c0,stroke-width:2px
+    style S3 fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
+    style S4 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style DETECT fill:#ffe0b2,stroke:#e65100,stroke-width:2px
+```
 
 ### 1. Lock Ordering (Break Circular Wait)
 

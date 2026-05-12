@@ -29,13 +29,23 @@ An immutable object **cannot be modified after creation**. Immutability is a cor
 
 ## Rules for Creating an Immutable Class
 
-```
-    1. Declare the class as final           → no subclass can break immutability
-    2. Make all fields private and final     → can't be accessed or reassigned
-    3. No setter methods                     → no way to change state
-    4. Initialize all fields via constructor  → state is set once
-    5. Defensive copy mutable objects IN     → constructor copies incoming objects
-    6. Defensive copy mutable objects OUT    → getters return copies, not originals
+```mermaid
+graph TD
+    R1["1️⃣ Declare class as <b>final</b><br/>No subclass can break immutability"]
+    R2["2️⃣ All fields <b>private final</b><br/>Can't be accessed or reassigned"]
+    R3["3️⃣ No setter methods<br/>No way to change state"]
+    R4["4️⃣ Initialize via <b>constructor</b><br/>State is set once"]
+    R5["5️⃣ Defensive copy IN<br/>Constructor copies incoming objects"]
+    R6["6️⃣ Defensive copy OUT<br/>Getters return copies, not originals"]
+
+    R1 --> R2 --> R3 --> R4 --> R5 --> R6
+
+    style R1 fill:#7C4DFF,color:#fff
+    style R2 fill:#651FFF,color:#fff
+    style R3 fill:#536DFE,color:#fff
+    style R4 fill:#448AFF,color:#fff
+    style R5 fill:#2979FF,color:#fff
+    style R6 fill:#2962FF,color:#fff
 ```
 
 ---

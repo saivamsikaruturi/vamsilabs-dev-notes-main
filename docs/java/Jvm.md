@@ -4,6 +4,76 @@ The Java Virtual Machine (JVM) is what makes Java **platform-independent**. Your
 
 ---
 
+## JVM Architecture Diagram
+
+```mermaid
+flowchart TB
+    subgraph CLS["Class Loading Subsystem"]
+        style CLS fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+        L[Loading] --> LK[Linking]
+        LK --> INIT[Initialization]
+        LK --- V[Verify]
+        LK --- P[Prepare]
+        LK --- R[Resolve]
+    end
+
+    subgraph RDA["Runtime Data Areas"]
+        style RDA fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+        subgraph SHARED["Shared (All Threads)"]
+            style SHARED fill:#c8e6c9,stroke:#2e7d32
+            MA[Method Area / Metaspace]
+            HEAP[Heap]
+        end
+        subgraph PERTHREAD["Per Thread"]
+            style PERTHREAD fill:#a5d6a7,stroke:#1b5e20
+            STK[Stack]
+            PC[PC Register]
+            NMS[Native Method Stack]
+        end
+    end
+
+    subgraph EE["Execution Engine"]
+        style EE fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+        INT[Interpreter]
+        JIT[JIT Compiler]
+        GC[Garbage Collector]
+    end
+
+    subgraph NI["Native Interface"]
+        style NI fill:#fce4ec,stroke:#c62828,stroke-width:2px
+        JNI[JNI]
+        NL[Native Libraries]
+    end
+
+    CLS ==> RDA
+    RDA ==> EE
+    EE ==> NI
+```
+
+## Class Loading Delegation Model
+
+```mermaid
+sequenceDiagram
+    participant App as Application ClassLoader
+    participant Plat as Platform ClassLoader
+    participant Boot as Bootstrap ClassLoader
+
+    App->>Plat: Can you load UserService?
+    Plat->>Boot: Can you load UserService?
+    Boot-->>Boot: Search in rt.jar / jmods
+    Boot--xPlat: Not found
+    Plat-->>Plat: Search in platform modules
+    Plat--xApp: Not found
+    App-->>App: Search in classpath
+    App->>App: Found UserService.class - Loaded!
+
+    Note over Boot: Loads core Java classes<br/>(java.lang, java.util)
+    Note over Plat: Loads platform extensions<br/>(javax, etc.)
+    Note over App: Loads YOUR classes<br/>from classpath
+```
+
+---
+
 ## The Big Picture
 
 ```

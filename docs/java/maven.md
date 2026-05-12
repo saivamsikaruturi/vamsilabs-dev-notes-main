@@ -98,6 +98,7 @@
     </plugins>
 </build>
 ```
+
 ### maven-surefire-plugin
 
 <https://maven.apache.org/surefire/maven-surefire-plugin/>
@@ -114,7 +115,6 @@
     </configuration>
 </plugin>
 ```
-
 
 
 ### maven-failsafe-plugin
@@ -249,6 +249,7 @@
     </plugin>
 </project>
 ```
+
 ### dependency-check-maven
 <https://jeremylong.github.io/DependencyCheck/index.html>
 
@@ -294,6 +295,7 @@
     </executions>
 </plugin>
 ```
+
 ### flyway-maven-plugin
 <https://flywaydb.org/documentation/maven/>
 
@@ -324,6 +326,7 @@
     </plugin>
 </project>
 ```
+
 ### maven-antrun-plugin
 <http://maven.apache.org/plugins/maven-antrun-plugin/>
 
@@ -394,6 +397,7 @@
     </executions>
 </plugin>
 ```
+
 ### maven-resources-plugin
 <https://maven.apache.org/plugins/maven-resources-plugin/>
 

@@ -21,18 +21,17 @@ Java 17 is the **current Long-Term Support** release and the minimum version for
 
 Sealed classes let you **control exactly which classes can extend** your class. This is huge for domain modelling.
 
-```
-                    ┌─────────────┐
-                    │   Shape     │  (sealed)
-                    │  {sealed}   │
-                    └──────┬──────┘
-                           │ permits
-              ┌────────────┼────────────┐
-              ▼            ▼            ▼
-        ┌──────────┐ ┌──────────┐ ┌──────────┐
-        │  Circle  │ │ Rectangle│ │ Triangle │
-        │ {final}  │ │{non-seal}│ │ {final}  │
-        └──────────┘ └──────────┘ └──────────┘
+```mermaid
+graph TD
+    Shape["🔒 Shape<br/><i>sealed</i>"]
+    Shape -->|permits| Circle["⭕ Circle<br/><i>final</i>"]
+    Shape -->|permits| Rectangle["📐 Rectangle<br/><i>non-sealed</i>"]
+    Shape -->|permits| Triangle["🔺 Triangle<br/><i>final</i>"]
+
+    style Shape fill:#7C4DFF,color:#fff,stroke:#4A148C,stroke-width:2px
+    style Circle fill:#00BCD4,color:#fff,stroke:#006064,stroke-width:2px
+    style Rectangle fill:#FF9800,color:#fff,stroke:#E65100,stroke-width:2px
+    style Triangle fill:#4CAF50,color:#fff,stroke:#1B5E20,stroke-width:2px
 ```
 
 ```java

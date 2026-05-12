@@ -1,72 +1,251 @@
-## Why SAGA ??
-* We know that Design pattern gives solutions to common problems faced by us “THE DEVELOPERS”. So What problem is solved by this SAGA design pattern ?
+# 🎭 Saga Design Pattern
 
-* The problem started as soon as we moved from Monolithic application to Microservice Architecture.
+> **Manage distributed transactions across multiple microservices using a sequence of local transactions with compensating actions for rollback.**
 
-* We will take example of Swiggy,zomato. 
-  a) You Choose your dishes, Add them to Cart and checkout 
-  b)Make Payment
-  c)Order gets Delivered
-  d)Our order is marked as completed after delivery is successful.
+---
 
-* In monolithic it’s not a problem as we have 1 database , multiple Tables like Orders, Payments, Delivery Etc. Now in 1 Single Atomic transaction we can do all these steps and if payment fails, everything gets rolled back.
+!!! abstract "Real-World Analogy"
+    Think of **booking a vacation** — you book a flight, then a hotel, then a car rental. If the car rental fails (no cars available), you need to **cancel the hotel** and **cancel the flight** (compensating transactions). Each booking is a separate service, and there's no single "undo all" button. The Saga pattern coordinates this sequence.
 
+```mermaid
+flowchart LR
+    A["✈️ Book Flight"] --> B["🏨 Book Hotel"]
+    B --> C["🚗 Book Car"]
+    C -->|"❌ Failed!"| D["↩️ Cancel Hotel"]
+    D --> E["↩️ Cancel Flight"]
+    
+    style A fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style B fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style C fill:#FFCDD2,stroke:#C62828,color:#000
+    style D fill:#FFF3E0,stroke:#E65100,color:#000
+    style E fill:#FFF3E0,stroke:#E65100,color:#000
+```
 
-* Now we moved to microservices architecture and Segregated the whole zomato or swiggy application to
-   a)Order service
-   b)Payment service
-   c)Delivery Service
+---
 
-* Now your order service accepts your order, Payment service validates the payment done and Delivery service is responsible for delivery of your order to your home. When delivered successfully the orders is marked completed in the application. This is happy case.
+## ❓ The Problem
 
-* Ever thought about the worst case Delivery is failed as no delivery partner was available. Your payment was done, Money got deducted and now No food. At Least we need to get the money back and Order must be marked as cancelled.
+In a monolith, you have one database and one transaction:
 
-* For this to happen we need a Transaction rollback . Transaction did get rolled back but only the scope of transaction was in Delivery service. The boundary for this transaction ended in Delivery service.
+```java
+@Transactional  // One atomic transaction — either ALL succeed or ALL rollback
+public void placeOrder(Order order) {
+    orderRepository.save(order);         // 1. Save order
+    paymentService.charge(order);        // 2. Charge payment
+    inventoryService.reserve(order);     // 3. Reserve stock
+    deliveryService.schedule(order);     // 4. Schedule delivery
+}
+```
 
-* Ways to Implement SAGA?
-  There are two type of saga implementation ways
-  a) choreography
-  b) orchestration
+In microservices, **each service has its own database** — there's no single `@Transactional` that spans multiple services.
 
-* What is Choreography Saga Pattern?
+```mermaid
+flowchart TD
+    subgraph Problem["❌ Can't do this in Microservices"]
+        T["@Transactional across<br/>multiple services?"] --> X["NOT POSSIBLE!"]
+    end
+    
+    subgraph MS["Microservices Reality"]
+        O["Order Service<br/>🗄️ Order DB"] ---|HTTP/Event| P["Payment Service<br/>🗄️ Payment DB"]
+        P ---|HTTP/Event| I["Inventory Service<br/>🗄️ Inventory DB"]
+        I ---|HTTP/Event| D["Delivery Service<br/>🗄️ Delivery DB"]
+    end
 
-* Choreography is a way to coordinate sagas where participants exchange events without a centralized point of control
+    style X fill:#FFCDD2,stroke:#C62828,color:#000
+    style O fill:#E3F2FD,stroke:#1565C0,color:#000
+    style P fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style I fill:#FFF3E0,stroke:#E65100,color:#000
+    style D fill:#F3E5F5,stroke:#6A1B9A,color:#000
+```
 
-* With choreography, each microservices run its own local transaction and publishes events to message broker system and that trigger local transactions in other microservices.
+---
 
-**Advantages of Choreography Saga Pattern?**
+## ✅ The Solution: Saga Pattern
 
-* Good for simple workflows that require few participants and don't need a coordination logic
+A Saga is a sequence of **local transactions**. Each local transaction updates its own database and triggers the next step. If any step fails, **compensating transactions** are executed to undo previous steps.
 
-* Doesn't require additional service implementation and maintenance.
+---
 
-* Doesn't introduce a single point of failure, since the responsibilities are distributed across the saga participants.
+## 📐 Two Implementation Approaches
 
-**Disadvantages of Choreography Saga Design Pattern?**
+### 1. Choreography (Event-Based)
 
-* Workflow can become confusing when adding new steps, as it's difficult to track which saga participants listen to which commands.
+Each service listens for events and reacts — no central coordinator.
 
-* There's a risk of cyclic dependency between saga participants because they have to consume each other's commands
+```mermaid
+flowchart LR
+    OS["🛒 Order Service<br/>OrderCreated"] -->|event| PS["💳 Payment Service<br/>PaymentCompleted"]
+    PS -->|event| IS["📦 Inventory Service<br/>StockReserved"]
+    IS -->|event| DS["🚚 Delivery Service<br/>DeliveryScheduled"]
+    
+    DS -.->|"❌ DeliveryFailed"| IS
+    IS -.->|"↩️ StockReleased"| PS
+    PS -.->|"↩️ PaymentRefunded"| OS
+    OS -.->|"↩️ OrderCancelled"| Done["Done"]
 
+    style OS fill:#E3F2FD,stroke:#1565C0,color:#000
+    style PS fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style IS fill:#FFF3E0,stroke:#E65100,color:#000
+    style DS fill:#F3E5F5,stroke:#6A1B9A,color:#000
+```
 
-**What is Orchestration Saga Pattern?**
+```java
+// Order Service — publishes event
+@Service
+public class OrderService {
+    
+    @Autowired private KafkaTemplate<String, OrderEvent> kafkaTemplate;
+    
+    @Transactional
+    public Order createOrder(OrderRequest request) {
+        Order order = orderRepository.save(new Order(request));
+        kafkaTemplate.send("order-events", new OrderCreatedEvent(order.getId(), order.getAmount()));
+        return order;
+    }
+    
+    @KafkaListener(topics = "payment-events")
+    public void handlePaymentFailed(PaymentFailedEvent event) {
+        // Compensating transaction
+        orderRepository.updateStatus(event.getOrderId(), OrderStatus.CANCELLED);
+    }
+}
 
-* Orchestration is a way to coordinate sagas where a centralized controller tells the saga participants what local transactions to execute.
+// Payment Service — listens and reacts
+@Service
+public class PaymentService {
+    
+    @KafkaListener(topics = "order-events")
+    public void handleOrderCreated(OrderCreatedEvent event) {
+        try {
+            Payment payment = processPayment(event.getOrderId(), event.getAmount());
+            kafkaTemplate.send("payment-events", new PaymentCompletedEvent(event.getOrderId()));
+        } catch (PaymentException e) {
+            kafkaTemplate.send("payment-events", new PaymentFailedEvent(event.getOrderId()));
+        }
+    }
+}
+```
 
-* The saga orchestrator handles all the transactions and tells the participants which operation to perform based on events.
+### 2. Orchestration (Central Coordinator)
 
-**Advantages of Orchestration Saga Pattern?**
+A single **Saga Orchestrator** tells each service what to do and handles failures.
 
-* Good for complex workflows involving many participants or new participants added over time.
+```mermaid
+flowchart TD
+    O["🎯 Saga Orchestrator"]
+    O -->|"1. Create Order"| OS["🛒 Order Service"]
+    O -->|"2. Process Payment"| PS["💳 Payment Service"]
+    O -->|"3. Reserve Stock"| IS["📦 Inventory Service"]
+    O -->|"4. Schedule Delivery"| DS["🚚 Delivery Service"]
+    
+    DS -.->|"❌ Failed"| O
+    O -.->|"Compensate 3"| IS
+    O -.->|"Compensate 2"| PS
+    O -.->|"Compensate 1"| OS
 
-* Suitable when there is control over every participant in the process, and control over the flow of activities.
+    style O fill:#FEF3C7,stroke:#D97706,stroke-width:3px,color:#000
+    style OS fill:#E3F2FD,stroke:#1565C0,color:#000
+    style PS fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style IS fill:#FFF3E0,stroke:#E65100,color:#000
+    style DS fill:#F3E5F5,stroke:#6A1B9A,color:#000
+```
 
-* Doesn't introduce cyclic dependencies, because the orchestrator unilaterally depends on the saga participants.
+```java
+// Saga Orchestrator
+@Service
+public class OrderSagaOrchestrator {
 
-* Saga participants don't need to know about commands for other participants. Clear separation of concerns simplifies business logic.
+    public void executeSaga(OrderRequest request) {
+        String orderId = null;
+        String paymentId = null;
+        String reservationId = null;
+        
+        try {
+            // Step 1: Create Order
+            orderId = orderService.createOrder(request);
+            
+            // Step 2: Process Payment
+            paymentId = paymentService.processPayment(orderId, request.getAmount());
+            
+            // Step 3: Reserve Inventory
+            reservationId = inventoryService.reserveStock(orderId, request.getItems());
+            
+            // Step 4: Schedule Delivery
+            deliveryService.scheduleDelivery(orderId, request.getAddress());
+            
+        } catch (Exception e) {
+            // Compensating transactions (reverse order)
+            compensate(orderId, paymentId, reservationId);
+        }
+    }
+    
+    private void compensate(String orderId, String paymentId, String reservationId) {
+        if (reservationId != null) inventoryService.releaseStock(reservationId);
+        if (paymentId != null) paymentService.refundPayment(paymentId);
+        if (orderId != null) orderService.cancelOrder(orderId);
+    }
+}
+```
 
-**Disadvantages of Orchestration Saga Pattern?**
+---
 
-* Additional design complexity requires an implementation of a coordination logic.
+## ⚖️ Choreography vs Orchestration
 
-* There's an additional point of failure, because the orchestrator manages the complete workflow
+| Aspect | Choreography | Orchestration |
+|--------|-------------|---------------|
+| **Coordinator** | None — services react to events | Central orchestrator |
+| **Coupling** | Loose — services don't know each other | Orchestrator knows all services |
+| **Complexity** | Hard to track (distributed logic) | Easy to understand (centralized) |
+| **Single point of failure** | No | Yes (orchestrator) |
+| **Best for** | Simple workflows (3-4 steps) | Complex workflows (5+ steps) |
+| **Debugging** | Harder (trace events) | Easier (single place) |
+| **Technology** | Kafka, RabbitMQ events | State machine, workflow engine |
+
+---
+
+## 🍕 Real Example: Swiggy/Zomato Order Flow
+
+```mermaid
+flowchart TD
+    U["👤 User places order"] --> OS["🛒 Order Service<br/>Creates order"]
+    OS --> PS["💳 Payment Service<br/>Deducts money"]
+    PS --> RS["🍽️ Restaurant Service<br/>Accepts order"]
+    RS --> DS["🚴 Delivery Service<br/>Assigns rider"]
+    DS --> Done["✅ Order Delivered!"]
+    
+    DS -->|"No rider available"| C1["↩️ Refund to Restaurant"]
+    C1 --> C2["↩️ Refund Payment"]
+    C2 --> C3["↩️ Cancel Order"]
+    C3 --> Failed["❌ Order Cancelled<br/>Money Refunded"]
+
+    style Done fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Failed fill:#FFCDD2,stroke:#C62828,color:#000
+    style U fill:#E3F2FD,stroke:#1565C0,color:#000
+```
+
+---
+
+## 🎯 Interview Questions
+
+??? question "1. What is the Saga pattern and why is it needed?"
+    Saga manages distributed transactions in microservices where each service has its own database. Since you can't use a single ACID transaction across services, Saga uses a sequence of local transactions with compensating actions for rollback.
+
+??? question "2. Choreography vs Orchestration — when to use which?"
+    **Choreography**: simple flows (2-4 steps), high independence needed, no single point of failure desired. **Orchestration**: complex flows (5+ steps), need clear visibility, complex compensation logic.
+
+??? question "3. What are compensating transactions?"
+    Actions that semantically undo the effect of a previous transaction. E.g., if payment was charged, the compensating transaction is a refund. They don't literally "rollback" — they create a new transaction that reverses the business effect.
+
+??? question "4. What happens if a compensating transaction fails?"
+    This is a critical edge case. Solutions: retry with exponential backoff, store in a dead letter queue for manual intervention, or use idempotent operations so retries are safe.
+
+??? question "5. How does Saga ensure data consistency?"
+    Saga provides **eventual consistency**, not strong consistency. At any point during execution, data across services may be temporarily inconsistent. The system eventually reaches a consistent state when the saga completes (either all steps succeed or all compensations execute).
+
+??? question "6. What frameworks support Saga in Java?"
+    Axon Framework, MicroProfile LRA, Eventuate Tram, Temporal.io, and custom implementations using Kafka + state machines.
+
+---
+
+!!! warning "Key Pitfall"
+    Sagas do NOT provide isolation (the "I" in ACID). During execution, intermediate results are visible to other transactions. Handle this with semantic locks, commutative updates, or pessimistic views.

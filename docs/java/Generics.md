@@ -64,6 +64,34 @@ Pair<String, Integer> entry = new Pair<>("age", 27);
 
 A method can have its own type parameters, independent of the class.
 
+```mermaid
+sequenceDiagram
+    participant Dev as 👨‍💻 Developer
+    participant Code as 📝 Call Site
+    participant Compiler as ⚙️ Compiler
+    participant Method as 🎯 Generic Method
+
+    Dev->>Code: Utils.max("apple", "banana")
+    Code->>Compiler: Infer type for <T>
+    
+    Note over Compiler: Step 1: Look at arguments<br/>"apple" → String<br/>"banana" → String
+    Note over Compiler: Step 2: Unify types<br/>T = String
+    Note over Compiler: Step 3: Check bounds<br/>String extends Comparable<String>? ✅
+
+    Compiler->>Method: Call max<String>(String, String)
+    Method-->>Code: Returns String "banana"
+
+    Dev->>Code: Utils.max(10, 20)
+    Code->>Compiler: Infer type for <T>
+    
+    Note over Compiler: Step 1: Arguments<br/>10 → Integer, 20 → Integer
+    Note over Compiler: Step 2: T = Integer
+    Note over Compiler: Step 3: Integer extends<br/>Comparable<Integer>? ✅
+
+    Compiler->>Method: Call max<Integer>(Integer, Integer)
+    Method-->>Code: Returns Integer 20
+```
+
 ```java
 public class Utils {
     public static <T> List<T> listOf(T... elements) {
@@ -85,6 +113,53 @@ int larger = Utils.max(10, 20);                 // 20
 ## Bounded Type Parameters
 
 Restrict what types can be used with generics.
+
+```mermaid
+flowchart TB
+    subgraph legend["🎯 Type Parameter Hierarchy"]
+        direction TB
+        W["<b>? (Unbounded)</b><br/>Any type at all"]
+        UB["<b>? extends T</b><br/>Upper Bound — T or subtypes"]
+        LB["<b>? super T</b><br/>Lower Bound — T or supertypes"]
+    end
+
+    subgraph example["Example: Number Hierarchy"]
+        direction TB
+        OBJ["Object"]
+        NUM["Number"]
+        INT["Integer"]
+        DBL["Double"]
+        
+        OBJ --> NUM
+        NUM --> INT
+        NUM --> DBL
+    end
+
+    subgraph bounds["Wildcard Scope"]
+        direction TB
+        EXT["? extends Number<br/>✅ Integer, Double, Float<br/>❌ Object, String"]
+        SUP["? super Integer<br/>✅ Integer, Number, Object<br/>❌ Double, String"]
+        UNB["?<br/>✅ Anything"]
+    end
+
+    W --- UNB
+    UB --- EXT
+    LB --- SUP
+
+    style W fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    style UB fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    style LB fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
+    style EXT fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    style SUP fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
+    style UNB fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    style OBJ fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    style NUM fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    style INT fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    style DBL fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    style legend fill:#F9FBE7,stroke:#827717,stroke-width:2px
+    style example fill:#FCE4EC,stroke:#880E4F,stroke-width:2px
+    style bounds fill:#E0F7FA,stroke:#006064,stroke-width:2px
+```
 
 ### Upper bound (`extends`) — "T must be a subtype of X"
 
@@ -171,6 +246,59 @@ You can **write** T to it, but when **reading** you only get `Object`.
 
 ### PECS — Producer Extends, Consumer Super
 
+```mermaid
+flowchart LR
+    subgraph PRODUCER["📤 PRODUCER (extends)"]
+        direction TB
+        P1["Collection<b> PRODUCES </b>data"]
+        P2["You <b>READ</b> from it"]
+        P3["Use: <b>? extends T</b>"]
+        P1 --> P2 --> P3
+    end
+
+    subgraph CONSUMER["📥 CONSUMER (super)"]
+        direction TB
+        C1["Collection <b>CONSUMES</b> data"]
+        C2["You <b>WRITE</b> to it"]
+        C3["Use: <b>? super T</b>"]
+        C1 --> C2 --> C3
+    end
+
+    subgraph BOTH["🔄 BOTH"]
+        direction TB
+        B1["Read AND Write"]
+        B2["Use: <b>T</b> (no wildcard)"]
+        B1 --> B2
+    end
+
+    DATA_OUT["🍎 Data flows OUT<br/>of the collection"] --> PRODUCER
+    DATA_IN["🍎 Data flows IN<br/>to the collection"] --> CONSUMER
+
+    subgraph MNEMONIC["🧠 Memory Trick"]
+        direction LR
+        M1["<b>P</b>roducer = <b>E</b>xtends"]
+        M2["<b>C</b>onsumer = <b>S</b>uper"]
+        M1 --- M2
+    end
+
+    style PRODUCER fill:#C8E6C9,stroke:#2E7D32,stroke-width:3px,color:#1B5E20
+    style CONSUMER fill:#BBDEFB,stroke:#1565C0,stroke-width:3px,color:#0D47A1
+    style BOTH fill:#FFF9C4,stroke:#F9A825,stroke-width:3px,color:#F57F17
+    style DATA_OUT fill:#A5D6A7,stroke:#388E3C,stroke-width:2px,color:#1B5E20
+    style DATA_IN fill:#90CAF9,stroke:#1976D2,stroke-width:2px,color:#0D47A1
+    style MNEMONIC fill:#F8BBD0,stroke:#C2185B,stroke-width:3px,color:#880E4F
+    style M1 fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    style M2 fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    style P1 fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20
+    style P2 fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20
+    style P3 fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20
+    style C1 fill:#E3F2FD,stroke:#2196F3,color:#0D47A1
+    style C2 fill:#E3F2FD,stroke:#2196F3,color:#0D47A1
+    style C3 fill:#E3F2FD,stroke:#2196F3,color:#0D47A1
+    style B1 fill:#FFFDE7,stroke:#FBC02D,color:#F57F17
+    style B2 fill:#FFFDE7,stroke:#FBC02D,color:#F57F17
+```
+
 | Direction | Use | Example |
 |---|---|---|
 | **Read** from the collection | `? extends T` | `List<? extends Number>` — read as Number |
@@ -191,6 +319,61 @@ public static <T> void copy(List<? super T> dest, List<? extends T> src) {
 ## Type Erasure
 
 Java generics are a **compile-time feature**. At runtime, all generic type information is **erased**.
+
+```mermaid
+flowchart LR
+    subgraph SOURCE["📝 Source Code (Compile Time)"]
+        direction TB
+        S1["List&lt;String&gt; names"]
+        S2["List&lt;Integer&gt; ages"]
+        S3["Box&lt;Double&gt; box"]
+    end
+
+    subgraph COMPILER["⚙️ Java Compiler"]
+        direction TB
+        C1["✅ Type Check"]
+        C2["✅ Insert Casts"]
+        C3["🗑️ Erase Types"]
+        C1 --> C2 --> C3
+    end
+
+    subgraph BYTECODE["💾 Bytecode (Runtime)"]
+        direction TB
+        B1["List names"]
+        B2["List ages"]
+        B3["Box box"]
+        B4["All become RAW types!"]
+    end
+
+    SOURCE --> COMPILER --> BYTECODE
+
+    subgraph CANT["❌ Cannot Do at Runtime"]
+        direction TB
+        X1["new T()"]
+        X2["instanceof List&lt;String&gt;"]
+        X3["new T[10]"]
+        X4["Overload by generic type"]
+    end
+
+    style SOURCE fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    style COMPILER fill:#FFF3E0,stroke:#E65100,stroke-width:2px
+    style BYTECODE fill:#FFEBEE,stroke:#C62828,stroke-width:2px
+    style CANT fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px
+    style S1 fill:#C8E6C9,stroke:#388E3C,color:#1B5E20
+    style S2 fill:#C8E6C9,stroke:#388E3C,color:#1B5E20
+    style S3 fill:#C8E6C9,stroke:#388E3C,color:#1B5E20
+    style C1 fill:#FFE0B2,stroke:#F57C00,color:#E65100
+    style C2 fill:#FFE0B2,stroke:#F57C00,color:#E65100
+    style C3 fill:#FFE0B2,stroke:#F57C00,color:#E65100
+    style B1 fill:#FFCDD2,stroke:#E53935,color:#B71C1C
+    style B2 fill:#FFCDD2,stroke:#E53935,color:#B71C1C
+    style B3 fill:#FFCDD2,stroke:#E53935,color:#B71C1C
+    style B4 fill:#FFCDD2,stroke:#E53935,color:#B71C1C
+    style X1 fill:#E1BEE7,stroke:#8E24AA,color:#4A148C
+    style X2 fill:#E1BEE7,stroke:#8E24AA,color:#4A148C
+    style X3 fill:#E1BEE7,stroke:#8E24AA,color:#4A148C
+    style X4 fill:#E1BEE7,stroke:#8E24AA,color:#4A148C
+```
 
 ```java
 // What you write:
@@ -227,6 +410,51 @@ void process(List<Integer> list) {}  // COMPILE ERROR — same erasure: process(
 | `V` | Value | `Map<K, V>` |
 | `N` | Number | `Calculator<N extends Number>` |
 | `R` | Return type | `Function<T, R>` |
+
+---
+
+## Wildcard Decision Tree
+
+Use this flowchart in interviews to quickly decide which wildcard to use:
+
+```mermaid
+flowchart TD
+    START["🤔 Which wildcard<br/>should I use?"]
+    Q1{"Do you know the<br/>exact type?"}
+    Q2{"Do you need to<br/>READ or WRITE?"}
+    Q3{"Only READ<br/>or only WRITE?"}
+    Q4{"Do you care about<br/>the type at all?"}
+
+    A1["Use concrete type<br/><b>List&lt;T&gt;</b>"]
+    A2["Use <b>? extends T</b><br/>📤 Producer Extends"]
+    A3["Use <b>? super T</b><br/>📥 Consumer Super"]
+    A4["Use concrete <b>T</b><br/>No wildcard needed"]
+    A5["Use <b>?</b><br/>Unbounded wildcard"]
+    A6["Use concrete type<br/><b>List&lt;MyClass&gt;</b>"]
+
+    START --> Q1
+    Q1 -- "Yes, it is always<br/>the same type" --> A6
+    Q1 -- "No, it varies" --> Q2
+    Q2 -- "Read only" --> A2
+    Q2 -- "Write only" --> A3
+    Q2 -- "Both" --> Q3
+    Q3 -- "Need full<br/>read + write" --> A4
+    Q3 -- "Only care that<br/>it is some List" --> Q4
+    Q4 -- "No, any type" --> A5
+    Q4 -- "Yes, within<br/>a family" --> A1
+
+    style START fill:#7E57C2,stroke:#4527A0,stroke-width:3px,color:#FFFFFF
+    style Q1 fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
+    style Q2 fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
+    style Q3 fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
+    style Q4 fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
+    style A1 fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    style A2 fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    style A3 fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    style A4 fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+    style A5 fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    style A6 fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
+```
 
 ---
 

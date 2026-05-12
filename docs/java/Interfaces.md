@@ -84,14 +84,31 @@ public class Duck implements Flyable, Swimmable {
 
 ## When to Use Which
 
-```
-    Use ABSTRACT CLASS when:                 Use INTERFACE when:
-    ─────────────────────────                ──────────────────────
-    ✓ Classes share state (fields)           ✓ Defining a capability/contract
-    ✓ You need constructors                  ✓ Multiple inheritance needed
-    ✓ You want protected/private members     ✓ Unrelated classes share behavior
-    ✓ You're designing a base class          ✓ You want loose coupling
-      for a family of related types            (program to an interface)
+```mermaid
+graph LR
+    subgraph AC["🏛️ Use ABSTRACT CLASS when"]
+        A1["✅ Classes share state - fields"]
+        A2["✅ You need constructors"]
+        A3["✅ You want protected/private members"]
+        A4["✅ Designing a base class for a family of related types"]
+    end
+    subgraph IF["🔌 Use INTERFACE when"]
+        I1["✅ Defining a capability/contract"]
+        I2["✅ Multiple inheritance needed"]
+        I3["✅ Unrelated classes share behavior"]
+        I4["✅ You want loose coupling - program to an interface"]
+    end
+
+    style AC fill:#6c5ce7,stroke:#4a3db8,color:#fff
+    style IF fill:#00b894,stroke:#008c6e,color:#fff
+    style A1 fill:#a29bfe,stroke:#6c5ce7,color:#333
+    style A2 fill:#a29bfe,stroke:#6c5ce7,color:#333
+    style A3 fill:#a29bfe,stroke:#6c5ce7,color:#333
+    style A4 fill:#a29bfe,stroke:#6c5ce7,color:#333
+    style I1 fill:#55efc4,stroke:#00b894,color:#333
+    style I2 fill:#55efc4,stroke:#00b894,color:#333
+    style I3 fill:#55efc4,stroke:#00b894,color:#333
+    style I4 fill:#55efc4,stroke:#00b894,color:#333
 ```
 
 ### Real-world examples
@@ -109,10 +126,13 @@ public class Duck implements Flyable, Swimmable {
 
 ## Java 8+ Interface Evolution
 
-```
-    Java 7:   Interface = only abstract methods
-    Java 8:   Interface + default methods + static methods
-    Java 9:   Interface + private methods (helper methods for defaults)
+```mermaid
+graph LR
+    J7["☕ Java 7<br/>Only abstract methods"] --> J8["🚀 Java 8<br/>+ default methods<br/>+ static methods"] --> J9["🔒 Java 9<br/>+ private methods<br/>helper methods for defaults"]
+
+    style J7 fill:#636e72,stroke:#2d3436,color:#fff
+    style J8 fill:#0984e3,stroke:#0652a3,color:#fff
+    style J9 fill:#6c5ce7,stroke:#4a3db8,color:#fff
 ```
 
 ### Why default methods were added

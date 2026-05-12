@@ -6,17 +6,16 @@ A constructor is a special method that **initializes an object** when it's creat
 
 ## Types of Constructors
 
-```
-                    ┌──────────────────┐
-                    │   Constructors   │
-                    └────────┬─────────┘
-                             │
-          ┌──────────────────┼──────────────────┐
-          ▼                  ▼                  ▼
-    ┌───────────┐    ┌──────────────┐    ┌───────────┐
-    │  Default   │    │ Parameterized│    │   Copy     │
-    │(no args)   │    │ (with args)  │    │Constructor │
-    └───────────┘    └──────────────┘    └───────────┘
+```mermaid
+graph TD
+    A["🏗️ Constructors"] --> B["📭 Default<br/>no args"]
+    A --> C["📬 Parameterized<br/>with args"]
+    A --> D["📋 Copy Constructor<br/>clone an object"]
+
+    style A fill:#4a90d9,stroke:#2c5f8a,color:#fff
+    style B fill:#00b894,stroke:#008c6e,color:#fff
+    style C fill:#6c5ce7,stroke:#4a3db8,color:#fff
+    style D fill:#e17055,stroke:#b85643,color:#fff
 ```
 
 ---
@@ -132,14 +131,16 @@ public class User {
 }
 ```
 
-```
-    new User("Vamsi")
-        │
-        ▼ this("Vamsi", "no-reply@default.com")
-        │
-        ▼ this("Vamsi", "no-reply@default.com", "USER")
-        │
-        ▼ fields assigned
+```mermaid
+graph TD
+    A["🆕 new User - Vamsi"] -->|"this(name, default-email)"| B["🔗 User - Vamsi, no-reply@default.com"]
+    B -->|"this(name, email, USER)"| C["🔗 User - Vamsi, no-reply@default.com, USER"]
+    C --> D["✅ Fields assigned"]
+
+    style A fill:#0984e3,stroke:#0652a3,color:#fff
+    style B fill:#6c5ce7,stroke:#4a3db8,color:#fff
+    style C fill:#e17055,stroke:#b85643,color:#fff
+    style D fill:#00b894,stroke:#008c6e,color:#fff
 ```
 
 ---

@@ -2,11 +2,11 @@
 
 ## Installation
 
-We can go to [https://golang.org/dl/](https://golang.org/dl/) and download the binary depending on our Operating System and install it. Once installed run `go version` and you should be able to see the go version.
+We can go to [https://go.dev/dl/](https://go.dev/dl/) and download the binary depending on our Operating System and install it. Once installed run `go version` and you should be able to see the go version.
 
 ```bash
 $ go version
-go version go1.14.1 darwin/amd64
+go version go1.22.0 darwin/arm64
 $
 ```
 
@@ -62,7 +62,7 @@ go: creating new go.mod: module github.com/vamsikaruturi/hello-go
 hello-go> cat go.mod
 module github.com/vamsikaruturi/hello-go
 
-go 1.14
+go 1.22
 hello-go>
 ```
 
@@ -73,7 +73,7 @@ hello-go> go get -u github.com/mitchellh/go-homedir
 hello-go> cat go.mod
 module github.com/vamsikaruturi/hello-go
 
-go 1.14
+go 1.22
 
 require github.com/mitchellh/go-homedir v1.1.0 // indirect
 hello-go>

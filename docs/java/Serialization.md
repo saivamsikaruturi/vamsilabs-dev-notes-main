@@ -6,12 +6,25 @@ Serialization converts an **object into a byte stream** so it can be saved to a 
 
 ## How It Works
 
-```
-    Serialization                          Deserialization
-    ─────────────►                         ─────────────►
-    Java Object ──► Byte Stream ──► File   File ──► Byte Stream ──► Java Object
-                                   / DB                              (restored)
-                                   / Network
+```mermaid
+graph LR
+    subgraph Serialization ✍️
+        direction LR
+        A["☕ Java Object"] -->|serialize| B["🔢 Byte Stream"]
+        B --> C["💾 File / DB / Network"]
+    end
+    subgraph Deserialization 📖
+        direction LR
+        D["💾 File / DB / Network"] -->|deserialize| E["🔢 Byte Stream"]
+        E --> F["☕ Java Object<br/><i>restored</i>"]
+    end
+
+    style A fill:#4CAF50,color:#fff
+    style B fill:#FF9800,color:#fff
+    style C fill:#2196F3,color:#fff
+    style D fill:#2196F3,color:#fff
+    style E fill:#FF9800,color:#fff
+    style F fill:#4CAF50,color:#fff
 ```
 
 ---
@@ -184,16 +197,14 @@ public class Product implements Externalizable {
 
 ## Serialization with Inheritance
 
-```
-    ┌──────────────────┐
-    │  Parent (not      │  ◄── If parent is NOT Serializable,
-    │  Serializable)    │      parent fields get DEFAULT values
-    └────────┬─────────┘
-             │
-    ┌────────▼─────────┐
-    │  Child            │  ◄── If child IS Serializable,
-    │  (Serializable)   │      child fields are serialized
-    └──────────────────┘
+```mermaid
+graph TD
+    Parent["🚫 Parent<br/><i>NOT Serializable</i><br/>Fields get DEFAULT values"]
+    Child["✅ Child<br/><i>Serializable</i><br/>Fields ARE serialized"]
+    Parent -->|extends| Child
+
+    style Parent fill:#FF5252,color:#fff,stroke:#B71C1C,stroke-width:2px
+    style Child fill:#4CAF50,color:#fff,stroke:#1B5E20,stroke-width:2px
 ```
 
 ```java

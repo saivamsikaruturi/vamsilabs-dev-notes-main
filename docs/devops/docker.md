@@ -218,7 +218,6 @@
        todo-api
 
 
-
 ## Docker Instructions
 
 **FROM** : The FROM instruction initializes a new build stage and sets the Base Image for subsequent instructions.

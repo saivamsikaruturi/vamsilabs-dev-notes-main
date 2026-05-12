@@ -53,9 +53,16 @@ CompletableFuture.supplyAsync(() -> fetchData(), pool);
 
 ## Chaining Operations
 
-```
-    supplyAsync ──► thenApply ──► thenApply ──► thenAccept
-    (produce)       (transform)   (transform)   (consume)
+```mermaid
+graph LR
+    A["🚀 supplyAsync<br/><i>produce</i>"] --> B["🔄 thenApply<br/><i>transform</i>"]
+    B --> C["🔄 thenApply<br/><i>transform</i>"]
+    C --> D["✅ thenAccept<br/><i>consume</i>"]
+
+    style A fill:#4CAF50,color:#fff,stroke-width:2px
+    style B fill:#FF9800,color:#fff,stroke-width:2px
+    style C fill:#FF9800,color:#fff,stroke-width:2px
+    style D fill:#2196F3,color:#fff,stroke-width:2px
 ```
 
 ### Transform result — `thenApply` (like `map`)

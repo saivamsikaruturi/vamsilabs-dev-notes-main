@@ -40,14 +40,34 @@ The most important concurrent collection. Used heavily in production systems.
 
 ### How It Works
 
-```
-    Hashtable / synchronizedMap:        ConcurrentHashMap:
-    ─────────────────────────           ──────────────────
-    ONE lock for entire map             MANY locks (one per segment/bucket)
+```mermaid
+graph TD
+    subgraph OLD["🐌 Hashtable / synchronizedMap"]
+        OL["🔒 ONE lock for entire map"]
+        O1["Thread-1: lock map → read"] --> OL
+        O2["Thread-2: ⛔ BLOCKED"] --> OL
+        O3["Thread-3: ⛔ BLOCKED"] --> OL
+    end
 
-    Thread-1: lock(map) → read          Thread-1: lock(bucket-3) → read
-    Thread-2: BLOCKED                   Thread-2: lock(bucket-7) → write  (parallel!)
-    Thread-3: BLOCKED                   Thread-3: lock(bucket-3) → BLOCKED (same bucket)
+    subgraph NEW["🚀 ConcurrentHashMap"]
+        NL1["🔑 Bucket-3 lock"]
+        NL2["🔑 Bucket-7 lock"]
+        N1["Thread-1: lock bucket-3 → read"] --> NL1
+        N2["Thread-2: lock bucket-7 → write ✅ parallel!"] --> NL2
+        N3["Thread-3: bucket-3 → ⛔ BLOCKED same bucket"] --> NL1
+    end
+
+    style OLD fill:#ffeaa7,stroke:#d4a84b,color:#333
+    style NEW fill:#dfe6e9,stroke:#636e72,color:#333
+    style OL fill:#d63031,stroke:#a02525,color:#fff
+    style NL1 fill:#00b894,stroke:#008c6e,color:#fff
+    style NL2 fill:#00b894,stroke:#008c6e,color:#fff
+    style O1 fill:#fab1a0,stroke:#e17055,color:#333
+    style O2 fill:#fab1a0,stroke:#e17055,color:#333
+    style O3 fill:#fab1a0,stroke:#e17055,color:#333
+    style N1 fill:#81ecec,stroke:#00cec9,color:#333
+    style N2 fill:#81ecec,stroke:#00cec9,color:#333
+    style N3 fill:#fab1a0,stroke:#e17055,color:#333
 ```
 
 - **Java 7**: Segment-based locking (16 segments by default)
@@ -116,9 +136,14 @@ for (String s : list) {
 
 `BlockingQueue` blocks the calling thread when the queue is full (for `put`) or empty (for `take`).
 
-```
-    Producer ──put()──► [BlockingQueue] ──take()──► Consumer
-                          (blocks if full)            (blocks if empty)
+```mermaid
+graph LR
+    P["🏭 Producer"] -->|"put()"| Q["📦 BlockingQueue<br/>⏸️ blocks if full"]
+    Q -->|"take()"| C["🛒 Consumer<br/>⏸️ blocks if empty"]
+
+    style P fill:#6c5ce7,stroke:#4a3db8,color:#fff
+    style Q fill:#fdcb6e,stroke:#d4a84b,color:#333
+    style C fill:#00b894,stroke:#008c6e,color:#fff
 ```
 
 ### Implementations

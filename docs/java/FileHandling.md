@@ -10,21 +10,42 @@ File handling means **reading from** and **writing to** files on your computer u
 
 ## The Big Picture
 
-```
-                    Java I/O
-                       │
-            ┌──────────┴──────────┐
-        Byte Streams         Character Streams
-        (binary data)        (text data)
-            │                      │
-     ┌──────┴──────┐       ┌──────┴──────┐
- InputStream  OutputStream  Reader      Writer
-     │              │         │           │
- FileInput     FileOutput  FileReader  FileWriter
- Stream         Stream        │           │
-     │              │     BufferedReader BufferedWriter
- Buffered      Buffered
- InputStream   OutputStream
+```mermaid
+graph TD
+    IO["☕ Java I/O"]
+    IO --> BS["🔢 Byte Streams<br/><i>binary data</i>"]
+    IO --> CS["📝 Character Streams<br/><i>text data</i>"]
+
+    BS --> IS["InputStream"]
+    BS --> OS["OutputStream"]
+    CS --> R["Reader"]
+    CS --> W["Writer"]
+
+    IS --> FIS["FileInputStream"]
+    OS --> FOS["FileOutputStream"]
+    FIS --> BIS["BufferedInputStream"]
+    FOS --> BOS["BufferedOutputStream"]
+
+    R --> FR["FileReader"]
+    W --> FW["FileWriter"]
+    FR --> BR["BufferedReader"]
+    FW --> BW["BufferedWriter"]
+
+    style IO fill:#7C4DFF,color:#fff,stroke-width:2px
+    style BS fill:#FF5722,color:#fff
+    style CS fill:#2196F3,color:#fff
+    style IS fill:#FF8A65,color:#fff
+    style OS fill:#FF8A65,color:#fff
+    style R fill:#64B5F6,color:#fff
+    style W fill:#64B5F6,color:#fff
+    style FIS fill:#FFAB91,color:#000
+    style FOS fill:#FFAB91,color:#000
+    style BIS fill:#FFCCBC,color:#000
+    style BOS fill:#FFCCBC,color:#000
+    style FR fill:#90CAF9,color:#000
+    style FW fill:#90CAF9,color:#000
+    style BR fill:#BBDEFB,color:#000
+    style BW fill:#BBDEFB,color:#000
 ```
 
 ### When to use which?
@@ -364,46 +385,74 @@ Files.walk(Path.of("src"))
 
 ### Reader side (character input)
 
-```
-Object
-  └── Reader (abstract)
-        ├── InputStreamReader
-        │     └── FileReader
-        ├── BufferedReader
-        └── StringReader
+```mermaid
+graph TD
+    O1["Object"] --> Reader["📖 Reader<br/><i>abstract</i>"]
+    Reader --> ISR["InputStreamReader"]
+    ISR --> FR["FileReader"]
+    Reader --> BR["BufferedReader"]
+    Reader --> SR["StringReader"]
+
+    style O1 fill:#78909C,color:#fff
+    style Reader fill:#1565C0,color:#fff
+    style ISR fill:#42A5F5,color:#fff
+    style FR fill:#90CAF9,color:#000
+    style BR fill:#42A5F5,color:#fff
+    style SR fill:#42A5F5,color:#fff
 ```
 
 ### Writer side (character output)
 
-```
-Object
-  └── Writer (abstract)
-        ├── OutputStreamWriter
-        │     └── FileWriter
-        ├── BufferedWriter
-        └── StringWriter
+```mermaid
+graph TD
+    O2["Object"] --> Writer["✍️ Writer<br/><i>abstract</i>"]
+    Writer --> OSW["OutputStreamWriter"]
+    OSW --> FW["FileWriter"]
+    Writer --> BW["BufferedWriter"]
+    Writer --> SW["StringWriter"]
+
+    style O2 fill:#78909C,color:#fff
+    style Writer fill:#C62828,color:#fff
+    style OSW fill:#EF5350,color:#fff
+    style FW fill:#EF9A9A,color:#000
+    style BW fill:#EF5350,color:#fff
+    style SW fill:#EF5350,color:#fff
 ```
 
 ### InputStream side (byte input)
 
-```
-Object
-  └── InputStream (abstract)
-        ├── FileInputStream
-        ├── BufferedInputStream
-        ├── ByteArrayInputStream
-        └── ObjectInputStream
+```mermaid
+graph TD
+    O3["Object"] --> InStr["🔽 InputStream<br/><i>abstract</i>"]
+    InStr --> FIS2["FileInputStream"]
+    InStr --> BIS2["BufferedInputStream"]
+    InStr --> BAIS["ByteArrayInputStream"]
+    InStr --> OIS["ObjectInputStream"]
+
+    style O3 fill:#78909C,color:#fff
+    style InStr fill:#2E7D32,color:#fff
+    style FIS2 fill:#66BB6A,color:#fff
+    style BIS2 fill:#66BB6A,color:#fff
+    style BAIS fill:#66BB6A,color:#fff
+    style OIS fill:#66BB6A,color:#fff
 ```
 
 ### OutputStream side (byte output)
 
-```
-Object
-  └── OutputStream (abstract)
-        ├── FileOutputStream
-        ├── BufferedOutputStream
-        ├── ByteArrayOutputStream
-        └── ObjectOutputStream
+```mermaid
+graph TD
+    O4["Object"] --> OutStr["🔼 OutputStream<br/><i>abstract</i>"]
+    OutStr --> FOS2["FileOutputStream"]
+    OutStr --> BOS2["BufferedOutputStream"]
+    OutStr --> BAOS["ByteArrayOutputStream"]
+    OutStr --> OOS["ObjectOutputStream"]
+
+    style O4 fill:#78909C,color:#fff
+    style OutStr fill:#E65100,color:#fff
+    style FOS2 fill:#FF9800,color:#fff
+    style BOS2 fill:#FF9800,color:#fff
+    style BAOS fill:#FF9800,color:#fff
+    style OOS fill:#FF9800,color:#fff
 ```
 
 ---

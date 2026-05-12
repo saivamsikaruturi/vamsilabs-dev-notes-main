@@ -6,21 +6,35 @@ Cloning creates a **copy of an object**. Java provides `Object.clone()`, but it'
 
 ## Shallow Copy vs Deep Copy
 
-```
-    SHALLOW COPY                          DEEP COPY
-    ────────────                          ─────────
+```mermaid
+graph TD
+    subgraph SHALLOW["⚠️ SHALLOW COPY"]
+        SO["original"] --> SP["Person<br/>name: Vamsi"]
+        SP --> SA["📍 Address: Bangalore"]
+        SC["clone"] --> SP2["Person<br/>name: Vamsi"]
+        SP2 --> SA
+    end
 
-    original ──► [Person]                 original ──► [Person]
-                  name: "Vamsi"                        name: "Vamsi"
-                  address ──┐                          address ──► [Address: Bangalore]
-                            │
-    clone ──────► [Person]  │             clone ──────► [Person]
-                  name: "Vamsi"                        name: "Vamsi"
-                  address ──┘ (SAME ref)               address ──► [Address: Bangalore]
-                                                                   (DIFFERENT object)
+    subgraph DEEP["✅ DEEP COPY"]
+        DO["original"] --> DP["Person<br/>name: Vamsi"]
+        DP --> DA["📍 Address: Bangalore"]
+        DC["clone"] --> DP2["Person<br/>name: Vamsi"]
+        DP2 --> DA2["📍 Address: Bangalore<br/>DIFFERENT object"]
+    end
 
-    Changing original.address                Changing original.address
-    ALSO changes clone.address              does NOT affect clone.address
+    style SHALLOW fill:#ffeaa7,stroke:#d4a84b,color:#333
+    style DEEP fill:#dfe6e9,stroke:#636e72,color:#333
+    style SO fill:#74b9ff,stroke:#0984e3,color:#333
+    style SC fill:#a29bfe,stroke:#6c5ce7,color:#333
+    style SP fill:#fab1a0,stroke:#e17055,color:#333
+    style SP2 fill:#fab1a0,stroke:#e17055,color:#333
+    style SA fill:#d63031,stroke:#a02525,color:#fff
+    style DO fill:#74b9ff,stroke:#0984e3,color:#333
+    style DC fill:#a29bfe,stroke:#6c5ce7,color:#333
+    style DP fill:#55efc4,stroke:#00b894,color:#333
+    style DP2 fill:#55efc4,stroke:#00b894,color:#333
+    style DA fill:#00b894,stroke:#008c6e,color:#fff
+    style DA2 fill:#00b894,stroke:#008c6e,color:#fff
 ```
 
 | Aspect | Shallow Copy | Deep Copy |

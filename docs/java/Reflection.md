@@ -4,6 +4,184 @@ Reflection allows you to **inspect and manipulate classes, methods, fields, and 
 
 ---
 
+## Reflection API Class Hierarchy
+
+```mermaid
+classDiagram
+    class Class~T~ {
+        +getName() String
+        +getDeclaredFields() Field[]
+        +getDeclaredMethods() Method[]
+        +getDeclaredConstructors() Constructor[]
+        +getAnnotations() Annotation[]
+        +getSuperclass() Class
+        +getInterfaces() Class[]
+        +forName(String) Class$
+    }
+
+    class Member {
+        <<interface>>
+        +getName() String
+        +getModifiers() int
+        +getDeclaringClass() Class
+    }
+
+    class AccessibleObject {
+        +setAccessible(boolean) void
+        +isAccessible() boolean
+        +getAnnotation(Class) Annotation
+    }
+
+    class Field {
+        +getType() Class
+        +get(Object) Object
+        +set(Object, Object) void
+    }
+
+    class Method {
+        +getReturnType() Class
+        +getParameterTypes() Class[]
+        +invoke(Object, Object...) Object
+    }
+
+    class Constructor~T~ {
+        +getParameterTypes() Class[]
+        +newInstance(Object...) T
+    }
+
+    class Annotation {
+        <<interface>>
+    }
+
+    AccessibleObject <|-- Field
+    AccessibleObject <|-- Method
+    AccessibleObject <|-- Constructor
+
+    Member <|.. Field
+    Member <|.. Method
+    Member <|.. Constructor
+
+    Class --> Field : getDeclaredFields()
+    Class --> Method : getDeclaredMethods()
+    Class --> Constructor : getDeclaredConstructors()
+    Class --> Annotation : getAnnotations()
+
+    style Class fill:#4A90D9,color:#fff
+    style Field fill:#7B68EE,color:#fff
+    style Method fill:#E85D75,color:#fff
+    style Constructor fill:#F5A623,color:#fff
+    style Member fill:#50C878,color:#fff
+    style AccessibleObject fill:#9B59B6,color:#fff
+    style Annotation fill:#1ABC9C,color:#fff
+```
+
+---
+
+## Reflection Call Flow
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant CL as ClassLoader
+    participant Cls as Class&lt;MyClass&gt;
+    participant M as Method
+    participant Inst as Instance
+
+    rect rgb(230, 245, 255)
+        Note over App,Inst: Runtime Resolution (No Compile-Time Binding)
+        App->>CL: Class.forName("com.example.MyClass")
+        CL->>CL: Search classpath & load bytecode
+        CL-->>App: Returns Class&lt;?&gt; object
+    end
+
+    rect rgb(255, 240, 230)
+        Note over App,M: Method Discovery
+        App->>Cls: getMethod("doSomething", String.class)
+        Cls->>Cls: Search method table by name + params
+        Cls-->>App: Returns Method object
+    end
+
+    rect rgb(230, 255, 230)
+        Note over App,Inst: Dynamic Invocation
+        App->>M: method.invoke(instance, "hello")
+        M->>M: Access check + arg validation
+        M->>Inst: Reflective dispatch to doSomething("hello")
+        Inst-->>M: Return value
+        M-->>App: Result (as Object)
+    end
+```
+
+---
+
+## Normal vs Reflection Access
+
+```mermaid
+flowchart LR
+    subgraph normal["Direct Access (Compile-Time)"]
+        direction TB
+        N1[/"Write: obj.doSomething()"/]:::blueNode
+        N2["Compiler verifies type & method"]:::blueNode
+        N3["JIT inlines method call"]:::blueNode
+        N4[("FAST")]:::greenNode
+        N1 --> N2 --> N3 --> N4
+    end
+
+    subgraph reflect["Reflection Access (Runtime)"]
+        direction TB
+        R1[/"Write: method.invoke(obj, args)"/]:::orangeNode
+        R2["Runtime: Load class by name"]:::orangeNode
+        R3["Runtime: Lookup method in metadata"]:::orangeNode
+        R4["Runtime: Check access + box args"]:::orangeNode
+        R5["Invoke via native dispatch"]:::orangeNode
+        R6[("SLOWER but FLEXIBLE")]:::yellowNode
+        R1 --> R2 --> R3 --> R4 --> R5 --> R6
+    end
+
+    classDef blueNode fill:#3498DB,color:#fff,stroke:#2980B9
+    classDef greenNode fill:#27AE60,color:#fff,stroke:#1E8449,stroke-width:3px
+    classDef orangeNode fill:#E67E22,color:#fff,stroke:#D35400
+    classDef yellowNode fill:#F39C12,color:#fff,stroke:#E67E22,stroke-width:3px
+```
+
+---
+
+## Where Reflection is Used
+
+```mermaid
+flowchart TD
+    R((Reflection API)):::centerNode
+
+    R --> SP["Spring IoC"]:::springNode
+    R --> JU["JUnit"]:::junitNode
+    R --> JK["Jackson"]:::jacksonNode
+    R --> HB["Hibernate"]:::hibernateNode
+
+    SP --> SP1["Scan @Component classes"]:::detailNode
+    SP --> SP2["Inject @Autowired fields"]:::detailNode
+    SP --> SP3["Create beans via Constructor.newInstance()"]:::detailNode
+
+    JU --> JU1["Discover @Test methods"]:::detailNode
+    JU --> JU2["Instantiate test classes"]:::detailNode
+    JU --> JU3["Invoke test methods dynamically"]:::detailNode
+
+    JK --> JK1["Read field names for JSON keys"]:::detailNode
+    JK --> JK2["Call getters/setters dynamically"]:::detailNode
+    JK --> JK3["Construct objects from JSON"]:::detailNode
+
+    HB --> HB1["Map @Entity fields to columns"]:::detailNode
+    HB --> HB2["Populate fields from ResultSet"]:::detailNode
+    HB --> HB3["Lazy-load proxy generation"]:::detailNode
+
+    classDef centerNode fill:#8E44AD,color:#fff,stroke:#6C3483,stroke-width:4px,font-size:16px
+    classDef springNode fill:#27AE60,color:#fff,stroke:#1E8449,stroke-width:2px
+    classDef junitNode fill:#2980B9,color:#fff,stroke:#1F618D,stroke-width:2px
+    classDef jacksonNode fill:#D35400,color:#fff,stroke:#A04000,stroke-width:2px
+    classDef hibernateNode fill:#C0392B,color:#fff,stroke:#922B21,stroke-width:2px
+    classDef detailNode fill:#F8F9FA,color:#2C3E50,stroke:#BDC3C7
+```
+
+---
+
 ## What Reflection Can Do
 
 | Capability | Example |

@@ -6,19 +6,39 @@ Access modifiers control **who can see and use** your classes, methods, and vari
 
 ## The Four Access Levels
 
+```mermaid
+graph TD
+    subgraph PUBLIC["🌍 public — Visible Everywhere"]
+        subgraph PROTECTED["🏘️ protected — Same Package + Subclasses"]
+            subgraph DEFAULT["📦 default — Same Package Only"]
+                subgraph PRIVATE["🔒 private — Same Class Only"]
+                    P["Fields & Methods"]
+                end
+            end
+        end
+    end
+
+    style PUBLIC fill:#E8F5E9,stroke:#2E7D32,stroke-width:3px,color:#1B5E20
+    style PROTECTED fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    style DEFAULT fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
+    style PRIVATE fill:#FCE4EC,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    style P fill:#F5F5F5,stroke:#616161,color:#212121
 ```
-    ┌─────────────────────────────────────────────────────┐
-    │                      public                          │  Visible everywhere
-    │   ┌─────────────────────────────────────────────┐   │
-    │   │                 protected                     │   │  Same package + subclasses
-    │   │   ┌─────────────────────────────────────┐   │   │
-    │   │   │           default (no keyword)       │   │   │  Same package only
-    │   │   │   ┌─────────────────────────────┐   │   │   │
-    │   │   │   │          private              │   │   │   │  Same class only
-    │   │   │   └─────────────────────────────┘   │   │   │
-    │   │   └─────────────────────────────────────┘   │   │
-    │   └─────────────────────────────────────────────┘   │
-    └─────────────────────────────────────────────────────┘
+
+```mermaid
+flowchart LR
+    subgraph scope["🎯 Quick Reference"]
+        direction TB
+        PUB["🟢 public"]:::green --> |"Any class, any package"| ALL["✅ Everyone"]
+        PROT["🔵 protected"]:::blue --> |"Same package OR subclass"| SUB["✅ Package + Children"]
+        DEF["🟠 default"]:::orange --> |"Same package only"| PKG["✅ Package Only"]
+        PRIV["🔴 private"]:::red --> |"Same class only"| CLS["✅ Class Only"]
+    end
+
+    classDef green fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+    classDef blue fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    classDef orange fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    classDef red fill:#FFCDD2,stroke:#C62828,color:#B71C1C
 ```
 
 ---
@@ -126,9 +146,18 @@ public class Outer {
 
 ## The Golden Rule: Start Private, Open Up as Needed
 
-```
-    Start here ──► private ──► default ──► protected ──► public
-                   (most restrictive)                   (least restrictive)
+```mermaid
+flowchart LR
+    START["🏁 Start Here"]:::start --> PRIV["🔒 private"]:::red
+    PRIV -->|"Need package access?"| DEF["📦 default"]:::orange
+    DEF -->|"Need subclass access?"| PROT["🛡️ protected"]:::blue
+    PROT -->|"Need global access?"| PUB["🌍 public"]:::green
+
+    classDef start fill:#F3E5F5,stroke:#7B1FA2,color:#4A148C
+    classDef red fill:#FFCDD2,stroke:#C62828,color:#B71C1C
+    classDef orange fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    classDef blue fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    classDef green fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
 ```
 
 This is called the **principle of least privilege**. Always start with `private` and only increase visibility when you have a concrete reason.

@@ -6,29 +6,84 @@ The Collections Framework is a unified architecture for storing and manipulating
 
 ## Collection Hierarchy
 
-```
-                          Iterable
-                             │
-                         Collection
-                             │
-            ┌────────────────┼────────────────┐
-            │                │                │
-           List             Set             Queue
-            │                │                │
-     ┌──────┼──────┐   ┌────┼────┐     ┌────┼────┐
-     │      │      │   │    │    │     │         │
- ArrayList  │  Vector HashSet│ TreeSet PriorityQ │
-        LinkedList    │    LinkedHashSet    ArrayDeque
-                      │
-                  SortedSet
+```mermaid
+flowchart TD
+    %% Root
+    Iterable["<b>Iterable</b>"]:::root --> Collection["<b>Collection</b>"]:::root
 
-                          Map (separate hierarchy)
-                           │
-                ┌──────────┼──────────┐
-                │          │          │
-            HashMap    TreeMap    Hashtable
-                │
-          LinkedHashMap
+    %% Branches from Collection
+    Collection --> List["<b>List</b>"]:::listStyle
+    Collection --> Set["<b>Set</b>"]:::setStyle
+    Collection --> Queue["<b>Queue</b>"]:::queueStyle
+
+    %% List implementations
+    List --> ArrayList["ArrayList"]:::listImpl
+    List --> LinkedList["LinkedList"]:::listImpl
+    List --> Vector["Vector"]:::listImpl
+
+    %% Set implementations
+    Set --> HashSet["HashSet"]:::setImpl
+    Set --> LinkedHashSet["LinkedHashSet"]:::setImpl
+    Set --> TreeSet["TreeSet"]:::setImpl
+
+    %% Queue implementations
+    Queue --> PriorityQueue["PriorityQueue"]:::queueImpl
+    Queue --> ArrayDeque["ArrayDeque"]:::queueImpl
+
+    %% Map hierarchy (separate)
+    MapRoot["<b>Map</b><br/><i>(separate hierarchy)</i>"]:::mapStyle --> HashMap["HashMap"]:::mapImpl
+    MapRoot --> LinkedHashMap["LinkedHashMap"]:::mapImpl
+    MapRoot --> TreeMap["TreeMap"]:::mapImpl
+    MapRoot --> ConcurrentHashMap["ConcurrentHashMap"]:::mapImpl
+
+    %% Styles
+    classDef root fill:#f9f9f9,stroke:#333,stroke-width:2px,color:#333
+    classDef listStyle fill:#1e90ff,stroke:#104e8b,stroke-width:2px,color:#fff,font-weight:bold
+    classDef listImpl fill:#87cefa,stroke:#1e90ff,stroke-width:1px,color:#000
+    classDef setStyle fill:#2ecc71,stroke:#1a8c4e,stroke-width:2px,color:#fff,font-weight:bold
+    classDef setImpl fill:#a9dfbf,stroke:#2ecc71,stroke-width:1px,color:#000
+    classDef queueStyle fill:#e67e22,stroke:#a04000,stroke-width:2px,color:#fff,font-weight:bold
+    classDef queueImpl fill:#f5cba7,stroke:#e67e22,stroke-width:1px,color:#000
+    classDef mapStyle fill:#9b59b6,stroke:#6c3483,stroke-width:2px,color:#fff,font-weight:bold
+    classDef mapImpl fill:#d2b4de,stroke:#9b59b6,stroke-width:1px,color:#000
+```
+
+### When to Use Which Collection (Decision Tree)
+
+```mermaid
+flowchart TD
+    Start["What do you need?"]:::decision
+
+    Start -->|"Key-Value pairs?"| MapQ{"Need ordering<br/>of keys?"}:::decision
+    Start -->|"Ordered elements<br/>with duplicates?"| ListQ{"Need fast<br/>random access?"}:::decision
+    Start -->|"Unique elements<br/>only?"| SetQ{"Need sorted<br/>order?"}:::decision
+    Start -->|"FIFO / Priority<br/>processing?"| QueueQ{"Need priority<br/>ordering?"}:::decision
+
+    %% Map branch
+    MapQ -->|"No order needed"| HashMap2["<b>HashMap</b><br/>O(1) get/put"]:::mapImpl
+    MapQ -->|"Insertion order"| LinkedHashMap2["<b>LinkedHashMap</b><br/>Maintains insert order"]:::mapImpl
+    MapQ -->|"Sorted keys"| TreeMap2["<b>TreeMap</b><br/>O(log n) sorted"]:::mapImpl
+    MapQ -->|"Thread-safe"| ConcurrentHashMap2["<b>ConcurrentHashMap</b><br/>Lock striping"]:::mapImpl
+
+    %% List branch
+    ListQ -->|"Yes — random access"| ArrayList2["<b>ArrayList</b><br/>O(1) get by index"]:::listImpl
+    ListQ -->|"No — frequent insert/delete"| LinkedList2["<b>LinkedList</b><br/>O(1) add/remove at ends"]:::listImpl
+
+    %% Set branch
+    SetQ -->|"No — just unique"| HashSet2["<b>HashSet</b><br/>O(1) add/contains"]:::setImpl
+    SetQ -->|"Yes — sorted"| TreeSet2["<b>TreeSet</b><br/>O(log n) sorted"]:::setImpl
+    SetQ -->|"Insertion order"| LinkedHashSet2["<b>LinkedHashSet</b><br/>Maintains insert order"]:::setImpl
+
+    %% Queue branch
+    QueueQ -->|"Yes — priority"| PriorityQueue2["<b>PriorityQueue</b><br/>Min-heap based"]:::queueImpl
+    QueueQ -->|"No — FIFO/LIFO"| ArrayDeque2["<b>ArrayDeque</b><br/>Fast double-ended"]:::queueImpl
+
+    %% Styles
+    classDef decision fill:#ffeaa7,stroke:#fdcb6e,stroke-width:2px,color:#2d3436,font-weight:bold
+    classDef listImpl fill:#74b9ff,stroke:#0984e3,stroke-width:2px,color:#000
+    classDef setImpl fill:#55efc4,stroke:#00b894,stroke-width:2px,color:#000
+    classDef queueImpl fill:#fab1a0,stroke:#e17055,stroke-width:2px,color:#000
+    classDef mapImpl fill:#a29bfe,stroke:#6c5ce7,stroke-width:2px,color:#000
 ```
 
 ---

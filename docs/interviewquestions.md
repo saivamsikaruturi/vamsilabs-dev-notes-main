@@ -68,7 +68,6 @@ here
 * main(String[] args) == main(String... args)
 
 
-
 int i = 9;
 int i = 09;
 
@@ -78,7 +77,6 @@ In Java, the difference between int i = 9; and int i = 09; lies in the way the n
 int i = 9;: This assigns the decimal value 9 to the variable i. The number 9 is represented in the decimal number system.
 
 int i = 09;: This is not a valid integer initialization in Java. In Java, if a numeric literal starts with a leading zero (0), it is interpreted as an octal (base 8) number. However, octal numbers can only include digits from 0 to 7. Since 9 is not a valid octal digit, the code int i = 09; will result in a compilation error.
-
 
 
 ## application.yml vs application.properties
@@ -138,11 +136,7 @@ Disadvantage:
 * **In Java, it is pass by value.**
 
 
-
 ## ReHashing
-
-
-
 
 
 **why we can't use primitive as key in hashmap**
@@ -160,7 +154,6 @@ Disadvantage:
 * In summary, the use of wrapper classes for primitive types enables them to be used as keys in HashMap by providing the necessary object-oriented capabilities required by the underlying implementation.
 
 
-
 **I have stringbuilder as key in hashmap ,  in first case  hashmap.put(str); in 2nd case hashmap.put(str.append("kumar") , what will happen**
 
 * When using StringBuilder as a key in a HashMap, the behavior will depend on whether you modify the StringBuilder after adding it to the HashMap. Let's consider the two cases you mentioned: hashmap.put(str);
@@ -174,7 +167,5 @@ Disadvantage:
 * Since the content of the StringBuilder object has changed between the two put operations, the hashmap.get(str); call may not be able to retrieve the value associated with the key. The hash code and bucket location used for key lookup will be calculated based on the current state of the StringBuilder object, which may not match the state when it was added to the HashMap.
 
 * Therefore, the output of hashmap.get(str); in this case may be null
-
-
 
 

@@ -6,21 +6,20 @@ Inner classes are classes defined **inside another class**. They're used for enc
 
 ## Four Types of Inner Classes
 
-```
-    ┌─────────────────────────────────────────────────┐
-    │                 Nested Classes                    │
-    │                                                   │
-    │   ┌──────────────────┐  ┌──────────────────────┐ │
-    │   │   Static Nested   │  │   Non-Static (Inner)  │ │
-    │   │   Class           │  │   Class               │ │
-    │   └──────────────────┘  └──────────┬───────────┘ │
-    │                                     │             │
-    │                          ┌──────────┼──────────┐  │
-    │                          │          │          │  │
-    │                     Member     Local      Anonymous│
-    │                     Inner      Inner      Inner    │
-    │                     Class      Class      Class    │
-    └─────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    A[🏗️ Nested Classes] --> B[📦 Static Nested Class]
+    A --> C[🔄 Non-Static Inner Class]
+    C --> D[👤 Member Inner Class]
+    C --> E[📍 Local Inner Class]
+    C --> F[👻 Anonymous Inner Class]
+
+    style A fill:#4a90d9,stroke:#2c5f8a,color:#fff
+    style B fill:#6c5ce7,stroke:#4a3db8,color:#fff
+    style C fill:#00b894,stroke:#008c6e,color:#fff
+    style D fill:#fdcb6e,stroke:#d4a84b,color:#333
+    style E fill:#e17055,stroke:#b85643,color:#fff
+    style F fill:#fd79a8,stroke:#c9607e,color:#fff
 ```
 
 ---

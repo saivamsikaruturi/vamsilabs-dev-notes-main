@@ -173,7 +173,6 @@
 ![clustercreate.PNG](clustercreate.PNG)
 
 
-
 ## Kubectl Syntax:
 
 kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  etc] [pods,services] [name of the resource] [-o -f]
@@ -301,8 +300,6 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 ![afterdelete.PNG](afterdelete.PNG)
 
 
-
-
 ## RollOut and Roll Back:
 * For example: our application is running with 1.21 v and we want to upgrade it to 1.22 v.
 * It requires starting the new version of pod and stopping the old version of pod waiting and verifying the new version.
@@ -401,7 +398,6 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 [serviceLoadBalancer.yml](https://github.com/vamsi1998123/K8S/blob/main/serviceLoadBalancer.yml)
 
 ![loadbalancer.PNG](loadbalancer.PNG)
-
 
 
 ## Ingress ![ingx.png](ingx.png)
@@ -530,7 +526,6 @@ kubectl [command][TYPE][NAME][flags] ---> kubectl  [create,get,describe,delete  
 **VPA**
 
 
-
 ## RBAC
 
 * We will be having may users accessing the k8s resources. When we don't have restrictions to the cluster there may be chances of deleting the resources accidentally.
@@ -613,8 +608,6 @@ Role and Role Binding:
         NAME                           READY   STATUS    RESTARTS         AGE
         debug                          0/1     Error     0                24d
         nginx-pod1                     1/1     Running   10 (4h16m ago)   48d
-
-
 
 
 ## Daemon sets ![dsimg.png](dsimg.png)

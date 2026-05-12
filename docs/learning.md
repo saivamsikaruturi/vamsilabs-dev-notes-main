@@ -61,17 +61,52 @@
 ## Learning Roadmap
 
 ```mermaid
-graph LR
-    A[Programming Basics] --> B[Data Structures & Algorithms]
-    B --> C[Object-Oriented Design]
-    C --> D[Design Patterns]
-    D --> E[Spring Boot & REST APIs]
-    E --> F[Databases & SQL]
-    F --> G[Microservices]
-    G --> H[System Design]
-    H --> I[DevOps & Cloud]
-    I --> J[AI & Modern Tech]
+graph TD
+    subgraph Beginner
+        A[Java Basics & OOP] --> B[Collections & Generics]
+        B --> C[Exception Handling & I/O]
+        C --> D[JVM Internals & GC]
+    end
+
+    subgraph Intermediate
+        D --> E[Multithreading & Concurrency]
+        D --> F[SOLID Principles]
+        F --> G[Design Patterns]
+        E --> H[Spring Boot & REST APIs]
+        G --> H
+        H --> I[SQL & Database Design]
+        I --> J[Testing — JUnit & TDD]
+    end
+
+    subgraph Advanced
+        J --> K[Microservices & Kafka]
+        K --> L[System Design]
+        L --> M[DevOps — Docker & K8s]
+        M --> N[Cloud — AWS]
+        K --> O[Security — OAuth & JWT]
+    end
+
+    style A fill:#d1fae5,stroke:#059669
+    style B fill:#d1fae5,stroke:#059669
+    style C fill:#d1fae5,stroke:#059669
+    style D fill:#d1fae5,stroke:#059669
+    style E fill:#fef3c7,stroke:#d97706
+    style F fill:#fef3c7,stroke:#d97706
+    style G fill:#fef3c7,stroke:#d97706
+    style H fill:#fef3c7,stroke:#d97706
+    style I fill:#fef3c7,stroke:#d97706
+    style J fill:#fef3c7,stroke:#d97706
+    style K fill:#fee2e2,stroke:#dc2626
+    style L fill:#fee2e2,stroke:#dc2626
+    style M fill:#fee2e2,stroke:#dc2626
+    style N fill:#fee2e2,stroke:#dc2626
+    style O fill:#fee2e2,stroke:#dc2626
 ```
+
+!!! info "Difficulty Legend"
+    - :green_circle: **Green** — Beginner (start here)
+    - :yellow_circle: **Yellow** — Intermediate (core skills)
+    - :red_circle: **Red** — Advanced (senior-level topics)
 
 !!! tip "Learning Strategy"
     Build projects at each stage. Theory without practice doesn't stick. Aim for one small project per topic.

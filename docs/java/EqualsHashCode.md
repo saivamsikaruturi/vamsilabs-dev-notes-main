@@ -12,9 +12,15 @@ Getting `equals()` and `hashCode()` right is critical for **HashMap, HashSet, an
 | If `a.hashCode() == b.hashCode()` | `a.equals(b)` may or may not be true (hash collisions exist) |
 | Override both or neither | Breaking this contract breaks HashMap/HashSet |
 
-```
-    equals() returns true ──────► hashCode() MUST be same
-    hashCode() is same    ──────► equals() MAY or MAY NOT be true
+```mermaid
+graph LR
+    A["✅ equals returns true"] -->|MUST| B["🔑 hashCode MUST be same"]
+    C["🔑 hashCode is same"] -->|MAY or MAY NOT| D["❓ equals MAY or MAY NOT be true"]
+
+    style A fill:#00b894,stroke:#008c6e,color:#fff
+    style B fill:#00b894,stroke:#008c6e,color:#fff
+    style C fill:#fdcb6e,stroke:#d4a84b,color:#333
+    style D fill:#fdcb6e,stroke:#d4a84b,color:#333
 ```
 
 ---
@@ -91,21 +97,34 @@ public class Employee {
 
 ## How HashMap Uses Both
 
-```
-    map.put(key, value):
+```mermaid
+graph TD
+    subgraph PUT["🔽 map.put - key, value"]
+        P1["1️⃣ hashCode"] -->|"hash % array.length"| P2["2️⃣ Go to bucket"]
+        P2 --> P3{"3️⃣ equals - same key?"}
+        P3 -->|Yes| P4["✏️ Replace value"]
+        P3 -->|No| P5["➕ Add as new entry - collision"]
+    end
 
-    1. hashCode() ──► bucket index = hash % array.length
-    2. Go to that bucket
-    3. For each entry in bucket:
-       equals() ──► is this the same key?
-       - Yes → replace value
-       - No → add as new entry (collision)
+    subgraph GET["🔼 map.get - key"]
+        G1["1️⃣ hashCode"] -->|"bucket index"| G2["2️⃣ Walk bucket chain"]
+        G2 --> G3{"3️⃣ equals - matching key?"}
+        G3 -->|Yes| G4["✅ Return value"]
+        G3 -->|No| G5["🔁 Next entry in chain"]
+    end
 
-    map.get(key):
-
-    1. hashCode() ──► bucket index
-    2. Walk the bucket chain
-    3. equals() ──► found matching key? return value
+    style PUT fill:#dfe6e9,stroke:#636e72,color:#333
+    style GET fill:#dfe6e9,stroke:#636e72,color:#333
+    style P1 fill:#0984e3,stroke:#0652a3,color:#fff
+    style P2 fill:#6c5ce7,stroke:#4a3db8,color:#fff
+    style P3 fill:#fdcb6e,stroke:#d4a84b,color:#333
+    style P4 fill:#00b894,stroke:#008c6e,color:#fff
+    style P5 fill:#e17055,stroke:#b85643,color:#fff
+    style G1 fill:#0984e3,stroke:#0652a3,color:#fff
+    style G2 fill:#6c5ce7,stroke:#4a3db8,color:#fff
+    style G3 fill:#fdcb6e,stroke:#d4a84b,color:#333
+    style G4 fill:#00b894,stroke:#008c6e,color:#fff
+    style G5 fill:#e17055,stroke:#b85643,color:#fff
 ```
 
 If `hashCode()` is wrong, the key lands in the **wrong bucket** and `get()` will never find it — even though `equals()` would return true.

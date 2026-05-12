@@ -8,12 +8,59 @@ Think of it like LEGO blocks — each block (object) has its own shape and purpo
 
 ### The 4 Pillars of OOP
 
+```mermaid
+flowchart TB
+    OOP["<b>Object-Oriented Programming</b>"]:::center
+
+    OOP --> E["<b>Encapsulation</b><br/><i>Hide data, expose methods</i>"]:::encap
+    OOP --> A["<b>Abstraction</b><br/><i>Hide complexity, show essentials</i>"]:::abstr
+    OOP --> I["<b>Inheritance</b><br/><i>Reuse via parent-child IS-A</i>"]:::inher
+    OOP --> P["<b>Polymorphism</b><br/><i>One interface, many forms</i>"]:::poly
+
+    %% Connections between pillars
+    E -.-|"Abstraction uses<br/>encapsulation to hide details"| A
+    I -.-|"Polymorphism requires<br/>inheritance to override"| P
+
+    classDef center fill:#2c3e50,stroke:#1a252f,stroke-width:3px,color:#ecf0f1,font-size:16px
+    classDef encap fill:#3498db,stroke:#2471a3,stroke-width:2px,color:#fff
+    classDef abstr fill:#9b59b6,stroke:#7d3c98,stroke-width:2px,color:#fff
+    classDef inher fill:#27ae60,stroke:#1e8449,stroke-width:2px,color:#fff
+    classDef poly fill:#e67e22,stroke:#ca6f1e,stroke-width:2px,color:#fff
 ```
-                    OOP
-         ┌──────┬──────┬──────┐
-         │      │      │      │
-   Encapsulation │  Inheritance │
-         Abstraction    Polymorphism
+
+### Inheritance vs Composition
+
+```mermaid
+flowchart LR
+    subgraph ISA["<b>Inheritance (IS-A)</b>"]
+        direction TB
+        Animal["Animal"]:::parent
+        Dog["Dog"]:::child
+        Cat["Cat"]:::child
+        Dog -->|"extends"| Animal
+        Cat -->|"extends"| Animal
+        note1["Dog <b>IS-A</b> Animal<br/>Tight coupling<br/>Compile-time relationship"]:::note
+    end
+
+    subgraph HASA["<b>Composition (HAS-A)</b>"]
+        direction TB
+        Car["Car"]:::parent
+        Engine["Engine"]:::component
+        Wheels["Wheels"]:::component
+        Car -->|"has"| Engine
+        Car -->|"has"| Wheels
+        note2["Car <b>HAS-A</b> Engine<br/>Loose coupling<br/>Runtime flexibility"]:::note
+    end
+
+    ISA ~~~ HASA
+
+    classDef parent fill:#2ecc71,stroke:#1a8c4e,stroke-width:2px,color:#fff,font-weight:bold
+    classDef child fill:#a9dfbf,stroke:#2ecc71,stroke-width:1px,color:#000
+    classDef component fill:#aed6f1,stroke:#2e86c1,stroke-width:1px,color:#000
+    classDef note fill:#fdebd0,stroke:#f0b27a,stroke-width:1px,color:#2c3e50,font-size:11px
+
+    style ISA fill:#eafaf1,stroke:#27ae60,stroke-width:2px,color:#1a5c30
+    style HASA fill:#eaf2f8,stroke:#2e86c1,stroke-width:2px,color:#1a3c5c
 ```
 
 ---

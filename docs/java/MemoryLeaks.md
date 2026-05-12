@@ -6,13 +6,31 @@ A memory leak in Java happens when objects are **no longer needed but still refe
 
 ## How Memory Leaks Happen in Java
 
-```
-    Normal lifecycle:          Memory leak:
-    ────────────────           ─────────────
-    Object created             Object created
-    Object used                Object used
-    Reference removed          Reference STILL held ← leaked
-    GC reclaims memory         GC can't reclaim ← grows until OOM
+```mermaid
+graph LR
+    subgraph Normal Lifecycle 🟢
+        direction TB
+        A1[Object Created] --> A2[Object Used]
+        A2 --> A3[Reference Removed]
+        A3 --> A4[GC Reclaims Memory]
+    end
+    subgraph Memory Leak 🔴
+        direction TB
+        B1[Object Created] --> B2[Object Used]
+        B2 --> B3[Reference STILL Held]
+        B3 --> B4[GC Can't Reclaim]
+        B4 --> B5[💥 Grows Until OOM]
+    end
+
+    style A1 fill:#4CAF50,color:#fff
+    style A2 fill:#66BB6A,color:#fff
+    style A3 fill:#81C784,color:#fff
+    style A4 fill:#A5D6A7,color:#000
+    style B1 fill:#EF5350,color:#fff
+    style B2 fill:#E57373,color:#fff
+    style B3 fill:#FF8A65,color:#fff
+    style B4 fill:#FF7043,color:#fff
+    style B5 fill:#D32F2F,color:#fff
 ```
 
 Java has automatic GC, but GC can only collect objects with **zero reachable references**. If even one reference exists, the object stays alive.

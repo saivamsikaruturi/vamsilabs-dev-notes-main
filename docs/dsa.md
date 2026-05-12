@@ -58,7 +58,6 @@ Eg:
    i.e convert all the columns into rows.
 
 
-
 ## LinkedList
 
 * When the spaces are not available together we are not able to store in array with large size , it may throw throw stack over flow, and came up with Linked List.
