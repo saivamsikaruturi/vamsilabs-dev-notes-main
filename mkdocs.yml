@@ -152,36 +152,54 @@ nav:
           - Generics: java/Generics.md
           - Annotations: java/Annotations.md
           - Reflection: java/Reflection.md
+          - Dynamic Proxy: java/DynamicProxy.md
+          - Regular Expressions: java/Regex.md
       - OOP & Core:
           - OOP Concepts: java/oops.md
           - Interfaces & Abstract Classes: java/Interfaces.md
           - Inner Classes: java/InnerClasses.md
           - equals & hashCode: java/EqualsHashCode.md
           - Immutable Classes: java/ImmutableClasses.md
+          - Design Principles: java/DesignPrinciples.md
           - Exception Handling: java/ExceptionHandling.md
           - Serialization: java/Serialization.md
           - Cloning: java/Cloning.md
           - File Handling: java/FileHandling.md
+          - I/O & NIO: java/NIO.md
+          - Networking: java/Networking.md
+          - JDBC: java/JDBC.md
       - JVM & Memory:
           - JVM Internals: java/Jvm.md
+          - ClassLoaders: java/ClassLoaders.md
           - Garbage Collection: java/GarbageCollection.md
+          - JVM Tuning & Monitoring: java/JVMTuning.md
           - Memory Leaks & Profiling: java/MemoryLeaks.md
+      - Functional Programming:
+          - Functional Programming: java/FunctionalProgramming.md
+          - Stream API: stream-api/streamapi.md
       - Collections:
           - Collections Framework: java/Collections.md
           - Comparable vs Comparator: java/ComparableComparator.md
           - Collections Compared: java/DiffCollections.md
-          - Stream API: stream-api/streamapi.md
       - Concurrency:
           - Multithreading: java/MultiThreading.md
+          - Thread Pools & Executors: java/Executors.md
+          - Java Memory Model: java/JavaMemoryModel.md
           - Locks: java/Locks.md
           - volatile & Atomics: java/VolatileAtomics.md
           - CompletableFuture: java/CompletableFuture.md
           - Concurrent Collections: java/ConcurrentCollections.md
+          - Concurrency Patterns: java/ConcurrencyPatterns.md
           - Deadlocks: java/deadlocks.md
+          - Reactive Streams: java/ReactiveStreams.md
       - Version Features:
           - Java 8: java/Java8.md
+          - Date & Time API: java/DateTime.md
           - Java 11: java/java11.md
           - Java 17: java/Java17.md
+          - Modern Java (17-21): java/ModernJava.md
+      - Security & Cryptography:
+          - Java Security: java/Security.md
       - Build Tools:
           - Maven: java/maven.md
           - Gradle: java/gradle.md
@@ -271,6 +289,8 @@ nav:
   - System Design:
       - HTTPS & TLS: https.md
       - CAP Theorem: capTheorem.md
+      - Consistent Hashing: consistenthashing.md
+      - Distributed Locks: distributedlocks.md
       - Rate Limiting: ratelimiting.md
       - Load Balancing: loadbalancer.md
       - Distributed Caching: distributedCaching.md
@@ -298,6 +318,13 @@ nav:
       - CI/CD Pipelines: cicd/cicd.md
   - AI & ML:
       - Overview: aiml/aiml.md
+  - Computer Networks:
+      - Fundamentals: networks/networks.md
+      - Protocols Deep Dive: networks/protocols-deep-dive.md
+      - Network Security & Threat Detection: networks/network-security.md
+  - Operating Systems:
+      - OS Fundamentals: os/os-fundamentals.md
+      - OS Security & Endpoint Protection: os/os-security.md
   - Languages:
       - Golang: golang/introduction.md
       - Python: python/introduction.md
@@ -305,7 +332,20 @@ nav:
       - TypeScript: typescript/introduction.md
       - Rust: rust/introduction.md
       - Ruby: ruby/introduction.md
-  - Admin: admin.md
+  - Interview Prep:
+      - Core Java Q&A: interview/java-core.md
+      - Java Strings Q&A: interview/java-strings.md
+      - Java Collections Q&A: interview/java-collections.md
+      - Java Multithreading Q&A: interview/java-multithreading.md
+      - Java 8+ Features Q&A: interview/java8-features.md
+      - Spring Boot Q&A: interview/spring-boot.md
+      - Hibernate & JPA Q&A: interview/hibernate-jpa.md
+      - Microservices Q&A: interview/microservices.md
+      - SQL Q&A: interview/sql.md
+      - System Design Q&A: interview/system-design.md
+      - Design Patterns Q&A: interview/design-patterns.md
+      - REST API Q&A: interview/rest-api.md
+      - Coding Problems & Solutions: interview/company-coding.md
 
 extra:
   social:

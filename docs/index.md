@@ -16,16 +16,16 @@ hide:
 
 <div class="vtn-stats">
   <div class="vtn-stat">
-    <span class="vtn-stat-number">150+</span>
+    <span class="vtn-stat-number">180+</span>
     <span class="vtn-stat-label">In-Depth Articles</span>
   </div>
   <div class="vtn-stat">
-    <span class="vtn-stat-number">300+</span>
+    <span class="vtn-stat-number">420+</span>
     <span class="vtn-stat-label">Interview Questions</span>
   </div>
   <div class="vtn-stat">
-    <span class="vtn-stat-number">48</span>
-    <span class="vtn-stat-label">Spring & Microservices</span>
+    <span class="vtn-stat-number">52</span>
+    <span class="vtn-stat-label">Java Master Guide</span>
   </div>
 </div>
 
@@ -44,10 +44,41 @@ hide:
 
 </div>
 
+<!-- Progress Dashboard (shown after sign-in) -->
+<div class="vtn-progress-dashboard" id="progress-dashboard" style="display:none;">
+<div class="vtn-dashboard-header">
+  <div class="vtn-dashboard-ring">
+    <svg viewBox="0 0 100 100" class="vtn-ring-svg">
+      <circle cx="50" cy="50" r="42" class="vtn-ring-bg"/>
+      <circle cx="50" cy="50" r="42" class="vtn-ring-fill" id="dashboard-ring-fill"/>
+    </svg>
+    <div class="vtn-ring-text">
+      <span class="vtn-ring-pct" id="dashboard-pct">0%</span>
+      <span class="vtn-ring-label">Complete</span>
+    </div>
+  </div>
+  <div class="vtn-dashboard-summary">
+    <h3>Your Learning Progress</h3>
+    <p id="dashboard-summary-text">0 of 0 topics completed</p>
+    <div class="vtn-dashboard-streak" id="dashboard-streak"></div>
+  </div>
+</div>
+<div class="vtn-dashboard-sections" id="dashboard-sections"></div>
+</div>
+
+<!-- Admin Link (shown only to admin users) -->
+<div id="admin-link" style="display:none; margin-bottom: 1.5rem;">
+<a href="admin/" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; font-size: 0.8rem; font-weight: 600; color: var(--vtn-text-muted); background: var(--vtn-surface); border: 1px solid var(--vtn-border); border-radius: var(--vtn-radius-full); text-decoration: none; transition: all 0.15s ease;">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+Admin Dashboard
+</a>
+</div>
+
+
 <!-- What's New Banner -->
 <div class="vtn-whats-new" markdown>
 <span class="vtn-whats-new-badge">NEW</span>
-<span class="vtn-whats-new-text">Just added: <a href="springboot/aop/">Spring AOP</a> · <a href="springboot/webflux/">WebFlux</a> · <a href="microservices/grpc/">gRPC</a> · <a href="microservices/resilience-patterns/">Resilience Patterns</a> · <a href="microservices/api-versioning/">API Versioning</a> + 6 more topics</span>
+<span class="vtn-whats-new-text">Just added: <a href="networks/networks/">Computer Networks</a> · <a href="os/os-fundamentals/">OS Fundamentals</a> · <a href="os/os-security/">OS Security & EDR</a> · <a href="networks/network-security/">Network Threat Detection</a> — complete coverage for Microsoft Defender interviews</span>
 </div>
 
 <!-- Learning Paths -->
@@ -55,7 +86,7 @@ hide:
 
 <div class="vtn-paths">
 <div class="vtn-path-card" data-path="faang-prep">
-<div class="vtn-path-icon">🎯</div>
+<div class="vtn-path-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
 <div class="vtn-path-content">
 <h3>FAANG Interview Prep</h3>
 <p>Java → Spring Boot → System Design → Behavioral. 4-6 weeks.</p>
@@ -69,7 +100,7 @@ hide:
 </div>
 </div>
 <div class="vtn-path-card" data-path="spring-boot-mastery">
-<div class="vtn-path-icon">🚀</div>
+<div class="vtn-path-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
 <div class="vtn-path-content">
 <h3>Spring Boot Mastery</h3>
 <p>Zero to production-ready. IoC, JPA, Security, Testing, Actuator.</p>
@@ -83,7 +114,7 @@ hide:
 </div>
 </div>
 <div class="vtn-path-card" data-path="microservices-architect">
-<div class="vtn-path-icon">🏗️</div>
+<div class="vtn-path-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="8" rx="1"/><path d="M17 14v7"/><path d="M7 14v7"/><path d="M17 3v3"/><path d="M7 3v3"/><path d="M10 14 2.3 6.3"/><path d="m14 6 7.7 7.7"/><path d="M8 21h8"/></svg></div>
 <div class="vtn-path-content">
 <h3>Microservices Architect</h3>
 <p>Design, build, deploy, and observe distributed systems.</p>
@@ -199,6 +230,33 @@ hide:
 <a class="vtn-card" href="sqlvsnosql/">
   <span class="vtn-card-icon">:material-database-search:</span>
   <span class="vtn-card-body"><span class="vtn-card-title">SQL vs NoSQL</span><span class="vtn-card-desc">When to pick what and trade-offs</span></span>
+</a>
+
+</div>
+
+<!-- Computer Networks & OS -->
+<div class="vtn-section-title">Networks & Operating Systems</div>
+
+<div class="vtn-grid" markdown>
+
+<a class="vtn-card" href="networks/networks/">
+  <span class="vtn-card-icon">:material-lan:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Computer Networks <span class="vtn-badge vtn-badge-hot">NEW</span></span><span class="vtn-card-desc">TCP/IP, DNS, HTTP/3, TLS, routing, packet analysis</span></span>
+</a>
+
+<a class="vtn-card" href="networks/network-security/">
+  <span class="vtn-card-icon">:material-shield-network:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">Network Security</span><span class="vtn-card-desc">DPI, C2 detection, Zero Trust, threat telemetry</span></span>
+</a>
+
+<a class="vtn-card" href="os/os-fundamentals/">
+  <span class="vtn-card-icon">:material-chip:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">OS Fundamentals <span class="vtn-badge vtn-badge-hot">NEW</span></span><span class="vtn-card-desc">Processes, memory, scheduling, syscalls, Windows/Linux internals</span></span>
+</a>
+
+<a class="vtn-card" href="os/os-security/">
+  <span class="vtn-card-icon">:material-shield-bug:</span>
+  <span class="vtn-card-body"><span class="vtn-card-title">OS Security & EDR</span><span class="vtn-card-desc">Process injection, ransomware detection, MITRE ATT&CK, Defender internals</span></span>
 </a>
 
 </div>

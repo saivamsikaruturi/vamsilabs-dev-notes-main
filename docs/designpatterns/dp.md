@@ -11,6 +11,9 @@ flowchart LR
 !!! abstract "What are Design Patterns?"
     Design patterns are **proven solutions** to common software design problems. They are not code — they are **templates** for how to solve problems that can be used in many different situations.
 
+!!! tip "Practice Repository"
+    Full Java implementations of all patterns: [:fontawesome-brands-github: lld-Design-Patterns](https://github.com/saivamsikaruturi/lld-Design-Patterns)
+
 ---
 
 ## Types of Design Patterns

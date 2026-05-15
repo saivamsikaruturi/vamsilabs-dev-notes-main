@@ -29,23 +29,31 @@ An immutable object **cannot be modified after creation**. Immutability is a cor
 
 ## Rules for Creating an Immutable Class
 
-```mermaid
-graph TD
-    R1["1️⃣ Declare class as <b>final</b><br/>No subclass can break immutability"]
-    R2["2️⃣ All fields <b>private final</b><br/>Can't be accessed or reassigned"]
-    R3["3️⃣ No setter methods<br/>No way to change state"]
-    R4["4️⃣ Initialize via <b>constructor</b><br/>State is set once"]
-    R5["5️⃣ Defensive copy IN<br/>Constructor copies incoming objects"]
-    R6["6️⃣ Defensive copy OUT<br/>Getters return copies, not originals"]
+| # | Rule | Why |
+|---|------|-----|
+| 1 | Declare class as **`final`** | Prevents subclasses from breaking immutability |
+| 2 | All fields **`private final`** | Cannot be accessed or reassigned after construction |
+| 3 | **No setter methods** | No external way to modify state |
+| 4 | Initialize all fields via **constructor only** | State is set once at creation time |
+| 5 | **Defensive copy IN** (constructor) | Callers can't mutate your internals via their reference |
+| 6 | **Defensive copy OUT** (getters) | Callers can't mutate internals via the returned reference |
 
-    R1 --> R2 --> R3 --> R4 --> R5 --> R6
+```java
+public final class ImmutablePerson {          // Rule 1: final class
+    private final String name;                 // Rule 2: private final
+    private final List<String> hobbies;        // Rule 2: private final
 
-    style R1 fill:#7C4DFF,color:#fff
-    style R2 fill:#651FFF,color:#fff
-    style R3 fill:#536DFE,color:#fff
-    style R4 fill:#448AFF,color:#fff
-    style R5 fill:#2979FF,color:#fff
-    style R6 fill:#2962FF,color:#fff
+    public ImmutablePerson(String name, List<String> hobbies) {
+        this.name = name;                      // Rule 4: set via constructor
+        this.hobbies = new ArrayList<>(hobbies); // Rule 5: defensive copy IN
+    }
+
+    public String getName() { return name; }   // Rule 3: no setters
+
+    public List<String> getHobbies() {
+        return Collections.unmodifiableList(hobbies); // Rule 6: defensive copy OUT
+    }
+}
 ```
 
 ---

@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block extrahead %}
+<!-- Non-blocking font loading -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <!-- Header auth button styles -->
 <style>
 .vtn-header-auth {
@@ -17,18 +21,18 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(135deg, #D4682A 0%, #E8752F 100%);
+  background: var(--vtn-brand, #B45309);
   border: none;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
   text-decoration: none;
-  box-shadow: 0 2px 8px rgba(212, 104, 42, 0.3);
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.3);
 }
 .vtn-header-signin:hover {
   transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 4px 12px rgba(212, 104, 42, 0.4);
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.4);
 }
 .vtn-header-signin svg {
   width: 14px;
@@ -121,12 +125,12 @@ document.addEventListener('DOMContentLoaded', function() {
   authContainer.className = 'vtn-header-auth';
   authContainer.style.position = 'relative';
   authContainer.innerHTML = `
-    <button class="vtn-header-signin" id="header-signin-btn" onclick="headerSignIn()">
+    <button class="vtn-header-signin" id="header-signin-btn" onclick="headerSignIn()" aria-label="Sign in with Google">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
       Sign In
     </button>
-    <button class="vtn-header-user" id="header-user-btn" style="display:none;" onclick="toggleHeaderDropdown()">
-      <img id="header-user-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Crect fill='%23D4682A' width='22' height='22' rx='11'/%3E%3C/svg%3E" alt="">
+    <button class="vtn-header-user" id="header-user-btn" style="display:none;" onclick="toggleHeaderDropdown()" aria-label="User menu">
+      <img id="header-user-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Crect fill='%23B45309' width='22' height='22' rx='11'/%3E%3C/svg%3E" alt="">
       <span id="header-user-name">User</span>
     </button>
     <div class="vtn-header-dropdown" id="header-dropdown">

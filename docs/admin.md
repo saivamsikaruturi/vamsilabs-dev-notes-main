@@ -8,16 +8,14 @@ hide:
 
 <div class="vtn-admin-header">
   <h2>Admin Dashboard</h2>
-  <span id="admin-status" style="font-size: 0.8rem; color: var(--vtn-text-muted);">Loading...</span>
+  <span id="admin-status" style="font-size: 0.8rem; color: var(--vtn-text-muted);">Checking access...</span>
 </div>
 
-<!-- Access Gate -->
-<div id="admin-gate" style="text-align: center; padding: 3rem;">
+<!-- Access Gate (hidden by default, shown only if not signed in) -->
+<div id="admin-gate" style="display:none; text-align: center; padding: 3rem;">
   <h3>Admin Access Required</h3>
-  <p style="color: var(--vtn-text-muted); font-size: 0.9rem;">Sign in with an admin account to view metrics.</p>
-  <button class="vtn-auth-btn" onclick="signInWithGoogle()" style="max-width: 300px; margin: 1rem auto;">
-    Sign in with Google
-  </button>
+  <p style="color: var(--vtn-text-muted); font-size: 0.9rem;">You need to be signed in as an admin to view this page.</p>
+  <p style="color: var(--vtn-text-muted); font-size: 0.8rem; margin-top: 0.5rem;">If you're already signed in on the homepage, this will load automatically.</p>
 </div>
 
 <!-- Dashboard Content (shown to admins) -->
@@ -75,7 +73,7 @@ hide:
 </table>
 
 <!-- Daily Active Users Chart -->
-<h3 class="vtn-admin-section-title">Daily Active Users (Last 30 Days)</h3>
+<h3 class="vtn-admin-section-title">Daily Active Users (Last 7 Days)</h3>
 <div class="vtn-chart-placeholder" id="dau-chart">
   <canvas id="dau-canvas" width="800" height="250"></canvas>
 </div>
@@ -90,19 +88,20 @@ hide:
 </div>
 
 <script>
-// Admin Dashboard Logic
-document.addEventListener('DOMContentLoaded', async () => {
-  // Admin emails (configure these)
-  const ADMIN_EMAILS = ['krishnavamsikaruturi8@gmail.com'];
+(function() {
+  function initAdmin() {
+    if (typeof initFirebase === 'undefined') {
+      setTimeout(initAdmin, 300);
+      return;
+    }
 
-  async function checkAdmin() {
-    try {
-      await initFirebase();
+    initFirebase().then(function() {
+      auth.onAuthStateChanged(function(user) {
+        var gate = document.getElementById('admin-gate');
+        var content = document.getElementById('admin-content');
+        var status = document.getElementById('admin-status');
 
-      auth.onAuthStateChanged(async (user) => {
-        const gate = document.getElementById('admin-gate');
-        const content = document.getElementById('admin-content');
-        const status = document.getElementById('admin-status');
+        if (!gate || !content || !status) return;
 
         if (!user) {
           gate.style.display = 'block';
@@ -112,186 +111,172 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (!ADMIN_EMAILS.includes(user.email)) {
-          gate.innerHTML = '<h3>Access Denied</h3><p style="color: var(--vtn-text-muted);">Your account does not have admin permissions.</p>';
           gate.style.display = 'block';
+          gate.innerHTML = '<h3>Access Denied</h3><p style="color: var(--vtn-text-muted);">Your account (' + user.email + ') does not have admin permissions.</p>';
           content.style.display = 'none';
-          status.textContent = 'Unauthorized: ' + user.email;
+          status.textContent = 'Unauthorized';
           return;
         }
 
         gate.style.display = 'none';
         content.style.display = 'block';
         status.textContent = 'Admin: ' + user.email;
-
         loadMetrics();
       });
-    } catch (e) {
-      document.getElementById('admin-gate').innerHTML =
-        '<h3>Dashboard Unavailable</h3><p style="color: var(--vtn-text-muted);">Firebase is not configured. Add your Firebase config to auth.js to enable the admin dashboard.</p>';
-    }
+    }).catch(function(e) {
+      var gate = document.getElementById('admin-gate');
+      if (gate) gate.innerHTML = '<h3>Dashboard Unavailable</h3><p style="color: var(--vtn-text-muted);">Firebase failed to load.</p>';
+      gate.style.display = 'block';
+    });
   }
 
-  async function loadMetrics() {
-    try {
-      // Load user count
-      const usersSnap = await db.collection('users').get();
+  function loadMetrics() {
+    var brandColor = getComputedStyle(document.documentElement).getPropertyValue('--vtn-brand').trim() || '#B45309';
+
+    db.collection('users').get().then(function(usersSnap) {
       document.getElementById('metric-users').textContent = usersSnap.size;
 
-      // Load page views (last 7 days)
-      const weekAgo = new Date();
+      var weekAgo = new Date();
       weekAgo.setDate(weekAgo.getDate() - 7);
-      const viewsSnap = await db.collection('pageViews')
-        .where('timestamp', '>', weekAgo)
-        .get();
-      document.getElementById('metric-views').textContent = viewsSnap.size;
+      return db.collection('pageViews').where('timestamp', '>', weekAgo).get().then(function(viewsSnap) {
+        document.getElementById('metric-views').textContent = viewsSnap.size;
 
-      // Active today
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const todaySnap = await db.collection('pageViews')
-        .where('timestamp', '>', today)
-        .get();
-      const uniqueToday = new Set(todaySnap.docs.map(d => d.data().userId));
-      document.getElementById('metric-active').textContent = uniqueToday.size;
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return db.collection('pageViews').where('timestamp', '>', today).get().then(function(todaySnap) {
+          var uniqueToday = {};
+          todaySnap.docs.forEach(function(d) { uniqueToday[d.data().userId] = true; });
+          document.getElementById('metric-active').textContent = Object.keys(uniqueToday).length;
 
-      // Average time
-      const engSnap = await db.collection('engagement')
-        .where('timestamp', '>', weekAgo)
-        .limit(500)
-        .get();
-      if (engSnap.size > 0) {
-        const totalTime = engSnap.docs.reduce((sum, d) => sum + (d.data().timeSpentSeconds || 0), 0);
-        const avgMin = (totalTime / engSnap.size / 60).toFixed(1);
-        document.getElementById('metric-avg-time').textContent = avgMin;
-      } else {
-        document.getElementById('metric-avg-time').textContent = '0';
-      }
+          return db.collection('engagement').where('timestamp', '>', weekAgo).limit(500).get().then(function(engSnap) {
+            if (engSnap.size > 0) {
+              var totalTime = 0;
+              engSnap.docs.forEach(function(d) { totalTime += (d.data().timeSpentSeconds || 0); });
+              document.getElementById('metric-avg-time').textContent = (totalTime / engSnap.size / 60).toFixed(1);
+            } else {
+              document.getElementById('metric-avg-time').textContent = '0';
+            }
 
-      // Popular pages
-      const pageCounts = {};
-      viewsSnap.docs.forEach(d => {
-        const page = d.data().page || '/';
-        pageCounts[page] = (pageCounts[page] || 0) + 1;
+            // Popular pages
+            var pageCounts = {};
+            viewsSnap.docs.forEach(function(d) {
+              var page = d.data().page || '/';
+              pageCounts[page] = (pageCounts[page] || 0) + 1;
+            });
+            var sorted = Object.entries(pageCounts).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 10);
+            var tbody = document.getElementById('popular-pages');
+            tbody.innerHTML = sorted.map(function(item) {
+              return '<tr><td>' + item[0] + '</td><td>' + item[1] + '</td><td>—</td></tr>';
+            }).join('') || '<tr><td colspan="3">No data yet</td></tr>';
+
+            // Recent users
+            return db.collection('users').orderBy('lastLogin', 'desc').limit(10).get().then(function(recentSnap) {
+              var usersBody = document.getElementById('recent-users');
+              usersBody.innerHTML = recentSnap.docs.map(function(d) {
+                var data = d.data();
+                var login = data.lastLogin ? data.lastLogin.toDate().toLocaleDateString() : '—';
+                return '<tr><td>' + (data.displayName || '—') + '</td><td>' + data.email + '</td><td>' + (data.provider || '—') + '</td><td>' + login + '</td></tr>';
+              }).join('') || '<tr><td colspan="4">No users yet</td></tr>';
+
+              drawDAUChart(viewsSnap.docs, brandColor);
+              drawSectionChart(pageCounts, brandColor);
+            });
+          });
+        });
       });
-      const sorted = Object.entries(pageCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
-      const tbody = document.getElementById('popular-pages');
-      tbody.innerHTML = sorted.map(([page, count]) =>
-        `<tr><td>${page}</td><td>${count}</td><td>—</td></tr>`
-      ).join('') || '<tr><td colspan="3">No data yet</td></tr>';
-
-      // Recent users
-      const recentUsersSnap = await db.collection('users')
-        .orderBy('lastLogin', 'desc')
-        .limit(10)
-        .get();
-      const usersBody = document.getElementById('recent-users');
-      usersBody.innerHTML = recentUsersSnap.docs.map(d => {
-        const data = d.data();
-        const login = data.lastLogin ? data.lastLogin.toDate().toLocaleDateString() : '—';
-        return `<tr><td>${data.displayName || '—'}</td><td>${data.email}</td><td>${data.provider}</td><td>${login}</td></tr>`;
-      }).join('') || '<tr><td colspan="4">No users yet</td></tr>';
-
-      // DAU Chart (simple bar chart with canvas)
-      drawDAUChart(viewsSnap.docs);
-      drawSectionChart(pageCounts);
-
-    } catch (e) {
+    }).catch(function(e) {
       console.error('Error loading metrics:', e);
-    }
+    });
   }
 
-  function drawDAUChart(docs) {
-    const canvas = document.getElementById('dau-canvas');
+  function drawDAUChart(docs, brandColor) {
+    var canvas = document.getElementById('dau-canvas');
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
+    var ctx = canvas.getContext('2d');
+    var width = canvas.width;
+    var height = canvas.height;
 
-    // Count unique users per day
-    const dailyUsers = {};
-    docs.forEach(d => {
-      const data = d.data();
+    var dailyUsers = {};
+    docs.forEach(function(d) {
+      var data = d.data();
       if (data.timestamp) {
-        const date = data.timestamp.toDate().toISOString().split('T')[0];
-        if (!dailyUsers[date]) dailyUsers[date] = new Set();
-        dailyUsers[date].add(data.userId);
+        var date = data.timestamp.toDate().toISOString().split('T')[0];
+        if (!dailyUsers[date]) dailyUsers[date] = {};
+        dailyUsers[date][data.userId] = true;
       }
     });
 
-    const days = Object.keys(dailyUsers).sort().slice(-7);
-    const values = days.map(d => dailyUsers[d].size);
-    const max = Math.max(...values, 1);
+    var days = Object.keys(dailyUsers).sort().slice(-7);
+    var values = days.map(function(d) { return Object.keys(dailyUsers[d]).length; });
+    var max = Math.max.apply(null, values.concat([1]));
 
     ctx.clearRect(0, 0, width, height);
-    const barWidth = (width - 80) / days.length;
-    const chartHeight = height - 60;
+    var barWidth = (width - 80) / days.length;
+    var chartHeight = height - 60;
 
-    // Draw bars
-    days.forEach((day, i) => {
-      const barHeight = (values[i] / max) * chartHeight;
-      const x = 50 + i * barWidth;
-      const y = chartHeight - barHeight + 20;
+    days.forEach(function(day, i) {
+      var barHeight = (values[i] / max) * chartHeight;
+      var x = 50 + i * barWidth;
+      var y = chartHeight - barHeight + 20;
 
-      ctx.fillStyle = '#D4682A';
+      ctx.fillStyle = brandColor;
       ctx.fillRect(x + 5, y, barWidth - 10, barHeight);
 
-      // Label
-      ctx.fillStyle = '#6B6B6B';
+      ctx.fillStyle = '#78716C';
       ctx.font = '11px DM Sans, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(day.slice(5), x + barWidth / 2, height - 10);
 
-      // Value
-      ctx.fillStyle = '#1A1A1A';
+      ctx.fillStyle = '#1C1917';
       ctx.font = 'bold 12px DM Sans, sans-serif';
       ctx.fillText(values[i], x + barWidth / 2, y - 5);
     });
   }
 
-  function drawSectionChart(pageCounts) {
-    const canvas = document.getElementById('section-canvas');
+  function drawSectionChart(pageCounts, brandColor) {
+    var canvas = document.getElementById('section-canvas');
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
+    var ctx = canvas.getContext('2d');
+    var width = canvas.width;
+    var height = canvas.height;
 
-    // Group by section
-    const sections = {};
-    Object.entries(pageCounts).forEach(([page, count]) => {
-      const parts = page.split('/').filter(Boolean);
-      const section = parts[0] || 'home';
-      sections[section] = (sections[section] || 0) + count;
+    var sections = {};
+    Object.entries(pageCounts).forEach(function(entry) {
+      var parts = entry[0].split('/').filter(Boolean);
+      var section = parts[0] || 'home';
+      sections[section] = (sections[section] || 0) + entry[1];
     });
 
-    const sorted = Object.entries(sections).sort((a, b) => b[1] - a[1]).slice(0, 8);
-    const max = Math.max(...sorted.map(s => s[1]), 1);
+    var sorted = Object.entries(sections).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 8);
+    var max = Math.max.apply(null, sorted.map(function(s) { return s[1]; }).concat([1]));
 
     ctx.clearRect(0, 0, width, height);
-    const barHeight = (height - 40) / sorted.length;
+    var barHeight = (height - 40) / sorted.length;
 
-    // Horizontal bars
-    sorted.forEach(([section, count], i) => {
-      const barWidth2 = (count / max) * (width - 150);
-      const y = 20 + i * barHeight;
+    sorted.forEach(function(item, i) {
+      var barWidth2 = (item[1] / max) * (width - 150);
+      var y = 20 + i * barHeight;
 
-      ctx.fillStyle = '#D4682A';
+      ctx.fillStyle = brandColor;
       ctx.globalAlpha = 0.7 + (0.3 * (1 - i / sorted.length));
       ctx.fillRect(120, y + 5, barWidth2, barHeight - 15);
       ctx.globalAlpha = 1;
 
-      // Section name
-      ctx.fillStyle = '#1A1A1A';
+      ctx.fillStyle = '#1C1917';
       ctx.font = '12px DM Sans, sans-serif';
       ctx.textAlign = 'right';
-      ctx.fillText(section, 110, y + barHeight / 2 + 4);
+      ctx.fillText(item[0], 110, y + barHeight / 2 + 4);
 
-      // Count
-      ctx.fillStyle = '#6B6B6B';
+      ctx.fillStyle = '#78716C';
       ctx.textAlign = 'left';
-      ctx.fillText(count, 125 + barWidth2, y + barHeight / 2 + 4);
+      ctx.fillText(item[1], 125 + barWidth2, y + barHeight / 2 + 4);
     });
   }
 
-  checkAdmin();
-});
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAdmin);
+  } else {
+    initAdmin();
+  }
+})();
 </script>

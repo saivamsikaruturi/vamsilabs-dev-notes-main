@@ -20,6 +20,16 @@ let currentUser = null;
 function initFirebase() {
   if (app) return Promise.resolve();
 
+  // Check if Firebase SDK is already loaded (e.g. from instant navigation)
+  if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+    app = firebase.apps[0];
+    auth = firebase.auth();
+    db = firebase.firestore();
+    analytics = firebase.analytics();
+    setupAuthListener();
+    return Promise.resolve();
+  }
+
   return new Promise((resolve, reject) => {
     // Load Firebase SDK from CDN
     const scripts = [
@@ -29,17 +39,34 @@ function initFirebase() {
       'https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js'
     ];
 
+    // Don't re-add scripts if already present
+    const existingScripts = Array.from(document.querySelectorAll('script[src]')).map(s => s.src);
+    const toLoad = scripts.filter(src => !existingScripts.includes(src));
+
+    if (toLoad.length === 0 && typeof firebase !== 'undefined') {
+      app = firebase.initializeApp(firebaseConfig);
+      auth = firebase.auth();
+      db = firebase.firestore();
+      analytics = firebase.analytics();
+      auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      setupAuthListener();
+      resolve();
+      return;
+    }
+
     let loaded = 0;
-    scripts.forEach(src => {
+    const total = toLoad.length || 1;
+    toLoad.forEach(src => {
       const script = document.createElement('script');
       script.src = src;
       script.onload = () => {
         loaded++;
-        if (loaded === scripts.length) {
+        if (loaded === total) {
           app = firebase.initializeApp(firebaseConfig);
           auth = firebase.auth();
           db = firebase.firestore();
           analytics = firebase.analytics();
+          auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
           setupAuthListener();
           resolve();
         }
@@ -67,6 +94,9 @@ function setupAuthListener() {
   });
 }
 
+// Admin emails
+var ADMIN_EMAILS = ['krishnavamsikaruturi8@gmail.com'];
+
 // Update UI based on auth state
 function updateUI(user) {
   const authSection = document.getElementById('auth-section');
@@ -80,12 +110,18 @@ function updateUI(user) {
     userProfile.style.display = user ? 'block' : 'none';
   }
 
+  // Show/hide admin link
+  const adminLink = document.getElementById('admin-link');
+  if (adminLink) {
+    adminLink.style.display = (user && ADMIN_EMAILS.includes(user.email)) ? 'block' : 'none';
+  }
+
   if (user) {
     const avatar = document.getElementById('user-avatar');
     const name = document.getElementById('user-name');
     const email = document.getElementById('user-email-display');
 
-    if (avatar) avatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=D4682A&color=fff`;
+    if (avatar) avatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=B45309&color=fff`;
     if (name) name.textContent = user.displayName || 'User';
     if (email) email.textContent = user.email;
   }
@@ -294,6 +330,7 @@ const LEARNING_PATHS = {
 
 let progressCache = new Map();
 let progressLoaded = false;
+const LOCAL_STORAGE_KEY = 'vtn-progress';
 
 function pageSlug(path) {
   return path.replace(/^\/|\/$/g, '').replace(/\//g, '__');
@@ -305,15 +342,41 @@ function currentPagePath() {
   return path;
 }
 
+// Load from localStorage (works without sign-in)
+function loadLocalProgress() {
+  try {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (stored) {
+      const entries = JSON.parse(stored);
+      entries.forEach(e => progressCache.set(e.page, e));
+    }
+  } catch (e) {}
+  progressLoaded = true;
+  renderProgressUI();
+}
+
+// Save to localStorage
+function saveLocalProgress() {
+  try {
+    const entries = Array.from(progressCache.values());
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(entries));
+  } catch (e) {}
+}
+
 async function loadProgress() {
+  // Always load local first
+  loadLocalProgress();
+
+  // If signed in, also sync from Firebase
   if (!currentUser || !db) return;
   try {
     const snap = await db.collection('users').doc(currentUser.uid)
       .collection('progress').get();
-    progressCache.clear();
     snap.forEach(doc => {
       progressCache.set(doc.data().page, doc.data());
     });
+    // Merge back to local storage
+    saveLocalProgress();
     progressLoaded = true;
     renderProgressUI();
   } catch (e) {}
@@ -340,6 +403,7 @@ async function markPageComplete(path) {
   };
 
   progressCache.set(normalized, data);
+  saveLocalProgress();
   renderProgressUI();
 
   try {
@@ -355,6 +419,7 @@ async function unmarkPageComplete(path) {
 
   const slug = pageSlug(normalized);
   progressCache.delete(normalized);
+  saveLocalProgress();
   renderProgressUI();
 
   try {
@@ -383,6 +448,7 @@ function renderProgressUI() {
   renderMarkCompleteButton();
   renderPathProgress();
   renderSidebarCheckmarks();
+  renderProgressDashboard();
 }
 
 function renderMarkCompleteButton() {
@@ -461,4 +527,216 @@ function renderSidebarCheckmarks() {
     if (!fullPath.endsWith('/')) fullPath += '/';
     link.toggleAttribute('data-completed', isComplete(fullPath));
   });
+}
+
+// ==========================================================================
+// PROGRESS DASHBOARD
+// ==========================================================================
+
+const TOPIC_SECTIONS = {
+  "Java Foundations": [
+    "/java/ecosystem/", "/java/JavaBasics/", "/java/AccessModifiers/", "/java/Constructors/",
+    "/java/thisandSuper/", "/java/Strings/", "/java/WrapperClasses/", "/java/Enums/",
+    "/java/Generics/", "/java/Annotations/", "/java/Reflection/", "/java/DynamicProxy/", "/java/Regex/"
+  ],
+  "Java OOP & Core": [
+    "/java/oops/", "/java/Interfaces/", "/java/InnerClasses/", "/java/EqualsHashCode/",
+    "/java/ImmutableClasses/", "/java/DesignPrinciples/", "/java/ExceptionHandling/",
+    "/java/Serialization/", "/java/Cloning/", "/java/FileHandling/", "/java/NIO/",
+    "/java/Networking/", "/java/JDBC/"
+  ],
+  "JVM & Memory": [
+    "/java/Jvm/", "/java/ClassLoaders/", "/java/GarbageCollection/",
+    "/java/JVMTuning/", "/java/MemoryLeaks/"
+  ],
+  "Java Concurrency": [
+    "/java/MultiThreading/", "/java/Executors/", "/java/JavaMemoryModel/",
+    "/java/Locks/", "/java/VolatileAtomics/", "/java/CompletableFuture/",
+    "/java/ConcurrentCollections/", "/java/ConcurrencyPatterns/", "/java/deadlocks/",
+    "/java/ReactiveStreams/"
+  ],
+  "Collections & FP": [
+    "/java/Collections/", "/java/ComparableComparator/", "/java/DiffCollections/",
+    "/java/FunctionalProgramming/", "/stream-api/streamapi/"
+  ],
+  "Java Versions": [
+    "/java/Java8/", "/java/DateTime/", "/java/java11/", "/java/Java17/", "/java/ModernJava/"
+  ],
+  "Spring Boot": [
+    "/springboot/introduction/", "/springboot/AutoConfiguration/", "/springboot/Annotations/",
+    "/springboot/SpringIOC/", "/springboot/TypesOfDi/", "/springboot/bean-lifecycle/",
+    "/springboot/aop/", "/springboot/design-patterns/", "/springboot/spring-data-jpa/",
+    "/springboot/transactions/", "/springboot/validation/", "/springboot/restapibestpractices/",
+    "/springboot/exceptionhandling/", "/springboot/profiles/", "/springboot/caching/",
+    "/springboot/events/", "/springboot/webflux/", "/springboot/async/",
+    "/springboot/security/", "/springboot/database-migrations/", "/springboot/actuator/",
+    "/springboot/testing/", "/springboot/SpringBoot3/"
+  ],
+  "Microservices": [
+    "/microservices/microservices/", "/microservices/design-principles/",
+    "/microservices/InterServiceCommunication/", "/microservices/grpc/",
+    "/microservices/AsyncCommunicationUsingKafka/", "/microservices/event-driven/",
+    "/microservices/APIGATEWAY/", "/microservices/api-gateway-patterns/",
+    "/microservices/api-versioning/", "/microservices/ServiceDiscovery/",
+    "/microservices/CircuitBreaker/", "/microservices/resilience-patterns/",
+    "/microservices/SagaDesignPattern/", "/microservices/distributed-transactions/",
+    "/microservices/data-management/", "/microservices/config-management/",
+    "/microservices/service-mesh/", "/microservices/deployment-strategies/",
+    "/microservices/logging-monitoring/", "/microservices/Observability/",
+    "/microservices/containerization/", "/microservices/testing-microservices/",
+    "/microservices/security-microservices/"
+  ],
+  "Design Patterns": [
+    "/designpatterns/dp/",
+    "/designpatterns/creationalDesignPatterns/CreationalDesignPatterns/",
+    "/designpatterns/creationalDesignPatterns/singletondesignpattern/",
+    "/designpatterns/creationalDesignPatterns/FactoryDesignPattern/",
+    "/designpatterns/creationalDesignPatterns/AbstractFactoryDesignPattern/",
+    "/designpatterns/creationalDesignPatterns/BuilderDesignPattern/",
+    "/designpatterns/creationalDesignPatterns/PrototypeDesignPattern/",
+    "/designpatterns/structuralDesignPatterns/flyweightdesignpattern/",
+    "/designpatterns/structuralDesignPatterns/facadedesignpattern/",
+    "/designpatterns/structuralDesignPatterns/DecoratorDesignPattern/",
+    "/designpatterns/structuralDesignPatterns/Proxydesignpattern/",
+    "/designpatterns/structuralDesignPatterns/CompositeDesignPattern/",
+    "/designpatterns/structuralDesignPatterns/AdapterDesignPattern/",
+    "/designpatterns/structuralDesignPatterns/BridgeDesignPattern/",
+    "/designpatterns/behaviouralDesignPatterns/ObserverDesignPattern/",
+    "/designpatterns/behaviouralDesignPatterns/StrategyDp/",
+    "/designpatterns/behaviouralDesignPatterns/CommandDp/",
+    "/designpatterns/behaviouralDesignPatterns/Iterator/",
+    "/designpatterns/behaviouralDesignPatterns/StateDp/",
+    "/designpatterns/behaviouralDesignPatterns/TemplateDp/",
+    "/designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern/",
+    "/designpatterns/behaviouralDesignPatterns/MediatorDp/",
+    "/designpatterns/behaviouralDesignPatterns/MementoDp/",
+    "/designpatterns/behaviouralDesignPatterns/VisitorDp/",
+    "/designpatterns/behaviouralDesignPatterns/Interpreter/"
+  ],
+  "System Design": [
+    "/https/", "/capTheorem/", "/consistenthashing/", "/distributedlocks/",
+    "/ratelimiting/", "/loadbalancer/", "/distributedCaching/", "/redis/",
+    "/sqlvsnosql/", "/apidesign/apidesign/", "/graphql/graphql/"
+  ],
+  "Interview Prep": [
+    "/interview/java-core/", "/interview/java-strings/", "/interview/java-collections/",
+    "/interview/java-multithreading/", "/interview/java8-features/",
+    "/interview/spring-boot/", "/interview/hibernate-jpa/", "/interview/microservices/",
+    "/interview/sql/", "/interview/system-design/", "/interview/design-patterns/",
+    "/interview/rest-api/"
+  ],
+  "DevOps & Cloud": [
+    "/devops/devops/", "/devops/linux/", "/devops/docker/", "/devops/kubernetes/",
+    "/devops/ansible/", "/devops/aws/", "/cicd/cicd/"
+  ],
+  "Data & Security": [
+    "/databases/sql/", "/postgresql/postgresql/", "/databases/neo4j/",
+    "/kafka-messaging/kafka/", "/security/Oauth/", "/security/JWT/", "/junit/junit/"
+  ]
+};
+
+function renderProgressDashboard() {
+  const dashboard = document.getElementById('progress-dashboard');
+  if (!dashboard) return;
+
+  if (!currentUser) {
+    dashboard.style.display = 'none';
+    return;
+  }
+
+  dashboard.style.display = 'block';
+
+  let totalTopics = 0;
+  let totalCompleted = 0;
+  const sectionData = [];
+
+  for (const [name, pages] of Object.entries(TOPIC_SECTIONS)) {
+    const completed = pages.filter(p => isComplete(p)).length;
+    totalTopics += pages.length;
+    totalCompleted += completed;
+    sectionData.push({ name, completed, total: pages.length });
+  }
+
+  const pct = totalTopics > 0 ? Math.round((totalCompleted / totalTopics) * 100) : 0;
+
+  // Update ring
+  const ringFill = document.getElementById('dashboard-ring-fill');
+  if (ringFill) {
+    const offset = 264 - (264 * pct / 100);
+    ringFill.style.strokeDashoffset = offset;
+  }
+
+  const pctEl = document.getElementById('dashboard-pct');
+  if (pctEl) pctEl.textContent = pct + '%';
+
+  const summaryEl = document.getElementById('dashboard-summary-text');
+  if (summaryEl) {
+    summaryEl.textContent = totalCompleted + ' of ' + totalTopics + ' topics completed';
+  }
+
+  // Streak / encouragement
+  const streakEl = document.getElementById('dashboard-streak');
+  if (streakEl) {
+    if (totalCompleted === 0) {
+      streakEl.textContent = 'Start marking topics complete to track progress!';
+    } else if (pct < 25) {
+      streakEl.textContent = 'Great start! Keep going.';
+    } else if (pct < 50) {
+      streakEl.textContent = 'Almost halfway there!';
+    } else if (pct < 75) {
+      streakEl.textContent = 'Over halfway — strong progress!';
+    } else if (pct < 100) {
+      streakEl.textContent = 'Almost done — finish strong!';
+    } else {
+      streakEl.textContent = 'All topics complete! You\'re interview-ready.';
+    }
+  }
+
+  // Render section bars
+  const sectionsEl = document.getElementById('dashboard-sections');
+  if (sectionsEl) {
+    sectionsEl.innerHTML = sectionData.map(s => {
+      const sPct = s.total > 0 ? Math.round((s.completed / s.total) * 100) : 0;
+      return `<div class="vtn-section-progress">
+        <div class="vtn-section-progress-header">
+          <span class="vtn-section-progress-name">${s.name}</span>
+          <span class="vtn-section-progress-count">${s.completed}/${s.total}</span>
+        </div>
+        <div class="vtn-section-progress-bar">
+          <div class="vtn-section-progress-bar-fill" data-pct="${sPct}" style="width:${sPct}%"></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// Initialize progress and dashboard on page load (works without Firebase)
+function initProgressAndDashboard() {
+  if (!progressLoaded) {
+    loadLocalProgress();
+  }
+  renderProgressDashboard();
+  renderMarkCompleteButton();
+}
+
+// Multiple hooks to ensure it runs
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProgressAndDashboard);
+} else {
+  initProgressAndDashboard();
+}
+
+// For MkDocs Material instant navigation (SPA-like page transitions)
+if (typeof document$ !== 'undefined') {
+  document$.subscribe(() => {
+    setTimeout(initProgressAndDashboard, 50);
+  });
+} else {
+  let lastUrl = location.href;
+  new MutationObserver(() => {
+    if (location.href !== lastUrl) {
+      lastUrl = location.href;
+      setTimeout(initProgressAndDashboard, 100);
+    }
+  }).observe(document.body, { childList: true, subtree: true });
 }

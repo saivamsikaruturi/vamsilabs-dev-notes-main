@@ -1,4 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Reading progress bar
+  (function initReadingProgress() {
+    var bar = document.createElement("div");
+    bar.className = "vtn-reading-progress";
+    document.body.appendChild(bar);
+
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          var winHeight = document.documentElement.scrollHeight - window.innerHeight;
+          var scrolled = winHeight > 0 ? (window.scrollY / winHeight) * 100 : 0;
+          bar.style.width = scrolled + "%";
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
   // Card hover optimization
   var cards = document.querySelectorAll("a.vtn-card");
   cards.forEach(function (card) {
@@ -35,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       <div class="vtn-chat-input-area">
         <input type="text" class="vtn-chat-input" id="vtn-chat-input" placeholder="Ask a question..." autocomplete="off">
-        <button class="vtn-chat-send" id="vtn-chat-send">Send</button>
+        <button class="vtn-chat-send" id="vtn-chat-send" aria-label="Send message">Send</button>
       </div>
     </div>
   `;
@@ -98,9 +118,14 @@ document.addEventListener("DOMContentLoaded", function () {
     input.value = "";
     suggestions.style.display = "none";
 
+    sendBtn.disabled = true;
+    sendBtn.textContent = "...";
+
     setTimeout(function () {
       var answer = findAnswer(text);
       addMessage(answer, false);
+      sendBtn.disabled = false;
+      sendBtn.textContent = "Send";
     }, 400 + Math.random() * 300);
   }
 

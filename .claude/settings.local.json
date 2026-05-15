@@ -60,7 +60,26 @@
       "Bash(zip -r vamsilabs-dev-notes-main.zip vamsilabs-dev-notes-main -x \"vamsilabs-dev-notes-main/node_modules/*\" -x \"vamsilabs-dev-notes-main/.venv/*\" -x \"vamsilabs-dev-notes-main/site/*\" -x \"vamsilabs-dev-notes-main/.git/*\")",
       "Bash(curl -s https://vamsilabs-dev-notes.netlify.app)",
       "Bash(curl -s https://vamsilabs-dev-notes.netlify.app/custom/auth.js)",
-      "Bash(curl -s https://vamsilabs-dev-notes.netlify.app/)"
+      "Bash(curl -s https://vamsilabs-dev-notes.netlify.app/)",
+      "WebFetch(domain:www.javaguides.net)",
+      "WebFetch(domain:www.javatpoint.com)",
+      "WebFetch(domain:www.digitalocean.com)",
+      "WebFetch(domain:www.geeksforgeeks.org)",
+      "WebFetch(domain:www.interviewbit.com)",
+      "Bash(curl -s http://127.0.0.1:8000/custom/auth.js)",
+      "Bash(curl -s http://127.0.0.1:8000/java/oops/)",
+      "Bash(curl -s http://127.0.0.1:8000/lld/lld-roadmap/)",
+      "Read(//tmp/**)",
+      "Bash(disown)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8001/)",
+      "Bash(curl -s http://127.0.0.1:8001/)",
+      "Bash(curl *)",
+      "Bash(gh api *)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(git fetch *)",
+      "Bash(git stash *)",
+      "Bash(git reset *)"
     ]
   }
 }

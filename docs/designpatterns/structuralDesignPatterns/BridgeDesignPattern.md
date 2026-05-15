@@ -56,7 +56,7 @@ flowchart LR
         ImplB -->|implements| Impl
     end
 
-    Abs -->|has-a\n(bridge)| Impl
+    Abs -->|"has-a (bridge)"| Impl
 
     style Abs fill:#a5d6a7,stroke:#1b5e20,color:#000
     style RefAbs fill:#c8e6c9,stroke:#2e7d32,color:#000

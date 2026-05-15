@@ -2,29 +2,29 @@
 
 ## Landscape Overview
 
-```
-AI (Artificial Intelligence)
-├── Machine Learning
-│   ├── Supervised Learning
-│   │   ├── Classification
-│   │   └── Regression
-│   ├── Unsupervised Learning
-│   │   ├── Clustering
-│   │   └── Dimensionality Reduction
-│   ├── Semi-Supervised Learning
-│   └── Reinforcement Learning
-└── Deep Learning
-    ├── Neural Networks (ANN)
-    ├── Convolutional Neural Networks (CNN)
-    ├── Recurrent Neural Networks (RNN / LSTM)
-    ├── Transformers
-    │   ├── BERT (Encoder-only)
-    │   ├── GPT (Decoder-only)
-    │   └── T5 (Encoder-Decoder)
-    └── Generative AI
-        ├── Large Language Models (LLMs)
-        ├── Diffusion Models (Image Gen)
-        └── Multimodal Models
+```mermaid
+graph LR
+    AI[AI] --> ML[Machine Learning]
+    AI --> DL[Deep Learning]
+    ML --> SL[Supervised Learning]
+    ML --> UL[Unsupervised Learning]
+    ML --> SSL[Semi-Supervised]
+    ML --> RL[Reinforcement Learning]
+    SL --> CL[Classification]
+    SL --> RG[Regression]
+    UL --> CLU[Clustering]
+    UL --> DR[Dimensionality Reduction]
+    DL --> ANN[Neural Networks]
+    DL --> CNN[CNN]
+    DL --> RNN[RNN / LSTM]
+    DL --> TR[Transformers]
+    DL --> GEN[Generative AI]
+    TR --> BERT[BERT - Encoder]
+    TR --> GPT[GPT - Decoder]
+    TR --> T5[T5 - Enc-Dec]
+    GEN --> LLM[LLMs]
+    GEN --> DIF[Diffusion Models]
+    GEN --> MM[Multimodal Models]
 ```
 
 ## Key Concepts
@@ -42,12 +42,26 @@ AI (Artificial Intelligence)
 
 A neural network consists of layers of interconnected nodes (neurons):
 
-```
-Input Layer      Hidden Layers       Output Layer
-   [x1] ──────►  [h1] ──────►
-   [x2] ──────►  [h2] ──────►  [h5] ──────► [y]
-   [x3] ──────►  [h3] ──────►
-                  [h4] ──────►
+```mermaid
+graph LR
+    subgraph Input
+        x1[x1]
+        x2[x2]
+        x3[x3]
+    end
+    subgraph Hidden
+        h1[h1]
+        h2[h2]
+        h3[h3]
+        h4[h4]
+    end
+    subgraph Output
+        y[y]
+    end
+    x1 --> h1 & h2 & h3 & h4
+    x2 --> h1 & h2 & h3 & h4
+    x3 --> h1 & h2 & h3 & h4
+    h1 & h2 & h3 & h4 --> y
 ```
 
 **Activation Functions:**
@@ -77,24 +91,14 @@ Attention(Q, K, V) = softmax(QK^T / √d_k) × V
 
 ### Transformer Architecture
 
-```
-Input Embedding + Positional Encoding
-          │
-    ┌─────▼─────┐
-    │Multi-Head  │
-    │ Attention  │ ──► Add & Norm
-    └─────┬─────┘
-    ┌─────▼─────┐
-    │Feed Forward│
-    │  Network   │ ──► Add & Norm
-    └─────┬─────┘
-          │
-   (Repeat N times)
-          │
-    ┌─────▼─────┐
-    │   Output   │
-    │   Layer    │
-    └───────────┘
+```mermaid
+flowchart TD
+    A[Input Embedding + Positional Encoding] --> B[Multi-Head Attention]
+    B --> C[Add & Norm]
+    C --> D[Feed Forward Network]
+    D --> E[Add & Norm]
+    E -->|Repeat N times| B
+    E --> F[Output Layer]
 ```
 
 ## Large Language Models (LLMs)
@@ -120,26 +124,12 @@ Input Embedding + Positional Encoding
 
 RAG combines a retrieval system with an LLM to ground responses in real data.
 
-```
-User Query
-    │
-    ▼
-┌──────────┐     ┌────────────────┐
-│ Embedding │────►│ Vector Database │
-│   Model   │     │  (Similarity    │
-└──────────┘     │   Search)       │
-                  └───────┬────────┘
-                          │ Top-K Relevant Chunks
-                          ▼
-              ┌─────────────────────┐
-              │     LLM Prompt      │
-              │ Context: [chunks]   │
-              │ Question: [query]   │
-              └──────────┬──────────┘
-                         │
-                         ▼
-                   Generated Answer
-                (Grounded in data)
+```mermaid
+flowchart TD
+    A[User Query] --> B[Embedding Model]
+    B --> C[Vector Database<br/>Similarity Search]
+    C -->|Top-K Relevant Chunks| D[LLM Prompt<br/>Context + Question]
+    D --> E[Generated Answer<br/>Grounded in data]
 ```
 
 ### Vector Databases
@@ -156,10 +146,10 @@ User Query
 
 MLOps is DevOps for machine learning — automating the ML lifecycle.
 
-```
-Data Collection → Data Prep → Model Training → Evaluation → Deployment → Monitoring
-       ▲                                                                      │
-       └──────────────────── Feedback Loop ────────────────────────────────────┘
+```mermaid
+flowchart LR
+    A[Data Collection] --> B[Data Prep] --> C[Model Training] --> D[Evaluation] --> E[Deployment] --> F[Monitoring]
+    F -->|Feedback Loop| A
 ```
 
 ### Key MLOps Tools

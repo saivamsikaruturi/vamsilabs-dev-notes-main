@@ -433,15 +433,15 @@ flowchart TD
     A6["Use concrete type<br/><b>List&lt;MyClass&gt;</b>"]
 
     START --> Q1
-    Q1 -- "Yes, it is always<br/>the same type" --> A6
-    Q1 -- "No, it varies" --> Q2
-    Q2 -- "Read only" --> A2
-    Q2 -- "Write only" --> A3
-    Q2 -- "Both" --> Q3
-    Q3 -- "Need full<br/>read + write" --> A4
-    Q3 -- "Only care that<br/>it is some List" --> Q4
-    Q4 -- "No, any type" --> A5
-    Q4 -- "Yes, within<br/>a family" --> A1
+    Q1 -->|"Yes, same type"| A6
+    Q1 -->|"No, it varies"| Q2
+    Q2 -->|"Read only"| A2
+    Q2 -->|"Write only"| A3
+    Q2 -->|"Both"| Q3
+    Q3 -->|"Need full read + write"| A4
+    Q3 -->|"Only care it is some List"| Q4
+    Q4 -->|"No, any type"| A5
+    Q4 -->|"Yes, within a family"| A1
 
     style START fill:#7E57C2,stroke:#4527A0,stroke-width:3px,color:#FFFFFF
     style Q1 fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
