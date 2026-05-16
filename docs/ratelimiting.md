@@ -26,16 +26,16 @@ Rate limiting controls the number of requests a client can make to a service wit
 Allows bursty traffic while enforcing an average rate. Tokens are added at a fixed rate; each request consumes one token.
 
 ```mermaid
-graph LR
+flowchart LR
     style A fill:#4CAF50,color:#fff
     style B fill:#2196F3,color:#fff
     style C fill:#FF9800,color:#fff
     style D fill:#f44336,color:#fff
 
-    A[Token Refiller<br/>adds tokens at fixed rate] --> B[Token Bucket<br/>capacity = max tokens]
-    B --> C{Tokens Available?}
-    C -->|Yes| E[Request Allowed]
-    C -->|No| D[429 Rejected]
+    A(["Token Refiller<br/>adds tokens at fixed rate"]) --> B[["Token Bucket<br/>capacity = max tokens"]]
+    B --> C{"Tokens Available?"}
+    C -->|Yes| E(["Request Allowed"])
+    C -->|No| D{{"429 Rejected"}}
 ```
 
 ```java
@@ -77,17 +77,17 @@ public class TokenBucket {
 Processes requests at a constant rate. Excess requests queue up or are dropped if the queue is full.
 
 ```mermaid
-graph TD
+flowchart LR
     style A fill:#9C27B0,color:#fff
     style B fill:#2196F3,color:#fff
     style C fill:#4CAF50,color:#fff
     style D fill:#f44336,color:#fff
     style E fill:#FF9800,color:#fff
 
-    A[Incoming Requests] --> B{Queue Full?}
-    B -->|No| E[FIFO Queue<br/>size = N]
-    B -->|Yes| D[Request Dropped]
-    E --> C[Processor<br/>drains at fixed rate]
+    A(("Incoming Requests")) --> B{"Queue Full?"}
+    B -->|No| E[["FIFO Queue<br/>size = N"]]
+    B -->|Yes| D{{"Request Dropped"}}
+    E --> C(["Processor<br/>drains at fixed rate"])
 ```
 
 ```java
@@ -130,15 +130,15 @@ public class LeakyBucket {
 Divides time into fixed windows and counts requests per window. Simple but allows up to 2x the rate at window boundaries.
 
 ```mermaid
-graph LR
+flowchart LR
     style A fill:#009688,color:#fff
     style B fill:#2196F3,color:#fff
     style C fill:#4CAF50,color:#fff
     style D fill:#f44336,color:#fff
 
-    A[Request Arrives] --> B{counter < limit?}
-    B -->|Yes| C[Allow & Increment]
-    B -->|No| D[Reject]
+    A(("Request Arrives")) --> B{"counter < limit?"}
+    B -->|Yes| C(["Allow & Increment"])
+    B -->|No| D{{"Reject"}}
 ```
 
 ```java
@@ -173,17 +173,17 @@ public class FixedWindowCounter {
 Maintains a log of timestamps for each request. Filters out expired entries. Most accurate but memory-intensive.
 
 ```mermaid
-graph TD
+flowchart LR
     style A fill:#E91E63,color:#fff
     style B fill:#3F51B5,color:#fff
     style C fill:#4CAF50,color:#fff
     style D fill:#f44336,color:#fff
     style E fill:#FF9800,color:#fff
 
-    A[Request at time T] --> E[Remove entries older<br/>than T - window]
-    E --> B{log.size < limit?}
-    B -->|Yes| C[Allow & Add T to log]
-    B -->|No| D[Reject]
+    A(("Request at time T")) --> E[/"Remove entries older<br/>than T - window"/]
+    E --> B{"log.size < limit?"}
+    B -->|Yes| C(["Allow & Add T to log"])
+    B -->|No| D{{"Reject"}}
 ```
 
 ```java
@@ -214,16 +214,16 @@ public class SlidingWindowLog {
 Hybrid of Fixed Window and Sliding Log. Uses weighted counts from current and previous windows for accuracy with low memory.
 
 ```mermaid
-graph LR
+flowchart LR
     style A fill:#673AB7,color:#fff
     style B fill:#00BCD4,color:#fff
     style C fill:#4CAF50,color:#fff
     style D fill:#f44336,color:#fff
 
-    A[Previous Window<br/>count = Cp] --> B[Weighted Count<br/>Cp * overlap% + Cc]
-    B --> C{weighted < limit?}
-    C -->|Yes| D2[Allow]
-    C -->|No| D[Reject]
+    A[["Previous Window<br/>count = Cp"]] --> B{{"Weighted Count<br/>Cp * overlap% + Cc"}}
+    B --> C{"weighted < limit?"}
+    C -->|Yes| D2(["Allow"])
+    C -->|No| D(["Reject"])
 
     style D2 fill:#4CAF50,color:#fff
 ```
@@ -278,15 +278,15 @@ public class SlidingWindowCounter {
 ### Redis-Based Implementation
 
 ```mermaid
-graph LR
+flowchart LR
     style A fill:#FF5722,color:#fff
     style B fill:#FF5722,color:#fff
     style C fill:#2196F3,color:#fff
     style D fill:#4CAF50,color:#fff
 
-    A[App Server 1] --> C[Redis Cluster<br/>Centralized Counter]
-    B[App Server 2] --> C
-    C --> D[Atomic Check & Increment]
+    A(["App Server 1"]) --> C{{"Redis Cluster<br/>Centralized Counter"}}
+    B(["App Server 2"]) --> C
+    C --> D[["Atomic Check & Increment"]]
 ```
 
 **Lua Script for Atomic Token Bucket:**
@@ -331,15 +331,15 @@ return allowed
 ### API Gateway (Kong, AWS API Gateway)
 
 ```mermaid
-graph TD
+flowchart LR
     style A fill:#FF9800,color:#fff
     style B fill:#2196F3,color:#fff
     style C fill:#4CAF50,color:#fff
     style D fill:#9C27B0,color:#fff
 
-    A[Client] --> B[API Gateway<br/>Kong / AWS API GW]
-    B -->|Allowed| C[Backend Services]
-    B -->|Rejected| D[429 Response]
+    A(("Client")) --> B{{"API Gateway<br/>Kong / AWS API GW"}}
+    B -->|Allowed| C[["Backend Services"]]
+    B -->|Rejected| D[/"429 Response"/]
 ```
 
 ```yaml
@@ -440,18 +440,18 @@ Content-Type: application/json
 ### Tiered Rate Limits
 
 ```mermaid
-graph TD
+flowchart LR
     style A fill:#607D8B,color:#fff
     style B fill:#4CAF50,color:#fff
     style C fill:#2196F3,color:#fff
     style D fill:#FF9800,color:#fff
 
-    A[Incoming Request] --> B{Free Tier?}
-    B -->|Yes| F[100 req/hour]
-    B -->|No| C{Pro Tier?}
-    C -->|Yes| G[1000 req/hour]
-    C -->|No| D{Enterprise?}
-    D -->|Yes| H[10000 req/hour]
+    A(("Incoming Request")) --> B{"Free Tier?"}
+    B -->|Yes| F(["100 req/hour"])
+    B -->|No| C{"Pro Tier?"}
+    C -->|Yes| G(["1000 req/hour"])
+    C -->|No| D{"Enterprise?"}
+    D -->|Yes| H(["10000 req/hour"])
 
     style F fill:#4CAF50,color:#fff
     style G fill:#2196F3,color:#fff

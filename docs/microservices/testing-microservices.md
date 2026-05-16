@@ -8,13 +8,13 @@
     Think of testing a **Formula 1 car**. You don't only test it on race day. You test each part individually (unit: engine, tires). You test subsystems together (integration: engine + transmission). You test the car on a dyno (component). You do wind tunnel tests (contract). Finally, track days (E2E). Each layer catches different problems.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Pyramid["Testing Pyramid for Microservices"]
-        E2E["🏁 E2E Tests<br/>Full system (few, slow)"]
-        Contract["📜 Contract Tests<br/>Service agreements"]
-        Component["🧩 Component Tests<br/>Single service (real DB, mocked deps)"]
-        Integration["🔧 Integration Tests<br/>Service + infrastructure"]
-        Unit["⚡ Unit Tests<br/>(many, fast)"]
+        E2E(["🏁 E2E Tests<br/>Full system (few, slow)"])
+        Contract{{"📜 Contract Tests<br/>Service agreements"}}
+        Component{{"🧩 Component Tests<br/>Single service (real DB, mocked deps)"}}
+        Integration{{"🔧 Integration Tests<br/>Service + infrastructure"}}
+        Unit(["⚡ Unit Tests<br/>(many, fast)"])
     end
 
     style E2E fill:#FFCDD2,stroke:#C62828,color:#000

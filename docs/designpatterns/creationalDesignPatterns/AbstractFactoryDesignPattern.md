@@ -8,18 +8,18 @@
     Think of a **furniture store** that sells in different styles — Modern, Victorian, and Art Deco. When a customer picks "Modern", they get a **matching set**: a Modern chair, a Modern sofa, and a Modern table. The store (Abstract Factory) ensures that all pieces in a set are **compatible** with each other — you'll never accidentally get a Victorian chair with a Modern table.
 
 ```mermaid
-flowchart TD
-    Store["🏬 Furniture Store<br/>(Abstract Factory)"]
-    Store -->|Style: Modern| M["🏪 Modern Factory"]
-    Store -->|Style: Victorian| V["🏪 Victorian Factory"]
+flowchart LR
+    Store{{"🏬 Furniture Store<br/>(Abstract Factory)"}}
+    Store -->|Style: Modern| M(["🏪 Modern Factory"])
+    Store -->|Style: Victorian| V(["🏪 Victorian Factory"])
     
-    M --> MC["🪑 Modern Chair"]
-    M --> MS["🛋️ Modern Sofa"]
-    M --> MT["🪵 Modern Table"]
+    M --> MC(("🪑 Modern Chair"))
+    M --> MS(("🛋️ Modern Sofa"))
+    M --> MT(("🪵 Modern Table"))
     
-    V --> VC["🪑 Victorian Chair"]
-    V --> VS["🛋️ Victorian Sofa"]
-    V --> VT["🪵 Victorian Table"]
+    V --> VC(("🪑 Victorian Chair"))
+    V --> VS(("🛋️ Victorian Sofa"))
+    V --> VT(("🪵 Victorian Table"))
 
     style Store fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
     style M fill:#E3F2FD,stroke:#1565C0,color:#000
@@ -37,19 +37,19 @@ flowchart TD
 ## 🏗️ Structure
 
 ```mermaid
-flowchart TD
-    Client[Client Code] --> AF[AbstractFactory Interface]
-    AF --> CF1[ConcreteFactory1 - Dark Theme]
-    AF --> CF2[ConcreteFactory2 - Light Theme]
+flowchart LR
+    Client(["Client Code"]) --> AF[["AbstractFactory Interface"]]
+    AF --> CF1{{"ConcreteFactory1 - Dark Theme"}}
+    AF --> CF2{{"ConcreteFactory2 - Light Theme"}}
     
-    CF1 -->|creates| PA1[Dark Button]
-    CF1 -->|creates| PB1[Dark Checkbox]
-    CF2 -->|creates| PA2[Light Button]
-    CF2 -->|creates| PB2[Light Checkbox]
+    CF1 -->|creates| PA1(["Dark Button"])
+    CF1 -->|creates| PB1(["Dark Checkbox"])
+    CF2 -->|creates| PA2(["Light Button"])
+    CF2 -->|creates| PB2(["Light Checkbox"])
     
-    PA1 --> IPA[Button Interface]
+    PA1 --> IPA[["Button Interface"]]
     PA2 --> IPA
-    PB1 --> IPB[Checkbox Interface]
+    PB1 --> IPB[["Checkbox Interface"]]
     PB2 --> IPB
 
     style Client fill:#E3F2FD,stroke:#1565C0,color:#000
@@ -62,6 +62,89 @@ flowchart TD
     style PB2 fill:#FFF9C4,stroke:#F57F17,color:#000
     style IPA fill:#E8F5E9,stroke:#2E7D32,color:#000
     style IPB fill:#F3E5F5,stroke:#6A1B9A,color:#000
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class UIFactory {
+        <<interface>>
+        +createButton() Button
+        +createCheckbox() Checkbox
+        +createTextField() TextField
+    }
+    class DarkThemeFactory {
+        +createButton() Button
+        +createCheckbox() Checkbox
+        +createTextField() TextField
+    }
+    class LightThemeFactory {
+        +createButton() Button
+        +createCheckbox() Checkbox
+        +createTextField() TextField
+    }
+    class Button {
+        <<interface>>
+        +render() void
+        +onClick(Runnable action) void
+    }
+    class Checkbox {
+        <<interface>>
+        +render() void
+        +isChecked() boolean
+        +toggle() void
+    }
+    class TextField {
+        <<interface>>
+        +render() void
+        +getValue() String
+        +setValue(String text) void
+    }
+    class DarkButton {
+        +render() void
+        +onClick(Runnable action) void
+    }
+    class LightButton {
+        +render() void
+        +onClick(Runnable action) void
+    }
+    class DarkCheckbox {
+        -checked : boolean
+        +render() void
+        +isChecked() boolean
+        +toggle() void
+    }
+    class LightCheckbox {
+        -checked : boolean
+        +render() void
+        +isChecked() boolean
+        +toggle() void
+    }
+
+    DarkThemeFactory ..|> UIFactory
+    LightThemeFactory ..|> UIFactory
+    DarkButton ..|> Button
+    LightButton ..|> Button
+    DarkCheckbox ..|> Checkbox
+    LightCheckbox ..|> Checkbox
+    DarkThemeFactory ..> DarkButton : creates
+    DarkThemeFactory ..> DarkCheckbox : creates
+    LightThemeFactory ..> LightButton : creates
+    LightThemeFactory ..> LightCheckbox : creates
+
+    style UIFactory fill:#FFF3E0,stroke:#E65100,color:#000
+    style DarkThemeFactory fill:#37474F,stroke:#263238,color:#FFF
+    style LightThemeFactory fill:#FFFDE7,stroke:#F57F17,color:#000
+    style Button fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Checkbox fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    style TextField fill:#E3F2FD,stroke:#1565C0,color:#000
+    style DarkButton fill:#455A64,stroke:#263238,color:#FFF
+    style LightButton fill:#FFF9C4,stroke:#F57F17,color:#000
+    style DarkCheckbox fill:#455A64,stroke:#263238,color:#FFF
+    style LightCheckbox fill:#FFF9C4,stroke:#F57F17,color:#000
 ```
 
 ---

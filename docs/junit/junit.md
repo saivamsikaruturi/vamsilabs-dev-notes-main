@@ -10,14 +10,11 @@
 The testing pyramid guides how to distribute test effort across different levels. Unit tests form the base — they are fast, isolated, and numerous. Integration tests verify component interactions. End-to-end tests are slow and expensive but validate full user journeys.
 
 ```mermaid
-graph TB
+flowchart LR
     subgraph pyramid["Testing Pyramid"]
-        E2E["E2E Tests<br/>(Few, Slow, Expensive)"]
-        INT["Integration Tests<br/>(Moderate)"]
-        UNIT["Unit Tests<br/>(Many, Fast, Cheap)"]
+        direction LR
+        UNIT(["Unit Tests<br/>(Many, Fast, Cheap)"]) --> INT{{"Integration Tests<br/>(Moderate)"}} --> E2E[["E2E Tests<br/>(Few, Slow, Expensive)"]]
     end
-
-    UNIT --> INT --> E2E
 
     style E2E fill:#e74c3c,stroke:#c0392b,color:#fff
     style INT fill:#f39c12,stroke:#e67e22,color:#fff
@@ -271,11 +268,12 @@ class AssertionExamplesTest {
 ### Core Concepts
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph Mockito["Mockito Concepts"]
-        MOCK["@Mock<br/>Fully stubbed object<br/>All methods return defaults"]
-        SPY["@Spy<br/>Partial mock<br/>Real methods unless stubbed"]
-        INJECT["@InjectMocks<br/>Auto-injects mocks<br/>into the class under test"]
+        direction LR
+        MOCK(["@Mock<br/>Fully stubbed object<br/>All methods return defaults"])
+        SPY{{"@Spy<br/>Partial mock<br/>Real methods unless stubbed"}}
+        INJECT[["@InjectMocks<br/>Auto-injects mocks<br/>into the class under test"]]
     end
 
     MOCK --> INJECT

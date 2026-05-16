@@ -43,16 +43,43 @@ flowchart LR
     style Proxy fill:#b2dfdb,stroke:#00695c,color:#000
 ```
 
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class Image {
+        <<interface>>
+        +display() void
+        +getFilename() String
+    }
+    class HighResolutionImage {
+        -filename: String
+        -imageData: byte[]
+        +display() void
+        +getFilename() String
+    }
+    class ImageProxy {
+        -filename: String
+        -realImage: HighResolutionImage
+        +display() void
+        +getFilename() String
+    }
+
+    HighResolutionImage ..|> Image : implements
+    ImageProxy ..|> Image : implements
+    ImageProxy --> HighResolutionImage : lazy delegates to
+```
+
 ### Types of Proxies
 
 ```mermaid
-flowchart TD
-    Proxy["Proxy Pattern"]
-    Virtual["Virtual Proxy\n(Lazy Loading)"]
-    Protection["Protection Proxy\n(Access Control)"]
-    Remote["Remote Proxy\n(Network)"]
-    Cache["Caching Proxy\n(Performance)"]
-    Logging["Logging Proxy\n(Diagnostics)"]
+flowchart LR
+    Proxy{{"Proxy Pattern"}}
+    Virtual(["Virtual Proxy\n(Lazy Loading)"])
+    Protection(["Protection Proxy\n(Access Control)"])
+    Remote(["Remote Proxy\n(Network)"])
+    Cache(["Caching Proxy\n(Performance)"])
+    Logging(["Logging Proxy\n(Diagnostics)"])
 
     Proxy --> Virtual
     Proxy --> Protection

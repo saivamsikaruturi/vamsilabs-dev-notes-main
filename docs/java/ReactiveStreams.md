@@ -9,11 +9,11 @@ Reactive programming is a paradigm for building **non-blocking, asynchronous, ev
 The [Reactive Manifesto](https://www.reactivemanifesto.org/) defines four pillars that reactive systems must exhibit:
 
 ```mermaid
-graph TB
-    RESPONSIVE["Responsive<br/><i>Always replies in a timely manner</i>"]
-    RESILIENT["Resilient<br/><i>Stays responsive under failure</i>"]
-    ELASTIC["Elastic<br/><i>Scales up/down with load</i>"]
-    MESSAGE["Message-Driven<br/><i>Async message passing between components</i>"]
+flowchart LR
+    RESPONSIVE(["Responsive<br/><i>Always replies in a timely manner</i>"])
+    RESILIENT{{"Resilient<br/><i>Stays responsive under failure</i>"}}
+    ELASTIC{{"Elastic<br/><i>Scales up/down with load</i>"}}
+    MESSAGE(("Message-Driven<br/><i>Async message passing</i>"))
 
     MESSAGE --> RESILIENT
     MESSAGE --> ELASTIC
@@ -165,14 +165,16 @@ public class FlowExample {
 Backpressure is the mechanism by which a **slow consumer** signals to a **fast producer** to slow down. Without it, fast producers overwhelm slow consumers, causing `OutOfMemoryError` or dropped data.
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph Without Backpressure
-        FP1["Fast Producer<br/>1000 items/sec"] -->|"overwhelms"| SC1["Slow Consumer<br/>10 items/sec"]
-        SC1 -->|"OOM / dropped"| CRASH["💥 Crash"]
+        direction LR
+        FP1{{"Fast Producer<br/>1000 items/sec"}} -->|"overwhelms"| SC1(["Slow Consumer<br/>10 items/sec"])
+        SC1 -->|"OOM / dropped"| CRASH(["Crash"])
     end
 
     subgraph With Backpressure
-        FP2["Fast Producer"] -->|"request(10)"| SC2["Slow Consumer"]
+        direction LR
+        FP2{{"Fast Producer"}} -->|"request(10)"| SC2(["Slow Consumer"])
         SC2 -->|"processes 10, then<br/>request(10) again"| FP2
     end
 ```
@@ -209,14 +211,15 @@ Flux.range(1, 1_000_000)
 **Project Reactor** is the reactive library used by Spring WebFlux. It implements the Reactive Streams spec and provides two core publishers:
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph "Reactor Core Publishers"
-        MONO["Mono&lt;T&gt;<br/>0 or 1 element"]
-        FLUX["Flux&lt;T&gt;<br/>0 to N elements"]
+        direction LR
+        MONO{{"Mono&lt;T&gt;<br/>0 or 1 element"}}
+        FLUX{{"Flux&lt;T&gt;<br/>0 to N elements"}}
     end
 
-    MONO -->|"like"| OPT["Optional / CompletableFuture"]
-    FLUX -->|"like"| LIST["Stream / Collection"]
+    MONO -->|"like"| OPT(["Optional / CompletableFuture"])
+    FLUX -->|"like"| LIST(["Stream / Collection"])
 ```
 
 | Type | Emits | Analogy |

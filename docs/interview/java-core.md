@@ -19,14 +19,14 @@ This page is a rapid-fire reference for the most frequently asked **Core Java** 
     **Answer:** The Java compiler (`javac`) compiles source code into platform-neutral **bytecode** (`.class` files), not native machine code. The JVM on each platform interprets or JIT-compiles this bytecode into native instructions at runtime. This "write once, run anywhere" model means the same `.class` file runs on Windows, Linux, or macOS as long as a compatible JVM is installed.
 
     ```mermaid
-    flowchart TD
-        A[HelloWorld.java] -->|javac| B[HelloWorld.class<br/>bytecode]
-        B --> C[JVM - Windows]
-        B --> D[JVM - Linux]
-        B --> E[JVM - macOS]
-        C --> F[Native code]
-        D --> G[Native code]
-        E --> H[Native code]
+    flowchart LR
+        A[/"HelloWorld.java"/] -->|javac| B{{"HelloWorld.class<br/>bytecode"}}
+        B --> C(["JVM - Windows"])
+        B --> D(["JVM - Linux"])
+        B --> E(["JVM - macOS"])
+        C --> F[["Native code"]]
+        D --> G[["Native code"]]
+        E --> H[["Native code"]]
     ```
 
     Note: Java *is* platform-dependent at the JVM level -- each OS requires its own JVM implementation.

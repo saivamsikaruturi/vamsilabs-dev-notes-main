@@ -1,6 +1,6 @@
-# ⚙️ Auto-Configuration
+# Auto-Configuration
 
-> **How Spring Boot magically configures your application — and how to control it.**
+> How Spring Boot configures your application automatically — and how to take control when it gets it wrong.
 
 ```mermaid
 flowchart LR
@@ -16,28 +16,41 @@ flowchart LR
 
 ---
 
-## 🧠 What is Auto-Configuration?
+## What is Auto-Configuration?
 
-!!! abstract "In Simple Words"
-    Auto-configuration is Spring Boot's ability to **automatically configure beans** based on what's on your classpath and what properties you've set — following the principle of **Convention over Configuration**.
+Auto-configuration creates beans based on classpath contents and property values. No XML. No boilerplate. Convention over Configuration.
 
-Instead of writing dozens of XML files or `@Bean` definitions, Spring Boot says:
+You add `spring-boot-starter-data-jpa`. Spring Boot sees Hibernate on the classpath, finds `spring.datasource.url`, and wires up an `EntityManagerFactory`, a `DataSource`, and transaction management. You write zero config.
 
-> "I see you added `spring-boot-starter-web` — you probably want an embedded Tomcat, a DispatcherServlet, and Jackson for JSON. Let me set all that up for you."
+!!! info "Core Guarantee"
+    Your explicit `@Bean` definitions always win. Auto-configuration backs off via `@ConditionalOnMissingBean`.
 
 ---
 
-## 🔄 How Auto-Configuration Works Internally
+## The Annotation Chain
+
+| Annotation | Role |
+|---|---|
+| `@SpringBootApplication` | Composite: includes `@EnableAutoConfiguration` |
+| `@EnableAutoConfiguration` | Triggers the auto-configuration import mechanism |
+| `@AutoConfiguration` | Marks a class as an auto-configuration (Spring Boot 3+) |
+| `@Conditional*` family | Guards that decide if a config activates |
+
+`@SpringBootApplication` = `@Configuration` + `@EnableAutoConfiguration` + `@ComponentScan`.
+
+---
+
+## How Auto-Configuration Works Internally
 
 ```mermaid
-flowchart TD
-    A["@SpringBootApplication starts"] --> B["@EnableAutoConfiguration triggered"]
-    B --> C["SpringFactoriesLoader reads<br/>META-INF/spring/...AutoConfiguration.imports"]
-    C --> D["Loads 100+ AutoConfiguration classes"]
+flowchart LR
+    A(["@SpringBootApplication starts"]) --> B[["@EnableAutoConfiguration triggered"]]
+    B --> C{{"SpringFactoriesLoader reads<br/>META-INF/spring/...AutoConfiguration.imports"}}
+    C --> D{{"Loads 100+ AutoConfiguration classes"}}
     D --> E{"Evaluate @Conditional<br/>annotations"}
-    E -->|Conditions MET| F["Register beans"]
-    E -->|Conditions NOT MET| G["Skip configuration"]
-    F --> H["Application Context Ready"]
+    E -->|Conditions MET| F(["Register beans"])
+    E -->|Conditions NOT MET| G(["Skip configuration"])
+    F --> H(("Application Context Ready"))
     G --> H
 
     style A fill:#DBEAFE,stroke:#2563EB
@@ -50,49 +63,68 @@ flowchart TD
     style H fill:#ECFDF5,stroke:#059669
 ```
 
-### Step-by-Step Process
+### Step-by-Step
 
-1. **`@EnableAutoConfiguration`** (part of `@SpringBootApplication`) kicks off the process
-2. **`SpringFactoriesLoader`** reads the file `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`
-3. Each listed class is a potential auto-configuration
-4. Spring evaluates **`@Conditional`** annotations on each class
-5. Only classes whose conditions are **all satisfied** get registered
+1. `@EnableAutoConfiguration` imports `AutoConfigurationImportSelector`
+2. The selector reads `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`
+3. Each listed FQCN is a candidate auto-configuration class
+4. Spring evaluates all `@Conditional*` annotations on each class
+5. Only classes with **all conditions satisfied** register their beans
+6. Ordering is resolved via `@AutoConfigureBefore`, `@AutoConfigureAfter`, `@AutoConfigureOrder`
 
----
+### The Imports File (Spring Boot 3.x)
 
-## 🎯 The @Conditional Family
+Location: `src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`
 
-These annotations are the **gatekeepers** of auto-configuration. They decide whether a configuration class should be activated.
+```text
+com.example.autoconfigure.GreetingAutoConfiguration
+com.example.autoconfigure.MetricsAutoConfiguration
+```
 
-| Annotation | Condition |
-|-----------|-----------|
-| `@ConditionalOnClass` | Class exists on the classpath |
-| `@ConditionalOnMissingClass` | Class does NOT exist on the classpath |
-| `@ConditionalOnBean` | A specific bean already exists in context |
-| `@ConditionalOnMissingBean` | A specific bean does NOT exist (most important!) |
-| `@ConditionalOnProperty` | A property has a specific value |
-| `@ConditionalOnExpression` | A SpEL expression evaluates to true |
-| `@ConditionalOnWebApplication` | App is a web application |
-| `@ConditionalOnNotWebApplication` | App is NOT a web application |
-| `@ConditionalOnResource` | A specific resource exists on classpath |
+One fully-qualified class name per line. No key-value format. Replaces the old `spring.factories` approach.
+
+!!! warning "Spring Boot 2.x vs 3.x"
+    In 2.x, auto-configurations were registered in `META-INF/spring.factories` under the key `org.springframework.boot.autoconfigure.EnableAutoConfiguration`. This still works in 3.x for backward compatibility but is deprecated.
 
 ---
 
-## 📖 Case Study: DataSource Auto-Configuration
+## The @Conditional Family
 
-Let's trace how Spring Boot decides to configure a `DataSource`:
+These annotations are the gatekeepers. They decide if a configuration activates.
+
+| Annotation | Fires When |
+|---|---|
+| `@ConditionalOnClass` | Class exists on classpath |
+| `@ConditionalOnMissingClass` | Class absent from classpath |
+| `@ConditionalOnBean` | Bean of type/name exists in context |
+| `@ConditionalOnMissingBean` | Bean does NOT exist — **the most critical one** |
+| `@ConditionalOnProperty` | Property matches a value (or is present) |
+| `@ConditionalOnExpression` | SpEL expression is true |
+| `@ConditionalOnWebApplication` | App is a servlet or reactive web app |
+| `@ConditionalOnNotWebApplication` | App is NOT a web app |
+| `@ConditionalOnResource` | Classpath resource exists |
+| `@ConditionalOnSingleCandidate` | Exactly one bean (or one primary) of type exists |
+| `@ConditionalOnJava` | JVM version matches |
+| `@ConditionalOnCloudPlatform` | Running on specific cloud (Kubernetes, Cloud Foundry) |
+
+!!! danger "Common Mistake: @ConditionalOnBean on user configs"
+    `@ConditionalOnBean` evaluates against beans already registered at evaluation time. If the bean you depend on hasn't been created yet (ordering issue), the condition fails silently. Use `@AutoConfigureAfter` to fix ordering.
+
+---
+
+## Case Study: DataSource Auto-Configuration
 
 ```mermaid
-flowchart TD
-    A["DataSourceAutoConfiguration loaded"] --> B{"Is DataSource.class<br/>on classpath?"}
-    B -->|No| C["SKIP - No database driver"]
+flowchart LR
+    A[["DataSourceAutoConfiguration loaded"]] --> B{"Is DataSource.class<br/>on classpath?"}
+    B -->|No| C(["SKIP - No database driver"])
     B -->|Yes| D{"Did developer define<br/>their own DataSource bean?"}
-    D -->|Yes| E["SKIP - Use developer's bean"]
+    D -->|Yes| E(["SKIP - Use developer's bean"])
     D -->|No| F{"Are spring.datasource.*<br/>properties set?"}
-    F -->|Yes| G["Create DataSource from<br/>properties (HikariCP)"]
+    F -->|Yes| G(["Create DataSource from<br/>properties (HikariCP)"])
     F -->|No| H{"Is H2/HSQL on<br/>classpath?"}
-    H -->|Yes| I["Create embedded<br/>in-memory DataSource"]
-    H -->|No| J["FAIL - Cannot<br/>auto-configure"]
+    H -->|Yes| I(["Create embedded<br/>in-memory DataSource"])
+    H -->|No| J(["FAIL - Cannot<br/>auto-configure"])
 
     style A fill:#DBEAFE,stroke:#2563EB
     style E fill:#D1FAE5,stroke:#059669
@@ -102,14 +134,7 @@ flowchart TD
     style J fill:#FEE2E2,stroke:#DC2626
 ```
 
-!!! tip "Key Principle: Your Beans Always Win"
-    `@ConditionalOnMissingBean` ensures that if YOU define a bean, Spring Boot's auto-configuration **backs off**. Your explicit configuration always takes priority.
-
----
-
-## 🔍 The Actual Source Code
-
-Here's a simplified version of what `DataSourceAutoConfiguration` looks like:
+Simplified source:
 
 ```java
 @AutoConfiguration
@@ -118,7 +143,7 @@ Here's a simplified version of what `DataSourceAutoConfiguration` looks like:
 public class DataSourceAutoConfiguration {
 
     @Configuration
-    @ConditionalOnMissingBean(DataSource.class) // Back off if user defined one
+    @ConditionalOnMissingBean(DataSource.class)
     @ConditionalOnProperty(name = "spring.datasource.url")
     static class PooledDataSourceConfiguration {
 
@@ -134,69 +159,21 @@ public class DataSourceAutoConfiguration {
 
 ---
 
-## 🛠️ Creating Custom Auto-Configuration
+## Debugging Auto-Configuration
 
-### Step 1: Create the Configuration Class
-
-```java
-@AutoConfiguration
-@ConditionalOnClass(MyLibrary.class)
-@EnableConfigurationProperties(MyLibraryProperties.class)
-public class MyLibraryAutoConfiguration {
-
-    @Bean
-    @ConditionalOnMissingBean
-    public MyLibraryClient myLibraryClient(MyLibraryProperties properties) {
-        return new MyLibraryClient(properties.getApiKey(), properties.getBaseUrl());
-    }
-}
-```
-
-### Step 2: Define Properties
-
-```java
-@ConfigurationProperties(prefix = "mylibrary")
-public class MyLibraryProperties {
-    private String apiKey;
-    private String baseUrl = "https://api.mylibrary.com";
-
-    // getters and setters
-}
-```
-
-### Step 3: Register It
-
-Create the file `src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`:
-
-```text
-com.example.MyLibraryAutoConfiguration
-```
-
-### Step 4: Users Just Add Properties
-
-```yaml
-mylibrary:
-  api-key: my-secret-key
-  base-url: https://custom.api.com
-```
-
----
-
-## 🐛 Debugging Auto-Configuration
-
-### Using the --debug Flag
+### The --debug Flag
 
 ```bash
 java -jar myapp.jar --debug
 ```
 
-Or add to `application.properties`:
+Or in `application.properties`:
 
 ```properties
 debug=true
 ```
 
-This produces a **CONDITIONS EVALUATION REPORT** showing:
+Produces a **CONDITIONS EVALUATION REPORT**:
 
 === "Positive Matches (Configured)"
 
@@ -228,19 +205,48 @@ This produces a **CONDITIONS EVALUATION REPORT** showing:
         - @ConditionalOnClass did not find required class 'org.springframework.data.redis.core.RedisOperations'
     ```
 
----
+### ConditionEvaluationReport (Programmatic Access)
 
-### Using Actuator Endpoint
+```java
+@Component
+public class AutoConfigDebugger implements CommandLineRunner {
+
+    @Autowired
+    private ApplicationContext context;
+
+    @Override
+    public void run(String... args) {
+        ConditionEvaluationReport report = ConditionEvaluationReport
+            .get((ConfigurableApplicationContext) context).getBeanFactory());
+        
+        report.getConditionAndOutcomesBySource().forEach((source, outcomes) -> {
+            System.out.println("Source: " + source);
+            outcomes.forEach(o -> System.out.println("  " + o.getMessage()));
+        });
+    }
+}
+```
+
+### Actuator Endpoint
 
 ```properties
 management.endpoints.web.exposure.include=conditions
 ```
 
-Then visit: `http://localhost:8080/actuator/conditions`
+Visit: `GET http://localhost:8080/actuator/conditions`
+
+Returns JSON with `positiveMatches`, `negativeMatches`, and `unconditionalClasses`.
+
+!!! tip "Quick Debug Checklist"
+    1. Run with `--debug` — check the conditions report
+    2. Is the class on the classpath? Check your dependencies
+    3. Did you accidentally define a conflicting bean?
+    4. Is a property missing or misspelled?
+    5. Check ordering — is another auto-config supposed to run first?
 
 ---
 
-### Excluding Auto-Configurations
+## Excluding Auto-Configurations
 
 === "Annotation-based"
 
@@ -260,18 +266,32 @@ Then visit: `http://localhost:8080/actuator/conditions`
       org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
     ```
 
+=== "By class name (no compile dependency)"
+
+    ```java
+    @SpringBootApplication(excludeName = {
+        "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"
+    })
+    public class MyApplication { }
+    ```
+
+!!! info "When to Exclude"
+    - You have a library on classpath but don't want its auto-config (e.g., `spring-security` pulled transitively)
+    - Two auto-configs conflict and you want manual control
+    - Testing: exclude heavy configs to speed up context loading
+
 ---
 
-## 📊 Auto-Configuration Order
+## Auto-Configuration Order
 
-!!! warning "Order Matters"
-    Some auto-configurations depend on others. Use these annotations to control ordering:
+!!! warning "Order Matters — and Gets People"
+    Auto-configurations are loaded in an undefined order unless you explicitly control it. `@ConditionalOnBean` can fail if the bean it checks hasn't been registered yet.
 
 | Annotation | Purpose |
-|-----------|---------|
-| `@AutoConfigureBefore` | Run before another auto-configuration |
-| `@AutoConfigureAfter` | Run after another auto-configuration |
-| `@AutoConfigureOrder` | Numeric ordering (lower = earlier) |
+|---|---|
+| `@AutoConfigureBefore(X.class)` | This config runs before X |
+| `@AutoConfigureAfter(X.class)` | This config runs after X |
+| `@AutoConfigureOrder(value)` | Absolute ordering (lower = earlier, default = 0) |
 
 ```java
 @AutoConfiguration
@@ -279,27 +299,227 @@ Then visit: `http://localhost:8080/actuator/conditions`
 public class JpaAutoConfiguration { }
 ```
 
+!!! danger "Ordering Only Works Between Auto-Configurations"
+    These annotations have NO effect on regular `@Configuration` classes. They only order auto-configuration classes relative to each other.
+
 ---
 
-## 🎯 Interview Questions & Answers
+## What Happens When Two Auto-Configs Conflict?
 
-??? question "1. What is Spring Boot Auto-Configuration?"
-    Auto-configuration automatically configures Spring beans based on the dependencies on the classpath and properties you've set. It follows the Convention over Configuration principle — add a dependency, and Spring Boot configures it with sensible defaults.
+Real scenario: you have two starters that both try to create a `RestTemplate` bean.
 
-??? question "2. How does @ConditionalOnMissingBean work?"
-    It checks whether a bean of the specified type already exists in the application context. If it does, the auto-configured bean is **not** created. This ensures user-defined beans always take priority over auto-configured ones.
+**Resolution rules:**
 
-??? question "3. Where are auto-configuration classes registered?"
-    In Spring Boot 3.x, they are listed in `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`. In older versions (2.x), they were in `META-INF/spring.factories` under the `EnableAutoConfiguration` key.
+1. If both use `@ConditionalOnMissingBean` — the one that loads first wins, the second backs off
+2. If one does NOT use `@ConditionalOnMissingBean` — you get a `BeanDefinitionOverrideException` (Spring Boot 2.1+ disables bean overriding by default)
+3. You can re-enable overriding with `spring.main.allow-bean-definition-overriding=true` — but don't. Fix the root cause.
 
-??? question "4. How can you disable a specific auto-configuration?"
-    Use `@SpringBootApplication(exclude = {SomeAutoConfiguration.class})` or set `spring.autoconfigure.exclude` in `application.properties`.
+!!! danger "Don't Enable Bean Overriding in Production"
+    `spring.main.allow-bean-definition-overriding=true` hides real conflicts. It makes debugging a nightmare. Fix the conflict instead.
 
-??? question "5. How do you debug auto-configuration issues?"
-    Run the app with `--debug` flag or set `debug=true` in properties. This prints a CONDITIONS EVALUATION REPORT showing which auto-configurations matched (and why) and which were skipped.
+---
 
-??? question "6. What is the difference between @Configuration and @AutoConfiguration?"
-    `@AutoConfiguration` (Spring Boot 3+) is specifically for auto-configuration classes that are loaded via the imports file. It supports ordering annotations (`@AutoConfigureBefore/After`). `@Configuration` is for regular application configuration that is component-scanned.
+## Build a Custom Starter: Greeting Service
 
-??? question "7. Can you create your own auto-configuration?"
-    Yes! Create a `@AutoConfiguration` class with `@Conditional` annotations, define your beans, and register the class in the `AutoConfiguration.imports` file. Package it as a library for others to use.
+A complete example of writing your own auto-configuration for a custom library.
+
+### Project Structure
+
+```
+greeting-spring-boot-starter/
+├── src/main/java/com/example/greeting/
+│   ├── GreetingService.java
+│   ├── GreetingProperties.java
+│   └── GreetingAutoConfiguration.java
+├── src/main/resources/
+│   └── META-INF/spring/
+│       └── org.springframework.boot.autoconfigure.AutoConfiguration.imports
+└── pom.xml
+```
+
+### Step 1: The Service
+
+```java
+public class GreetingService {
+
+    private final String prefix;
+    private final String suffix;
+
+    public GreetingService(String prefix, String suffix) {
+        this.prefix = prefix;
+        this.suffix = suffix;
+    }
+
+    public String greet(String name) {
+        return prefix + " " + name + suffix;
+    }
+}
+```
+
+### Step 2: Configuration Properties
+
+```java
+@ConfigurationProperties(prefix = "greeting")
+public class GreetingProperties {
+
+    /** Prefix before the name */
+    private String prefix = "Hello";
+
+    /** Suffix after the name */
+    private String suffix = "!";
+
+    /** Enable/disable the greeting service */
+    private boolean enabled = true;
+
+    // getters and setters
+    public String getPrefix() { return prefix; }
+    public void setPrefix(String prefix) { this.prefix = prefix; }
+    public String getSuffix() { return suffix; }
+    public void setSuffix(String suffix) { this.suffix = suffix; }
+    public boolean isEnabled() { return enabled; }
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+}
+```
+
+### Step 3: Auto-Configuration Class
+
+```java
+@AutoConfiguration
+@ConditionalOnClass(GreetingService.class)
+@ConditionalOnProperty(prefix = "greeting", name = "enabled", havingValue = "true", matchIfMissing = true)
+@EnableConfigurationProperties(GreetingProperties.class)
+public class GreetingAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GreetingService greetingService(GreetingProperties properties) {
+        return new GreetingService(properties.getPrefix(), properties.getSuffix());
+    }
+}
+```
+
+### Step 4: Register the Auto-Configuration
+
+`src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`:
+
+```text
+com.example.greeting.GreetingAutoConfiguration
+```
+
+### Step 5: User's Application
+
+```yaml
+# application.yml
+greeting:
+  prefix: "Howdy"
+  suffix: ", welcome aboard!"
+```
+
+```java
+@RestController
+public class HelloController {
+
+    private final GreetingService greetingService;
+
+    public HelloController(GreetingService greetingService) {
+        this.greetingService = greetingService;
+    }
+
+    @GetMapping("/hello/{name}")
+    public String hello(@PathVariable String name) {
+        return greetingService.greet(name);
+        // Returns: "Howdy John, welcome aboard!"
+    }
+}
+```
+
+### Step 6: User Overrides (Optional)
+
+If the user wants their own implementation:
+
+```java
+@Configuration
+public class CustomGreetingConfig {
+
+    @Bean
+    public GreetingService greetingService() {
+        // Custom logic — auto-config backs off
+        return new GreetingService("Dear", " - Regards, System");
+    }
+}
+```
+
+The auto-configured bean disappears because of `@ConditionalOnMissingBean`.
+
+---
+
+## Gotchas and Common Mistakes
+
+| Mistake | Consequence | Fix |
+|---|---|---|
+| Forgetting `@ConditionalOnMissingBean` in your auto-config | Users can't override your bean | Always add it |
+| Using `@ComponentScan` in a starter | Scans user's packages, causes chaos | Never component-scan in a starter |
+| Wrong file name for imports | Auto-config silently ignored | Must be exactly `org.springframework.boot.autoconfigure.AutoConfiguration.imports` |
+| Putting auto-config in the same package as user's app | Gets component-scanned AND auto-configured = duplicate beans | Use a separate package |
+| `@ConditionalOnBean` without `@AutoConfigureAfter` | Condition evaluates before the target bean exists, always false | Declare ordering explicitly |
+| Using `@AutoConfigureOrder` expecting it to order relative to user configs | It only orders auto-configs relative to each other | Use `@Order` for regular configs |
+
+---
+
+## Interview Questions and Answers
+
+??? question "1. What is auto-configuration and why does Spring Boot need it?"
+    Auto-configuration automatically creates and wires beans based on classpath contents and properties. Without it, every Spring Boot app would need explicit configuration for Tomcat, Jackson, DataSource, JPA, Security — dozens of classes. It implements Convention over Configuration: sensible defaults that you override only when needed.
+
+??? question "2. What order do auto-configurations load in?"
+    Undefined by default. You control it with `@AutoConfigureBefore`, `@AutoConfigureAfter`, and `@AutoConfigureOrder`. Internally, Spring sorts candidates using these annotations before evaluating conditions. Without explicit ordering, the load order depends on classpath scanning order — which is non-deterministic across environments.
+
+??? question "3. What if my bean conflicts with an auto-configured one?"
+    If the auto-config uses `@ConditionalOnMissingBean` (most do), your bean wins — the auto-config backs off. If it doesn't use that annotation, you get a `BeanDefinitionOverrideException` in Spring Boot 2.1+. Fix: exclude the auto-config or file a bug against the starter.
+
+??? question "4. @ConditionalOnMissingBean — what if defined in wrong order?"
+    This is a classic trap. `@ConditionalOnMissingBean` checks the context **at evaluation time**. If your bean hasn't been registered yet (because your `@Configuration` class loads later), the auto-config thinks the bean is missing and creates its own. Then your bean also registers, causing a conflict. Solution: auto-configs should always use `@AutoConfigureAfter` to ensure correct ordering.
+
+??? question "5. What is the difference between @Configuration and @AutoConfiguration?"
+    `@AutoConfiguration` (Boot 3+) is for classes loaded via the imports file. It supports `@AutoConfigureBefore/After` ordering. It's NOT component-scanned. `@Configuration` is for app-level config that IS component-scanned. Never put `@AutoConfiguration` classes in a package that gets component-scanned.
+
+??? question "6. How does @EnableAutoConfiguration actually trigger auto-configuration?"
+    It imports `AutoConfigurationImportSelector`, which implements `DeferredImportSelector`. This selector reads the imports file, filters candidates by `AutoConfigurationImportFilter` (fast classpath checks), then the remaining candidates have their `@Conditional` annotations evaluated. Deferred import selectors run AFTER all regular `@Configuration` classes are processed.
+
+??? question "7. How do you debug why an auto-configuration didn't activate?"
+    Three approaches: (1) `--debug` flag prints the CONDITIONS EVALUATION REPORT, (2) `/actuator/conditions` endpoint shows matches/mismatches as JSON, (3) programmatically access `ConditionEvaluationReport` from the `BeanFactory`. The report tells you exactly which condition failed and why.
+
+??? question "8. Can auto-configurations conflict with each other? How is it resolved?"
+    Yes. Two auto-configs might both try to create a `WebClient` bean. Resolution: if both use `@ConditionalOnMissingBean`, ordering determines the winner (first one evaluated creates the bean, second backs off). If ordering is wrong, you get unexpected behavior. Use `spring.autoconfigure.exclude` to remove the unwanted one.
+
+??? question "9. What is the difference between spring.factories and the AutoConfiguration.imports file?"
+    `spring.factories` (Boot 2.x) is a properties file — multiple auto-configs listed comma-separated under a key. The imports file (Boot 3.x) has one FQCN per line, no key. The imports file is faster to parse and specific to auto-configuration. `spring.factories` is still used for other extension points (ApplicationListener, EnvironmentPostProcessor).
+
+??? question "10. Why should you never use @ComponentScan in an auto-configuration?"
+    Auto-configuration jars are on the classpath of the consuming application. `@ComponentScan` in a starter would scan the user's packages, potentially picking up their internal `@Component` classes and creating conflicts. Starters should only use explicit `@Bean` methods inside their auto-configuration class.
+
+??? question "11. How does @ConditionalOnProperty work with matchIfMissing?"
+    `@ConditionalOnProperty(name = "feature.enabled", havingValue = "true", matchIfMissing = true)` means: activate if the property is `true` OR if the property is not defined at all. This is the pattern for "enabled by default" features. Without `matchIfMissing = true`, a missing property means the condition FAILS.
+
+??? question "12. You wrote a custom starter but it's not being picked up. What do you check?"
+    Checklist: (1) Is the imports file in the correct path? Must be `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` — exact name. (2) Is the FQCN in the file correct? (3) Is the jar on the classpath? (4) Is `@ConditionalOnClass` referencing a class that IS on the classpath? (5) Run with `--debug` and search for your class in the negative matches section.
+
+??? question "13. What happens if you put @AutoConfiguration on a class AND it gets component-scanned?"
+    Double registration. The class registers once through auto-configuration and once through component scanning. This causes `BeanDefinitionOverrideException` or duplicate bean issues. Auto-configuration classes must live in packages NOT scanned by the application's `@ComponentScan`.
+
+??? question "14. How do AutoConfigurationImportFilters differ from @Conditional annotations?"
+    `AutoConfigurationImportFilter` (e.g., `OnClassCondition` used as a filter) runs BEFORE loading the class bytecode. It reads annotations from metadata without triggering class loading. This is a performance optimization — eliminates candidates early without the cost of loading and evaluating the full class. `@Conditional` annotations run later during full bean registration.
+
+---
+
+## Quick Reference
+
+| Task | How |
+|---|---|
+| Exclude an auto-config | `@SpringBootApplication(exclude = X.class)` or `spring.autoconfigure.exclude` |
+| Debug which configs activated | `--debug` flag or `/actuator/conditions` |
+| Control ordering | `@AutoConfigureAfter`, `@AutoConfigureBefore`, `@AutoConfigureOrder` |
+| Let users override your bean | `@ConditionalOnMissingBean` on your `@Bean` method |
+| Register your auto-config | Add FQCN to `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` |
+| Conditionally enable a feature | `@ConditionalOnProperty(prefix, name, havingValue, matchIfMissing)` |
+| Check programmatically | Inject `ConditionEvaluationReport` |

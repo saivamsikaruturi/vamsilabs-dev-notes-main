@@ -41,20 +41,19 @@ The most important concurrent collection. Used heavily in production systems.
 ### How It Works
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph OLD["🐌 Hashtable / synchronizedMap"]
-        OL["🔒 ONE lock for entire map"]
-        O1["Thread-1: lock map → read"] --> OL
-        O2["Thread-2: ⛔ BLOCKED"] --> OL
-        O3["Thread-3: ⛔ BLOCKED"] --> OL
+        direction LR
+        O1{{"Thread-1: lock map → read"}} --> OL(("🔒 ONE lock for entire map"))
+        O2{{"Thread-2: ⛔ BLOCKED"}} --> OL
+        O3{{"Thread-3: ⛔ BLOCKED"}} --> OL
     end
 
     subgraph NEW["🚀 ConcurrentHashMap"]
-        NL1["🔑 Bucket-3 lock"]
-        NL2["🔑 Bucket-7 lock"]
-        N1["Thread-1: lock bucket-3 → read"] --> NL1
-        N2["Thread-2: lock bucket-7 → write ✅ parallel!"] --> NL2
-        N3["Thread-3: bucket-3 → ⛔ BLOCKED same bucket"] --> NL1
+        direction LR
+        N1{{"Thread-1: lock bucket-3 → read"}} --> NL1(["🔑 Bucket-3 lock"])
+        N2{{"Thread-2: lock bucket-7 → write ✅ parallel!"}} --> NL2(["🔑 Bucket-7 lock"])
+        N3{{"Thread-3: bucket-3 → ⛔ BLOCKED same bucket"}} --> NL1
     end
 
     style OLD fill:#ffeaa7,stroke:#d4a84b,color:#333
@@ -137,9 +136,9 @@ for (String s : list) {
 `BlockingQueue` blocks the calling thread when the queue is full (for `put`) or empty (for `take`).
 
 ```mermaid
-graph LR
-    P["🏭 Producer"] -->|"put()"| Q["📦 BlockingQueue<br/>⏸️ blocks if full"]
-    Q -->|"take()"| C["🛒 Consumer<br/>⏸️ blocks if empty"]
+flowchart LR
+    P[/"🏭 Producer"/] -->|"put()"| Q{{"📦 BlockingQueue<br/>⏸️ blocks if full"}}
+    Q -->|"take()"| C(["🛒 Consumer<br/>⏸️ blocks if empty"])
 
     style P fill:#6c5ce7,stroke:#4a3db8,color:#fff
     style Q fill:#fdcb6e,stroke:#d4a84b,color:#333

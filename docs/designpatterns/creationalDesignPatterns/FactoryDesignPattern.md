@@ -8,14 +8,14 @@
     Think of a **logistics company**. The company knows it needs to deliver packages, but the exact transport method depends on the destination — trucks for local, ships for overseas, planes for express. Each regional office (subclass) decides which vehicle (object) to create, while the headquarters (interface) defines the delivery contract.
 
 ```mermaid
-flowchart TD
-    HQ["🏢 Headquarters<br/>(Factory Interface)<br/>'Deliver this package!'"]
-    HQ --> L["🏪 Local Office"]
-    HQ --> O["🏪 Overseas Office"]
-    HQ --> E["🏪 Express Office"]
-    L -->|creates| T["🚛 Truck"]
-    O -->|creates| S["🚢 Ship"]
-    E -->|creates| P["✈️ Plane"]
+flowchart LR
+    HQ{{"🏢 Headquarters<br/>(Factory Interface)<br/>'Deliver this package!'"}}
+    HQ --> L(["🏪 Local Office"])
+    HQ --> O(["🏪 Overseas Office"])
+    HQ --> E(["🏪 Express Office"])
+    L -->|creates| T(("🚛 Truck"))
+    O -->|creates| S(("🚢 Ship"))
+    E -->|creates| P(("✈️ Plane"))
     
     style HQ fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
     style L fill:#E8F5E9,stroke:#2E7D32,color:#000
@@ -31,13 +31,13 @@ flowchart TD
 ## 🏗️ Structure
 
 ```mermaid
-flowchart TD
-    A[Client] --> B[Creator - Abstract]
-    B --> C[ConcreteCreatorA]
-    B --> D[ConcreteCreatorB]
-    C -->|creates| E[ProductA]
-    D -->|creates| F[ProductB]
-    E --> G[Product Interface]
+flowchart LR
+    A(["Client"]) --> B[["Creator - Abstract"]]
+    B --> C{{"ConcreteCreatorA"}}
+    B --> D{{"ConcreteCreatorB"}}
+    C -->|creates| E(("ProductA"))
+    D -->|creates| F(("ProductB"))
+    E --> G[["Product Interface"]]
     F --> G
 
     style A fill:#E3F2FD,stroke:#1565C0,color:#000
@@ -47,6 +47,62 @@ flowchart TD
     style E fill:#F3E5F5,stroke:#6A1B9A,color:#000
     style F fill:#F3E5F5,stroke:#6A1B9A,color:#000
     style G fill:#FCE4EC,stroke:#C62828,color:#000
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class Notification {
+        <<interface>>
+        +send(String message) void
+        +getChannel() String
+    }
+    class EmailNotification {
+        +send(String message) void
+        +getChannel() String
+    }
+    class SmsNotification {
+        +send(String message) void
+        +getChannel() String
+    }
+    class PushNotification {
+        +send(String message) void
+        +getChannel() String
+    }
+    class NotificationFactory {
+        <<abstract>>
+        +createNotification()* Notification
+        +notifyUser(String message) void
+    }
+    class EmailNotificationFactory {
+        +createNotification() Notification
+    }
+    class SmsNotificationFactory {
+        +createNotification() Notification
+    }
+    class PushNotificationFactory {
+        +createNotification() Notification
+    }
+
+    EmailNotification ..|> Notification
+    SmsNotification ..|> Notification
+    PushNotification ..|> Notification
+    EmailNotificationFactory --|> NotificationFactory
+    SmsNotificationFactory --|> NotificationFactory
+    PushNotificationFactory --|> NotificationFactory
+    NotificationFactory ..> Notification : creates
+
+    style Notification fill:#FCE4EC,stroke:#C62828,color:#000
+    style NotificationFactory fill:#FFF3E0,stroke:#E65100,color:#000
+    style EmailNotification fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    style SmsNotification fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    style PushNotification fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    style EmailNotificationFactory fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style SmsNotificationFactory fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style PushNotificationFactory fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---

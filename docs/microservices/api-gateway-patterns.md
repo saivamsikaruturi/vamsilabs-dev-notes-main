@@ -8,13 +8,13 @@
     Think of a **hotel concierge**. Guests don't directly contact the chef, housekeeping, or valet separately. The concierge handles all requests — authenticating guests (key card), routing to the right department, combining responses ("your room is ready AND your car is parked"), and throttling excessive requests ("sir, one call at a time").
 
 ```mermaid
-flowchart TD
-    C["📱 Clients"] --> GW["🚪 API Gateway"]
+flowchart LR
+    C(("📱 Clients")) --> GW{{"🚪 API Gateway"}}
     
-    GW --> |"Auth ✓"| A["🛒 Order Service"]
-    GW --> |"Auth ✓"| B["👤 User Service"]
-    GW --> |"Auth ✓"| C2["💳 Payment Service"]
-    GW --> |"Rate Limited"| D["❌ Rejected (429)"]
+    GW --> |"Auth ✓"| A[["🛒 Order Service"]]
+    GW --> |"Auth ✓"| B[["👤 User Service"]]
+    GW --> |"Auth ✓"| C2[["💳 Payment Service"]]
+    GW --> |"Rate Limited"| D(["❌ Rejected (429)"])
 
     subgraph GW_Internal["Gateway Responsibilities"]
         Auth["🔐 Authentication"]

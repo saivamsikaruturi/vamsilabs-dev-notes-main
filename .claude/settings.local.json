@@ -79,7 +79,18 @@
       "WebFetch(domain:github.com)",
       "Bash(git fetch *)",
       "Bash(git stash *)",
-      "Bash(git reset *)"
+      "Bash(git reset *)",
+      "Bash(python -m mkdocs build --strict)",
+      "Bash(pipx list *)",
+      "Read(//Users/vkaruturi/Desktop/**)",
+      "Read(//Users/vkaruturi/**)",
+      "Bash(lsof -ti:8001)",
+      "Read(//dev/**)",
+      "Bash(sed -n '228,320p' /Users/vkaruturi/Documents/projects/vamsilabs-dev-notes-main/mkdocs.yml)",
+      "Bash(.venv/bin/python3 *)",
+      "Bash(xargs -I{} basename {})",
+      "Bash(git -C /Users/vkaruturi/Documents/projects/vamsilabs-dev-notes-main status --short)",
+      "Bash(git *)"
     ]
   }
 }

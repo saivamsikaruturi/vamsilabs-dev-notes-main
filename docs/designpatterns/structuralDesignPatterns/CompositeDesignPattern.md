@@ -10,15 +10,15 @@
     A folder can contain files and other folders. A file is a leaf — it has no children. A folder is a composite — it can contain both files and other folders. When you calculate the total size, you call `getSize()` on the root folder, and it recursively sums up all nested files and folders. **You treat a single file and an entire folder tree the same way.**
 
 ```mermaid
-flowchart TD
-    Root["📁 Root Folder<br/>getSize() = 850KB"]
-    Root --> F1["📄 readme.md<br/>50KB"]
-    Root --> Src["📁 src/<br/>getSize() = 500KB"]
-    Root --> F2["📄 config.yml<br/>300KB"]
-    Src --> S1["📄 App.java<br/>200KB"]
-    Src --> S2["📄 Utils.java<br/>150KB"]
-    Src --> Sub["📁 models/<br/>getSize() = 150KB"]
-    Sub --> M1["📄 User.java<br/>150KB"]
+flowchart LR
+    Root{{"📁 Root Folder<br/>getSize() = 850KB"}}
+    Root --> F1(["📄 readme.md<br/>50KB"])
+    Root --> Src{{"📁 src/<br/>getSize() = 500KB"}}
+    Root --> F2(["📄 config.yml<br/>300KB"])
+    Src --> S1(["📄 App.java<br/>200KB"])
+    Src --> S2(["📄 Utils.java<br/>150KB"])
+    Src --> Sub{{"📁 models/<br/>getSize() = 150KB"}}
+    Sub --> M1(["📄 User.java<br/>150KB"])
     
     style Root fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
     style Src fill:#FFF3E0,stroke:#E65100,color:#000
@@ -35,10 +35,10 @@ flowchart TD
 ## :triangular_ruler: Pattern Structure
 
 ```mermaid
-flowchart TD
-    Component["Component\n(interface)\noperation()"]
-    Leaf["Leaf\noperation()"]
-    Composite["Composite\nadd(Component)\nremove(Component)\noperation()"]
+flowchart LR
+    Component[["Component\n(interface)\noperation()"]]
+    Leaf(["Leaf\noperation()"])
+    Composite{{"Composite\nadd(Component)\nremove(Component)\noperation()"}}
 
     Leaf -->|implements| Component
     Composite -->|implements| Component
@@ -49,17 +49,49 @@ flowchart TD
     style Composite fill:#b2dfdb,stroke:#00695c,color:#000
 ```
 
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class FileSystemComponent {
+        <<interface>>
+        +getName() String
+        +getSize() long
+        +display(indent) void
+    }
+    class File {
+        -name: String
+        -size: long
+        +getName() String
+        +getSize() long
+        +display(indent) void
+    }
+    class Directory {
+        -name: String
+        -children: List~FileSystemComponent~
+        +add(component) void
+        +remove(component) void
+        +getName() String
+        +getSize() long
+        +display(indent) void
+    }
+
+    File ..|> FileSystemComponent : implements
+    Directory ..|> FileSystemComponent : implements
+    Directory o-- FileSystemComponent : contains 0..*
+```
+
 ### Example Tree Structure
 
 ```mermaid
-flowchart TD
-    CEO["CEO\n(Composite)"]
-    VP1["VP Engineering\n(Composite)"]
-    VP2["VP Sales\n(Composite)"]
-    Dev1["Developer 1\n(Leaf)"]
-    Dev2["Developer 2\n(Leaf)"]
-    QA["QA Engineer\n(Leaf)"]
-    Sales1["Sales Rep\n(Leaf)"]
+flowchart LR
+    CEO{{"CEO\n(Composite)"}}
+    VP1{{"VP Engineering\n(Composite)"}}
+    VP2{{"VP Sales\n(Composite)"}}
+    Dev1(["Developer 1\n(Leaf)"])
+    Dev2(["Developer 2\n(Leaf)"])
+    QA(["QA Engineer\n(Leaf)"])
+    Sales1(["Sales Rep\n(Leaf)"])
 
     CEO --> VP1
     CEO --> VP2

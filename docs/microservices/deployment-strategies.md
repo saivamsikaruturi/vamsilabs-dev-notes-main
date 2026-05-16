@@ -29,23 +29,23 @@ flowchart LR
 Replace old pods with new ones gradually:
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph T1["Time 1: Start"]
-        A1["v1 ✅"] 
-        A2["v1 ✅"]
-        A3["v1 ✅"]
+        A1(["v1 ✅"]) 
+        A2(["v1 ✅"])
+        A3(["v1 ✅"])
     end
     
     subgraph T2["Time 2: Updating"]
-        B1["v2 ✅"]
-        B2["v1 ✅"]
-        B3["v1 ✅"]
+        B1(["v2 ✅"])
+        B2(["v1 ✅"])
+        B3(["v1 ✅"])
     end
     
     subgraph T3["Time 3: Complete"]
-        C1["v2 ✅"]
-        C2["v2 ✅"]
-        C3["v2 ✅"]
+        C1(["v2 ✅"])
+        C2(["v2 ✅"])
+        C3(["v2 ✅"])
     end
 
     T1 --> T2 --> T3
@@ -81,19 +81,19 @@ spec:
 Run two identical environments. Switch traffic instantly:
 
 ```mermaid
-flowchart TD
-    LB["⚖️ Load Balancer"]
+flowchart LR
+    LB{{"⚖️ Load Balancer"}}
     
     subgraph Blue["🔵 Blue (v1 - LIVE)"]
-        B1["Pod 1 v1"]
-        B2["Pod 2 v1"]
-        B3["Pod 3 v1"]
+        B1(["Pod 1 v1"])
+        B2(["Pod 2 v1"])
+        B3(["Pod 3 v1"])
     end
     
     subgraph Green["🟢 Green (v2 - STAGING)"]
-        G1["Pod 1 v2"]
-        G2["Pod 2 v2"]
-        G3["Pod 3 v2"]
+        G1(["Pod 1 v2"])
+        G2(["Pod 2 v2"])
+        G3(["Pod 3 v2"])
     end
 
     LB -->|"100% traffic"| Blue
@@ -131,17 +131,17 @@ spec:
 Gradually shift traffic to the new version:
 
 ```mermaid
-flowchart TD
-    LB["⚖️ Load Balancer / Istio"]
+flowchart LR
+    LB{{"⚖️ Load Balancer / Istio"}}
     
     subgraph Stable["Stable (v1)"]
-        S1["Pod 1"]
-        S2["Pod 2"]
-        S3["Pod 3"]
+        S1(["Pod 1"])
+        S2(["Pod 2"])
+        S3(["Pod 3"])
     end
     
     subgraph Canary["Canary (v2)"]
-        C1["Pod 1"]
+        C1(["Pod 1"])
     end
 
     LB -->|"95% traffic"| Stable
@@ -210,11 +210,11 @@ public class CheckoutService {
 ```
 
 ```mermaid
-flowchart TD
-    D["Deploy v2 code<br/>(flag OFF)"] --> T["Test in prod<br/>(internal users only)"]
-    T --> E5["Enable for 5%<br/>Monitor metrics"]
-    E5 --> E100["Enable for 100%<br/>Full rollout"]
-    E100 --> CL["Clean up flag<br/>Remove old code"]
+flowchart LR
+    D[/"Deploy v2 code<br/>(flag OFF)"/] --> T{{"Test in prod<br/>(internal users only)"}}
+    T --> E5{{"Enable for 5%<br/>Monitor metrics"}}
+    E5 --> E100{{"Enable for 100%<br/>Full rollout"}}
+    E100 --> CL(["Clean up flag<br/>Remove old code"])
 
     style D fill:#E3F2FD,stroke:#1565C0,color:#000
     style E100 fill:#E8F5E9,stroke:#2E7D32,color:#000

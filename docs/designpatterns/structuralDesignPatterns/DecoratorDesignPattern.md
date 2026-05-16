@@ -28,12 +28,12 @@ flowchart LR
 ## :triangular_ruler: Pattern Structure
 
 ```mermaid
-flowchart TD
-    Component["Component\n(interface)"]
-    ConcreteComponent["Concrete\nComponent"]
-    Decorator["Base Decorator\n(abstract)"]
-    DecoratorA["Decorator A"]
-    DecoratorB["Decorator B"]
+flowchart LR
+    Component[["Component\n(interface)"]]
+    ConcreteComponent(["Concrete\nComponent"])
+    Decorator{{"Base Decorator\n(abstract)"}}
+    DecoratorA(["Decorator A"])
+    DecoratorB(["Decorator B"])
 
     ConcreteComponent -->|implements| Component
     Decorator -->|implements| Component
@@ -46,6 +46,46 @@ flowchart TD
     style Decorator fill:#e8f5e9,stroke:#2e7d32,color:#000
     style DecoratorA fill:#b2dfdb,stroke:#00695c,color:#000
     style DecoratorB fill:#b2dfdb,stroke:#00695c,color:#000
+```
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class Pizza {
+        <<interface>>
+        +getDescription() String
+        +getCost() double
+    }
+    class PlainPizza {
+        +getDescription() String
+        +getCost() double
+    }
+    class PizzaDecorator {
+        <<abstract>>
+        #decoratedPizza: Pizza
+        +getDescription() String
+        +getCost() double
+    }
+    class CheeseDecorator {
+        +getDescription() String
+        +getCost() double
+    }
+    class PepperoniDecorator {
+        +getDescription() String
+        +getCost() double
+    }
+    class OliveDecorator {
+        +getDescription() String
+        +getCost() double
+    }
+
+    PlainPizza ..|> Pizza : implements
+    PizzaDecorator ..|> Pizza : implements
+    PizzaDecorator o-- Pizza : wraps
+    CheeseDecorator --|> PizzaDecorator : extends
+    PepperoniDecorator --|> PizzaDecorator : extends
+    OliveDecorator --|> PizzaDecorator : extends
 ```
 
 ---

@@ -30,13 +30,13 @@ flowchart LR
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    Client["👤 Client\ncreates commands"]
-    Invoker["📋 Invoker\n- command: Command\n+ executeCommand()\n+ undoCommand()"]
-    Command["🎯 Command\n(Interface)\n+ execute()\n+ undo()"]
-    ConcreteCommandA["⚡ ConcreteCommandA\n- receiver\n+ execute()\n+ undo()"]
-    ConcreteCommandB["🔥 ConcreteCommandB\n- receiver\n+ execute()\n+ undo()"]
-    Receiver["🔧 Receiver\n+ action()\n+ reverseAction()"]
+flowchart LR
+    Client(["👤 Client\ncreates commands"])
+    Invoker{{"📋 Invoker\n- command: Command\n+ executeCommand()\n+ undoCommand()"}}
+    Command[["🎯 Command\n(Interface)\n+ execute()\n+ undo()"]]
+    ConcreteCommandA(["⚡ ConcreteCommandA\n- receiver\n+ execute()\n+ undo()"])
+    ConcreteCommandB(["🔥 ConcreteCommandB\n- receiver\n+ execute()\n+ undo()"])
+    Receiver[/"🔧 Receiver\n+ action()\n+ reverseAction()"/]
 
     Client --> Invoker
     Client --> ConcreteCommandA
@@ -53,6 +53,62 @@ flowchart TD
     style ConcreteCommandA fill:#a78bfa,color:#fff
     style ConcreteCommandB fill:#a78bfa,color:#fff
     style Receiver fill:#c4b5fd,color:#000
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class Command {
+        <<interface>>
+        +execute() void
+        +undo() void
+        +getDescription() String
+    }
+    class TextEditor {
+        -undoStack: Deque~Command~
+        -redoStack: Deque~Command~
+        +executeCommand(Command command) void
+        +undo() void
+        +redo() void
+    }
+    class TextDocument {
+        -content: StringBuilder
+        +insertText(int position, String text) void
+        +deleteText(int position, int length) void
+        +getContent() String
+    }
+    class InsertCommand {
+        -document: TextDocument
+        -position: int
+        -text: String
+        +execute() void
+        +undo() void
+    }
+    class DeleteCommand {
+        -document: TextDocument
+        -position: int
+        -length: int
+        -deletedText: String
+        +execute() void
+        +undo() void
+    }
+    class MacroCommand {
+        -commands: List~Command~
+        -name: String
+        +execute() void
+        +undo() void
+    }
+
+    TextEditor --> Command : invokes
+    InsertCommand ..|> Command
+    DeleteCommand ..|> Command
+    MacroCommand ..|> Command
+    MacroCommand o-- Command : contains
+    InsertCommand --> TextDocument : receiver
+    DeleteCommand --> TextDocument : receiver
 ```
 
 ---

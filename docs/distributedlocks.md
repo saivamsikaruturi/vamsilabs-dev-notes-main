@@ -152,19 +152,19 @@ Redlock (proposed by Salvatore Sanfilippo) attempts to provide stronger guarante
 ### Redlock Flow Diagram
 
 ```mermaid
-flowchart TD
-    A[Start: Client wants lock] --> B[Record timestamp T1]
-    B --> C[Try SET NX on Redis 1]
-    C --> D[Try SET NX on Redis 2]
-    D --> E[Try SET NX on Redis 3]
-    E --> F[Try SET NX on Redis 4]
-    F --> G[Try SET NX on Redis 5]
-    G --> H{Acquired on >= 3 instances?}
-    H -->|Yes| I{Elapsed < TTL?}
-    I -->|Yes| J[Lock acquired!<br>Validity = TTL - elapsed]
-    I -->|No| K[Release all locks]
+flowchart LR
+    A(["Start: Client wants lock"]) --> B[["Record timestamp T1"]]
+    B --> C[/"Try SET NX on Redis 1"/]
+    C --> D[/"Try SET NX on Redis 2"/]
+    D --> E[/"Try SET NX on Redis 3"/]
+    E --> F[/"Try SET NX on Redis 4"/]
+    F --> G[/"Try SET NX on Redis 5"/]
+    G --> H{"Acquired on >= 3 instances?"}
+    H -->|Yes| I{"Elapsed < TTL?"}
+    I -->|Yes| J(["Lock acquired!<br>Validity = TTL - elapsed"])
+    I -->|No| K(("Release all locks"))
     H -->|No| K
-    K --> L[Lock failed - retry after delay]
+    K --> L{{"Lock failed - retry after delay"}}
 
     style A fill:#4CAF50,color:#fff
     style J fill:#2196F3,color:#fff

@@ -27,21 +27,21 @@ public interface Transformer<T> {
 ## Built-in Functional Interfaces
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "java.util.function"
-        direction TB
-        F["Function&lt;T,R&gt;<br/>T → R"]
-        P["Predicate&lt;T&gt;<br/>T → boolean"]
-        C["Consumer&lt;T&gt;<br/>T → void"]
-        S["Supplier&lt;T&gt;<br/>() → T"]
-        UO["UnaryOperator&lt;T&gt;<br/>T → T"]
-        BO["BinaryOperator&lt;T&gt;<br/>(T, T) → T"]
+        direction LR
+        F{{"Function&lt;T,R&gt;<br/>T → R"}}
+        P{{"Predicate&lt;T&gt;<br/>T → boolean"}}
+        C{{"Consumer&lt;T&gt;<br/>T → void"}}
+        S{{"Supplier&lt;T&gt;<br/>() → T"}}
+        UO(["UnaryOperator&lt;T&gt;<br/>T → T"])
+        BO(["BinaryOperator&lt;T&gt;<br/>(T, T) → T"])
     end
     F -->|"extends"| UO
-    F -->|"Bi version"| BF["BiFunction&lt;T,U,R&gt;<br/>(T, U) → R"]
+    F -->|"Bi version"| BF{{"BiFunction&lt;T,U,R&gt;<br/>(T, U) → R"}}
     BF -->|"extends"| BO
-    P -->|"Bi version"| BP["BiPredicate&lt;T,U&gt;<br/>(T, U) → boolean"]
-    C -->|"Bi version"| BC["BiConsumer&lt;T,U&gt;<br/>(T, U) → void"]
+    P -->|"Bi version"| BP(["BiPredicate&lt;T,U&gt;<br/>(T, U) → boolean"])
+    C -->|"Bi version"| BC(["BiConsumer&lt;T,U&gt;<br/>(T, U) → void"])
 ```
 
 ### Comparison Table
@@ -153,10 +153,10 @@ doubleIt.compose(addTen).apply(5);
 ```
 
 ```mermaid
-graph LR
-    A["Input: 5"] --> B["doubleIt<br/>5 × 2 = 10"]
-    B --> C["addTen<br/>10 + 10 = 20"]
-    C --> D["Output: 20"]
+flowchart LR
+    A(("Input: 5")) --> B{{"doubleIt<br/>5 × 2 = 10"}}
+    B --> C{{"addTen<br/>10 + 10 = 20"}}
+    C --> D(["Output: 20"])
     style A fill:#e1f5fe
     style D fill:#c8e6c9
 ```
@@ -355,11 +355,11 @@ Stream.of("a", "b", "c").collect(custom); // "[a, b, c]"
 Parallel streams split work across multiple threads using the **ForkJoinPool**.
 
 ```mermaid
-graph TD
-    S["Source"] --> SP["Spliterator splits data"]
-    SP --> T1["Thread 1"] & T2["Thread 2"] & T3["Thread 3"] & T4["Thread 4"]
-    T1 & T2 & T3 & T4 --> CM["Combine Results"]
-    CM --> R["Final Result"]
+flowchart LR
+    S(["Source"]) --> SP{{"Spliterator splits data"}}
+    SP --> T1[/"Thread 1"/] & T2[/"Thread 2"/] & T3[/"Thread 3"/] & T4[/"Thread 4"/]
+    T1 & T2 & T3 & T4 --> CM[["Combine Results"]]
+    CM --> R(("Final Result"))
     style S fill:#e1f5fe
     style R fill:#c8e6c9
 ```

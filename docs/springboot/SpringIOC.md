@@ -1,6 +1,6 @@
-# 🏗️ IoC & Dependency Injection
+# IoC and Dependency Injection
 
-> **The foundation of Spring — understand this and everything else makes sense.**
+> **The foundation of Spring — understand this and everything else clicks.**
 
 ```mermaid
 flowchart LR
@@ -17,57 +17,68 @@ flowchart LR
 
 ---
 
-## 🧠 What is Inversion of Control (IoC)?
+## What is IoC?
 
-!!! abstract "In Simple Words"
-    **IoC** means you don't create objects yourself — the Spring container creates them and gives them to you. The "control" of object creation is **inverted** from your code to the framework.
+**Inversion of Control** = you don't create objects. The container creates them and gives them to you.
 
-### Without IoC (Tight Coupling)
+Also called the **Hollywood Principle**: "Don't call us, we'll call you."
+
+Without IoC — your class does `new StripeGateway()` internally. Tight coupling. Can't test. Can't swap.
+
+With IoC — your class declares `PaymentGateway gateway` in the constructor. Spring provides the right implementation. Loose coupling. Testable. Swappable.
+
+### Without IoC
 
 ```java
 public class OrderService {
-    // YOU create the dependency — tight coupling!
-    private PaymentGateway gateway = new StripePaymentGateway();
-
-    public void processOrder(Order order) {
-        gateway.charge(order.getTotal());
+    private PaymentGateway gateway = new StripePaymentGateway(); // tight coupling
+    
+    public void process(Order order) {
+        gateway.charge(order.getTotal()); // can't mock this in tests
     }
 }
 ```
 
-### With IoC (Loose Coupling)
+### With IoC
 
 ```java
 @Service
 public class OrderService {
-    // Spring INJECTS the dependency — loose coupling!
     private final PaymentGateway gateway;
 
-    public OrderService(PaymentGateway gateway) {
+    public OrderService(PaymentGateway gateway) { // Spring injects this
         this.gateway = gateway;
     }
 
-    public void processOrder(Order order) {
+    public void process(Order order) {
         gateway.charge(order.getTotal());
     }
 }
 ```
 
-!!! tip "Why This Matters"
-    - **Testable** — Easily swap `StripePaymentGateway` with a mock in tests
-    - **Flexible** — Change implementations without modifying `OrderService`
-    - **Maintainable** — Clear dependencies, no hidden object creation
+### How Spring IoC Works Internally
+
+1. **Scans** for `@Component`, `@Service`, `@Repository`, `@Controller` classes
+2. Creates a `BeanDefinition` for each — stores class name, scope, dependencies, init methods
+3. Builds a **dependency graph** (DAG). Detects circular dependencies here.
+4. Instantiates beans in dependency order
+5. Injects dependencies via constructor, setter, or field reflection
+6. Runs post-processors (`@Autowired` resolution, AOP proxy creation)
+7. Calls init callbacks (`@PostConstruct`)
+
+!!! warning "Common Misconception"
+    IoC is NOT the same as DI. IoC is the principle (container controls object lifecycle). DI is one implementation of IoC (container injects dependencies). Other forms of IoC: template method pattern, event-driven callbacks, service locator.
 
 ---
 
-## 🏭 BeanFactory vs ApplicationContext
+## BeanFactory vs ApplicationContext
 
 ```mermaid
-graph TD
-    A["BeanFactory<br/>(Basic IoC Container)"] --> B["ApplicationContext<br/>(Enterprise Container)"]
-    B --> C["AnnotationConfigApplicationContext"]
-    B --> D["ClassPathXmlApplicationContext"]
-    B --> E["WebApplicationContext"]
+flowchart LR
+    A{{"BeanFactory<br/>(Basic IoC Container)"}} --> B{{"ApplicationContext<br/>(Enterprise Container)"}}
+    B --> C(["AnnotationConfigApplicationContext"])
+    B --> D(["ClassPathXmlApplicationContext"])
+    B --> E(["WebApplicationContext"])
 
     style A fill:#FEF3C7,stroke:#D97706
     style B fill:#DBEAFE,stroke:#2563EB
@@ -77,44 +88,66 @@ graph TD
 ```
 
 | Feature | BeanFactory | ApplicationContext |
-|---------|------------|-------------------|
-| Bean instantiation | Lazy (on-demand) | Eager (at startup) |
+|---------|:-----------:|:------------------:|
+| Bean creation | Lazy only | Eager (singletons at startup) |
+| `@Autowired` / `@Value` | Manual BPP registration | Auto |
+| AOP auto-proxying | No | Yes |
 | Event publishing | No | Yes |
-| AOP support | No | Yes |
+| `@Profile` / Environment | No | Yes |
 | i18n (MessageSource) | No | Yes |
-| Environment abstraction | No | Yes |
-| Annotation support | Limited | Full |
-| **Use in production** | Rarely | **Always** |
+| **Use in production** | Never | **Always** |
 
-!!! tip "Interview Answer"
-    `ApplicationContext` is the superset of `BeanFactory`. In Spring Boot, you always use `ApplicationContext` (it is created automatically when you call `SpringApplication.run()`).
+**When to use BeanFactory?** Almost never. Only in memory-constrained embedded scenarios or low-level framework code. `BeanFactory` doesn't auto-register `BeanPostProcessors`, so `@Autowired` won't work without manual setup.
+
+!!! tip "Spring Boot"
+    `SpringApplication.run()` creates `AnnotationConfigServletWebServerApplicationContext` automatically. You never manually instantiate it.
 
 ---
 
-## 🔄 Bean Lifecycle
+## Bean Lifecycle
 
 ```mermaid
-flowchart TD
-    A["1. Instantiation<br/>Spring creates the object"] --> B["2. Populate Properties<br/>Dependencies injected"]
-    B --> C["3. BeanNameAware<br/>setBeanName()"]
-    C --> D["4. BeanFactoryAware<br/>setBeanFactory()"]
-    D --> E["5. ApplicationContextAware<br/>setApplicationContext()"]
-    E --> F["6. BeanPostProcessor<br/>postProcessBeforeInitialization()"]
-    F --> G["7. @PostConstruct<br/>Custom init method"]
-    G --> H["8. InitializingBean<br/>afterPropertiesSet()"]
-    H --> I["9. BeanPostProcessor<br/>postProcessAfterInitialization()"]
-    I --> J["10. Bean is READY<br/>Available for use"]
-    J --> K["11. @PreDestroy<br/>Custom destroy method"]
-    K --> L["12. DisposableBean<br/>destroy()"]
+flowchart LR
+    A["Instantiate"] --> B["Inject Deps"]
+    B --> C["Aware Interfaces"]
+    C --> D["BPP Before Init"]
+    D --> E["@PostConstruct"]
+    E --> F["afterPropertiesSet"]
+    F --> G["BPP After Init"]
+    G --> H["Ready"]
+    H --> I["@PreDestroy"]
+    I --> J["destroy()"]
 
-    style A fill:#DBEAFE,stroke:#2563EB
-    style B fill:#DBEAFE,stroke:#2563EB
-    style F fill:#FEF3C7,stroke:#D97706
-    style G fill:#D1FAE5,stroke:#059669
-    style I fill:#FEF3C7,stroke:#D97706
-    style J fill:#ECFDF5,stroke:#059669
-    style K fill:#FEE2E2,stroke:#DC2626
-    style L fill:#FEE2E2,stroke:#DC2626
+    style A fill:#DBEAFE,stroke:#2563EB,color:#000
+    style B fill:#DBEAFE,stroke:#2563EB,color:#000
+    style D fill:#FEF3C7,stroke:#D97706,color:#000
+    style E fill:#D1FAE5,stroke:#059669,color:#000
+    style G fill:#FEF3C7,stroke:#D97706,color:#000
+    style H fill:#ECFDF5,stroke:#059669,stroke-width:2px,color:#000
+    style I fill:#FEE2E2,stroke:#DC2626,color:#000
+    style J fill:#FEE2E2,stroke:#DC2626,color:#000
+```
+
+### Step-by-Step
+
+| # | Step | What Happens | When You Care |
+|---|------|-------------|---------------|
+| 1 | **Instantiation** | Constructor called. Fields NOT injected yet (unless constructor injection). | — |
+| 2 | **Populate Properties** | `@Autowired` fields, setters, `@Value` resolved. | — |
+| 3 | **Aware Interfaces** | `setBeanName()`, `setBeanFactory()`, `setApplicationContext()` | Rarely. Framework code only. |
+| 4 | **BPP Before Init** | `AutowiredAnnotationBeanPostProcessor` runs here. | Custom cross-cutting logic. |
+| 5 | **@PostConstruct** | Your init code. All deps guaranteed available. | Cache warming, connection setup. |
+| 6 | **afterPropertiesSet** | `InitializingBean` callback. Spring-specific. | Prefer `@PostConstruct`. |
+| 7 | **BPP After Init** | **AOP proxies created here.** `@Transactional`, `@Async`, `@Cacheable` wrapping. | — |
+| 8 | **Ready** | Bean is live in the container. | — |
+| 9 | **@PreDestroy** | Cleanup on graceful shutdown. | Close connections, flush caches. |
+| 10 | **destroy()** | `DisposableBean` callback. | Prefer `@PreDestroy`. |
+
+### Execution Order When All Three Init Mechanisms Exist
+
+```
+@PostConstruct → InitializingBean.afterPropertiesSet() → @Bean(initMethod)
+@PreDestroy → DisposableBean.destroy() → @Bean(destroyMethod)
 ```
 
 ### Key Lifecycle Callbacks
@@ -124,47 +157,32 @@ flowchart TD
     ```java
     @Component
     public class CacheManager {
-
         @PostConstruct
-        public void init() {
-            System.out.println("Cache initialized — loading data...");
-            loadCacheData();
-        }
+        public void init() { loadCacheData(); }
 
         @PreDestroy
-        public void cleanup() {
-            System.out.println("Cache shutting down — flushing data...");
-            flushCache();
-        }
+        public void cleanup() { flushCache(); }
     }
     ```
 
-=== "InitializingBean / DisposableBean"
+=== "InitializingBean / DisposableBean (Framework code)"
 
     ```java
     @Component
     public class CacheManager implements InitializingBean, DisposableBean {
+        @Override
+        public void afterPropertiesSet() { loadCacheData(); }
 
         @Override
-        public void afterPropertiesSet() {
-            // Called after all properties are set
-            loadCacheData();
-        }
-
-        @Override
-        public void destroy() {
-            // Called during shutdown
-            flushCache();
-        }
+        public void destroy() { flushCache(); }
     }
     ```
 
-=== "@Bean initMethod/destroyMethod"
+=== "@Bean initMethod (Third-party classes)"
 
     ```java
     @Configuration
     public class AppConfig {
-
         @Bean(initMethod = "init", destroyMethod = "cleanup")
         public CacheManager cacheManager() {
             return new CacheManager();
@@ -172,78 +190,199 @@ flowchart TD
     }
     ```
 
----
+### Gotchas
 
-## 🎯 Bean Scopes
+!!! danger "Using @Autowired field in constructor"
+    Field injection happens AFTER constructor. Accessing `@Autowired` fields in the constructor → `NullPointerException`. Use constructor injection instead.
 
-| Scope | Instances | Lifecycle | Use Case |
-|-------|-----------|-----------|----------|
-| **singleton** (default) | 1 per container | Entire app lifetime | Stateless services, repositories |
-| **prototype** | New per request | Not managed after creation | Stateful objects, builders |
-| **request** | 1 per HTTP request | Single HTTP request | Request-scoped data |
-| **session** | 1 per HTTP session | User session | Shopping cart, user preferences |
-| **application** | 1 per ServletContext | App lifetime (web) | Shared web app state |
-| **websocket** | 1 per WebSocket | WebSocket session | Per-connection state |
+!!! danger "Prototype beans don't get @PreDestroy"
+    Spring doesn't track prototype instances after creation. No destruction callback. You must clean up manually.
 
-!!! warning "Web Scopes Require Web Context"
-    `request`, `session`, `application`, and `websocket` scopes are only available in web-aware Spring applications.
-
-### Scope Examples
-
-=== "Singleton (Default)"
-
-    ```java
-    @Service // Singleton by default
-    public class UserService {
-        // ONE instance shared across the entire application
-        // Must be thread-safe and stateless
-    }
-    ```
-
-=== "Prototype"
-
-    ```java
-    @Component
-    @Scope("prototype")
-    public class ReportGenerator {
-        private List<String> data = new ArrayList<>();
-
-        // NEW instance every time it's requested
-        // Spring does NOT manage its destruction
-    }
-    ```
-
-=== "Request"
-
-    ```java
-    @Component
-    @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public class RequestContext {
-        private String correlationId;
-        private Instant startTime = Instant.now();
-        // New instance per HTTP request
-    }
-    ```
-
-=== "Session"
-
-    ```java
-    @Component
-    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public class ShoppingCart {
-        private List<CartItem> items = new ArrayList<>();
-        // One instance per user session
-    }
-    ```
-
-!!! tip "proxyMode is Required for Narrow Scopes"
-    When injecting a request/session-scoped bean into a singleton, you must use `proxyMode = ScopedProxyMode.TARGET_CLASS`. This creates a proxy that delegates to the correct scoped instance at runtime.
+!!! danger "@PostConstruct throws exception"
+    If `@PostConstruct` throws, the bean fails, the context fails, the app doesn't start. For non-critical init, use `@EventListener(ApplicationReadyEvent.class)` instead.
 
 ---
 
-## 🔧 BeanPostProcessor
+## Bean Scopes
 
-A `BeanPostProcessor` lets you hook into the bean creation process and modify beans **before** and **after** initialization.
+| Scope | Instances | Destroy Managed? | Thread-Safe? | Use Case |
+|-------|-----------|:-----------------:|:------------:|----------|
+| **singleton** | 1 per container | Yes | Must be | Services, repos, controllers |
+| **prototype** | New per lookup | **No** | N/A | Stateful builders, commands |
+| **request** | 1 per HTTP request | Yes | No | Correlation ID, request timer |
+| **session** | 1 per HTTP session | Yes | Yes (concurrent requests) | Shopping cart, user prefs |
+| **application** | 1 per ServletContext | Yes | Yes | Shared app-level state |
+| **websocket** | 1 per WS connection | Yes | Depends | Per-connection chat state |
+
+```java
+@Service                        // singleton (default)
+public class OrderService { }
+
+@Component
+@Scope("prototype")             // new instance every time
+public class ReportBuilder { }
+
+@Component
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class RequestContext { }  // needs proxyMode!
+```
+
+### The Prototype-in-Singleton Problem
+
+```java
+@Service
+public class OrderService {
+    @Autowired
+    private ShoppingCart cart; // prototype, but injected ONCE at singleton creation!
+    // Same cart instance reused forever. Bug.
+}
+```
+
+**Fix:** Use `ObjectProvider<T>`:
+
+```java
+@Service
+public class OrderService {
+    private final ObjectProvider<ShoppingCart> cartProvider;
+
+    public OrderService(ObjectProvider<ShoppingCart> cartProvider) {
+        this.cartProvider = cartProvider;
+    }
+
+    public void process() {
+        ShoppingCart cart = cartProvider.getObject(); // fresh prototype each time
+    }
+}
+```
+
+Other fixes: `Provider<T>` (JSR-330), `@Lookup`, `proxyMode = TARGET_CLASS`.
+
+### ScopedProxyMode Explained
+
+Injecting request-scoped bean into singleton — no HTTP request exists at startup. Spring can't create it.
+
+Solution: inject a **CGLIB proxy** instead. The proxy delegates to the real bean at runtime by looking it up from the current request's thread-local.
+
+- `TARGET_CLASS` — CGLIB subclass proxy. Works on concrete classes. Most common.
+- `INTERFACES` — JDK dynamic proxy. Requires interface. Slightly lighter.
+
+---
+
+## Dependency Resolution — @Qualifier, @Primary
+
+When multiple beans implement the same interface, Spring needs disambiguation.
+
+### Resolution Order
+
+1. `@Qualifier("name")` match → exact
+2. `@Primary` → default pick
+3. Parameter/field name matches bean name → fallback
+4. None → `NoUniqueBeanDefinitionException`
+
+### @Primary — "Use this by default"
+
+```java
+@Component
+@Primary
+public class EmailSender implements NotificationSender { }
+
+@Component
+public class SmsSender implements NotificationSender { }
+
+@Service
+public class AlertService {
+    public AlertService(NotificationSender sender) {
+        // gets EmailSender (marked @Primary)
+    }
+}
+```
+
+### @Qualifier — "I want this specific one"
+
+```java
+@Service
+public class AlertService {
+    public AlertService(
+            @Qualifier("emailSender") NotificationSender email,
+            @Qualifier("smsSender") NotificationSender sms) {
+        // explicit selection, overrides @Primary
+    }
+}
+```
+
+### Custom Qualifier Annotations
+
+```java
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface Email {}
+
+@Component @Email
+public class EmailSender implements NotificationSender { }
+
+@Service
+public class AlertService {
+    public AlertService(@Email NotificationSender sender) { } // compile-time safe
+}
+```
+
+### Injecting All Beans of a Type
+
+```java
+@Service
+public class NotificationBroadcaster {
+    private final List<NotificationSender> senders; // ALL implementations injected
+
+    public NotificationBroadcaster(List<NotificationSender> senders) {
+        this.senders = senders; // ordered by @Order if present
+    }
+
+    public void broadcast(String msg) {
+        senders.forEach(s -> s.send(msg));
+    }
+}
+```
+
+`Map<String, NotificationSender>` gives you bean name → instance mapping. Useful for plugin architectures.
+
+---
+
+## Profiles and Conditional Beans
+
+### @Profile — Environment-Specific Beans
+
+```java
+@Bean @Profile("dev")
+public DataSource devDs() { return h2InMemory(); }
+
+@Bean @Profile("prod")
+public DataSource prodDs() { return hikariPostgres(); }
+
+@Bean @Profile("test")
+public DataSource testDs() { return testcontainers(); }
+```
+
+**Activation:** `spring.profiles.active=prod` in properties, CLI arg, env variable, or `@ActiveProfiles("test")` in tests.
+
+**Expressions:** `@Profile("prod & us-east")`, `@Profile("dev | staging")`, `@Profile("!prod")`.
+
+### @Conditional — Spring Boot Auto-Configuration Foundation
+
+| Annotation | Bean Created When... |
+|-----------|---------------------|
+| `@ConditionalOnClass(DataSource.class)` | Class on classpath |
+| `@ConditionalOnMissingBean(CacheManager.class)` | No existing bean of that type |
+| `@ConditionalOnProperty(name="cache.type", havingValue="redis")` | Property matches |
+| `@ConditionalOnBean(DataSource.class)` | Bean exists in context |
+
+This is how Spring Boot "magic" works. Add `spring-boot-starter-data-jpa` → `DataSource.class` appears on classpath → `DataSourceAutoConfiguration` activates → HikariCP auto-configured.
+
+---
+
+## BeanPostProcessor
+
+Hooks into **every** bean creation. Spring uses it internally for `@Autowired`, `@Transactional`, `@Async`.
 
 ```mermaid
 flowchart LR
@@ -259,34 +398,39 @@ flowchart LR
 
 ```java
 @Component
-public class LoggingBeanPostProcessor implements BeanPostProcessor {
+public class TimingBPP implements BeanPostProcessor {
+    private final Map<String, Long> starts = new ConcurrentHashMap<>();
 
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) {
-        if (bean instanceof MyService) {
-            System.out.println("Before init: " + beanName);
-        }
+    public Object postProcessBeforeInitialization(Object bean, String name) {
+        starts.put(name, System.nanoTime());
         return bean;
     }
 
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) {
-        if (bean instanceof MyService) {
-            System.out.println("After init: " + beanName);
-        }
-        return bean; // Can return a proxy here!
+    public Object postProcessAfterInitialization(Object bean, String name) {
+        long ms = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - starts.remove(name));
+        if (ms > 100) log.warn("Slow init: {} took {}ms", name, ms);
+        return bean; // can return a proxy here
     }
 }
 ```
 
-!!! abstract "Real-World Uses of BeanPostProcessor"
-    - **`AutowiredAnnotationBeanPostProcessor`** — processes `@Autowired`
-    - **`CommonAnnotationBeanPostProcessor`** — processes `@PostConstruct`, `@PreDestroy`
-    - **AOP Proxies** — Spring AOP creates proxies in `postProcessAfterInitialization`
+### BeanFactoryPostProcessor vs BeanPostProcessor
+
+| | BeanFactoryPostProcessor | BeanPostProcessor |
+|---|---|---|
+| **Runs** | Before any bean instantiation | After each bean instantiation |
+| **Modifies** | Bean **definitions** (metadata) | Bean **instances** (objects) |
+| **Example** | `PropertySourcesPlaceholderConfigurer` resolves `${...}` | `AutowiredAnnotationBeanPostProcessor` |
+
+### Spring's Internal Post-Processors
+
+- `AutowiredAnnotationBeanPostProcessor` — handles `@Autowired`, `@Value`
+- `CommonAnnotationBeanPostProcessor` — handles `@PostConstruct`, `@PreDestroy`, `@Resource`
+- `AnnotationAwareAspectJAutoProxyCreator` — creates AOP proxies for `@Transactional`, `@Cacheable`, `@Async`
 
 ---
 
-## 🌀 ApplicationContext Startup Flow
+## ApplicationContext Startup Flow
 
 ```mermaid
 sequenceDiagram
@@ -307,30 +451,67 @@ sequenceDiagram
     Note over Main,SA: Application is READY
 ```
 
+### Listening to Lifecycle Events
+
+```java
+@Component
+public class AppLifecycleListener {
+    @EventListener(ContextRefreshedEvent.class)
+    public void onReady() { /* all beans initialized */ }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void onAppReady() { /* runners done, safe to take traffic */ }
+
+    @EventListener(ContextClosedEvent.class)
+    public void onShutdown() { /* graceful shutdown */ }
+}
+```
+
 ---
 
-## 🎯 Interview Questions & Answers
+## Interview Questions
 
-??? question "1. What is Inversion of Control?"
-    IoC is a design principle where the control of object creation and dependency management is transferred from the application code to a container/framework. Instead of your code creating dependencies with `new`, the Spring container creates and injects them.
+??? question "1. What is IoC? How is it different from DI?"
+    IoC = design principle. The container controls object lifecycle, not your code. DI = one way to implement IoC (container pushes dependencies into objects). Other IoC forms: template method, event callbacks, service locator.
 
-??? question "2. What is the difference between BeanFactory and ApplicationContext?"
-    `ApplicationContext` extends `BeanFactory` with enterprise features: eager bean initialization, event publishing, AOP support, internationalization, and environment abstraction. In Spring Boot, you always use `ApplicationContext`.
+??? question "2. BeanFactory vs ApplicationContext?"
+    `BeanFactory` — lazy loading, basic DI. `ApplicationContext` — extends BeanFactory with eager init, AOP, events, profiles, auto BPP registration. Always use `ApplicationContext`. `BeanFactory` doesn't even support `@Autowired` without manual BPP setup.
 
-??? question "3. What are the different bean scopes in Spring?"
-    Six scopes: **singleton** (one instance per container, default), **prototype** (new instance per injection), **request** (per HTTP request), **session** (per user session), **application** (per ServletContext), **websocket** (per WebSocket session). The last four require a web-aware context.
+??? question "3. Complete bean lifecycle order?"
+    Constructor → DI → Aware interfaces → BPP.beforeInit → @PostConstruct → afterPropertiesSet → BPP.afterInit (AOP proxies here) → Ready → @PreDestroy → destroy().
 
-??? question "4. What is the difference between @PostConstruct and InitializingBean?"
-    Both run after dependency injection. `@PostConstruct` is a Jakarta EE annotation (preferred, cleaner), while `InitializingBean.afterPropertiesSet()` is Spring-specific. Use `@PostConstruct` for application code; `InitializingBean` is mainly used in framework code.
+??? question "4. Where are AOP proxies created in the lifecycle?"
+    In `BeanPostProcessor.postProcessAfterInitialization()`. The `AnnotationAwareAspectJAutoProxyCreator` wraps the bean in a CGLIB/JDK proxy. This is why calling `@Transactional` methods on `this` bypasses the proxy — `this` is the raw object, not the proxy.
 
-??? question "5. What is a BeanPostProcessor?"
-    An interface that allows you to modify bean instances before and after initialization. Spring uses it internally for `@Autowired` processing, `@PostConstruct` handling, and creating AOP proxies. Custom BeanPostProcessors can add logging, validation, or wrap beans in proxies.
+??? question "5. Prototype bean injected into singleton — what happens?"
+    Single prototype instance created at singleton init time. Reused forever. Fix: `ObjectProvider<T>.getObject()`, `Provider<T>`, `@Lookup`, or scoped proxy.
 
-??? question "6. What happens if you inject a prototype bean into a singleton?"
-    The singleton gets ONE instance of the prototype bean (injected at creation time) and reuses it forever — defeating the purpose of prototype scope. Solutions: use `ObjectFactory<T>`, `Provider<T>`, or `@Lookup` method injection.
+??? question "6. Does Spring call @PreDestroy on prototype beans?"
+    No. Spring doesn't track prototype instances after creation. You must manage cleanup yourself.
 
-??? question "7. Explain the Spring Bean lifecycle in order."
-    Instantiation → Dependency Injection → Aware interfaces (BeanNameAware, etc.) → BeanPostProcessor.beforeInit → @PostConstruct → InitializingBean.afterPropertiesSet → BeanPostProcessor.afterInit → Bean Ready → @PreDestroy → DisposableBean.destroy
+??? question "7. @PostConstruct throws — what happens?"
+    Bean creation fails → context fails to start → app crashes. For non-critical init, use `@EventListener(ApplicationReadyEvent.class)`.
 
-??? question "8. What is the Service Locator pattern and how does it differ from DI?"
-    Service Locator requires the client to explicitly request dependencies from a registry (pull model). DI pushes dependencies into the client automatically (push model). DI is preferred because it makes dependencies explicit, improves testability, and reduces coupling to the container.
+??? question "8. How does Spring resolve ambiguous beans?"
+    Priority: @Qualifier → @Primary → field/parameter name match → fail with `NoUniqueBeanDefinitionException`.
+
+??? question "9. Difference between BeanFactoryPostProcessor and BeanPostProcessor?"
+    BFPP modifies bean **definitions** before any bean is created (e.g., resolving `${property}` placeholders). BPP modifies bean **instances** after creation (e.g., `@Autowired` injection, AOP proxying).
+
+??? question "10. ScopedProxyMode — why is it needed?"
+    Request/session-scoped beans don't exist at startup when singletons are created. Spring injects a CGLIB proxy. At runtime, the proxy resolves the real bean from the current request/session thread-local.
+
+??? question "11. Can Spring resolve circular dependencies?"
+    With setter/field injection on singletons — yes, using a three-level cache (singletonObjects, earlySingletonObjects, singletonFactories). With constructor injection — no, throws `BeanCurrentlyInCreationException`. Spring Boot 2.6+ bans circular deps by default.
+
+??? question "12. Three-level cache — how does it work?"
+    Level 1: `singletonObjects` (fully initialized). Level 2: `earlySingletonObjects` (partially constructed). Level 3: `singletonFactories` (ObjectFactory to create early reference). When A needs B and B needs A: A is created, put in L3 as factory. B is created, needs A, gets early reference from L3 → moved to L2. B completes. A completes → moved to L1.
+
+??? question "13. How does @ConditionalOnClass enable auto-configuration?"
+    Spring Boot auto-config classes use `@ConditionalOnClass(DataSource.class)`. Adding `spring-boot-starter-data-jpa` puts `DataSource.class` on classpath → condition passes → auto-config activates → HikariCP configured automatically.
+
+??? question "14. @Autowired field in constructor — what happens?"
+    Field injection happens AFTER constructor. Accessing an `@Autowired` field inside the constructor → `NullPointerException`. Constructor injection doesn't have this problem because deps are constructor params.
+
+??? question "15. What are Aware interfaces? Should you use them?"
+    `BeanNameAware`, `ApplicationContextAware`, etc. Let beans receive container references. Couples code to Spring. Prefer constructor injection of `ApplicationContext` or `Environment` instead. Aware interfaces are for framework/library code.

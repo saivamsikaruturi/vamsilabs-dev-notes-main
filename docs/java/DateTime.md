@@ -32,22 +32,25 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 ## The java.time Class Hierarchy
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "No Time Zone"
-        LD["LocalDate<br/>2024-05-15"]
-        LT["LocalTime<br/>10:30:45"]
-        LDT["LocalDateTime<br/>2024-05-15T10:30:45"]
+        direction LR
+        LD(["LocalDate<br/>2024-05-15"])
+        LT(["LocalTime<br/>10:30:45"])
+        LDT{{"LocalDateTime<br/>2024-05-15T10:30:45"}}
     end
 
     subgraph "With Time Zone"
-        ZDT["ZonedDateTime<br/>2024-05-15T10:30:45+05:30[Asia/Kolkata]"]
-        ODT["OffsetDateTime<br/>2024-05-15T10:30:45+05:30"]
-        I["Instant<br/>Epoch seconds (machine time)"]
+        direction LR
+        ZDT{{"ZonedDateTime<br/>2024-05-15T10:30:45+05:30[Asia/Kolkata]"}}
+        ODT(["OffsetDateTime<br/>2024-05-15T10:30:45+05:30"])
+        I(("Instant<br/>Epoch seconds (machine time)"))
     end
 
     subgraph "Amounts"
-        P["Period<br/>Years, Months, Days"]
-        D["Duration<br/>Hours, Minutes, Seconds, Nanos"]
+        direction LR
+        P[/"Period<br/>Years, Months, Days"/]
+        D[/"Duration<br/>Hours, Minutes, Seconds, Nanos"/]
     end
 
     LD --> LDT

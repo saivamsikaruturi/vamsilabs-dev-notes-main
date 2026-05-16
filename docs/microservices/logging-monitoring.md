@@ -25,27 +25,27 @@ flowchart LR
 ## 🏗️ Observability Stack Architecture
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Services["Microservices"]
-        S1["Order Service"]
-        S2["Payment Service"]
-        S3["Inventory Service"]
+        S1[["Order Service"]]
+        S2[["Payment Service"]]
+        S3[["Inventory Service"]]
     end
 
     subgraph Collection["Collection Layer"]
-        OTC["OpenTelemetry Collector"]
-        FB["Filebeat / Fluentd"]
+        OTC{{"OpenTelemetry Collector"}}
+        FB{{"Filebeat / Fluentd"}}
     end
 
     subgraph Storage["Storage & Analysis"]
-        ES["Elasticsearch<br/>(Logs)"]
-        PR["Prometheus<br/>(Metrics)"]
-        JG["Jaeger / Tempo<br/>(Traces)"]
+        ES[("Elasticsearch<br/>(Logs)")]
+        PR[("Prometheus<br/>(Metrics)")]
+        JG[("Jaeger / Tempo<br/>(Traces)")]
     end
 
     subgraph Visualization["Visualization"]
-        KB["Kibana"]
-        GR["Grafana"]
+        KB(["Kibana"])
+        GR(["Grafana"])
     end
 
     S1 -->|"logs"| FB
@@ -248,14 +248,14 @@ sequenceDiagram
 ### How Traces Work
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Trace["Trace: abc-123 (end-to-end request)"]
         subgraph Span1["Span A: API Gateway (0-250ms)"]
             subgraph Span2["Span B: Order Service (10-200ms)"]
                 subgraph Span3["Span C: Payment Service (50-150ms)"]
-                    Span4["Span D: DB Query (60-80ms)"]
+                    Span4(["Span D: DB Query (60-80ms)"])
                 end
-                Span5["Span E: Inventory Check (160-190ms)"]
+                Span5(["Span E: Inventory Check (160-190ms)"])
             end
         end
     end
@@ -687,14 +687,14 @@ groups:
 ### Error Budget Tracking
 
 ```mermaid
-flowchart TD
-    SLO["SLO: 99.9% availability<br/>(43.2 min budget/month)"]
+flowchart LR
+    SLO(("SLO: 99.9% availability<br/>(43.2 min budget/month)"))
     
     subgraph Budget["Error Budget Status"]
-        Healthy["🟢 Budget > 50%<br/>Deploy freely, experiment"]
-        Warning["🟡 Budget 25-50%<br/>Slow down risky changes"]
-        Critical["🔴 Budget < 25%<br/>Freeze deployments, fix reliability"]
-        Exhausted["⛔ Budget = 0%<br/>All hands on reliability"]
+        Healthy(["🟢 Budget > 50%<br/>Deploy freely, experiment"])
+        Warning{{"🟡 Budget 25-50%<br/>Slow down risky changes"}}
+        Critical{{"🔴 Budget < 25%<br/>Freeze deployments, fix reliability"}}
+        Exhausted(["⛔ Budget = 0%<br/>All hands on reliability"])
     end
     
     SLO --> Budget
@@ -842,18 +842,18 @@ public class DownstreamHealthIndicator implements HealthIndicator {
 ## 📊 Complete Observability Flow
 
 ```mermaid
-flowchart TD
-    REQ["Client Request"] --> GW["API Gateway"]
-    GW -->|"Generate traceId + correlationId"| OS["Order Service"]
+flowchart LR
+    REQ[/"Client Request"/] --> GW{{"API Gateway"}}
+    GW -->|"Generate traceId + correlationId"| OS[["Order Service"]]
     
-    OS -->|"Propagate context"| PS["Payment Service"]
-    OS -->|"Propagate context"| IS["Inventory Service"]
+    OS -->|"Propagate context"| PS[["Payment Service"]]
+    OS -->|"Propagate context"| IS[["Inventory Service"]]
     
     subgraph Observability["Observability Pipeline"]
         direction LR
-        LOGS["Structured Logs<br/>(JSON + correlationId)"]
-        METRICS["Metrics<br/>(RED + USE)"]
-        TRACES["Distributed Traces<br/>(spans + baggage)"]
+        LOGS[/"Structured Logs<br/>(JSON + correlationId)"/]
+        METRICS[/"Metrics<br/>(RED + USE)"/]
+        TRACES[/"Distributed Traces<br/>(spans + baggage)"/]
     end
     
     OS --> LOGS
@@ -863,15 +863,15 @@ flowchart TD
     PS --> METRICS
     PS --> TRACES
     
-    LOGS --> ES2["Elasticsearch"]
-    METRICS --> PROM["Prometheus"]
-    TRACES --> JAEGER["Jaeger"]
+    LOGS --> ES2[("Elasticsearch")]
+    METRICS --> PROM[("Prometheus")]
+    TRACES --> JAEGER[("Jaeger")]
     
-    ES2 --> DASH["Unified Dashboard<br/>(Grafana)"]
+    ES2 --> DASH(["Unified Dashboard<br/>(Grafana)"])
     PROM --> DASH
     JAEGER --> DASH
     
-    DASH --> ALERT["Alertmanager<br/>(PagerDuty, Slack)"]
+    DASH --> ALERT(["Alertmanager<br/>(PagerDuty, Slack)"])
 
     style REQ fill:#E3F2FD,stroke:#1565C0,color:#000
     style DASH fill:#E8F5E9,stroke:#2E7D32,color:#000

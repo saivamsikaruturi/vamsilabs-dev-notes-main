@@ -41,12 +41,12 @@ Malware injects code into legitimate processes to evade detection.
 ### How Defender Detects Injection
 
 ```mermaid
-flowchart TD
-    KC["Kernel Callbacks"]
-    UM["User-Mode Telemetry"]
-    BR["Behavioral Rules"]
-    ML["ML Models"]
-    A["Alert / Block"]
+flowchart LR
+    KC(["Kernel Callbacks"])
+    UM[["User-Mode Telemetry"]]
+    BR{{"Behavioral Rules"}}
+    ML(("ML Models"))
+    A{"Alert / Block"}
 
     KC -->|"Process, Thread,\nImage Load"| UM
     UM -->|"ETW events,\nAMSI scans"| BR
@@ -158,24 +158,27 @@ Security use: Walk VAD tree to find:
 ### Core Components
 
 ```mermaid
-graph TB
+flowchart LR
     subgraph Cloud["☁️ Cloud Backend"]
-        CA["Telemetry Aggregation"]
-        CML["Cloud ML Models"]
-        TI["Threat Intelligence"]
-        GA["Graph Analysis"]
+        direction LR
+        CA(["Telemetry Aggregation"])
+        CML{{"Cloud ML Models"}}
+        TI[["Threat Intelligence"]]
+        GA[/"Graph Analysis"/]
     end
 
     subgraph UM["User Mode (Ring 3)"]
-        TC["Telemetry Collector\n(ETW, Registry, Network, AMSI)"]
-        DE["Detection Engine\n(YARA, ML, IOC matching)"]
-        RA["Response Actions\n(Kill, Quarantine, Isolate)"]
+        direction LR
+        TC(["Telemetry Collector\n(ETW, Registry, Network, AMSI)"])
+        DE{{"Detection Engine\n(YARA, ML, IOC matching)"}}
+        RA[["Response Actions\n(Kill, Quarantine, Isolate)"]]
     end
 
     subgraph KM["Kernel Mode (Ring 0)"]
-        MF["Minifilter Driver\n(File I/O interception)"]
-        PC["Process/Thread Callbacks\n(Create, Load, Terminate)"]
-        WFP["Network Filter (WFP)\n(Per-connection tracking)"]
+        direction LR
+        MF[/"Minifilter Driver\n(File I/O interception)"/]
+        PC(("Process/Thread Callbacks\n(Create, Load, Terminate)"))
+        WFP{{"Network Filter (WFP)\n(Per-connection tracking)"}}
     end
 
     MF --> TC
@@ -242,13 +245,13 @@ Attack Surface Reduction (ASR) Rules:
 ### Boot Chain Security
 
 ```mermaid
-flowchart TD
-    TPM["Hardware Root of Trust (TPM)"]
-    UEFI["UEFI Firmware\n(Secure Boot verifies signature)"]
-    BM["Boot Manager (bootmgr)"]
-    OSL["OS Loader (winload.efi)"]
-    K["Kernel + Early-Load Drivers (ELAM)"]
-    DS["Remaining Drivers + Services"]
+flowchart LR
+    TPM{{"Hardware Root of Trust (TPM)"}}
+    UEFI[["UEFI Firmware\n(Secure Boot verifies signature)"]]
+    BM(["Boot Manager (bootmgr)"])
+    OSL(["OS Loader (winload.efi)"])
+    K[/"Kernel + Early-Load Drivers (ELAM)"/]
+    DS[/"Remaining Drivers + Services"/]
 
     TPM -->|"measures"| UEFI
     UEFI -->|"measures"| BM

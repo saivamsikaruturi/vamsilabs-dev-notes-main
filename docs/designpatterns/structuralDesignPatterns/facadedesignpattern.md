@@ -10,13 +10,13 @@
     When you stay at a hotel, you don't call the kitchen, housekeeping, taxi service, and restaurant separately. You call the **concierge** — one person who coordinates everything for you. The concierge is the Facade. They hide the complexity of multiple subsystems behind a single, friendly interface.
 
 ```mermaid
-flowchart TD
-    You["🧳 You (Guest)<br/>'I need help!'"] --> C["🛎️ CONCIERGE<br/>(Facade)"]
-    C --> K["👨‍🍳 Kitchen"]
-    C --> H["🧹 Housekeeping"]
-    C --> T["🚕 Taxi Service"]
-    C --> R["🍽️ Restaurant"]
-    C --> S["🧖 Spa"]
+flowchart LR
+    You(["🧳 You (Guest)<br/>'I need help!'"]) --> C{{"🛎️ CONCIERGE<br/>(Facade)"}}
+    C --> K(("👨‍🍳 Kitchen"))
+    C --> H(("🧹 Housekeeping"))
+    C --> T(("🚕 Taxi Service"))
+    C --> R(("🍽️ Restaurant"))
+    C --> S(("🧖 Spa"))
     
     style You fill:#E3F2FD,stroke:#1565C0,color:#000
     style C fill:#FEF3C7,stroke:#D97706,stroke-width:3px,color:#000
@@ -52,6 +52,43 @@ flowchart LR
     style SubB fill:#fff9c4,stroke:#f57f17,color:#000
     style SubC fill:#fff9c4,stroke:#f57f17,color:#000
     style SubD fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class OrderFacade {
+        -inventory: InventoryService
+        -payment: PaymentService
+        -shipping: ShippingService
+        -notification: NotificationService
+        +placeOrder(userId, productId, quantity, address, email) String
+    }
+    class InventoryService {
+        +checkStock(productId, quantity) boolean
+        +reserveStock(productId, quantity) void
+    }
+    class PaymentService {
+        +processPayment(userId, amount) boolean
+        +refund(transactionId) void
+    }
+    class ShippingService {
+        +createShipment(orderId, address) String
+    }
+    class NotificationService {
+        +sendOrderConfirmation(email, orderId) void
+        +sendShippingNotification(email, trackingId) void
+    }
+    class Client {
+        +main(args) void
+    }
+
+    Client --> OrderFacade : uses
+    OrderFacade *-- InventoryService
+    OrderFacade *-- PaymentService
+    OrderFacade *-- ShippingService
+    OrderFacade *-- NotificationService
 ```
 
 ---

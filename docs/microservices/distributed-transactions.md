@@ -8,13 +8,13 @@
     Think of **booking a vacation package**. You need to book a flight, hotel, AND car rental together. If the hotel is full, you need to cancel the flight booking too. In a monolith, one database transaction handles this. In microservices, each service has its own database — you need coordination strategies to keep everything consistent.
 
 ```mermaid
-flowchart TD
-    O["🛒 Place Order"]
-    O --> S1["💳 Payment Service<br/>Charge $50"]
-    O --> S2["📦 Inventory Service<br/>Reserve items"]
-    O --> S3["📧 Notification Service<br/>Send confirmation"]
+flowchart LR
+    O(("🛒 Place Order"))
+    O --> S1[["💳 Payment Service<br/>Charge $50"]]
+    O --> S2[["📦 Inventory Service<br/>Reserve items"]]
+    O --> S3[["📧 Notification Service<br/>Send confirmation"]]
     
-    S1 -->|"❌ Payment fails"| COMP["🔄 Compensate!<br/>Release inventory"]
+    S1 -->|"❌ Payment fails"| COMP(["🔄 Compensate!<br/>Release inventory"])
 
     style O fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
     style COMP fill:#FFCDD2,stroke:#C62828,color:#000
@@ -89,11 +89,11 @@ sequenceDiagram
 A central **orchestrator** coordinates the steps:
 
 ```mermaid
-flowchart TD
-    O["🎯 Saga Orchestrator"]
-    O -->|"1. Create order"| OS["Order Service"]
-    O -->|"2. Charge payment"| PS["Payment Service"]
-    O -->|"3. Reserve stock"| IS["Inventory Service"]
+flowchart LR
+    O(("🎯 Saga Orchestrator"))
+    O -->|"1. Create order"| OS[["Order Service"]]
+    O -->|"2. Charge payment"| PS[["Payment Service"]]
+    O -->|"3. Reserve stock"| IS[["Inventory Service"]]
     O -->|"4. Confirm order"| OS
 
     PS -->|"❌ Failed"| O
@@ -261,10 +261,10 @@ public void processPayment(String orderId, BigDecimal amount) {
 ### Timeout & Dead Letters
 
 ```mermaid
-flowchart TD
-    S["Saga Step"] -->|"timeout"| R["Retry (3x)"]
-    R -->|"still fails"| DLQ["💀 Dead Letter Queue"]
-    DLQ --> Alert["🚨 Alert + Manual Resolution"]
+flowchart LR
+    S{{"Saga Step"}} -->|"timeout"| R{{"Retry (3x)"}}
+    R -->|"still fails"| DLQ[("💀 Dead Letter Queue")]
+    DLQ --> Alert(["🚨 Alert + Manual Resolution"])
 
     style DLQ fill:#FFCDD2,stroke:#C62828,color:#000
 ```

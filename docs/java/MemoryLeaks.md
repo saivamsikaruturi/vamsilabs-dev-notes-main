@@ -9,13 +9,13 @@ A memory leak in Java happens when objects are **no longer needed but still refe
 ```mermaid
 graph LR
     subgraph Normal Lifecycle 🟢
-        direction TB
+        direction LR
         A1[Object Created] --> A2[Object Used]
         A2 --> A3[Reference Removed]
         A3 --> A4[GC Reclaims Memory]
     end
     subgraph Memory Leak 🔴
-        direction TB
+        direction LR
         B1[Object Created] --> B2[Object Used]
         B2 --> B3[Reference STILL Held]
         B3 --> B4[GC Can't Reclaim]

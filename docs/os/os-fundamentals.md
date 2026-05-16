@@ -164,10 +164,10 @@ Every process gets its own virtual address space — the OS + MMU translates to 
 ### Page Table Structure
 
 ```mermaid
-flowchart TD
-    VA["Virtual Address\n[Page Number | Offset]"]
-    PT["Page Table Lookup"]
-    PA["Physical Address\n[Frame Number | Offset]"]
+flowchart LR
+    VA[/"Virtual Address\n[Page Number | Offset]"/]
+    PT{{"Page Table Lookup"}}
+    PA[/"Physical Address\n[Frame Number | Offset]"/]
 
     VA -->|Page Number| PT
     PT -->|Frame Number| PA
@@ -348,18 +348,20 @@ sequenceDiagram
 ### Windows Architecture
 
 ```mermaid
-graph TB
+flowchart LR
     subgraph UM["User Mode (Ring 3)"]
-        Apps["Applications"]
-        Svc["Services"]
-        Sub["Subsystems"]
+        direction LR
+        Apps(["Applications"])
+        Svc{{"Services"}}
+        Sub[["Subsystems"]]
     end
 
     subgraph KM["Kernel Mode (Ring 0)"]
-        Exec["Executive\n(Object, I/O, Memory)"]
-        Kern["Kernel\n(Scheduling, Sync)"]
-        Drv["Drivers\n(FS, Network, Filter)"]
-        HAL["HAL (Hardware Abstraction Layer)"]
+        direction LR
+        Exec[/"Executive\n(Object, I/O, Memory)"/]
+        Kern(("Kernel\n(Scheduling, Sync)"))
+        Drv{{"Drivers\n(FS, Network, Filter)"}}
+        HAL(["HAL (Hardware Abstraction Layer)"])
     end
 
     Apps --> |"ntdll.dll"| Exec

@@ -55,6 +55,46 @@ flowchart LR
 
 ---
 
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class SupportHandler {
+        <<abstract>>
+        -next: SupportHandler
+        +setNext(SupportHandler next) SupportHandler
+        +handle(SupportTicket ticket) void
+        #canHandle(SupportTicket ticket)* boolean
+        #process(SupportTicket ticket)* void
+    }
+    class FAQHandler {
+        #canHandle(SupportTicket ticket) boolean
+        #process(SupportTicket ticket) void
+    }
+    class TechSupportHandler {
+        #canHandle(SupportTicket ticket) boolean
+        #process(SupportTicket ticket) void
+    }
+    class EngineeringHandler {
+        #canHandle(SupportTicket ticket) boolean
+        #process(SupportTicket ticket) void
+    }
+    class SupportTicket {
+        -issue: String
+        -priority: Priority
+        +getIssue() String
+        +getPriority() Priority
+    }
+
+    SupportHandler --> SupportHandler : next
+    FAQHandler --|> SupportHandler
+    TechSupportHandler --|> SupportHandler
+    EngineeringHandler --|> SupportHandler
+    SupportHandler ..> SupportTicket : handles
+```
+
+---
+
 ## ❓ The Problem
 
 You have a request that could be handled by multiple handlers, but:

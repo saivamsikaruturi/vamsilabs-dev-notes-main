@@ -7,12 +7,12 @@ Inner classes are classes defined **inside another class**. They're used for enc
 ## Four Types of Inner Classes
 
 ```mermaid
-graph TD
-    A[🏗️ Nested Classes] --> B[📦 Static Nested Class]
-    A --> C[🔄 Non-Static Inner Class]
-    C --> D[👤 Member Inner Class]
-    C --> E[📍 Local Inner Class]
-    C --> F[👻 Anonymous Inner Class]
+flowchart LR
+    A(("🏗️ Nested Classes")) --> B[["📦 Static Nested Class"]]
+    A --> C{{"🔄 Non-Static Inner Class"}}
+    C --> D(["👤 Member Inner Class"])
+    C --> E(["📍 Local Inner Class"])
+    C --> F(["👻 Anonymous Inner Class"])
 
     style A fill:#4a90d9,stroke:#2c5f8a,color:#fff
     style B fill:#6c5ce7,stroke:#4a3db8,color:#fff

@@ -7,12 +7,12 @@ Access modifiers control **who can see and use** your classes, methods, and vari
 ## The Four Access Levels
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph PUBLIC["🌍 public — Visible Everywhere"]
         subgraph PROTECTED["🏘️ protected — Same Package + Subclasses"]
             subgraph DEFAULT["📦 default — Same Package Only"]
                 subgraph PRIVATE["🔒 private — Same Class Only"]
-                    P["Fields & Methods"]
+                    P(("Fields & Methods"))
                 end
             end
         end
@@ -28,11 +28,11 @@ graph TD
 ```mermaid
 flowchart LR
     subgraph scope["🎯 Quick Reference"]
-        direction TB
-        PUB["🟢 public"]:::green --> |"Any class, any package"| ALL["✅ Everyone"]
-        PROT["🔵 protected"]:::blue --> |"Same package OR subclass"| SUB["✅ Package + Children"]
-        DEF["🟠 default"]:::orange --> |"Same package only"| PKG["✅ Package Only"]
-        PRIV["🔴 private"]:::red --> |"Same class only"| CLS["✅ Class Only"]
+        direction LR
+        PUB{{"🟢 public"}}:::green --> |"Any class, any package"| ALL(["✅ Everyone"])
+        PROT{{"🔵 protected"}}:::blue --> |"Same package OR subclass"| SUB(["✅ Package + Children"])
+        DEF{{"🟠 default"}}:::orange --> |"Same package only"| PKG(["✅ Package Only"])
+        PRIV{{"🔴 private"}}:::red --> |"Same class only"| CLS(["✅ Class Only"])
     end
 
     classDef green fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
@@ -148,10 +148,10 @@ public class Outer {
 
 ```mermaid
 flowchart LR
-    START["🏁 Start Here"]:::start --> PRIV["🔒 private"]:::red
-    PRIV -->|"Need package access?"| DEF["📦 default"]:::orange
-    DEF -->|"Need subclass access?"| PROT["🛡️ protected"]:::blue
-    PROT -->|"Need global access?"| PUB["🌍 public"]:::green
+    START(("🏁 Start Here")):::start --> PRIV{{"🔒 private"}}:::red
+    PRIV -->|"Need package access?"| DEF{{"📦 default"}}:::orange
+    DEF -->|"Need subclass access?"| PROT{{"🛡️ protected"}}:::blue
+    PROT -->|"Need global access?"| PUB(["🌍 public"]):::green
 
     classDef start fill:#F3E5F5,stroke:#7B1FA2,color:#4A148C
     classDef red fill:#FFCDD2,stroke:#C62828,color:#B71C1C

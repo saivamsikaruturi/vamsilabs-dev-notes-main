@@ -40,15 +40,15 @@ public void placeOrder(Order order) {
 In microservices, **each service has its own database** — there's no single `@Transactional` that spans multiple services.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Problem["❌ Can't do this in Microservices"]
-        T["@Transactional across<br/>multiple services?"] --> X["NOT POSSIBLE!"]
+        T{"@Transactional across<br/>multiple services?"} --> X(["NOT POSSIBLE!"])
     end
     
     subgraph MS["Microservices Reality"]
-        O["Order Service<br/>🗄️ Order DB"] ---|HTTP/Event| P["Payment Service<br/>🗄️ Payment DB"]
-        P ---|HTTP/Event| I["Inventory Service<br/>🗄️ Inventory DB"]
-        I ---|HTTP/Event| D["Delivery Service<br/>🗄️ Delivery DB"]
+        O[["Order Service<br/>🗄️ Order DB"]] ---|HTTP/Event| P[["Payment Service<br/>🗄️ Payment DB"]]
+        P ---|HTTP/Event| I[["Inventory Service<br/>🗄️ Inventory DB"]]
+        I ---|HTTP/Event| D[["Delivery Service<br/>🗄️ Delivery DB"]]
     end
 
     style X fill:#FFCDD2,stroke:#C62828,color:#000
@@ -131,12 +131,12 @@ public class PaymentService {
 A single **Saga Orchestrator** tells each service what to do and handles failures.
 
 ```mermaid
-flowchart TD
-    O["🎯 Saga Orchestrator"]
-    O -->|"1. Create Order"| OS["🛒 Order Service"]
-    O -->|"2. Process Payment"| PS["💳 Payment Service"]
-    O -->|"3. Reserve Stock"| IS["📦 Inventory Service"]
-    O -->|"4. Schedule Delivery"| DS["🚚 Delivery Service"]
+flowchart LR
+    O(("🎯 Saga Orchestrator"))
+    O -->|"1. Create Order"| OS[["🛒 Order Service"]]
+    O -->|"2. Process Payment"| PS[["💳 Payment Service"]]
+    O -->|"3. Reserve Stock"| IS[["📦 Inventory Service"]]
+    O -->|"4. Schedule Delivery"| DS[["🚚 Delivery Service"]]
     
     DS -.->|"❌ Failed"| O
     O -.->|"Compensate 3"| IS
@@ -206,17 +206,17 @@ public class OrderSagaOrchestrator {
 ## 🍕 Real Example: Swiggy/Zomato Order Flow
 
 ```mermaid
-flowchart TD
-    U["👤 User places order"] --> OS["🛒 Order Service<br/>Creates order"]
-    OS --> PS["💳 Payment Service<br/>Deducts money"]
-    PS --> RS["🍽️ Restaurant Service<br/>Accepts order"]
-    RS --> DS["🚴 Delivery Service<br/>Assigns rider"]
-    DS --> Done["✅ Order Delivered!"]
+flowchart LR
+    U(("👤 User places order")) --> OS{{"🛒 Order Service<br/>Creates order"}}
+    OS --> PS{{"💳 Payment Service<br/>Deducts money"}}
+    PS --> RS{{"🍽️ Restaurant Service<br/>Accepts order"}}
+    RS --> DS{{"🚴 Delivery Service<br/>Assigns rider"}}
+    DS --> Done(["✅ Order Delivered!"])
     
-    DS -->|"No rider available"| C1["↩️ Refund to Restaurant"]
-    C1 --> C2["↩️ Refund Payment"]
-    C2 --> C3["↩️ Cancel Order"]
-    C3 --> Failed["❌ Order Cancelled<br/>Money Refunded"]
+    DS -->|"No rider available"| C1[/"↩️ Refund to Restaurant"/]
+    C1 --> C2[/"↩️ Refund Payment"/]
+    C2 --> C3[/"↩️ Cancel Order"/]
+    C3 --> Failed(["❌ Order Cancelled<br/>Money Refunded"])
 
     style Done fill:#E8F5E9,stroke:#2E7D32,color:#000
     style Failed fill:#FFCDD2,stroke:#C62828,color:#000

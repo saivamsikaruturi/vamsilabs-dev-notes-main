@@ -274,10 +274,10 @@ public static <T> T createProxy(T target, Class<T> iface,
 JDK dynamic proxies require interfaces. **CGLIB** (Code Generation Library) creates proxies by **generating a subclass** of the target class at runtime using bytecode manipulation.
 
 ```mermaid
-graph TD
-    A[Target Class: UserServiceImpl] --> B[CGLIB generates subclass at runtime]
-    B --> C[ProxySubclass extends UserServiceImpl]
-    C --> D[Overrides methods to call MethodInterceptor]
+flowchart LR
+    A[["Target Class: UserServiceImpl"]] --> B{{"CGLIB generates subclass at runtime"}}
+    B --> C[["ProxySubclass extends UserServiceImpl"]]
+    C --> D(["Overrides methods to call MethodInterceptor"])
 
     style A fill:#E3F2FD,stroke:#1565C0,color:#000
     style C fill:#FFF3E0,stroke:#E65100,color:#000
@@ -352,11 +352,11 @@ Spring uses proxies to implement AOP (Aspect-Oriented Programming). Understandin
 ### Decision Logic
 
 ```mermaid
-flowchart TD
-    A[Bean being proxied?] --> B{Implements interface?}
-    B -->|Yes| C{proxyTargetClass = true?}
-    C -->|No| D[JDK Dynamic Proxy]
-    C -->|Yes| E[CGLIB Proxy]
+flowchart LR
+    A(("Bean being proxied?")) --> B{"Implements interface?"}
+    B -->|Yes| C{"proxyTargetClass = true?"}
+    C -->|No| D(["JDK Dynamic Proxy"])
+    C -->|Yes| E(["CGLIB Proxy"])
     B -->|No| E
 
     style D fill:#E8F5E9,stroke:#2E7D32,color:#000

@@ -8,12 +8,12 @@
     Think of an **airport security system**. You authenticate once at check-in (get a boarding pass/JWT). At every gate (service), they verify your pass without calling back to check-in. Between restricted areas (services), staff use badges (mTLS) to verify each other. The control tower (API Gateway) decides who gets in.
 
 ```mermaid
-flowchart TD
-    U["👤 User"] -->|login| Auth["🔑 Auth Server<br/>(Keycloak/Auth0)"]
+flowchart LR
+    U(("👤 User")) -->|login| Auth{{"🔑 Auth Server<br/>(Keycloak/Auth0)"}}
     Auth -->|JWT Token| U
-    U -->|JWT in header| GW["🚪 API Gateway<br/>Validates token"]
-    GW --> S1["🛒 Order Service"]
-    GW --> S2["💳 Payment Service"]
+    U -->|JWT in header| GW{{"🚪 API Gateway<br/>Validates token"}}
+    GW --> S1[["🛒 Order Service"]]
+    GW --> S2[["💳 Payment Service"]]
     S1 -->|"mTLS / JWT propagation"| S2
 
     style Auth fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000

@@ -9,13 +9,13 @@ Think of it like LEGO blocks — each block (object) has its own shape and purpo
 ### The 4 Pillars of OOP
 
 ```mermaid
-flowchart TB
-    OOP["<b>Object-Oriented Programming</b>"]:::center
+flowchart LR
+    OOP(("<b>Object-Oriented Programming</b>")):::center
 
-    OOP --> E["<b>Encapsulation</b><br/><i>Hide data, expose methods</i>"]:::encap
-    OOP --> A["<b>Abstraction</b><br/><i>Hide complexity, show essentials</i>"]:::abstr
-    OOP --> I["<b>Inheritance</b><br/><i>Reuse via parent-child IS-A</i>"]:::inher
-    OOP --> P["<b>Polymorphism</b><br/><i>One interface, many forms</i>"]:::poly
+    OOP --> E{{"<b>Encapsulation</b><br/><i>Hide data, expose methods</i>"}}:::encap
+    OOP --> A{{"<b>Abstraction</b><br/><i>Hide complexity, show essentials</i>"}}:::abstr
+    OOP --> I{{"<b>Inheritance</b><br/><i>Reuse via parent-child IS-A</i>"}}:::inher
+    OOP --> P{{"<b>Polymorphism</b><br/><i>One interface, many forms</i>"}}:::poly
 
     %% Connections between pillars
     E -.-|"Abstraction uses<br/>encapsulation to hide details"| A
@@ -33,23 +33,23 @@ flowchart TB
 ```mermaid
 flowchart LR
     subgraph ISA["<b>Inheritance (IS-A)</b>"]
-        direction TB
-        Animal["Animal"]:::parent
-        Dog["Dog"]:::child
-        Cat["Cat"]:::child
+        direction LR
+        Animal(("Animal")):::parent
+        Dog(["Dog"]):::child
+        Cat(["Cat"]):::child
         Dog -->|"extends"| Animal
         Cat -->|"extends"| Animal
-        note1["Dog <b>IS-A</b> Animal<br/>Tight coupling<br/>Compile-time relationship"]:::note
+        note1[/"Dog <b>IS-A</b> Animal<br/>Tight coupling<br/>Compile-time relationship"/]:::note
     end
 
     subgraph HASA["<b>Composition (HAS-A)</b>"]
-        direction TB
-        Car["Car"]:::parent
-        Engine["Engine"]:::component
-        Wheels["Wheels"]:::component
+        direction LR
+        Car(("Car")):::parent
+        Engine{{"Engine"}}:::component
+        Wheels{{"Wheels"}}:::component
         Car -->|"has"| Engine
         Car -->|"has"| Wheels
-        note2["Car <b>HAS-A</b> Engine<br/>Loose coupling<br/>Runtime flexibility"]:::note
+        note2[/"Car <b>HAS-A</b> Engine<br/>Loose coupling<br/>Runtime flexibility"/]:::note
     end
 
     ISA ~~~ HASA

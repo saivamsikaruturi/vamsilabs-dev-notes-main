@@ -28,12 +28,12 @@ flowchart LR
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    Subject["📢 Subject\n(Observable)"]
-    ConcreteSubject["🏢 ConcreteSubject\n- state\n+ attach(observer)\n+ detach(observer)\n+ notifyAll()"]
-    Observer["👁️ Observer\n(Interface)\n+ update(state)"]
-    ConcreteObserverA["📱 ConcreteObserverA\n+ update(state)"]
-    ConcreteObserverB["💻 ConcreteObserverB\n+ update(state)"]
+flowchart LR
+    Subject[["📢 Subject\n(Observable)"]]
+    ConcreteSubject{{"🏢 ConcreteSubject\n- state\n+ attach(observer)\n+ detach(observer)\n+ notifyAll()"}}
+    Observer[["👁️ Observer\n(Interface)\n+ update(state)"]]
+    ConcreteObserverA(["📱 ConcreteObserverA\n+ update(state)"])
+    ConcreteObserverB(["💻 ConcreteObserverB\n+ update(state)"])
 
     Subject --> Observer
     ConcreteSubject --> Subject
@@ -47,6 +47,42 @@ flowchart TD
     style Observer fill:#6d28d9,color:#fff
     style ConcreteObserverA fill:#a78bfa,color:#fff
     style ConcreteObserverB fill:#a78bfa,color:#fff
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class EventListener {
+        <<interface>>
+        +update(String eventType, String data) void
+    }
+    class EventManager {
+        -listeners: Map~String, List~EventListener~~
+        +subscribe(String eventType, EventListener listener) void
+        +unsubscribe(String eventType, EventListener listener) void
+        +notify(String eventType, String data) void
+    }
+    class StockMarket {
+        -events: EventManager
+        -prices: Map~String, Double~
+        +updatePrice(String symbol, double newPrice) void
+        +getEvents() EventManager
+    }
+    class PriceAlertListener {
+        -threshold: double
+        +update(String eventType, String data) void
+    }
+    class DashboardListener {
+        +update(String eventType, String data) void
+    }
+
+    StockMarket *-- EventManager : contains
+    EventManager --> EventListener : notifies
+    PriceAlertListener ..|> EventListener
+    DashboardListener ..|> EventListener
 ```
 
 ---

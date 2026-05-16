@@ -7,10 +7,10 @@ A constructor is a special method that **initializes an object** when it's creat
 ## Types of Constructors
 
 ```mermaid
-graph TD
-    A["🏗️ Constructors"] --> B["📭 Default<br/>no args"]
-    A --> C["📬 Parameterized<br/>with args"]
-    A --> D["📋 Copy Constructor<br/>clone an object"]
+flowchart LR
+    A(("🏗️ Constructors")) --> B(["📭 Default<br/>no args"])
+    A --> C(["📬 Parameterized<br/>with args"])
+    A --> D(["📋 Copy Constructor<br/>clone an object"])
 
     style A fill:#4a90d9,stroke:#2c5f8a,color:#fff
     style B fill:#00b894,stroke:#008c6e,color:#fff
@@ -132,10 +132,10 @@ public class User {
 ```
 
 ```mermaid
-graph TD
-    A["🆕 new User - Vamsi"] -->|"this(name, default-email)"| B["🔗 User - Vamsi, no-reply@default.com"]
-    B -->|"this(name, email, USER)"| C["🔗 User - Vamsi, no-reply@default.com, USER"]
-    C --> D["✅ Fields assigned"]
+flowchart LR
+    A(("🆕 new User - Vamsi")) -->|"this(name, default-email)"| B{{"🔗 User - Vamsi, no-reply@default.com"}}
+    B -->|"this(name, email, USER)"| C{{"🔗 User - Vamsi, no-reply@default.com, USER"}}
+    C --> D(["✅ Fields assigned"])
 
     style A fill:#0984e3,stroke:#0652a3,color:#fff
     style B fill:#6c5ce7,stroke:#4a3db8,color:#fff

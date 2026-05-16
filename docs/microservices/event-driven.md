@@ -8,13 +8,13 @@
     Think of a **newspaper publishing model**. The newspaper (event producer) publishes stories without knowing who reads them. Subscribers (event consumers) choose which sections to read. If a new subscriber joins, the newspaper doesn't change anything. If a subscriber leaves, nothing breaks. This is event-driven — producers and consumers are completely decoupled.
 
 ```mermaid
-flowchart TD
-    E["⚡ Event Occurs<br/>'Order Placed'"]
-    E --> EB["📫 Event Bus / Broker"]
-    EB --> C1["📧 Email Service<br/>Send confirmation"]
-    EB --> C2["📊 Analytics Service<br/>Track conversion"]
-    EB --> C3["📦 Inventory Service<br/>Reserve stock"]
-    EB --> C4["🔔 Push Service<br/>Notify restaurant"]
+flowchart LR
+    E(("⚡ Event Occurs<br/>'Order Placed'"))
+    E --> EB{{"📫 Event Bus / Broker"}}
+    EB --> C1[["📧 Email Service<br/>Send confirmation"]]
+    EB --> C2[["📊 Analytics Service<br/>Track conversion"]]
+    EB --> C3[["📦 Inventory Service<br/>Reserve stock"]]
+    EB --> C4[["🔔 Push Service<br/>Notify restaurant"]]
 
     style E fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
     style EB fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#000
@@ -116,18 +116,18 @@ public class BankAccount {
 **Command Query Responsibility Segregation** — separate the write model from the read model:
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Write["✏️ Command Side"]
-        CMD["Commands"] --> AS["Aggregate"] --> ES["Event Store"]
+        CMD[/"Commands"/] --> AS{{"Aggregate"}} --> ES[("Event Store")]
     end
     
     subgraph Projection["🔄 Projection"]
-        ES --> EP["Event Processor"]
+        ES --> EP{{"Event Processor"}}
     end
     
     subgraph Read["📖 Query Side"]
-        EP --> RM["Read Model<br/>(Optimized for queries)"]
-        Q["Queries"] --> RM
+        EP --> RM[("Read Model<br/>(Optimized for queries)")]
+        Q[/"Queries"/] --> RM
     end
 
     style CMD fill:#FFF3E0,stroke:#E65100,color:#000

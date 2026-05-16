@@ -12,9 +12,7 @@ theme:
   name: material
   custom_dir: docs/custom
   language: en
-  font:
-    text: Source Serif 4
-    code: JetBrains Mono
+  font: false
   icon:
     repo: fontawesome/brands/github
     logo: material/code-braces-box
@@ -43,7 +41,7 @@ theme:
     - content.tooltips
     - navigation.tabs
     - navigation.tabs.sticky
-    - navigation.sections
+    # navigation.sections removed — sections are now collapsible
     - navigation.tracking
     - navigation.instant
     - navigation.instant.progress
@@ -73,7 +71,7 @@ markdown_extensions:
   - md_in_html
   - tables
   - toc:
-      permalink: true
+      permalink: false
       permalink_title: "Link to this section"
       toc_depth: 3
   - pymdownx.arithmatex:
@@ -132,7 +130,7 @@ plugins:
 
 nav:
   - Home: index.md
-  - Getting Started:
+  - Start:
       - Learning Path: learning.md
       - Shortcuts: shortcuts.md
       - Git: git.md
@@ -140,71 +138,68 @@ nav:
       - DSA: dsa.md
       - Behavioral (Amazon LPs): behavioral/behavioral.md
   - Java:
-      - Foundations:
+      - Core Java:
           - Ecosystem & Setup: java/ecosystem.md
           - Java Basics: java/JavaBasics.md
+          - OOP Concepts: java/oops.md
           - Access Modifiers: java/AccessModifiers.md
           - Constructors: java/Constructors.md
           - this & super: java/thisandSuper.md
           - Strings: java/Strings.md
           - Wrapper Classes: java/WrapperClasses.md
           - Enums: java/Enums.md
-          - Generics: java/Generics.md
-          - Annotations: java/Annotations.md
-          - Reflection: java/Reflection.md
-          - Dynamic Proxy: java/DynamicProxy.md
-          - Regular Expressions: java/Regex.md
-      - OOP & Core:
-          - OOP Concepts: java/oops.md
           - Interfaces & Abstract Classes: java/Interfaces.md
           - Inner Classes: java/InnerClasses.md
           - equals & hashCode: java/EqualsHashCode.md
           - Immutable Classes: java/ImmutableClasses.md
-          - Design Principles: java/DesignPrinciples.md
+          - Design Principles (SOLID): java/DesignPrinciples.md
+          - Regular Expressions: java/Regex.md
+      - Advanced Java:
           - Exception Handling: java/ExceptionHandling.md
+          - Collections Framework: java/Collections.md
+          - Comparable vs Comparator: java/ComparableComparator.md
+          - Collections Compared: java/DiffCollections.md
+          - Multithreading: java/MultiThreading.md
+          - Thread Pools & Executors: java/Executors.md
+          - Locks: java/Locks.md
+          - volatile & Atomics: java/VolatileAtomics.md
+          - Deadlocks: java/deadlocks.md
+          - Concurrent Collections: java/ConcurrentCollections.md
+          - Concurrency Patterns: java/ConcurrencyPatterns.md
+          - JDBC: java/JDBC.md
           - Serialization: java/Serialization.md
           - Cloning: java/Cloning.md
           - File Handling: java/FileHandling.md
           - I/O & NIO: java/NIO.md
           - Networking: java/Networking.md
-          - JDBC: java/JDBC.md
-      - JVM & Memory:
-          - JVM Internals: java/Jvm.md
+          - Generics: java/Generics.md
+          - Annotations: java/Annotations.md
+          - Reflection: java/Reflection.md
+          - Dynamic Proxy: java/DynamicProxy.md
+      - Functional & Reactive:
+          - Functional Programming: java/FunctionalProgramming.md
+          - Stream API: stream-api/streamapi.md
+          - CompletableFuture: java/CompletableFuture.md
+          - Reactive Streams: java/ReactiveStreams.md
+      - JVM Internals:
+          - JVM Architecture: java/Jvm.md
           - ClassLoaders: java/ClassLoaders.md
+          - Java Memory Model: java/JavaMemoryModel.md
           - Garbage Collection: java/GarbageCollection.md
           - JVM Tuning & Monitoring: java/JVMTuning.md
           - Memory Leaks & Profiling: java/MemoryLeaks.md
-      - Functional Programming:
-          - Functional Programming: java/FunctionalProgramming.md
-          - Stream API: stream-api/streamapi.md
-      - Collections:
-          - Collections Framework: java/Collections.md
-          - Comparable vs Comparator: java/ComparableComparator.md
-          - Collections Compared: java/DiffCollections.md
-      - Concurrency:
-          - Multithreading: java/MultiThreading.md
-          - Thread Pools & Executors: java/Executors.md
-          - Java Memory Model: java/JavaMemoryModel.md
-          - Locks: java/Locks.md
-          - volatile & Atomics: java/VolatileAtomics.md
-          - CompletableFuture: java/CompletableFuture.md
-          - Concurrent Collections: java/ConcurrentCollections.md
-          - Concurrency Patterns: java/ConcurrencyPatterns.md
-          - Deadlocks: java/deadlocks.md
-          - Reactive Streams: java/ReactiveStreams.md
       - Version Features:
           - Java 8: java/Java8.md
           - Date & Time API: java/DateTime.md
           - Java 11: java/java11.md
           - Java 17: java/Java17.md
           - Modern Java (17-21): java/ModernJava.md
-      - Security & Cryptography:
+      - Security & Build:
           - Java Security: java/Security.md
-      - Build Tools:
           - Maven: java/maven.md
           - Gradle: java/gradle.md
-  - Spring & Microservices:
-      - Spring Boot:
+  - Spring:
+      - Core Fundamentals:
           - Introduction: springboot/introduction.md
           - Auto Configuration: springboot/AutoConfiguration.md
           - Annotations: springboot/Annotations.md
@@ -213,47 +208,59 @@ nav:
           - Bean Lifecycle & Scopes: springboot/bean-lifecycle.md
           - AOP (Aspect-Oriented): springboot/aop.md
           - Design Patterns in Spring: springboot/design-patterns.md
+      - Data & Persistence:
           - Spring Data JPA: springboot/spring-data-jpa.md
           - Transactions: springboot/transactions.md
-          - Validation & Data Binding: springboot/validation.md
+          - Database Migrations: springboot/database-migrations.md
+          - Caching: springboot/caching.md
+      - Web & API:
           - REST API Practices: springboot/restapibestpractices.md
           - Exception Handling: springboot/exceptionhandling.md
-          - Profiles: springboot/profiles.md
-          - Caching: springboot/caching.md
-          - Events & Listeners: springboot/events.md
+          - Validation & Data Binding: springboot/validation.md
           - WebFlux & Reactive: springboot/webflux.md
+      - Security & Auth:
+          - Spring Security: springboot/security.md
+      - Advanced Features:
+          - Profiles & Configuration: springboot/profiles.md
+          - Events & Listeners: springboot/events.md
           - Async & Scheduling: springboot/async.md
-          - Security: springboot/security.md
-          - Database Migrations: springboot/database-migrations.md
           - Actuator & Monitoring: springboot/actuator.md
           - Testing: springboot/testing.md
           - Spring Boot 3: springboot/SpringBoot3.md
-      - Microservices:
+  - Microservices:
+      - Foundations:
           - Fundamentals: microservices/microservices.md
           - Design Principles: microservices/design-principles.md
+      - Communication:
           - Inter-Service Comm.: microservices/InterServiceCommunication.md
           - gRPC Communication: microservices/grpc.md
           - Async Comm. (Kafka): microservices/AsyncCommunicationUsingKafka.md
           - Event-Driven Architecture: microservices/event-driven.md
+      - API Management:
           - API Gateway: microservices/APIGATEWAY.md
           - API Gateway Patterns: microservices/api-gateway-patterns.md
           - API Versioning: microservices/api-versioning.md
+      - Service Infrastructure:
           - Service Discovery: microservices/ServiceDiscovery.md
+          - Config Management: microservices/config-management.md
+          - Service Mesh: microservices/service-mesh.md
+      - Resilience & Reliability:
           - Circuit Breaker: microservices/CircuitBreaker.md
           - Resilience Patterns: microservices/resilience-patterns.md
           - Saga Pattern: microservices/SagaDesignPattern.md
           - Distributed Transactions: microservices/distributed-transactions.md
+      - Data & Patterns:
           - Data Management: microservices/data-management.md
-          - Config Management: microservices/config-management.md
-          - Service Mesh: microservices/service-mesh.md
+          - CQRS: CQRS.md
+      - Operations:
           - Deployment Strategies: microservices/deployment-strategies.md
           - Logging & Monitoring: microservices/logging-monitoring.md
           - Observability: microservices/Observability.md
           - Containerization: microservices/containerization.md
+      - Quality & Security:
           - Testing Microservices: microservices/testing-microservices.md
           - Security: microservices/security-microservices.md
-          - CQRS: CQRS.md
-  - Low Level Design:
+  - LLD:
       - LLD Roadmap: lld/lld-roadmap.md
       - SOLID Principles: solidprinciples/solidprinciples.md
       - Clean Architecture: misc/clean-architecture.md
@@ -286,7 +293,7 @@ nav:
               - Memento: designpatterns/behaviouralDesignPatterns/MementoDp.md
               - Visitor: designpatterns/behaviouralDesignPatterns/VisitorDp.md
               - Interpreter: designpatterns/behaviouralDesignPatterns/Interpreter.md
-  - System Design:
+  - Design:
       - HTTPS & TLS: https.md
       - CAP Theorem: capTheorem.md
       - Consistent Hashing: consistenthashing.md
@@ -318,11 +325,18 @@ nav:
       - CI/CD Pipelines: cicd/cicd.md
   - AI & ML:
       - Overview: aiml/aiml.md
-  - Computer Networks:
+      - Neural Networks & Deep Learning: aiml/neural-networks.md
+      - Transformers & LLMs: aiml/transformers-llms.md
+      - RAG & Vector Databases: aiml/rag.md
+      - AI Agents & Tools: aiml/agents.md
+      - MLOps & Production AI: aiml/mlops.md
+      - Fine-Tuning Guide: aiml/fine-tuning.md
+      - Model Context Protocol (MCP): aiml/mcp.md
+  - Networks:
       - Fundamentals: networks/networks.md
       - Protocols Deep Dive: networks/protocols-deep-dive.md
       - Network Security & Threat Detection: networks/network-security.md
-  - Operating Systems:
+  - OS:
       - OS Fundamentals: os/os-fundamentals.md
       - OS Security & Endpoint Protection: os/os-security.md
   - Languages:
@@ -332,7 +346,7 @@ nav:
       - TypeScript: typescript/introduction.md
       - Rust: rust/introduction.md
       - Ruby: ruby/introduction.md
-  - Interview Prep:
+  - Interviews:
       - Core Java Q&A: interview/java-core.md
       - Java Strings Q&A: interview/java-strings.md
       - Java Collections Q&A: interview/java-collections.md

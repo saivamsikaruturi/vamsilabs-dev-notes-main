@@ -20,17 +20,17 @@ Git is fundamentally a content-addressable filesystem. Every piece of data is st
 **Refs** are human-readable pointers (branches, tags, HEAD) that resolve to commit SHAs.
 
 ```mermaid
-graph TD
-    HEAD --> main[refs/heads/main]
-    main --> C3[Commit C3]
-    C3 --> T3[Tree]
-    C3 --> C2[Commit C2]
-    T3 --> B1[Blob: README.md]
-    T3 --> B2[Blob: app.py]
-    T3 --> ST[Tree: src/]
-    ST --> B3[Blob: main.java]
-    C2 --> T2[Tree]
-    C2 --> C1[Commit C1]
+flowchart LR
+    HEAD(("HEAD")) --> main(["refs/heads/main"])
+    main --> C3{{"Commit C3"}}
+    C3 --> T3[/"Tree"/]
+    C3 --> C2{{"Commit C2"}}
+    T3 --> B1[["Blob: README.md"]]
+    T3 --> B2[["Blob: app.py"]]
+    T3 --> ST[/"Tree: src/"/]
+    ST --> B3[["Blob: main.java"]]
+    C2 --> T2[/"Tree"/]
+    C2 --> C1{{"Commit C1"}}
 ```
 
 ---

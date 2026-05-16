@@ -63,19 +63,19 @@ The JVM divides the heap into generations based on object age. This design explo
 ```
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph JVM Heap
         subgraph Young Generation
-            Eden["Eden Space<br/>(new objects allocated here)"]
-            S0["Survivor S0 (From)"]
-            S1["Survivor S1 (To)"]
+            Eden[/"Eden Space<br/>(new objects allocated here)"/]
+            S0(["Survivor S0 (From)"])
+            S1(["Survivor S1 (To)"])
         end
         subgraph Old Generation
-            Tenured["Tenured Space<br/>(long-lived objects)"]
+            Tenured{{"Tenured Space<br/>(long-lived objects)"}}
         end
     end
     subgraph Off-Heap
-        Meta["Metaspace<br/>(class metadata, replaced PermGen in Java 8)"]
+        Meta[["Metaspace<br/>(class metadata, replaced PermGen in Java 8)"]]
     end
 
     Eden -->|"Minor GC<br/>survivors"| S0
@@ -125,9 +125,9 @@ Object Survival Rate
 All GC algorithms share a fundamental three-phase approach:
 
 ```mermaid
-graph LR
-    A["1. MARK<br/>Traverse from GC roots,<br/>mark reachable objects"] --> B["2. SWEEP<br/>Reclaim memory of<br/>unmarked objects"]
-    B --> C["3. COMPACT<br/>Defragment by moving<br/>live objects together"]
+flowchart LR
+    A{{"1. MARK<br/>Traverse from GC roots,<br/>mark reachable objects"}} --> B{{"2. SWEEP<br/>Reclaim memory of<br/>unmarked objects"}}
+    B --> C(["3. COMPACT<br/>Defragment by moving<br/>live objects together"])
 ```
 
 ```

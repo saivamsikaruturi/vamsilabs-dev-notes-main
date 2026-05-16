@@ -8,16 +8,16 @@
     Think of a **phone directory (Yellow Pages)**. When you want to call a plumber, you don't memorize their phone number. You look them up in the directory by name, get their current number, and call them. If they change their number, they update the directory — you still find them by name. Service Discovery is the phone directory for microservices.
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph Discovery["📋 Service Registry (Eureka)"]
-        REG["Registry Table<br/>order-service → 10.0.1.5:8081, 10.0.1.6:8081<br/>inventory-service → 10.0.2.3:8082<br/>payment-service → 10.0.3.1:8083, 10.0.3.2:8083"]
+        REG[("Registry Table<br/>order-service → 10.0.1.5:8081, 10.0.1.6:8081<br/>inventory-service → 10.0.2.3:8082<br/>payment-service → 10.0.3.1:8083, 10.0.3.2:8083")]
     end
     
-    S1["Order Service<br/>10.0.1.5:8081"] -->|"1. Register"| Discovery
-    S2["Order Service<br/>10.0.1.6:8081"] -->|"1. Register"| Discovery
-    S3["Inventory Service<br/>10.0.2.3:8082"] -->|"1. Register"| Discovery
+    S1[["Order Service<br/>10.0.1.5:8081"]] -->|"1. Register"| Discovery
+    S2[["Order Service<br/>10.0.1.6:8081"]] -->|"1. Register"| Discovery
+    S3[["Inventory Service<br/>10.0.2.3:8082"]] -->|"1. Register"| Discovery
     
-    GW["API Gateway"] -->|"2. Query: Where is order-service?"| Discovery
+    GW{{"API Gateway"}} -->|"2. Query: Where is order-service?"| Discovery
     Discovery -->|"3. Response: 10.0.1.5:8081, 10.0.1.6:8081"| GW
     GW -->|"4. Route (Load Balanced)"| S1
     
@@ -55,21 +55,21 @@ In production microservices:
 ## 🔄 Client-Side vs Server-Side Discovery
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph ClientSide["Client-Side Discovery"]
-        direction TB
-        C1["Order Service"] -->|"1. Query Registry"| R1["Service Registry"]
+        direction LR
+        C1[["Order Service"]] -->|"1. Query Registry"| R1[("Service Registry")]
         R1 -->|"2. Return instances"| C1
-        C1 -->|"3. Direct call (LB by client)"| I1["Inventory Instance 1"]
-        C1 -.->|"3. Or this one"| I2["Inventory Instance 2"]
+        C1 -->|"3. Direct call (LB by client)"| I1{{"Inventory Instance 1"}}
+        C1 -.->|"3. Or this one"| I2{{"Inventory Instance 2"}}
     end
     
     subgraph ServerSide["Server-Side Discovery"]
-        direction TB
-        C2["Order Service"] -->|"1. Request"| LB["Load Balancer"]
-        LB -->|"2. Query"| R2["Service Registry"]
+        direction LR
+        C2[["Order Service"]] -->|"1. Request"| LB{{"Load Balancer"}}
+        LB -->|"2. Query"| R2[("Service Registry")]
         R2 -->|"3. Return instances"| LB
-        LB -->|"4. Forward"| I3["Inventory Instance 1"]
+        LB -->|"4. Forward"| I3{{"Inventory Instance 1"}}
     end
     
     style ClientSide fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#000

@@ -438,22 +438,22 @@ public class FeatureFlagService {
 ### ReadWriteLock — Readers vs Writer Access
 
 ```mermaid
-graph TB
+flowchart LR
     subgraph ReadMode["READ MODE — Multiple Readers Simultaneously"]
         direction LR
-        R1["Reader 1"] -->|"readLock()"| DATA1["Shared Data"]
-        R2["Reader 2"] -->|"readLock()"| DATA1
-        R3["Reader 3"] -->|"readLock()"| DATA1
-        R4["Reader 4"] -->|"readLock()"| DATA1
-        R5["Reader 5"] -->|"readLock()"| DATA1
+        R1(["Reader 1"]) -->|"readLock()"| DATA1{{"Shared Data"}}
+        R2(["Reader 2"]) -->|"readLock()"| DATA1
+        R3(["Reader 3"]) -->|"readLock()"| DATA1
+        R4(["Reader 4"]) -->|"readLock()"| DATA1
+        R5(["Reader 5"]) -->|"readLock()"| DATA1
     end
 
     subgraph WriteMode["WRITE MODE — Single Writer, Exclusive Access"]
         direction LR
-        W1["Writer"] ==>|"writeLock()"| DATA2["Shared Data"]
-        RB1["Reader 1"] -.->|"BLOCKED"| DATA2
-        RB2["Reader 2"] -.->|"BLOCKED"| DATA2
-        RB3["Reader 3"] -.->|"BLOCKED"| DATA2
+        W1(("Writer")) ==>|"writeLock()"| DATA2{{"Shared Data"}}
+        RB1[/"Reader 1"/] -.->|"BLOCKED"| DATA2
+        RB2[/"Reader 2"/] -.->|"BLOCKED"| DATA2
+        RB3[/"Reader 3"/] -.->|"BLOCKED"| DATA2
     end
 
     style R1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
@@ -778,25 +778,26 @@ private static volatile ConfigManager instance;
 ## The Complete Picture — Choosing the Right Lock
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph LockDecision["Lock Types — When to Use What"]
-        START["I need thread safety"] --> Q1{{"Is it a single<br/>variable?"}}
+        direction LR
+        START(["I need thread safety"]) --> Q1{{"Is it a single<br/>variable?"}}
 
-        Q1 -->|"YES"| ATOMIC["Use AtomicInteger /<br/>AtomicBoolean / volatile"]
+        Q1 -->|"YES"| ATOMIC[/"Use AtomicInteger /<br/>AtomicBoolean / volatile"/]
         Q1 -->|"NO — complex logic"| Q2{{"Simple case,<br/>low contention?"}}
 
-        Q2 -->|"YES"| SYNC["Use <b>synchronized</b><br/>Simple, auto-release"]
+        Q2 -->|"YES"| SYNC(["Use <b>synchronized</b><br/>Simple, auto-release"])
         Q2 -->|"NO"| Q3{{"Need timeout /<br/>tryLock / fairness?"}}
 
-        Q3 -->|"YES"| REENTRANT["Use <b>ReentrantLock</b><br/>tryLock, lockInterruptibly"]
+        Q3 -->|"YES"| REENTRANT[["Use <b>ReentrantLock</b><br/>tryLock, lockInterruptibly"]]
         Q3 -->|"NO"| Q4{{"Read-heavy<br/>workload?"}}
 
-        Q4 -->|"reads >> writes<br/>(10:1)"| RWL["Use <b>ReadWriteLock</b><br/>Multiple concurrent readers"]
-        Q4 -->|"reads >>> writes<br/>(1000:1+)"| STAMPED["Use <b>StampedLock</b><br/>Optimistic reads, zero overhead"]
+        Q4 -->|"reads >> writes<br/>(10:1)"| RWL(("Use <b>ReadWriteLock</b><br/>Multiple concurrent readers"))
+        Q4 -->|"reads >>> writes<br/>(1000:1+)"| STAMPED[/"Use <b>StampedLock</b><br/>Optimistic reads, zero overhead"/]
         Q4 -->|"NO"| Q5{{"Producer-Consumer<br/>pattern?"}}
 
-        Q5 -->|"YES"| CONDITION["Use <b>ReentrantLock<br/>+ Condition</b>"]
-        Q5 -->|"NO"| CONCURRENT["Use Concurrent<br/>Collections"]
+        Q5 -->|"YES"| CONDITION[["Use <b>ReentrantLock<br/>+ Condition</b>"]]
+        Q5 -->|"NO"| CONCURRENT(["Use Concurrent<br/>Collections"])
     end
 
     style START fill:#ede7f6,stroke:#4527a0,stroke-width:3px

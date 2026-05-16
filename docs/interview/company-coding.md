@@ -9,7 +9,7 @@ A comprehensive collection of 100+ real coding problems asked in technical inter
 ```mermaid
 flowchart LR
     subgraph Topics
-        direction TB
+        direction LR
         S["Strings (25+)"]
         A["Arrays (20+)"]
         H["HashMap & Frequency (12+)"]

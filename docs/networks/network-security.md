@@ -29,13 +29,13 @@ DPI examines packet payloads beyond headers — the core technology behind NGFWs
 ### How DPI Works
 
 ```mermaid
-flowchart TD
-    C["1. Capture\n(tap / span / inline)"] --> R["2. Reassemble\nTCP streams"]
-    R --> P["3. Protocol ID\n(even non-standard ports)"]
-    P --> D["4. Decrypt\n(TLS termination)"]
-    D --> S["5. Signature\nMatching"]
-    S --> B["6. Behavioral\nAnalysis (ML)"]
-    B --> A["7. Action\n(Allow / Block / Alert)"]
+flowchart LR
+    C(["1. Capture\n(tap / span / inline)"]) --> R[["2. Reassemble\nTCP streams"]]
+    R --> P{{"3. Protocol ID\n(even non-standard ports)"}}
+    P --> D[/"4. Decrypt\n(TLS termination)"/]
+    D --> S{{"5. Signature\nMatching"}}
+    S --> B(["6. Behavioral\nAnalysis (ML)"])
+    B --> A{"7. Action\n(Allow / Block / Alert)"}
 
     style C fill:#EFF6FF,stroke:#2563EB,color:#1E40AF
     style D fill:#FEF3C7,stroke:#D97706,color:#92400E
@@ -158,13 +158,13 @@ This enables queries like: "Show me all processes that connected to IPs in Count
 ### Implementation Components
 
 ```mermaid
-flowchart TD
-    IDP["Identity Provider\n(Entra ID / Azure AD)"]
-    PE["Policy Engine\n(Conditional Access)"]
-    DH["Device Health\n(EDR)"]
-    NS["Network Segment\n(NSG)"]
-    AP["App Proxy\n(ZTNA)"]
-    CM["Continuous Monitoring & Adaptive Response"]
+flowchart LR
+    IDP(["Identity Provider\n(Entra ID / Azure AD)"])
+    PE{{"Policy Engine\n(Conditional Access)"}}
+    DH[/"Device Health\n(EDR)"/]
+    NS[["Network Segment\n(NSG)"]]
+    AP(["App Proxy\n(ZTNA)"])
+    CM(("Continuous Monitoring & Adaptive Response"))
 
     IDP --> PE
     PE --> DH

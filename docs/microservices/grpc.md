@@ -26,14 +26,14 @@ flowchart LR
 ## 🏗️ Architecture
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Define["1️⃣ Define Contract"]
-        Proto["📜 .proto file<br/>(service + messages)"]
+        Proto[/"📜 .proto file<br/>(service + messages)"/]
     end
     
     subgraph Generate["2️⃣ Code Generation"]
-        Proto --> GS["Generated Server Stub<br/>(Java)"]
-        Proto --> GC["Generated Client Stub<br/>(Java/Go/Python)"]
+        Proto --> GS[["Generated Server Stub<br/>(Java)"]]
+        Proto --> GC[["Generated Client Stub<br/>(Java/Go/Python)"]]
     end
     
     subgraph Runtime["3️⃣ Runtime"]
@@ -240,12 +240,12 @@ grpc:
 ## 📊 Communication Patterns
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Patterns["gRPC Communication Patterns"]
-        U["1️⃣ Unary<br/>Request → Response"]
-        SS["2️⃣ Server Streaming<br/>Request → Stream of Responses"]
-        CS["3️⃣ Client Streaming<br/>Stream of Requests → Response"]
-        BD["4️⃣ Bidirectional<br/>Stream ↔ Stream"]
+        U(["1️⃣ Unary<br/>Request → Response"])
+        SS(["2️⃣ Server Streaming<br/>Request → Stream of Responses"])
+        CS(["3️⃣ Client Streaming<br/>Stream of Requests → Response"])
+        BD(["4️⃣ Bidirectional<br/>Stream ↔ Stream"])
     end
 
     style U fill:#E8F5E9,stroke:#2E7D32,color:#000

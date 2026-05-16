@@ -37,20 +37,20 @@ The industry standard for building cloud-native microservices:
 Each microservice owns ONE bounded context:
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Order["🛒 Order Context"]
-        OE["Order Entity<br/>id, items, total, status"]
-        OS["OrderService"]
+        OE[/"Order Entity<br/>id, items, total, status"/]
+        OS{{"OrderService"}}
     end
     
     subgraph Payment["💳 Payment Context"]
-        PE["Payment Entity<br/>id, orderId, amount, method"]
-        PS["PaymentService"]
+        PE[/"Payment Entity<br/>id, orderId, amount, method"/]
+        PS{{"PaymentService"}}
     end
     
     subgraph Shipping["📦 Shipping Context"]
-        SE["Shipment Entity<br/>id, orderId, address, tracking"]
-        SS["ShippingService"]
+        SE[/"Shipment Entity<br/>id, orderId, address, tracking"/]
+        SS{{"ShippingService"}}
     end
 
     Order -->|"OrderPlaced event"| Payment
@@ -102,17 +102,17 @@ flowchart LR
 Each service owns its data. Never share databases:
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Bad["❌ Shared Database"]
-        S1["Service A"] --> DB["🗄️ Shared DB"]
-        S2["Service B"] --> DB
-        S3["Service C"] --> DB
+        S1[["Service A"]] --> DB[("🗄️ Shared DB")]
+        S2[["Service B"]] --> DB
+        S3[["Service C"]] --> DB
     end
     
     subgraph Good["✅ Database per Service"]
-        A["Service A"] --> DA["🗄️ DB A"]
-        B["Service B"] --> DB2["🗄️ DB B"]
-        C["Service C"] --> DC["🗄️ DB C"]
+        A[["Service A"]] --> DA[("🗄️ DB A")]
+        B[["Service B"]] --> DB2[("🗄️ DB B")]
+        C[["Service C"]] --> DC[("🗄️ DB C")]
     end
 
     style DB fill:#FFCDD2,stroke:#C62828,color:#000

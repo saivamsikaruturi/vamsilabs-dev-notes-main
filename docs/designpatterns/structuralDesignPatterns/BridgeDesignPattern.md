@@ -10,16 +10,16 @@
     A remote control (abstraction) works with any TV brand (implementation) — Sony, Samsung, LG. You can have a basic remote or an advanced remote (abstraction hierarchy). You can have LCD or OLED TVs (implementation hierarchy). The remote and TV vary **independently** — any remote works with any TV. The "bridge" is the connection between them.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Remotes["📱 Remotes (Abstraction)"]
-        R1["🎮 Basic Remote"]
-        R2["🎮 Advanced Remote"]
+        R1(["🎮 Basic Remote"])
+        R2(["🎮 Advanced Remote"])
     end
     
     subgraph TVs["📺 TVs (Implementation)"]
-        T1["Sony LCD"]
-        T2["Samsung OLED"]
-        T3["LG QLED"]
+        T1[/"Sony LCD"/]
+        T2[/"Samsung OLED"/]
+        T3[/"LG QLED"/]
     end
     
     R1 ---|🌉 bridge| T1
@@ -65,17 +65,61 @@ flowchart LR
     style ImplB fill:#e0f2f1,stroke:#00695c,color:#000
 ```
 
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class Renderer {
+        <<interface>>
+        +renderCircle(radius) void
+        +renderSquare(side) void
+        +renderTriangle(base, height) void
+    }
+    class OpenGLRenderer {
+        +renderCircle(radius) void
+        +renderSquare(side) void
+        +renderTriangle(base, height) void
+    }
+    class SVGRenderer {
+        +renderCircle(radius) void
+        +renderSquare(side) void
+        +renderTriangle(base, height) void
+    }
+    class Shape {
+        <<abstract>>
+        #renderer: Renderer
+        +draw()* void
+        +resize(factor)* void
+    }
+    class Circle {
+        -radius: double
+        +draw() void
+        +resize(factor) void
+    }
+    class Square {
+        -side: double
+        +draw() void
+        +resize(factor) void
+    }
+
+    OpenGLRenderer ..|> Renderer : implements
+    SVGRenderer ..|> Renderer : implements
+    Circle --|> Shape : extends
+    Square --|> Shape : extends
+    Shape o-- Renderer : bridge
+```
+
 ### Without Bridge (Class Explosion)
 
 ```mermaid
-flowchart TD
-    Shape["Shape"]
-    RC["Red Circle"]
-    BC["Blue Circle"]
-    RS["Red Square"]
-    BS["Blue Square"]
-    RR["Red Rectangle"]
-    BR["Blue Rectangle"]
+flowchart LR
+    Shape{{"Shape"}}
+    RC(("Red Circle"))
+    BC(("Blue Circle"))
+    RS(["Red Square"])
+    BS(["Blue Square"])
+    RR(["Red Rectangle"])
+    BR(["Blue Rectangle"])
 
     Shape --> RC
     Shape --> BC

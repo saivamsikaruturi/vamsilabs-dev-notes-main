@@ -9,15 +9,15 @@ Both are used for **sorting objects**, but they serve different purposes. This i
 Use this flowchart to decide between Comparable and Comparator in any situation:
 
 ```mermaid
-flowchart TD
-    A["Need to sort objects?"]:::question --> B{"Do you own/control\nthe class source code?"}
+flowchart LR
+    A(("Need to sort objects?")):::question --> B{"Do you own/control\nthe class source code?"}
     B -->|Yes| C{"Need multiple\nsort orders?"}
-    B -->|No| D["Use Comparator\n(external strategy)"]:::comparator
-    C -->|"No, just one\nnatural order"| E["Use Comparable\n(implement in class)"]:::comparable
-    C -->|"Yes, multiple\nways to sort"| F["Use BOTH!\nComparable for default +\nComparators for alternatives"]:::both
+    B -->|No| D(["Use Comparator\n(external strategy)"]):::comparator
+    C -->|"No, just one\nnatural order"| E(["Use Comparable\n(implement in class)"]):::comparable
+    C -->|"Yes, multiple\nways to sort"| F(["Use BOTH!\nComparable for default +\nComparators for alternatives"]):::both
     D --> G{"Is it a one-time sort?"}
-    G -->|Yes| H["Lambda / anonymous\nComparator"]:::comparator
-    G -->|No, reusable| I["Named Comparator class\nor static field"]:::comparator
+    G -->|Yes| H[/"Lambda / anonymous\nComparator"/]:::comparator
+    G -->|No, reusable| I[["Named Comparator class\nor static field"]]:::comparator
 
     classDef question fill:#fff3cd,stroke:#ffc107,stroke-width:2px,color:#333
     classDef comparable fill:#d4edda,stroke:#28a745,stroke-width:2px,color:#155724
@@ -111,18 +111,18 @@ A fun way to remember the difference forever:
 ```mermaid
 flowchart LR
     subgraph comparable_world ["Comparable = I Know My Own Rank"]
-        direction TB
-        S1["Student A\n'I know I'm #2\nbecause my GPA is 3.8'"]:::student
-        S2["Student B\n'I know I'm #1\nbecause my GPA is 3.9'"]:::student
-        S3["Student C\n'I know I'm #3\nbecause my GPA is 3.5'"]:::student
+        direction LR
+        S1(["Student A\n'I know I'm #2\nbecause my GPA is 3.8'"]):::student
+        S2(["Student B\n'I know I'm #1\nbecause my GPA is 3.9'"]):::student
+        S3(["Student C\n'I know I'm #3\nbecause my GPA is 3.5'"]):::student
         S1 ~~~ S2 ~~~ S3
     end
 
     subgraph comparator_world ["Comparator = A Judge Decides"]
-        direction TB
-        J1["Judge: Height\n'A is taller than B'"]:::judge
-        J2["Judge: Speed\n'B is faster than A'"]:::judge
-        J3["Judge: Creativity\n'C beats everyone!'"]:::judge
+        direction LR
+        J1{{"Judge: Height\n'A is taller than B'"}}:::judge
+        J2{{"Judge: Speed\n'B is faster than A'"}}:::judge
+        J3{{"Judge: Creativity\n'C beats everyone!'"}}:::judge
         J1 ~~~ J2 ~~~ J3
     end
 

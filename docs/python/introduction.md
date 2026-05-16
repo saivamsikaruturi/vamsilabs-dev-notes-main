@@ -181,11 +181,12 @@ print(D.__mro__)
 ## Concurrency
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "Concurrency Models"
-        A[threading] -->|"I/O-bound"| B[Shared memory, GIL-limited]
-        C[multiprocessing] -->|"CPU-bound"| D[Separate memory, true parallelism]
-        E[asyncio] -->|"I/O-bound, high concurrency"| F[Single thread, event loop]
+        direction LR
+        A(["threading"]) -->|"I/O-bound"| B{{"Shared memory, GIL-limited"}}
+        C[["multiprocessing"]] -->|"CPU-bound"| D(("Separate memory, true parallelism"))
+        E[/"asyncio"/] -->|"I/O-bound, high concurrency"| F(["Single thread, event loop"])
     end
 ```
 

@@ -11,25 +11,25 @@ File handling means **reading from** and **writing to** files on your computer u
 ## The Big Picture
 
 ```mermaid
-graph TD
-    IO["☕ Java I/O"]
-    IO --> BS["🔢 Byte Streams<br/><i>binary data</i>"]
-    IO --> CS["📝 Character Streams<br/><i>text data</i>"]
+flowchart LR
+    IO(("☕ Java I/O"))
+    IO --> BS{{"🔢 Byte Streams<br/><i>binary data</i>"}}
+    IO --> CS{{"📝 Character Streams<br/><i>text data</i>"}}
 
-    BS --> IS["InputStream"]
-    BS --> OS["OutputStream"]
-    CS --> R["Reader"]
-    CS --> W["Writer"]
+    BS --> IS[["InputStream"]]
+    BS --> OS[["OutputStream"]]
+    CS --> R[["Reader"]]
+    CS --> W[["Writer"]]
 
-    IS --> FIS["FileInputStream"]
-    OS --> FOS["FileOutputStream"]
-    FIS --> BIS["BufferedInputStream"]
-    FOS --> BOS["BufferedOutputStream"]
+    IS --> FIS(["FileInputStream"])
+    OS --> FOS(["FileOutputStream"])
+    FIS --> BIS(["BufferedInputStream"])
+    FOS --> BOS(["BufferedOutputStream"])
 
-    R --> FR["FileReader"]
-    W --> FW["FileWriter"]
-    FR --> BR["BufferedReader"]
-    FW --> BW["BufferedWriter"]
+    R --> FR(["FileReader"])
+    W --> FW(["FileWriter"])
+    FR --> BR(["BufferedReader"])
+    FW --> BW(["BufferedWriter"])
 
     style IO fill:#7C4DFF,color:#fff,stroke-width:2px
     style BS fill:#FF5722,color:#fff
@@ -386,12 +386,12 @@ Files.walk(Path.of("src"))
 ### Reader side (character input)
 
 ```mermaid
-graph TD
-    O1["Object"] --> Reader["📖 Reader<br/><i>abstract</i>"]
-    Reader --> ISR["InputStreamReader"]
-    ISR --> FR["FileReader"]
-    Reader --> BR["BufferedReader"]
-    Reader --> SR["StringReader"]
+flowchart LR
+    O1(("Object")) --> Reader[["📖 Reader<br/><i>abstract</i>"]]
+    Reader --> ISR{{"InputStreamReader"}}
+    ISR --> FR(["FileReader"])
+    Reader --> BR(["BufferedReader"])
+    Reader --> SR(["StringReader"])
 
     style O1 fill:#78909C,color:#fff
     style Reader fill:#1565C0,color:#fff
@@ -404,12 +404,12 @@ graph TD
 ### Writer side (character output)
 
 ```mermaid
-graph TD
-    O2["Object"] --> Writer["✍️ Writer<br/><i>abstract</i>"]
-    Writer --> OSW["OutputStreamWriter"]
-    OSW --> FW["FileWriter"]
-    Writer --> BW["BufferedWriter"]
-    Writer --> SW["StringWriter"]
+flowchart LR
+    O2(("Object")) --> Writer[["✍️ Writer<br/><i>abstract</i>"]]
+    Writer --> OSW{{"OutputStreamWriter"}}
+    OSW --> FW(["FileWriter"])
+    Writer --> BW(["BufferedWriter"])
+    Writer --> SW(["StringWriter"])
 
     style O2 fill:#78909C,color:#fff
     style Writer fill:#C62828,color:#fff
@@ -422,12 +422,12 @@ graph TD
 ### InputStream side (byte input)
 
 ```mermaid
-graph TD
-    O3["Object"] --> InStr["🔽 InputStream<br/><i>abstract</i>"]
-    InStr --> FIS2["FileInputStream"]
-    InStr --> BIS2["BufferedInputStream"]
-    InStr --> BAIS["ByteArrayInputStream"]
-    InStr --> OIS["ObjectInputStream"]
+flowchart LR
+    O3(("Object")) --> InStr[["🔽 InputStream<br/><i>abstract</i>"]]
+    InStr --> FIS2(["FileInputStream"])
+    InStr --> BIS2(["BufferedInputStream"])
+    InStr --> BAIS(["ByteArrayInputStream"])
+    InStr --> OIS(["ObjectInputStream"])
 
     style O3 fill:#78909C,color:#fff
     style InStr fill:#2E7D32,color:#fff
@@ -440,12 +440,12 @@ graph TD
 ### OutputStream side (byte output)
 
 ```mermaid
-graph TD
-    O4["Object"] --> OutStr["🔼 OutputStream<br/><i>abstract</i>"]
-    OutStr --> FOS2["FileOutputStream"]
-    OutStr --> BOS2["BufferedOutputStream"]
-    OutStr --> BAOS["ByteArrayOutputStream"]
-    OutStr --> OOS["ObjectOutputStream"]
+flowchart LR
+    O4(("Object")) --> OutStr[["🔼 OutputStream<br/><i>abstract</i>"]]
+    OutStr --> FOS2(["FileOutputStream"])
+    OutStr --> BOS2(["BufferedOutputStream"])
+    OutStr --> BAOS(["ByteArrayOutputStream"])
+    OutStr --> OOS(["ObjectOutputStream"])
 
     style O4 fill:#78909C,color:#fff
     style OutStr fill:#E65100,color:#fff

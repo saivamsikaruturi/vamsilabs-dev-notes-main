@@ -347,21 +347,24 @@ preConditions:
 ### Expand-and-Contract Pattern
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Phase1["Phase 1: Expand"]
-        E1["Add new column (nullable)"]
-        E2["Deploy app that writes to BOTH columns"]
-        E3["Backfill new column from old"]
+        direction LR
+        E1{{"Add new column (nullable)"}}
+        E2{{"Deploy app that writes to BOTH columns"}}
+        E3{{"Backfill new column from old"}}
     end
 
     subgraph Phase2["Phase 2: Migrate"]
-        M1["Deploy app that reads from NEW column"]
-        M2["Verify data consistency"]
+        direction LR
+        M1{{"Deploy app that reads from NEW column"}}
+        M2{{"Verify data consistency"}}
     end
 
     subgraph Phase3["Phase 3: Contract"]
-        C1["Deploy app that only uses new column"]
-        C2["Drop old column"]
+        direction LR
+        C1{{"Deploy app that only uses new column"}}
+        C2(["Drop old column"])
     end
 
     Phase1 --> Phase2 --> Phase3
@@ -634,16 +637,16 @@ public class FlywayConfig {
 ### Concurrent Migration Execution
 
 ```mermaid
-flowchart TD
-    P1["Pod 1: Starting..."] --> L1["Acquire schema lock"]
-    P2["Pod 2: Starting..."] --> L2["Acquire schema lock"]
+flowchart LR
+    P1[/"Pod 1: Starting..."/] --> L1{{"Acquire schema lock"}}
+    P2[/"Pod 2: Starting..."/] --> L2{{"Acquire schema lock"}}
 
-    L1 --> M1["Run migrations"]
-    L2 --> W["WAIT (lock held by Pod 1)"]
-    M1 --> R1["Release lock"]
+    L1 --> M1{{"Run migrations"}}
+    L2 --> W(["WAIT (lock held by Pod 1)"])
+    M1 --> R1(["Release lock"])
     R1 --> W
-    W --> M2["Check: already applied"]
-    M2 --> Done["Continue startup"]
+    W --> M2{{"Check: already applied"}}
+    M2 --> Done(["Continue startup"])
 
     style W fill:#FEF3C7,stroke:#D97706,color:#000
     style R1 fill:#E8F5E9,stroke:#2E7D32,color:#000

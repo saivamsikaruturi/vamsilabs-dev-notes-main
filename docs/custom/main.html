@@ -4,7 +4,7 @@
 <!-- Non-blocking font loading -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <!-- Header auth button styles -->
 <style>
 .vtn-header-auth {
@@ -105,6 +105,207 @@
 
 {% block content %}
 {{ super() }}
+<script>
+(function() {
+  var DARK_CANVAS = "#F5F3F0";
+  var DARK_INK = "#1C1917";
+  var DARK_CLUSTER = "#ECEAE6";
+  var STROKE_W = "2";
+
+  function isDark() {
+    return !!document.querySelector("[data-md-color-scheme='slate']");
+  }
+
+  function injectDarkStyles(svg) {
+    if (svg.querySelector("style[data-vtn]")) svg.querySelector("style[data-vtn]").remove();
+    if (!isDark()) return;
+
+    var s = document.createElementNS("http://www.w3.org/2000/svg", "style");
+    s.setAttribute("data-vtn", "1");
+    s.textContent = [
+      ".edgePath .path, .flowchart-link { stroke: " + DARK_INK + " !important; stroke-width: " + STROKE_W + "px !important; }",
+      "marker path { fill: " + DARK_INK + " !important; stroke: " + DARK_INK + " !important; }",
+      ".cluster rect { fill: " + DARK_CLUSTER + " !important; stroke: #D6D3D1 !important; }",
+      ".cluster span, .cluster text { color: " + DARK_INK + " !important; fill: " + DARK_INK + " !important; }",
+      "text, .nodeLabel, .label, .labelText, .loopText,",
+      ".messageText, .actor { fill: " + DARK_INK + " !important; }",
+      ".nodeLabel, .label span, .edgeLabel span { color: " + DARK_INK + " !important; }",
+      "line { stroke: " + DARK_INK + " !important; }",
+      ".messageLine0, .messageLine1 { stroke: " + DARK_INK + " !important; stroke-width: " + STROKE_W + "px !important; }",
+      ".actor-line { stroke: #78716C !important; }",
+      ".note rect { fill: " + DARK_CLUSTER + " !important; stroke: #D6D3D1 !important; }",
+      ".activation0, .activation1, .activation2 { fill: " + DARK_CLUSTER + " !important; stroke: #B45309 !important; }",
+      ".labelBox rect, .loopLine { fill: " + DARK_CLUSTER + " !important; stroke: #D6D3D1 !important; }",
+      ".label-container { fill: " + DARK_CANVAS + " !important; }"
+    ].join("\n");
+    svg.insertBefore(s, svg.firstChild);
+  }
+
+  function getContainerBg(svg) {
+    var el = svg.closest(".mermaid") || svg.closest("pre.mermaid");
+    if (!el) return isDark() ? DARK_CANVAS : "#ffffff";
+    var bg = getComputedStyle(el).backgroundColor;
+    if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") return bg;
+    return isDark() ? DARK_CANVAS : "#ffffff";
+  }
+
+  function labelBgColor(labelEl, clusters, containerBg) {
+    var lRect = labelEl.getBoundingClientRect();
+    var lx = lRect.left + lRect.width / 2;
+    var ly = lRect.top + lRect.height / 2;
+
+    var best = null;
+    for (var i = 0; i < clusters.length; i++) {
+      var c = clusters[i];
+      if (lx >= c.rect.left && lx <= c.rect.right &&
+          ly >= c.rect.top && ly <= c.rect.bottom) {
+        var area = c.rect.width * c.rect.height;
+        if (!best || area < best.area) {
+          best = { fill: c.fill, area: area };
+        }
+      }
+    }
+    return best ? best.fill : containerBg;
+  }
+
+  function fixEdgeLabels(svg) {
+    var containerBg = getContainerBg(svg);
+    var dark = isDark();
+
+    // Move edgeLabels group to paint AFTER edgePaths (lines under labels)
+    var edgeLabelsGroup = svg.querySelector(".edgeLabels");
+    var edgePathsGroup = svg.querySelector(".edgePaths");
+    if (edgeLabelsGroup && edgePathsGroup && edgePathsGroup.parentNode === edgeLabelsGroup.parentNode) {
+      edgePathsGroup.parentNode.insertBefore(edgeLabelsGroup, edgePathsGroup.nextSibling);
+    }
+
+    // Build cluster hit-test list using screen coordinates
+    var clusters = [];
+    svg.querySelectorAll(".cluster").forEach(function(cluster) {
+      var r = cluster.querySelector("rect");
+      if (!r) return;
+      var fill = dark ? DARK_CLUSTER : (r.style.getPropertyValue("fill") || r.getAttribute("fill") || "");
+      clusters.push({ rect: cluster.getBoundingClientRect(), fill: fill });
+    });
+
+    // Fix EVERY edge label
+    svg.querySelectorAll(".edgeLabel").forEach(function(el) {
+      var bg = labelBgColor(el, clusters, containerBg);
+
+      // Get dimensions from foreignObject (always has width/height set by mermaid)
+      var fo = el.querySelector("foreignObject");
+      var rx, ry, rw, rh;
+      if (fo) {
+        rx = parseFloat(fo.getAttribute("x") || 0);
+        ry = parseFloat(fo.getAttribute("y") || 0);
+        rw = parseFloat(fo.getAttribute("width") || 0);
+        rh = parseFloat(fo.getAttribute("height") || 0);
+      }
+      // Fallback: try existing mermaid rect
+      if (!rw || rw < 1) {
+        var mr = el.querySelector("rect:not([data-vtn-bg])");
+        if (mr) {
+          rx = parseFloat(mr.getAttribute("x") || 0);
+          ry = parseFloat(mr.getAttribute("y") || 0);
+          rw = parseFloat(mr.getAttribute("width") || 0);
+          rh = parseFloat(mr.getAttribute("height") || 0);
+        }
+      }
+      // Last fallback: getBBox
+      if (!rw || rw < 1) {
+        try { var bb = el.getBBox(); rx = bb.x; ry = bb.y; rw = bb.width; rh = bb.height; } catch(e) {}
+      }
+      if (!rw || rw < 1) return;
+
+      var pad = 18;
+      var boxFill = dark ? "#E8E4DF" : "#FFF5E6";
+      var boxStroke = dark ? "#B8A692" : "#D4A06A";
+      var existing = el.querySelector("[data-vtn-bg]");
+      if (existing) {
+        existing.setAttribute("x", rx - pad / 2);
+        existing.setAttribute("y", ry - pad / 2);
+        existing.setAttribute("width", rw + pad);
+        existing.setAttribute("height", rh + pad);
+        existing.setAttribute("fill", boxFill);
+        existing.setAttribute("stroke", boxStroke);
+        existing.style.setProperty("fill", boxFill, "important");
+        existing.style.setProperty("stroke", boxStroke, "important");
+      } else {
+        var bgRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        bgRect.setAttribute("x", rx - pad / 2);
+        bgRect.setAttribute("y", ry - pad / 2);
+        bgRect.setAttribute("width", rw + pad);
+        bgRect.setAttribute("height", rh + pad);
+        bgRect.setAttribute("rx", "8");
+        bgRect.setAttribute("ry", "8");
+        bgRect.setAttribute("fill", boxFill);
+        bgRect.setAttribute("stroke", boxStroke);
+        bgRect.setAttribute("stroke-width", "2");
+        bgRect.setAttribute("data-vtn-bg", "1");
+        bgRect.style.setProperty("fill", boxFill, "important");
+        bgRect.style.setProperty("stroke", boxStroke, "important");
+        bgRect.style.setProperty("opacity", "1", "important");
+        el.insertBefore(bgRect, el.firstChild);
+      }
+
+      // Hide mermaid's own rects (our vtn-bg replaces them)
+      el.querySelectorAll("rect:not([data-vtn-bg])").forEach(function(r) {
+        r.setAttribute("fill", boxFill);
+        r.style.setProperty("fill", boxFill, "important");
+        r.style.setProperty("opacity", "1", "important");
+      });
+
+      // Style HTML elements inside foreignObject
+      if (fo) {
+        fo.querySelectorAll("*").forEach(function(d) {
+          if (d.nodeType !== 1) return;
+          d.style.setProperty("background", "transparent", "important");
+          d.style.setProperty("background-color", "transparent", "important");
+          if (dark) d.style.setProperty("color", DARK_INK, "important");
+        });
+      }
+    });
+
+    if (dark) {
+      svg.querySelectorAll(".labelText, .loopText, .messageText").forEach(function(el) {
+        el.style.setProperty("fill", DARK_INK, "important");
+      });
+    }
+  }
+
+  function fixAll() {
+    document.querySelectorAll("pre.mermaid svg, .mermaid svg").forEach(function(svg) {
+      injectDarkStyles(svg);
+      fixEdgeLabels(svg);
+    });
+  }
+
+  function cleanAll() {
+    document.querySelectorAll("style[data-vtn]").forEach(function(s) { s.remove(); });
+    document.querySelectorAll("[data-vtn-bg]").forEach(function(r) { r.remove(); });
+  }
+
+  var schedule = [300, 600, 1200, 2500, 5000];
+  document.addEventListener("DOMContentLoaded", function() {
+    schedule.forEach(function(t) { setTimeout(fixAll, t); });
+
+    new MutationObserver(function(muts) {
+      for (var i = 0; i < muts.length; i++) {
+        if (muts[i].addedNodes.length) {
+          setTimeout(fixAll, 50);
+          setTimeout(fixAll, 300);
+          return;
+        }
+      }
+    }).observe(document.body, { childList: true, subtree: true });
+
+    new MutationObserver(function() {
+      cleanAll();
+      schedule.forEach(function(t) { setTimeout(fixAll, t); });
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-md-color-scheme"] });
+  });
+})();
+</script>
 <div class="vtn-mark-complete-wrapper" id="mark-complete-wrapper" style="display:none;">
   <button class="vtn-mark-btn" id="mark-complete-btn" onclick="toggleMarkComplete()">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>

@@ -16,19 +16,19 @@ The **CAP theorem** (also known as Brewer's theorem, proposed by Eric Brewer in 
 | **Partition Tolerance (P)** | The system continues to operate despite arbitrary message loss or failure of part of the network. |
 
 ```mermaid
-graph TD
-    CAP["<b>CAP Theorem</b>"]
-    C["<b>Consistency</b><br/>Every read gets latest write"]
-    A["<b>Availability</b><br/>Every request gets a response"]
-    P["<b>Partition Tolerance</b><br/>System works despite network splits"]
+graph LR
+    CAP{{"<b>CAP Theorem</b>"}}
+    C(["<b>Consistency</b><br/>Every read gets latest write"])
+    A(["<b>Availability</b><br/>Every request gets a response"])
+    P(["<b>Partition Tolerance</b><br/>System works despite network splits"])
 
     CAP --> C
     CAP --> A
     CAP --> P
 
-    CP["CP Systems<br/>HBase, ZooKeeper, etcd"]
-    AP["AP Systems<br/>Cassandra, DynamoDB"]
-    CA["CA Systems<br/>Single-node RDBMS only"]
+    CP[["CP Systems<br/>HBase, ZooKeeper, etcd"]]
+    AP[["AP Systems<br/>Cassandra, DynamoDB"]]
+    CA[["CA Systems<br/>Single-node RDBMS only"]]
 
     C --- CP
     P --- CP
@@ -157,16 +157,16 @@ AP systems **prioritize availability** over consistency. Every node always accep
 | **Amazon S3** | Prioritizes availability; eventual consistency for overwrite PUTs (now strong) |
 
 ```mermaid
-graph TD
-    C1([Client 1]) --> N1[Node 1<br/>x = 99]
-    C2([Client 2]) --> N2[Node 2<br/>x = 42]
-    C3([Client 3]) --> N3[Node 3<br/>x = 99]
+graph LR
+    C1([Client 1]) --> N1(["Node 1<br/>x = 99"])
+    C2([Client 2]) --> N2(["Node 2<br/>x = 42"])
+    C3([Client 3]) --> N3(["Node 3<br/>x = 99"])
 
     N1 -.->|"Partition"| N2
     N1 <-->|"Sync OK"| N3
     N2 -.->|"Partition"| N3
 
-    N1 -->|"After heal: resolve conflict"| Merged[Merged State]
+    N1 -->|"After heal: resolve conflict"| Merged{{"Merged State"}}
     N2 -->|"After heal: resolve conflict"| Merged
 
     style N1 fill:#74b9ff,stroke:#0984e3,color:#000
@@ -207,16 +207,16 @@ The **PACELC theorem** (proposed by Daniel Abadi, 2012) extends CAP by addressin
 > **E**lse (no partition) → choose **L**atency or **C**onsistency
 
 ```mermaid
-flowchart TD
-    Start{Is there a<br/>network partition?}
-    Start -->|"YES"| Partition["Choose: Availability vs Consistency<br/>(Same as CAP)"]
-    Start -->|"NO"| Normal["Choose: Latency vs Consistency<br/>(New insight from PACELC)"]
+flowchart LR
+    Start{"Is there a<br/>network partition?"}
+    Start -->|"YES"| Partition[["Choose: Availability vs Consistency<br/>(Same as CAP)"]]
+    Start -->|"NO"| Normal[["Choose: Latency vs Consistency<br/>(New insight from PACELC)"]]
 
-    Partition --> PA["PA: Prioritize Availability<br/>Cassandra, DynamoDB"]
-    Partition --> PC["PC: Prioritize Consistency<br/>HBase, ZooKeeper"]
+    Partition --> PA(["PA: Prioritize Availability<br/>Cassandra, DynamoDB"])
+    Partition --> PC(["PC: Prioritize Consistency<br/>HBase, ZooKeeper"])
 
-    Normal --> EL["EL: Prioritize Latency<br/>Cassandra, DynamoDB"]
-    Normal --> EC["EC: Prioritize Consistency<br/>Spanner, VoltDB"]
+    Normal --> EL(["EL: Prioritize Latency<br/>Cassandra, DynamoDB"])
+    Normal --> EC(["EC: Prioritize Consistency<br/>Spanner, VoltDB"])
 
     style Start fill:#6c5ce7,stroke:#341f97,color:#fff
     style Partition fill:#fdcb6e,stroke:#f39c12,color:#000

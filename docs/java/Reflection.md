@@ -118,23 +118,13 @@ sequenceDiagram
 ```mermaid
 flowchart LR
     subgraph normal["Direct Access (Compile-Time)"]
-        direction TB
-        N1[/"Write: obj.doSomething()"/]:::blueNode
-        N2["Compiler verifies type & method"]:::blueNode
-        N3["JIT inlines method call"]:::blueNode
-        N4[("FAST")]:::greenNode
-        N1 --> N2 --> N3 --> N4
+        direction LR
+        N1[/"Write: obj.doSomething()"/]:::blueNode --> N2{{"Compiler verifies<br/>type & method"}}:::blueNode --> N3(["JIT inlines<br/>method call"]):::blueNode --> N4(("FAST")):::greenNode
     end
 
     subgraph reflect["Reflection Access (Runtime)"]
-        direction TB
-        R1[/"Write: method.invoke(obj, args)"/]:::orangeNode
-        R2["Runtime: Load class by name"]:::orangeNode
-        R3["Runtime: Lookup method in metadata"]:::orangeNode
-        R4["Runtime: Check access + box args"]:::orangeNode
-        R5["Invoke via native dispatch"]:::orangeNode
-        R6[("SLOWER but FLEXIBLE")]:::yellowNode
-        R1 --> R2 --> R3 --> R4 --> R5 --> R6
+        direction LR
+        R1[/"Write: method.invoke(obj, args)"/]:::orangeNode --> R2{{"Load class<br/>by name"}}:::orangeNode --> R3[["Lookup method<br/>in metadata"]]:::orangeNode --> R4{{"Check access +<br/>box args"}}:::orangeNode --> R5(["Native dispatch"]):::orangeNode --> R6(("SLOWER<br/>but FLEXIBLE")):::yellowNode
     end
 
     classDef blueNode fill:#3498DB,color:#fff,stroke:#2980B9
@@ -148,31 +138,31 @@ flowchart LR
 ## Where Reflection is Used
 
 ```mermaid
-flowchart TD
-    R((Reflection API)):::centerNode
+flowchart LR
+    R(("Reflection<br/>API")):::centerNode
 
-    R --> SP["Spring IoC"]:::springNode
-    R --> JU["JUnit"]:::junitNode
-    R --> JK["Jackson"]:::jacksonNode
-    R --> HB["Hibernate"]:::hibernateNode
+    R --> SP{{"Spring IoC"}}:::springNode
+    R --> JU{{"JUnit"}}:::junitNode
+    R --> JK{{"Jackson"}}:::jacksonNode
+    R --> HB{{"Hibernate"}}:::hibernateNode
 
-    SP --> SP1["Scan @Component classes"]:::detailNode
-    SP --> SP2["Inject @Autowired fields"]:::detailNode
-    SP --> SP3["Create beans via Constructor.newInstance()"]:::detailNode
+    SP --> SP1(["Scan @Component"]):::detailNode
+    SP --> SP2(["Inject @Autowired"]):::detailNode
+    SP --> SP3(["Constructor.newInstance()"]):::detailNode
 
-    JU --> JU1["Discover @Test methods"]:::detailNode
-    JU --> JU2["Instantiate test classes"]:::detailNode
-    JU --> JU3["Invoke test methods dynamically"]:::detailNode
+    JU --> JU1(["Discover @Test"]):::detailNode
+    JU --> JU2(["Instantiate classes"]):::detailNode
+    JU --> JU3(["Invoke dynamically"]):::detailNode
 
-    JK --> JK1["Read field names for JSON keys"]:::detailNode
-    JK --> JK2["Call getters/setters dynamically"]:::detailNode
-    JK --> JK3["Construct objects from JSON"]:::detailNode
+    JK --> JK1(["Read field names"]):::detailNode
+    JK --> JK2(["Call getters/setters"]):::detailNode
+    JK --> JK3(["Construct from JSON"]):::detailNode
 
-    HB --> HB1["Map @Entity fields to columns"]:::detailNode
-    HB --> HB2["Populate fields from ResultSet"]:::detailNode
-    HB --> HB3["Lazy-load proxy generation"]:::detailNode
+    HB --> HB1(["Map @Entity fields"]):::detailNode
+    HB --> HB2(["Populate from ResultSet"]):::detailNode
+    HB --> HB3(["Lazy-load proxies"]):::detailNode
 
-    classDef centerNode fill:#8E44AD,color:#fff,stroke:#6C3483,stroke-width:4px,font-size:16px
+    classDef centerNode fill:#8E44AD,color:#fff,stroke:#6C3483,stroke-width:4px
     classDef springNode fill:#27AE60,color:#fff,stroke:#1E8449,stroke-width:2px
     classDef junitNode fill:#2980B9,color:#fff,stroke:#1F618D,stroke-width:2px
     classDef jacksonNode fill:#D35400,color:#fff,stroke:#A04000,stroke-width:2px

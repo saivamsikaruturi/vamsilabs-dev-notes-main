@@ -17,17 +17,17 @@ Java remains one of the most widely used programming languages in enterprise sof
 ## JDK vs JRE vs JVM
 
 ```mermaid
-graph TB
-    JDK["JDK (Java Development Kit)"]
-    JRE["JRE (Java Runtime Environment)"]
-    JVM["JVM (Java Virtual Machine)"]
+flowchart LR
+    JDK[["JDK (Java Development Kit)"]]
+    JRE[["JRE (Java Runtime Environment)"]]
+    JVM[["JVM (Java Virtual Machine)"]]
 
     JDK -->|contains| JRE
     JRE -->|contains| JVM
 
-    JDK -.- DevTools["javac, jdb, jlink, jpackage"]
-    JRE -.- Libs["Standard Libraries (rt.jar, java.*)"]
-    JVM -.- Exec["Class Loader + Bytecode Interpreter + JIT Compiler"]
+    JDK -.- DevTools(["javac, jdb, jlink, jpackage"])
+    JRE -.- Libs(["Standard Libraries (rt.jar, java.*)"])
+    JVM -.- Exec(["Class Loader + Bytecode Interpreter + JIT Compiler"])
 ```
 
 - **JVM** — Executes bytecode, handles memory management and GC. Platform-specific.
@@ -41,11 +41,11 @@ graph TB
 ## Compilation & Execution Flow
 
 ```mermaid
-graph LR
-    A[".java source"] -->|javac| B[".class bytecode"]
-    B -->|Class Loader| C["JVM"]
-    C -->|Interpreter| D["Execution"]
-    C -->|JIT Compiler| E["Native Machine Code"]
+flowchart LR
+    A[/".java source"/] -->|javac| B[/".class bytecode"/]
+    B -->|Class Loader| C{{"JVM"}}
+    C -->|Interpreter| D(["Execution"])
+    C -->|JIT Compiler| E(["Native Machine Code"])
     E --> D
 ```
 

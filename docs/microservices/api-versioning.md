@@ -55,14 +55,14 @@ flowchart LR
 **Key Principle**: Once an API is published and consumed, it becomes a **contract**. Breaking that contract breaks trust and uptime.
 
 ```mermaid
-flowchart TD
-    BC["Breaking Change Introduced"] --> F1["📱 Mobile App v2.1<br/>CRASHES"]
-    BC --> F2["🤝 Partner Integration<br/>FAILS"]
-    BC --> F3["🏢 Internal Service<br/>500 ERRORS"]
+flowchart LR
+    BC{{"Breaking Change Introduced"}} --> F1(["📱 Mobile App v2.1<br/>CRASHES"])
+    BC --> F2(["🤝 Partner Integration<br/>FAILS"])
+    BC --> F3(["🏢 Internal Service<br/>500 ERRORS"])
     
-    BCV["Breaking Change + Versioning"] --> S1["📱 Mobile App v2.1<br/>Still on v1 ✅"]
-    BCV --> S2["🤝 Partner Integration<br/>Still on v1 ✅"]
-    BCV --> S3["🏢 Internal Service<br/>Migrates to v2 ✅"]
+    BCV{{"Breaking Change + Versioning"}} --> S1(["📱 Mobile App v2.1<br/>Still on v1 ✅"])
+    BCV --> S2(["🤝 Partner Integration<br/>Still on v1 ✅"])
+    BCV --> S3(["🏢 Internal Service<br/>Migrates to v2 ✅"])
 
     style BC fill:#FFCDD2,stroke:#C62828,color:#000
     style BCV fill:#E8F5E9,stroke:#2E7D32,color:#000
@@ -464,22 +464,22 @@ public record ProductResponseV2(
 The API Gateway acts as the central version router — decoupling consumers from service internals.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Consumers
-        C1["Mobile App<br/>X-API-Version: 1"]
-        C2["Web Dashboard<br/>/api/v2/orders"]
-        C3["Partner<br/>Accept: vnd.v1+json"]
+        C1[/"Mobile App<br/>X-API-Version: 1"/]
+        C2[/"Web Dashboard<br/>/api/v2/orders"/]
+        C3[/"Partner<br/>Accept: vnd.v1+json"/]
     end
 
     subgraph GW["API Gateway (Kong / Spring Cloud Gateway)"]
-        VR["Version<br/>Resolver"]
-        RL["Rate Limiter<br/>(per version)"]
-        TR["Request<br/>Transformer"]
+        VR{{"Version<br/>Resolver"}}
+        RL{{"Rate Limiter<br/>(per version)"}}
+        TR{{"Request<br/>Transformer"}}
     end
 
     subgraph Services
-        OS1["Order Service<br/>Instance (handles v1 + v2)"]
-        OS2["Order Service Legacy<br/>Instance (v1 only, sunset)"]
+        OS1[["Order Service<br/>Instance (handles v1 + v2)"]]
+        OS2[["Order Service Legacy<br/>Instance (v1 only, sunset)"]]
     end
 
     C1 --> VR
@@ -738,16 +738,16 @@ Stripe-Version: 2024-12-18
 - Changes are cascaded — internally they transform through each version layer
 
 ```mermaid
-flowchart TD
-    REQ["Incoming Request<br/>Stripe-Version: 2023-08-16"] 
-    REQ --> T1["Transform 2023-08-16 → 2024-01-01"]
-    T1 --> T2["Transform 2024-01-01 → 2024-06-15"]
-    T2 --> T3["Transform 2024-06-15 → 2024-12-18"]
-    T3 --> CORE["Latest Core Logic"]
-    CORE --> R3["Reverse Transform 2024-12-18 → 2024-06-15"]
-    R3 --> R2["Reverse Transform 2024-06-15 → 2024-01-01"]
-    R2 --> R1["Reverse Transform 2024-01-01 → 2023-08-16"]
-    R1 --> RESP["Response in 2023-08-16 format"]
+flowchart LR
+    REQ[/"Incoming Request<br/>Stripe-Version: 2023-08-16"/] 
+    REQ --> T1{{"Transform 2023-08-16 → 2024-01-01"}}
+    T1 --> T2{{"Transform 2024-01-01 → 2024-06-15"}}
+    T2 --> T3{{"Transform 2024-06-15 → 2024-12-18"}}
+    T3 --> CORE(["Latest Core Logic"])
+    CORE --> R3{{"Reverse Transform 2024-12-18 → 2024-06-15"}}
+    R3 --> R2{{"Reverse Transform 2024-06-15 → 2024-01-01"}}
+    R2 --> R1{{"Reverse Transform 2024-01-01 → 2023-08-16"}}
+    R1 --> RESP[/"Response in 2023-08-16 format"/]
 
     style REQ fill:#E3F2FD,stroke:#1565C0,color:#000
     style CORE fill:#E8F5E9,stroke:#2E7D32,color:#000
@@ -790,24 +790,24 @@ type Order {
 ## 🏗️ Production Architecture: Multi-Version Service
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Service["Order Microservice"]
         subgraph Controllers
-            CV1["OrderControllerV1<br/>/api/v1/orders"]
-            CV2["OrderControllerV2<br/>/api/v2/orders"]
+            CV1[["OrderControllerV1<br/>/api/v1/orders"]]
+            CV2[["OrderControllerV2<br/>/api/v2/orders"]]
         end
         
         subgraph SharedDomain["Shared Domain Layer"]
-            OS["OrderService"]
-            OR["OrderRepository"]
-            EV["Domain Events"]
+            OS{{"OrderService"}}
+            OR[("OrderRepository")]
+            EV[/"Domain Events"/]
         end
         
         subgraph Mappers["Version Adapters"]
-            M1["V1 → Domain Mapper"]
-            M2["V2 → Domain Mapper"]
-            M3["Domain → V1 Mapper"]
-            M4["Domain → V2 Mapper"]
+            M1{{"V1 → Domain Mapper"}}
+            M2{{"V2 → Domain Mapper"}}
+            M3{{"Domain → V1 Mapper"}}
+            M4{{"Domain → V2 Mapper"}}
         end
     end
 

@@ -18,26 +18,28 @@ Creating threads manually for every task is the naive approach — and it breaks
 - Context switching overhead grows linearly with thread count
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "Naive Approach — New Thread Per Task"
-        R1[Request 1] --> T1[Thread 1]
-        R2[Request 2] --> T2[Thread 2]
-        R3[Request 3] --> T3[Thread 3]
-        R4[Request ...] --> T4[Thread ...]
-        R5[Request 10000] --> T5[Thread 10000]
-        T5 --> OOM[OutOfMemoryError!]
+        direction LR
+        R1[/"Request 1"/] --> T1{{"Thread 1"}}
+        R2[/"Request 2"/] --> T2{{"Thread 2"}}
+        R3[/"Request 3"/] --> T3{{"Thread 3"}}
+        R4[/"Request ..."/] --> T4{{"Thread ..."}}
+        R5[/"Request 10000"/] --> T5{{"Thread 10000"}}
+        T5 --> OOM(["OutOfMemoryError!"])
     end
 
     subgraph "Thread Pool — Bounded & Reusable"
-        RR1[Request 1] --> Q[Task Queue]
-        RR2[Request 2] --> Q
-        RR3[Request 3] --> Q
-        RR4[Request ...] --> Q
-        RR5[Request 10000] --> Q
-        Q --> W1[Worker 1]
-        Q --> W2[Worker 2]
-        Q --> W3[Worker 3]
-        Q --> W4[Worker 4]
+        direction LR
+        RR1[/"Request 1"/] --> Q{{"Task Queue"}}
+        RR2[/"Request 2"/] --> Q
+        RR3[/"Request 3"/] --> Q
+        RR4[/"Request ..."/] --> Q
+        RR5[/"Request 10000"/] --> Q
+        Q --> W1(["Worker 1"])
+        Q --> W2(["Worker 2"])
+        Q --> W3(["Worker 3"])
+        Q --> W4(["Worker 4"])
     end
 ```
 
@@ -132,14 +134,14 @@ public ThreadPoolExecutor(
 ### Task Flow Through the Pool
 
 ```mermaid
-flowchart TD
-    A[New Task Submitted] --> B{Active threads < corePoolSize?}
-    B -->|Yes| C[Create new core thread & run task]
-    B -->|No| D{Work queue has space?}
-    D -->|Yes| E[Add task to work queue]
-    D -->|No| F{Active threads < maxPoolSize?}
-    F -->|Yes| G[Create new non-core thread & run task]
-    F -->|No| H[Reject task via RejectedExecutionHandler]
+flowchart LR
+    A(("New Task Submitted")) --> B{"Active threads < corePoolSize?"}
+    B -->|Yes| C(["Create new core thread & run task"])
+    B -->|No| D{"Work queue has space?"}
+    D -->|Yes| E[/"Add task to work queue"/]
+    D -->|No| F{"Active threads < maxPoolSize?"}
+    F -->|Yes| G(["Create new non-core thread & run task"])
+    F -->|No| H(["Reject task via RejectedExecutionHandler"])
 ```
 
 !!! warning "Critical Insight"
@@ -255,19 +257,19 @@ ExecutorService pool = Executors.newWorkStealingPool(8);
 The `ForkJoinPool` is fundamentally different from `ThreadPoolExecutor`. It uses **work-stealing** where each worker thread has a local double-ended queue (deque).
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph "ForkJoinPool — Work Stealing"
-        direction TB
+        direction LR
         subgraph Worker1["Worker 1 Deque"]
-            T1A[Task A]
-            T1B[Task B]
-            T1C[Task C]
+            T1A(["Task A"])
+            T1B(["Task B"])
+            T1C(["Task C"])
         end
         subgraph Worker2["Worker 2 Deque"]
-            T2A[Task D]
+            T2A(["Task D"])
         end
         subgraph Worker3["Worker 3 Deque (IDLE)"]
-            T3[Empty]
+            T3[/"Empty"/]
         end
         Worker3 -.->|steals from tail| Worker1
     end
@@ -395,13 +397,14 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 ### How They Work
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "Virtual Thread Scheduling"
-        VT1[Virtual Thread 1] --> C1[Carrier Thread 1<br/>Platform Thread]
-        VT2[Virtual Thread 2] --> C1
-        VT3[Virtual Thread 3] --> C2[Carrier Thread 2<br/>Platform Thread]
-        VT4[Virtual Thread 4] -.->|parked - waiting for I/O| HEAP[Heap Memory]
-        VT5[Virtual Thread 5] -.->|parked| HEAP
+        direction LR
+        VT1(("Virtual Thread 1")) --> C1[["Carrier Thread 1<br/>Platform Thread"]]
+        VT2(("Virtual Thread 2")) --> C1
+        VT3(("Virtual Thread 3")) --> C2[["Carrier Thread 2<br/>Platform Thread"]]
+        VT4(("Virtual Thread 4")) -.->|parked - waiting for I/O| HEAP{{"Heap Memory"}}
+        VT5(("Virtual Thread 5")) -.->|parked| HEAP
         HEAP -.->|I/O complete, remount| C2
     end
 ```

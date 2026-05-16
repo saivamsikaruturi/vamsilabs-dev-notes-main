@@ -29,10 +29,10 @@ flowchart LR
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    Originator["🎮 Originator\n- state\n+ createMemento(): Memento\n+ restore(memento)"]
-    Memento["💾 Memento\n- savedState\n+ getState()"]
-    Caretaker["📂 Caretaker\n- history: List〈Memento〉\n+ save()\n+ undo()"]
+flowchart LR
+    Originator(["🎮 Originator\n- state\n+ createMemento(): Memento\n+ restore(memento)"])
+    Memento{{"💾 Memento\n- savedState\n+ getState()"}}
+    Caretaker[/"📂 Caretaker\n- history: List〈Memento〉\n+ save()\n+ undo()"/]
 
     Originator -.->|"creates"| Memento
     Originator -.->|"restores from"| Memento
@@ -42,6 +42,47 @@ flowchart TD
     style Originator fill:#7c3aed,color:#fff
     style Memento fill:#6d28d9,color:#fff
     style Caretaker fill:#a78bfa,color:#fff
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class TextEditor {
+        -content: String
+        -cursorPosition: int
+        -fontFamily: String
+        -fontSize: int
+        +type(String text) void
+        +setFont(String family, int size) void
+        +moveCursor(int position) void
+        +save() EditorMemento
+        +restore(EditorMemento memento) void
+    }
+    class EditorMemento {
+        -content: String
+        -cursorPosition: int
+        -fontFamily: String
+        -fontSize: int
+        -timestamp: LocalDateTime
+        +getTimestamp() LocalDateTime
+        +getDescription() String
+    }
+    class EditorHistory {
+        -undoStack: Deque~EditorMemento~
+        -redoStack: Deque~EditorMemento~
+        -editor: TextEditor
+        +save() void
+        +undo() void
+        +redo() void
+        +showHistory() void
+    }
+
+    TextEditor ..> EditorMemento : creates
+    EditorHistory --> TextEditor : caretaker of
+    EditorHistory o-- EditorMemento : stores
 ```
 
 ---

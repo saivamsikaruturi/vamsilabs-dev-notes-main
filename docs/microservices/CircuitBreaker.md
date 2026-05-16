@@ -66,28 +66,28 @@ flowchart LR
 | **HALF_OPEN** | Limited trial requests pass through to test recovery. | CLOSED (if trials succeed) or OPEN (if trials fail) |
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph Closed["✅ CLOSED State"]
-        direction TB
-        C1["Request 1 → ✅ Success"]
-        C2["Request 2 → ✅ Success"]
-        C3["Request 3 → ❌ Failure (count: 1)"]
-        C4["Request 4 → ❌ Failure (count: 2)"]
-        C5["Request 5 → ❌ Failure (count: 3)<br/>Threshold: 50% of 5 = TRIP!"]
+        direction LR
+        C1(["Request 1 → ✅ Success"])
+        C2(["Request 2 → ✅ Success"])
+        C3{{"Request 3 → ❌ Failure (count: 1)"}}
+        C4{{"Request 4 → ❌ Failure (count: 2)"}}
+        C5{{"Request 5 → ❌ Failure (count: 3)<br/>Threshold: 50% of 5 = TRIP!"}}
     end
     
     subgraph Open["🚫 OPEN State (5s wait)"]
-        direction TB
-        O1["Request → Fallback (instant)"]
-        O2["Request → Fallback (instant)"]
-        O3["Wait 5 seconds..."]
+        direction LR
+        O1(["Request → Fallback (instant)"])
+        O2(["Request → Fallback (instant)"])
+        O3[["Wait 5 seconds..."]]
     end
     
     subgraph HalfOpen["🔄 HALF_OPEN State"]
-        direction TB
-        H1["Trial Request 1 → ✅"]
-        H2["Trial Request 2 → ✅"]
-        H3["Trial Request 3 → ✅<br/>All passed → CLOSE circuit"]
+        direction LR
+        H1(["Trial Request 1 → ✅"])
+        H2(["Trial Request 2 → ✅"])
+        H3(["Trial Request 3 → ✅<br/>All passed → CLOSE circuit"])
     end
     
     Closed -->|"Failure rate ≥ 50%"| Open

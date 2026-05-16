@@ -29,12 +29,12 @@ flowchart LR
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    Client["👤 Client"]
-    Iterator["🔁 Iterator\n(Interface)\n+ hasNext(): boolean\n+ next(): Element\n+ remove()"]
-    ConcreteIterator["⚡ ConcreteIterator\n- currentPosition\n+ hasNext()\n+ next()"]
-    Aggregate["📦 Aggregate\n(Interface)\n+ createIterator(): Iterator"]
-    ConcreteAggregate["🗂️ ConcreteAggregate\n- elements[]\n+ createIterator()"]
+flowchart LR
+    Client(["👤 Client"])
+    Iterator[["🔁 Iterator\n(Interface)\n+ hasNext(): boolean\n+ next(): Element\n+ remove()"]]
+    ConcreteIterator(["⚡ ConcreteIterator\n- currentPosition\n+ hasNext()\n+ next()"])
+    Aggregate[["📦 Aggregate\n(Interface)\n+ createIterator(): Iterator"]]
+    ConcreteAggregate{{"🗂️ ConcreteAggregate\n- elements[]\n+ createIterator()"}}
 
     Client --> Iterator
     Client --> Aggregate
@@ -47,6 +47,54 @@ flowchart TD
     style ConcreteIterator fill:#a78bfa,color:#fff
     style Aggregate fill:#8b5cf6,color:#fff
     style ConcreteAggregate fill:#c4b5fd,color:#000
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class Iterator~T~ {
+        <<interface>>
+        +hasNext() boolean
+        +next() T
+        +reset() void
+    }
+    class IterableCollection~T~ {
+        <<interface>>
+        +createIterator() Iterator~T~
+        +createReverseIterator() Iterator~T~
+    }
+    class NotificationList {
+        -notifications: Notification[]
+        -count: int
+        +addNotification(Notification) void
+        +size() int
+        +get(int index) Notification
+        +createIterator() Iterator~Notification~
+        +createReverseIterator() Iterator~Notification~
+    }
+    class ForwardIterator {
+        -list: NotificationList
+        -position: int
+        +hasNext() boolean
+        +next() Notification
+        +reset() void
+    }
+    class ReverseIterator {
+        -list: NotificationList
+        -position: int
+        +hasNext() boolean
+        +next() Notification
+        +reset() void
+    }
+
+    NotificationList ..|> IterableCollection~T~
+    ForwardIterator ..|> Iterator~T~
+    ReverseIterator ..|> Iterator~T~
+    NotificationList ..> ForwardIterator : creates
+    NotificationList ..> ReverseIterator : creates
 ```
 
 ---

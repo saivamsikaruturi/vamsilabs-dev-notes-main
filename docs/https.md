@@ -115,15 +115,15 @@ sequenceDiagram
 A certificate chain establishes trust from a server certificate up to a trusted root CA.
 
 ```mermaid
-flowchart TD
-    ROOT["Root CA Certificate\n(Self-signed, stored in OS/browser trust store)"]
-    INT["Intermediate CA Certificate\n(Signed by Root CA)"]
-    LEAF["Server Certificate\n(Signed by Intermediate CA)\nexample.com"]
+flowchart LR
+    ROOT{{"Root CA Certificate\n(Self-signed, stored in OS/browser trust store)"}}
+    INT[["Intermediate CA Certificate\n(Signed by Root CA)"]]
+    LEAF(["Server Certificate\n(Signed by Intermediate CA)\nexample.com"])
 
     ROOT -->|"Signs"| INT
     INT -->|"Signs"| LEAF
 
-    CLIENT[Client / Browser]
+    CLIENT(("Client / Browser"))
     CLIENT -->|"1. Receives server cert"| LEAF
     CLIENT -->|"2. Checks intermediate signature"| INT
     CLIENT -->|"3. Validates against trust store"| ROOT
@@ -328,20 +328,20 @@ sequenceDiagram
 ## HTTP/2 and HTTP/3 (QUIC) — Relation to TLS
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph HTTP1["HTTP/1.1"]
-        H1[HTTP] --> TCP1[TCP]
-        TCP1 --> TLS1["TLS (optional)"]
+        H1(["HTTP"]) --> TCP1[["TCP"]]
+        TCP1 --> TLS1{{"TLS (optional)"}}
     end
 
     subgraph HTTP2["HTTP/2"]
-        H2[HTTP/2 multiplexed streams] --> TLS2["TLS 1.2+ (required in practice)"]
-        TLS2 --> TCP2[TCP]
+        H2(["HTTP/2 multiplexed streams"]) --> TLS2{{"TLS 1.2+ (required in practice)"}}
+        TLS2 --> TCP2[["TCP"]]
     end
 
     subgraph HTTP3["HTTP/3"]
-        H3[HTTP/3 multiplexed streams] --> QUIC["QUIC (includes TLS 1.3)"]
-        QUIC --> UDP[UDP]
+        H3(["HTTP/3 multiplexed streams"]) --> QUIC{{"QUIC (includes TLS 1.3)"}}
+        QUIC --> UDP[["UDP"]]
     end
 
     style HTTP1 fill:#ffcccc,stroke:#cc0000

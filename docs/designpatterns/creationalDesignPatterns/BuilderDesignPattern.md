@@ -41,6 +41,55 @@ flowchart LR
 
 ---
 
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class HouseDirector {
+        +constructLuxuryHouse(HouseBuilder) House
+        +constructSimpleHouse(HouseBuilder) House
+    }
+    class HouseBuilder {
+        <<interface>>
+        +buildFoundation() HouseBuilder
+        +buildStructure() HouseBuilder
+        +buildRoof() HouseBuilder
+        +addGarage() HouseBuilder
+        +addSwimmingPool() HouseBuilder
+        +addGarden() HouseBuilder
+        +getResult() House
+    }
+    class LuxuryHouseBuilder {
+        -house : House
+        +buildFoundation() HouseBuilder
+        +buildStructure() HouseBuilder
+        +buildRoof() HouseBuilder
+        +addGarage() HouseBuilder
+        +addSwimmingPool() HouseBuilder
+        +addGarden() HouseBuilder
+        +getResult() House
+    }
+    class House {
+        -foundation : String
+        -structure : String
+        -roof : String
+        -hasGarage : boolean
+        -hasSwimmingPool : boolean
+        -hasGarden : boolean
+    }
+
+    HouseDirector --> HouseBuilder : directs
+    LuxuryHouseBuilder ..|> HouseBuilder
+    LuxuryHouseBuilder ..> House : builds
+
+    style HouseDirector fill:#E3F2FD,stroke:#1565C0,color:#000
+    style HouseBuilder fill:#FFF3E0,stroke:#E65100,color:#000
+    style LuxuryHouseBuilder fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style House fill:#F3E5F5,stroke:#6A1B9A,color:#000
+```
+
+---
+
 ## ❓ The Problem
 
 Consider creating an `HttpRequest` object with many optional parameters:

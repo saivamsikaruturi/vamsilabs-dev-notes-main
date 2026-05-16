@@ -39,24 +39,24 @@ multiply.compute(10, 20);  // 200
 ### Functional Interfaces at a Glance
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph FunctionalInterfaces["Core Functional Interfaces"]
-        direction TB
-        P["Predicate&lt;T&gt;<br/><b>T → boolean</b><br/>test()"]
-        F["Function&lt;T, R&gt;<br/><b>T → R</b><br/>apply()"]
-        C["Consumer&lt;T&gt;<br/><b>T → void</b><br/>accept()"]
-        S["Supplier&lt;T&gt;<br/><b>() → T</b><br/>get()"]
+        direction LR
+        P{{"Predicate&lt;T&gt;<br/><b>T → boolean</b><br/>test()"}}
+        F{{"Function&lt;T, R&gt;<br/><b>T → R</b><br/>apply()"}}
+        C{{"Consumer&lt;T&gt;<br/><b>T → void</b><br/>accept()"}}
+        S{{"Supplier&lt;T&gt;<br/><b>() → T</b><br/>get()"}}
     end
 
-    IN["Input T"] -->|"passes value"| P
+    IN[/"Input T"/] -->|"passes value"| P
     IN -->|"passes value"| F
     IN -->|"passes value"| C
-    NOTHING["No Input"] -->|"triggers"| S
+    NOTHING[/"No Input"/] -->|"triggers"| S
 
-    P -->|"returns"| BOOL["boolean"]
-    F -->|"returns"| R["R (transformed)"]
-    C -->|"returns"| VOID["void (side effect)"]
-    S -->|"returns"| T["T (new value)"]
+    P -->|"returns"| BOOL(["boolean"])
+    F -->|"returns"| R(["R (transformed)"])
+    C -->|"returns"| VOID(["void (side effect)"])
+    S -->|"returns"| T(["T (new value)"])
 
     style P fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
     style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
@@ -207,7 +207,7 @@ graph LR
     end
 
     subgraph Intermediate["Intermediate Operations<br/><i>(Lazy - not executed until terminal op)</i>"]
-        direction TB
+        direction LR
         F["filter()"]
         M["map()"]
         FM["flatMap()"]
@@ -216,7 +216,7 @@ graph LR
     end
 
     subgraph Terminal["Terminal Operation<br/><i>(Triggers execution)</i>"]
-        direction TB
+        direction LR
         COL["collect()"]
         RED["reduce()"]
         FE["forEach()"]
@@ -337,29 +337,30 @@ For the complete Stream API deep-dive, see the dedicated [Stream API](../stream-
 `Optional<T>` is a container that may or may not hold a value. It forces you to handle absence explicitly.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph OptionalFlow["Optional Flow — Preventing NullPointerException"]
-        START["Optional&lt;T&gt; received"] --> CHECK{{"Value<br/>present?"}}
+        direction LR
+        START(["Optional&lt;T&gt; received"]) --> CHECK{{"Value<br/>present?"}}
 
-        CHECK -->|"YES"| PRESENT["Value is Present"]
-        CHECK -->|"NO"| EMPTY["Optional is Empty"]
+        CHECK -->|"YES"| PRESENT(("Value is Present"))
+        CHECK -->|"NO"| EMPTY(("Optional is Empty"))
 
-        PRESENT --> MAP["map(Function)<br/><i>Transform the value</i>"]
-        PRESENT --> FLATMAP["flatMap(Function)<br/><i>Chain Optional-returning ops</i>"]
-        PRESENT --> GET["get()<br/><i>Unwrap directly</i>"]
-        PRESENT --> IFPRESENT["ifPresent(Consumer)<br/><i>Perform action</i>"]
+        PRESENT --> MAP[/"map(Function)<br/><i>Transform the value</i>"/]
+        PRESENT --> FLATMAP[/"flatMap(Function)<br/><i>Chain Optional-returning ops</i>"/]
+        PRESENT --> GET[/"get()<br/><i>Unwrap directly</i>"/]
+        PRESENT --> IFPRESENT[/"ifPresent(Consumer)<br/><i>Perform action</i>"/]
 
-        EMPTY --> ORELSE["orElse(default)<br/><i>Return fallback value</i>"]
-        EMPTY --> ORELSEGET["orElseGet(Supplier)<br/><i>Lazy fallback computation</i>"]
-        EMPTY --> ORELSETHROW["orElseThrow(Supplier)<br/><i>Throw custom exception</i>"]
+        EMPTY --> ORELSE[["orElse(default)<br/><i>Return fallback value</i>"]]
+        EMPTY --> ORELSEGET[["orElseGet(Supplier)<br/><i>Lazy fallback computation</i>"]]
+        EMPTY --> ORELSETHROW[["orElseThrow(Supplier)<br/><i>Throw custom exception</i>"]]
 
-        MAP --> RESULT["Safe Result"]
+        MAP --> RESULT{{"Safe Result"}}
         FLATMAP --> RESULT
         GET --> RESULT
         IFPRESENT --> RESULT
         ORELSE --> RESULT
         ORELSEGET --> RESULT
-        ORELSETHROW --> EXCEPTION["Exception Thrown"]
+        ORELSETHROW --> EXCEPTION(["Exception Thrown"])
     end
 
     style CHECK fill:#fff3e0,stroke:#e65100,stroke-width:3px

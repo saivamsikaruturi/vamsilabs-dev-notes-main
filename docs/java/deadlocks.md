@@ -7,14 +7,15 @@ A deadlock occurs when **two or more threads are blocked forever**, each waiting
 ## How Deadlocks Happen
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph DeadlockCycle["Deadlock — Circular Dependency"]
-        TA["Thread A<br/><b>Holds Lock 1</b>"] -->|"Waits for<br/>Lock 2"| TB["Thread B<br/><b>Holds Lock 2</b>"]
+        direction LR
+        TA(("Thread A<br/><b>Holds Lock 1</b>")) -->|"Waits for<br/>Lock 2"| TB(("Thread B<br/><b>Holds Lock 2</b>"))
         TB -->|"Waits for<br/>Lock 1"| TA
     end
 
-    L1["Lock 1"] -.->|"owned by"| TA
-    L2["Lock 2"] -.->|"owned by"| TB
+    L1[["Lock 1"]] -.->|"owned by"| TA
+    L2[["Lock 2"]] -.->|"owned by"| TB
 
     style TA fill:#ffcdd2,stroke:#c62828,stroke-width:3px
     style TB fill:#bbdefb,stroke:#1565c0,stroke-width:3px
@@ -103,19 +104,20 @@ Break **any one** condition and deadlocks become impossible.
 ## Prevention Strategies
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph PreventionTree["Deadlock Prevention — Decision Tree"]
-        START["Deadlock Risk<br/>Detected"] --> Q1{{"Multiple locks<br/>needed?"}}
+        direction LR
+        START(("Deadlock Risk<br/>Detected")) --> Q1{"Multiple locks<br/>needed?"}
 
-        Q1 -->|"YES"| S1["<b>Lock Ordering</b><br/>Always acquire locks in<br/>the same global order<br/><i>(break circular wait)</i>"]
-        Q1 -->|"Can avoid"| S4["<b>Use Higher-Level<br/>Concurrency</b><br/>ConcurrentHashMap,<br/>BlockingQueue<br/><i>(avoid locks entirely)</i>"]
+        Q1 -->|"YES"| S1(["<b>Lock Ordering</b><br/>Always acquire locks in<br/>the same global order<br/><i>(break circular wait)</i>"])
+        Q1 -->|"Can avoid"| S4(["<b>Use Higher-Level<br/>Concurrency</b><br/>ConcurrentHashMap,<br/>BlockingQueue<br/><i>(avoid locks entirely)</i>"])
 
-        S1 --> Q2{{"Ordering not<br/>feasible?"}}
+        S1 --> Q2{"Ordering not<br/>feasible?"}
 
-        Q2 -->|"YES"| S2["<b>tryLock with Timeout</b><br/>Give up after N ms,<br/>release & retry<br/><i>(break no preemption)</i>"]
-        Q2 -->|"Alternative"| S3["<b>Acquire All at Once</b><br/>Lock everything or nothing,<br/>no partial holding<br/><i>(break hold and wait)</i>"]
+        Q2 -->|"YES"| S2(["<b>tryLock with Timeout</b><br/>Give up after N ms,<br/>release & retry<br/><i>(break no preemption)</i>"])
+        Q2 -->|"Alternative"| S3(["<b>Acquire All at Once</b><br/>Lock everything or nothing,<br/>no partial holding<br/><i>(break hold and wait)</i>"])
 
-        S2 --> DETECT["<b>Deadlock Detection</b><br/>ThreadMXBean monitoring<br/>jstack thread dumps<br/><i>(last resort — detect & recover)</i>"]
+        S2 --> DETECT(["<b>Deadlock Detection</b><br/>ThreadMXBean monitoring<br/>jstack thread dumps<br/><i>(last resort — detect & recover)</i>"])
         S3 --> DETECT
     end
 

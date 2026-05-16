@@ -8,11 +8,11 @@
     Think of a **car rental company**. The same car model (your service JAR) is used across cities, but each city adjusts the GPS language, radio presets, and insurance policies (configuration). You don't build separate cars — you configure the same car differently per location. Spring Cloud Config does this for microservices.
 
 ```mermaid
-flowchart TD
-    CS["⚙️ Config Server<br/>(Git/Vault)"]
-    CS -->|/order-service/prod| OS["🛒 Order Service"]
-    CS -->|/payment-service/prod| PS["💳 Payment Service"]
-    CS -->|/inventory-service/prod| IS["📦 Inventory Service"]
+flowchart LR
+    CS(("⚙️ Config Server<br/>(Git/Vault)"))
+    CS -->|/order-service/prod| OS[["🛒 Order Service"]]
+    CS -->|/payment-service/prod| PS[["💳 Payment Service"]]
+    CS -->|/inventory-service/prod| IS[["📦 Inventory Service"]]
     
     CS -->|"🔄 Refresh"| OS
     CS -->|"🔄 Refresh"| PS
@@ -183,15 +183,15 @@ flowchart LR
 ## 🏷️ Configuration Priority (Highest → Lowest)
 
 ```mermaid
-flowchart TD
-    P1["1. Command-line args<br/>--server.port=9090"] 
-    P2["2. System environment<br/>SERVER_PORT=9090"]
-    P3["3. Config Server (profile-specific)<br/>application-prod.yml"]
-    P4["4. Config Server (default)<br/>application.yml"]
-    P5["5. Local application-{profile}.yml"]
-    P6["6. Local application.yml"]
-    P7["7. @PropertySource"]
-    P8["8. Default properties"]
+flowchart LR
+    P1(["1. Command-line args<br/>--server.port=9090"]) 
+    P2{{"2. System environment<br/>SERVER_PORT=9090"}}
+    P3{{"3. Config Server (profile-specific)<br/>application-prod.yml"}}
+    P4{{"4. Config Server (default)<br/>application.yml"}}
+    P5{{"5. Local application-{profile}.yml"}}
+    P6{{"6. Local application.yml"}}
+    P7{{"7. @PropertySource"}}
+    P8(["8. Default properties"])
 
     P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8
 

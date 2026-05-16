@@ -16,18 +16,18 @@ Clean Architecture, introduced by Robert C. Martin (Uncle Bob) in 2012, is a sof
 > Source code dependencies can only point **inward**. Nothing in an inner circle can know anything about something in an outer circle.
 
 ```mermaid
-graph TB
+flowchart LR
     subgraph "Frameworks & Drivers (outermost)"
-        FW[Web Framework, DB, UI, External APIs]
+        FW[/"Web Framework, DB, UI, External APIs"/]
     end
     subgraph "Interface Adapters"
-        IA[Controllers, Presenters, Gateways, Repositories]
+        IA[["Controllers, Presenters, Gateways, Repositories"]]
     end
     subgraph "Use Cases (Application Business Rules)"
-        UC[Interactors, Application Services]
+        UC{{"Interactors, Application Services"}}
     end
     subgraph "Entities (Enterprise Business Rules)"
-        E[Domain Models, Value Objects, Domain Services]
+        E(("Domain Models, Value Objects, Domain Services"))
     end
 
     FW --> IA

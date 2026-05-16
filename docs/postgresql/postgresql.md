@@ -9,40 +9,40 @@ PostgreSQL is the most advanced open-source relational database, widely used at 
 PostgreSQL uses a **process-per-connection** model (not threaded). Each client connection spawns a backend process that communicates with shared memory.
 
 ```mermaid
-graph TB
+flowchart LR
     subgraph "Client Connections"
-        C1[Client 1]
-        C2[Client 2]
-        C3[Client 3]
+        C1(("Client 1"))
+        C2(("Client 2"))
+        C3(("Client 3"))
     end
 
     subgraph "PostgreSQL Server"
-        PM[Postmaster<br/>Main Process]
+        PM{{"Postmaster<br/>Main Process"}}
         
         subgraph "Backend Processes"
-            B1[Backend 1]
-            B2[Backend 2]
-            B3[Backend 3]
+            B1(["Backend 1"])
+            B2(["Backend 2"])
+            B3(["Backend 3"])
         end
         
         subgraph "Background Workers"
-            WAL[WAL Writer]
-            CP[Checkpointer]
-            BW[Background Writer]
-            AV[Autovacuum]
-            ST[Stats Collector]
+            WAL[/"WAL Writer"/]
+            CP[/"Checkpointer"/]
+            BW[/"Background Writer"/]
+            AV[/"Autovacuum"/]
+            ST[/"Stats Collector"/]
         end
         
         subgraph "Shared Memory"
-            SB[Shared Buffers]
-            WB[WAL Buffers]
-            CL[CLOG / Commit Log]
+            SB[["Shared Buffers"]]
+            WB[["WAL Buffers"]]
+            CL[["CLOG / Commit Log"]]
         end
     end
     
     subgraph "Storage"
-        DF[Data Files]
-        WF[WAL Files]
+        DF[("Data Files")]
+        WF[("WAL Files")]
     end
 
     C1 --> PM
@@ -243,23 +243,23 @@ Sharding distributes data across **multiple independent PostgreSQL instances** (
 ![sharding.PNG](sharding.PNG)
 
 ```mermaid
-graph TB
-    App[Application Layer]
-    Router[Shard Router / Proxy]
+flowchart LR
+    App(["Application Layer"])
+    Router{{"Shard Router / Proxy"}}
     
     subgraph "Shard 1 (users 1-1M)"
-        S1P[Primary]
-        S1R[Replica]
+        S1P[["Primary"]]
+        S1R[/"Replica"/]
     end
     
     subgraph "Shard 2 (users 1M-2M)"
-        S2P[Primary]
-        S2R[Replica]
+        S2P[["Primary"]]
+        S2R[/"Replica"/]
     end
     
     subgraph "Shard 3 (users 2M-3M)"
-        S3P[Primary]
-        S3R[Replica]
+        S3P[["Primary"]]
+        S3R[/"Replica"/]
     end
     
     App --> Router

@@ -13,9 +13,9 @@ Getting `equals()` and `hashCode()` right is critical for **HashMap, HashSet, an
 | Override both or neither | Breaking this contract breaks HashMap/HashSet |
 
 ```mermaid
-graph LR
-    A["✅ equals returns true"] -->|MUST| B["🔑 hashCode MUST be same"]
-    C["🔑 hashCode is same"] -->|MAY or MAY NOT| D["❓ equals MAY or MAY NOT be true"]
+flowchart LR
+    A(["✅ equals returns true"]) -->|MUST| B(["🔑 hashCode MUST be same"])
+    C{{"🔑 hashCode is same"}} -->|MAY or MAY NOT| D{{"❓ equals MAY or MAY NOT be true"}}
 
     style A fill:#00b894,stroke:#008c6e,color:#fff
     style B fill:#00b894,stroke:#008c6e,color:#fff
@@ -98,19 +98,21 @@ public class Employee {
 ## How HashMap Uses Both
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph PUT["🔽 map.put - key, value"]
-        P1["1️⃣ hashCode"] -->|"hash % array.length"| P2["2️⃣ Go to bucket"]
+        direction LR
+        P1(("1️⃣ hashCode")) -->|"hash % array.length"| P2{{"2️⃣ Go to bucket"}}
         P2 --> P3{"3️⃣ equals - same key?"}
-        P3 -->|Yes| P4["✏️ Replace value"]
-        P3 -->|No| P5["➕ Add as new entry - collision"]
+        P3 -->|Yes| P4(["✏️ Replace value"])
+        P3 -->|No| P5(["➕ Add as new entry - collision"])
     end
 
     subgraph GET["🔼 map.get - key"]
-        G1["1️⃣ hashCode"] -->|"bucket index"| G2["2️⃣ Walk bucket chain"]
+        direction LR
+        G1(("1️⃣ hashCode")) -->|"bucket index"| G2{{"2️⃣ Walk bucket chain"}}
         G2 --> G3{"3️⃣ equals - matching key?"}
-        G3 -->|Yes| G4["✅ Return value"]
-        G3 -->|No| G5["🔁 Next entry in chain"]
+        G3 -->|Yes| G4(["✅ Return value"])
+        G3 -->|No| G5(["🔁 Next entry in chain"])
     end
 
     style PUT fill:#dfe6e9,stroke:#636e72,color:#333

@@ -33,14 +33,14 @@ flowchart LR
 In a distributed system, **partial failures are inevitable**. Networks drop packets, services crash, databases slow down. Without resilience patterns, a single slow service can bring down your entire platform.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Cascade["Cascading Failure"]
-        U["👤 User Request"] --> A["Order Service"]
-        A -->|"hangs"| B["Payment Service ❌<br/>(slow/unresponsive)"]
-        A -->|"thread pool exhausted"| C["All threads blocked"]
-        C --> D["Order Service ❌<br/>Can't serve ANY request"]
-        D --> E["API Gateway ❌<br/>Timeouts pile up"]
-        E --> F["💀 Full System Outage"]
+        U(("👤 User Request")) --> A[["Order Service"]]
+        A -->|"hangs"| B(["Payment Service ❌<br/>(slow/unresponsive)"])
+        A -->|"thread pool exhausted"| C{{"All threads blocked"}}
+        C --> D(["Order Service ❌<br/>Can't serve ANY request"])
+        D --> E(["API Gateway ❌<br/>Timeouts pile up"])
+        E --> F(["💀 Full System Outage"])
     end
 
     style B fill:#FFCDD2,stroke:#C62828,color:#000
@@ -257,18 +257,18 @@ resilience4j:
 Isolate critical resources so that failure in one area doesn't exhaust shared resources. Named after ship bulkheads that prevent flooding from spreading.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph NoBulkhead["❌ Without Bulkhead"]
-        T["Shared Thread Pool (20 threads)"]
-        T --> S1["Payment Service<br/>(slow - holds 18 threads)"]
-        T --> S2["Inventory Service<br/>(2 threads left!)"]
-        T --> S3["Email Service<br/>(0 threads - BLOCKED)"]
+        T{{"Shared Thread Pool (20 threads)"}}
+        T --> S1(["Payment Service<br/>(slow - holds 18 threads)"])
+        T --> S2(["Inventory Service<br/>(2 threads left!)"])
+        T --> S3(["Email Service<br/>(0 threads - BLOCKED)"])
     end
 
     subgraph WithBulkhead["✅ With Bulkhead"]
-        T1["Payment Pool<br/>(10 threads)"] --> P1["Payment Service<br/>(slow - but isolated)"]
-        T2["Inventory Pool<br/>(5 threads)"] --> P2["Inventory Service<br/>(fully available)"]
-        T3["Email Pool<br/>(5 threads)"] --> P3["Email Service<br/>(fully available)"]
+        T1{{"Payment Pool<br/>(10 threads)"}} --> P1[["Payment Service<br/>(slow - but isolated)"]]
+        T2{{"Inventory Pool<br/>(5 threads)"}} --> P2[["Inventory Service<br/>(fully available)"]]
+        T3{{"Email Pool<br/>(5 threads)"}} --> P3[["Email Service<br/>(fully available)"]]
     end
 
     style NoBulkhead fill:#FFCDD2,stroke:#C62828,color:#000
@@ -504,13 +504,13 @@ public class RecommendationService {
 In production, you rarely use a single pattern in isolation. Resilience4j applies decorators in a specific order:
 
 ```mermaid
-flowchart TD
-    REQ["Incoming Request"] --> RT["🚦 Rate Limiter<br/>(outermost)"]
-    RT --> RL["⏱️ Time Limiter"]
-    RL --> BH["🚧 Bulkhead"]
-    BH --> CB["⚡ Circuit Breaker"]
-    CB --> RY["🔄 Retry<br/>(innermost)"]
-    RY --> SVC["Downstream Service"]
+flowchart LR
+    REQ[/"Incoming Request"/] --> RT{{"🚦 Rate Limiter<br/>(outermost)"}}
+    RT --> RL{{"⏱️ Time Limiter"}}
+    RL --> BH{{"🚧 Bulkhead"}}
+    BH --> CB{{"⚡ Circuit Breaker"}}
+    CB --> RY{{"🔄 Retry<br/>(innermost)"}}
+    RY --> SVC(["Downstream Service"])
 
     style REQ fill:#E3F2FD,stroke:#1565C0,color:#000
     style RT fill:#E8F5E9,stroke:#2E7D32,color:#000

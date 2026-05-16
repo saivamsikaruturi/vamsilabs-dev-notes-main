@@ -47,13 +47,13 @@ Creational patterns solve this by **encapsulating** which classes get instantiat
 ## Choosing the Right Pattern
 
 ```mermaid
-flowchart TD
-    Start["🤔 How should I create this object?"]
-    Start -->|"Only ONE instance ever?"| Sing["🎯 Singleton"]
-    Start -->|"Multiple types, pick at runtime?"| Fact["🏭 Factory Method"]
-    Start -->|"Families of related objects?"| AF["🏗️ Abstract Factory"]
-    Start -->|"Many optional parameters?"| Build["🔨 Builder"]
-    Start -->|"Creation is expensive, copy instead?"| Proto["🧬 Prototype"]
+flowchart LR
+    Start{"🤔 How should I create this object?"}
+    Start -->|"Only ONE instance ever?"| Sing(["🎯 Singleton"])
+    Start -->|"Multiple types, pick at runtime?"| Fact(["🏭 Factory Method"])
+    Start -->|"Families of related objects?"| AF(["🏗️ Abstract Factory"])
+    Start -->|"Many optional parameters?"| Build(["🔨 Builder"])
+    Start -->|"Creation is expensive, copy instead?"| Proto(["🧬 Prototype"])
     
     style Start fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
     style Sing fill:#E3F2FD,stroke:#1565C0,color:#000

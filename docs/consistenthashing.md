@@ -18,21 +18,21 @@ This works fine **until N changes**. Adding or removing a single server causes n
 **Example:** With 4 servers, key "user:123" hashes to server 2. If a server goes down (N=3), it now maps to server 0. This affects the majority of keys, not just the ones on the failed server.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Before["Before: N=4 servers"]
-        direction TB
-        K1["key A → hash % 4 = 1"] --> S1["Server 1"]
-        K2["key B → hash % 4 = 2"] --> S2["Server 2"]
-        K3["key C → hash % 4 = 0"] --> S0["Server 0"]
-        K4["key D → hash % 4 = 3"] --> S3["Server 3"]
+        direction LR
+        K1[/"key A → hash % 4 = 1"/] --> S1(["Server 1"])
+        K2[/"key B → hash % 4 = 2"/] --> S2(["Server 2"])
+        K3[/"key C → hash % 4 = 0"/] --> S0(["Server 0"])
+        K4[/"key D → hash % 4 = 3"/] --> S3(["Server 3"])
     end
 
     subgraph After["After: N=3 servers (Server 3 removed)"]
-        direction TB
-        K5["key A → hash % 3 = 2"] --> S5["Server 2 ⚠️ moved"]
-        K6["key B → hash % 3 = 1"] --> S6["Server 1 ⚠️ moved"]
-        K7["key C → hash % 3 = 0"] --> S7["Server 0 ✓ same"]
-        K8["key D → hash % 3 = 2"] --> S8["Server 2 ⚠️ moved"]
+        direction LR
+        K5[/"key A → hash % 3 = 2"/] --> S5(["Server 2 ⚠️ moved"])
+        K6[/"key B → hash % 3 = 1"/] --> S6(["Server 1 ⚠️ moved"])
+        K7[/"key C → hash % 3 = 0"/] --> S7(["Server 0 ✓ same"])
+        K8[/"key D → hash % 3 = 2"/] --> S8(["Server 2 ⚠️ moved"])
     end
 
     Before --> |"Remove 1 server"| After
@@ -50,19 +50,19 @@ flowchart TD
 Consistent hashing places both **servers** and **keys** on a circular hash space (the "hash ring"). A key is assigned to the **first server encountered clockwise** from its position on the ring.
 
 ```mermaid
-graph TD
+graph LR
     subgraph Ring["Hash Ring (0 to 2^32 - 1)"]
-        direction TB
-        A["🔵 Server A<br/>position: 0°"]
-        B["🟢 Server B<br/>position: 90°"]
-        C["🟠 Server C<br/>position: 180°"]
-        D["🔴 Server D<br/>position: 270°"]
+        direction LR
+        A(["🔵 Server A<br/>position: 0°"])
+        B(["🟢 Server B<br/>position: 90°"])
+        C(["🟠 Server C<br/>position: 180°"])
+        D(["🔴 Server D<br/>position: 270°"])
     end
 
-    K1["Key 'user:1' → 45°"] -.->|"clockwise → nearest"| B
-    K2["Key 'user:2' → 135°"] -.->|"clockwise → nearest"| C
-    K3["Key 'user:3' → 200°"] -.->|"clockwise → nearest"| D
-    K4["Key 'user:4' → 350°"] -.->|"clockwise → nearest"| A
+    K1[/"Key 'user:1' → 45°"/] -.->|"clockwise → nearest"| B
+    K2[/"Key 'user:2' → 135°"/] -.->|"clockwise → nearest"| C
+    K3[/"Key 'user:3' → 200°"/] -.->|"clockwise → nearest"| D
+    K4[/"Key 'user:4' → 350°"/] -.->|"clockwise → nearest"| A
 
     style A fill:#1976d2,color:#fff
     style B fill:#388e3c,color:#fff
@@ -147,27 +147,27 @@ flowchart LR
 When **Server D** is added between Server A and Server B, only the keys in the arc between A and D move to D. All other keys stay in place.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Before["Before: 3 Nodes"]
         direction LR
-        BA["Server A<br/>owns: 120°"]
-        BB["Server B<br/>owns: 120°"]
-        BC["Server C<br/>owns: 120°"]
+        BA(["Server A<br/>owns: 120°"])
+        BB(["Server B<br/>owns: 120°"])
+        BC(["Server C<br/>owns: 120°"])
     end
 
     subgraph After["After: Node D Added"]
         direction LR
-        AA["Server A<br/>owns: 90°"]
-        AD["Server D (new)<br/>owns: 30°"]
-        AB["Server B<br/>owns: 120°"]
-        AC["Server C<br/>owns: 120°"]
+        AA(["Server A<br/>owns: 90°"])
+        AD{{"Server D (new)<br/>owns: 30°"}}
+        AB(["Server B<br/>owns: 120°"])
+        AC(["Server C<br/>owns: 120°"])
     end
 
     Before -->|"Add Server D between A and B"| After
 
     subgraph Movement["Data Movement"]
-        M1["Only keys in 30° arc<br/>move from B → D"]
-        M2["~8% of total keys move<br/>(1/N of affected neighbor)"]
+        M1[/"Only keys in 30° arc<br/>move from B → D"/]
+        M2[/"~8% of total keys move<br/>(1/N of affected neighbor)"/]
     end
 
     After --> Movement

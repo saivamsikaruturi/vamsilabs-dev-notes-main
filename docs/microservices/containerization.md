@@ -186,12 +186,12 @@ spec:
 ### Health Probes
 
 ```mermaid
-flowchart TD
-    K["☸️ Kubernetes"] -->|every 10s| L["Liveness Probe<br/>/actuator/health/liveness"]
-    K -->|every 5s| R["Readiness Probe<br/>/actuator/health/readiness"]
+flowchart LR
+    K(("☸️ Kubernetes")) -->|every 10s| L{{"Liveness Probe<br/>/actuator/health/liveness"}}
+    K -->|every 5s| R{{"Readiness Probe<br/>/actuator/health/readiness"}}
     
-    L -->|fails| Restart["🔄 Restart Pod"]
-    R -->|fails| Remove["🚫 Remove from<br/>load balancer"]
+    L -->|fails| Restart(["🔄 Restart Pod"])
+    R -->|fails| Remove(["🚫 Remove from<br/>load balancer"])
 
     style K fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#000
     style Restart fill:#FFCDD2,stroke:#C62828,color:#000

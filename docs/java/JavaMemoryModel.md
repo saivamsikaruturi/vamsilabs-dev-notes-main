@@ -14,27 +14,27 @@ The JMM (defined in JSR-133, Java 5+) is a **contract** between the programmer, 
 - What constitutes a **data race** and when code is correctly synchronized
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "CPU Core 1"
-        T1["Thread-1"]
-        L1_1["L1 Cache"]
+        T1(("Thread-1"))
+        L1_1[["L1 Cache"]]
         T1 --> L1_1
     end
 
     subgraph "CPU Core 2"
-        T2["Thread-2"]
-        L1_2["L1 Cache"]
+        T2(("Thread-2"))
+        L1_2[["L1 Cache"]]
         T2 --> L1_2
     end
 
     subgraph "CPU Core 3"
-        T3["Thread-3"]
-        L1_3["L1 Cache"]
+        T3(("Thread-3"))
+        L1_3[["L1 Cache"]]
         T3 --> L1_3
     end
 
-    L2["Shared L2/L3 Cache"]
-    MAIN["Main Memory (Heap)"]
+    L2{{"Shared L2/L3 Cache"}}
+    MAIN(["Main Memory (Heap)"])
 
     L1_1 --> L2
     L1_2 --> L2
@@ -190,13 +190,15 @@ graph LR
 ### volatile Memory Semantics
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "volatile Write (Thread-1)"
-        VW1["All writes BEFORE volatile write"] --> VW2["volatile write<br/>(StoreStore + StoreLoad barrier)"]
+        direction LR
+        VW1[/"All writes BEFORE volatile write"/] --> VW2{{"volatile write<br/>(StoreStore + StoreLoad barrier)"}}
     end
 
     subgraph "volatile Read (Thread-2)"
-        VR1["volatile read<br/>(LoadLoad + LoadStore barrier)"] --> VR2["All reads AFTER volatile read"]
+        direction LR
+        VR1{{"volatile read<br/>(LoadLoad + LoadStore barrier)"}} --> VR2[/"All reads AFTER volatile read"/]
     end
 
     VW2 -.->|"happens-before"| VR1
@@ -342,13 +344,15 @@ A **memory barrier** (or fence) is a CPU instruction that enforces ordering cons
 | **StoreLoad** | All stores before the barrier are flushed before loads after it (most expensive) |
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "Without Barrier"
-        NB1["Store x = 1"] -.->|"may reorder"| NB2["Store y = 2"]
+        direction LR
+        NB1(["Store x = 1"]) -.->|"may reorder"| NB2(["Store y = 2"])
     end
 
     subgraph "With StoreStore Barrier"
-        B1["Store x = 1"] --> FENCE["--- StoreStore Fence ---"] --> B2["Store y = 2"]
+        direction LR
+        B1(["Store x = 1"]) --> FENCE{{"--- StoreStore Fence ---"}} --> B2(["Store y = 2"])
     end
 
     style FENCE fill:#F44336,color:#fff,stroke-width:3px
@@ -382,14 +386,14 @@ graph TD
 ### Decision Flowchart
 
 ```mermaid
-graph TD
+flowchart LR
     Q1{"Need compound<br/>actions (if-then-act)?"}
-    Q1 -->|Yes| SYNC["Use synchronized<br/>or Lock"]
+    Q1 -->|Yes| SYNC[["Use synchronized<br/>or Lock"]]
     Q1 -->|No| Q2{"Need atomic<br/>increment/CAS?"}
-    Q2 -->|Yes| ATOMIC["Use AtomicXxx"]
+    Q2 -->|Yes| ATOMIC(["Use AtomicXxx"])
     Q2 -->|No| Q3{"Need visibility<br/>+ ordering only?"}
-    Q3 -->|Yes| VOLATILE["Use volatile"]
-    Q3 -->|No| NONE["No synchronization needed"]
+    Q3 -->|Yes| VOLATILE{{"Use volatile"}}
+    Q3 -->|No| NONE[/"No synchronization needed"/]
 
     style SYNC fill:#F44336,color:#fff
     style ATOMIC fill:#FF9800,color:#fff

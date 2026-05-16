@@ -18,7 +18,7 @@ graph LR
     end
 
     subgraph Redis["Redis Server (Single-threaded)"]
-        direction TB
+        direction LR
         EP[Event Loop / I/O Multiplexing]
         DS[In-Memory Data Structures]
         EP --> DS
@@ -349,26 +349,26 @@ save 60 10000   # Snapshot if 10000 keys changed in 60s
 Redis Cluster provides horizontal scaling through automatic data sharding across multiple nodes.
 
 ```mermaid
-graph TB
+flowchart LR
     subgraph Cluster["Redis Cluster (16384 Hash Slots)"]
         subgraph S1["Shard 1 (Slots 0-5460)"]
-            M1[Master 1]
-            R1[Replica 1]
+            M1{{"Master 1"}}
+            R1[/"Replica 1"/]
             M1 --> R1
         end
         subgraph S2["Shard 2 (Slots 5461-10922)"]
-            M2[Master 2]
-            R2[Replica 2]
+            M2{{"Master 2"}}
+            R2[/"Replica 2"/]
             M2 --> R2
         end
         subgraph S3["Shard 3 (Slots 10923-16383)"]
-            M3[Master 3]
-            R3[Replica 3]
+            M3{{"Master 3"}}
+            R3[/"Replica 3"/]
             M3 --> R3
         end
     end
 
-    Client[Client] -->|CRC16 hash| Cluster
+    Client(("Client")) -->|CRC16 hash| Cluster
 
     style M1 fill:#dc382c,color:#fff
     style M2 fill:#dc382c,color:#fff
@@ -395,17 +395,17 @@ graph TB
 Redis Sentinel provides high availability for non-clustered Redis deployments.
 
 ```mermaid
-graph TB
+flowchart LR
     subgraph Sentinels["Sentinel Quorum (3 nodes)"]
-        S1[Sentinel 1]
-        S2[Sentinel 2]
-        S3[Sentinel 3]
+        S1(["Sentinel 1"])
+        S2(["Sentinel 2"])
+        S3(["Sentinel 3"])
     end
 
     subgraph Redis["Redis Instances"]
-        M[Master]
-        R1[Replica 1]
-        R2[Replica 2]
+        M{{"Master"}}
+        R1[/"Replica 1"/]
+        R2[/"Replica 2"/]
         M -->|replication| R1
         M -->|replication| R2
     end
@@ -416,7 +416,7 @@ graph TB
     S1 ---|monitor| R1
     S2 ---|monitor| R2
 
-    Client[Client] -->|query master| S1
+    Client(("Client")) -->|query master| S1
     Client -->|read/write| M
 
     style M fill:#dc382c,color:#fff

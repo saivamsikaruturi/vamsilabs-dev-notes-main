@@ -44,20 +44,47 @@ flowchart LR
     style Adaptee fill:#ffecb3,stroke:#f57f17,color:#000
 ```
 
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class MediaPlayer {
+        <<interface>>
+        +play(audioType, fileName) void
+    }
+    class AdvancedMediaPlayer {
+        +playVlc(fileName) void
+        +playMp4(fileName) void
+    }
+    class MediaAdapter {
+        -advancedPlayer: AdvancedMediaPlayer
+        +play(audioType, fileName) void
+    }
+    class AudioPlayer {
+        -mediaAdapter: MediaAdapter
+        +play(audioType, fileName) void
+    }
+
+    MediaAdapter ..|> MediaPlayer : implements
+    AudioPlayer ..|> MediaPlayer : implements
+    MediaAdapter *-- AdvancedMediaPlayer : wraps
+    AudioPlayer --> MediaAdapter : delegates
+```
+
 ### Object Adapter vs Class Adapter
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph ObjectAdapter["Object Adapter (Composition)"]
-        direction TB
-        OA_Adapter["Adapter"] -->|has-a| OA_Adaptee["Adaptee"]
-        OA_Adapter -->|implements| OA_Target["Target"]
+        direction LR
+        OA_Adapter(["Adapter"]) -->|has-a| OA_Adaptee[/"Adaptee"/]
+        OA_Adapter -->|implements| OA_Target[["Target"]]
     end
 
     subgraph ClassAdapter["Class Adapter (Inheritance)"]
-        direction TB
-        CA_Adapter["Adapter"] -->|extends| CA_Adaptee["Adaptee"]
-        CA_Adapter -->|implements| CA_Target["Target"]
+        direction LR
+        CA_Adapter(["Adapter"]) -->|extends| CA_Adaptee[/"Adaptee"/]
+        CA_Adapter -->|implements| CA_Target[["Target"]]
     end
 
     style OA_Adapter fill:#a5d6a7,stroke:#1b5e20,color:#000

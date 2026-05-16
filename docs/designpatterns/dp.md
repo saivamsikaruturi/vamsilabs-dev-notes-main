@@ -19,10 +19,10 @@ flowchart LR
 ## Types of Design Patterns
 
 ```mermaid
-flowchart TD
-    DP["<b>DESIGN PATTERNS</b>"] --> C["① <b>CREATIONAL</b><br/>(Object Creation)"]
-    DP --> S["② <b>STRUCTURAL</b><br/>(Object Structure)"]
-    DP --> B["③ <b>BEHAVIORAL</b><br/>(Object Behavior)"]
+flowchart LR
+    DP{{"<b>DESIGN PATTERNS</b>"}} --> C(["① <b>CREATIONAL</b><br/>(Object Creation)"])
+    DP --> S(["② <b>STRUCTURAL</b><br/>(Object Structure)"])
+    DP --> B(["③ <b>BEHAVIORAL</b><br/>(Object Behavior)"])
 ```
 
 ---
@@ -86,10 +86,10 @@ flowchart LR
 **Example 1:** Payment System — same interface, different logic (Strategy)
 
 ```mermaid
-flowchart TD
-    PI["Payment Interface"] --> UPI["UPI Payment"]
-    PI --> Card["Card Payment"]
-    PI --> Wallet["Wallet Payment"]
+flowchart LR
+    PI[["Payment Interface"]] --> UPI(["UPI Payment"])
+    PI --> Card(["Card Payment"])
+    PI --> Wallet(["Wallet Payment"])
 ```
 
 **Example 2:** Notification System — one event, many users notified (Observer)

@@ -31,14 +31,14 @@ flowchart LR
     end
 
     subgraph Command Side
-        direction TB
+        direction LR
         CC[Command Controller]:::cmd
         CH[Command Handler]:::cmd
         WM[(Write Model DB)]:::cmddb
     end
 
     subgraph Query Side
-        direction TB
+        direction LR
         QC[Query Controller]:::qry
         QH[Query Handler]:::qry
         RM[(Read Model DB)]:::qrydb
@@ -111,13 +111,14 @@ sequenceDiagram
 The simplest form -- separate read and write models backed by the same database.
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph Application
-        CM[Command Model<br/>Rich Domain Objects]:::cmd
-        QM[Query Model<br/>Flat DTOs / Views]:::qry
+        direction LR
+        CM{{"Command Model<br/>Rich Domain Objects"}}:::cmd
+        QM(["Query Model<br/>Flat DTOs / Views"]):::qry
     end
 
-    DB[(Single Database)]:::db
+    DB[("Single Database")]:::db
 
     CM -->|INSERT/UPDATE| DB
     DB -->|SELECT via Views| QM

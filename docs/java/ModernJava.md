@@ -129,11 +129,11 @@ public record UPI(String vpa, BigDecimal amount) implements Payment {}
 ```
 
 ```mermaid
-graph TD
-    Payment["sealed interface Payment"]
-    Payment -->|permits| CC["record CreditCard"]
-    Payment -->|permits| BT["record BankTransfer"]
-    Payment -->|permits| UPI["record UPI"]
+flowchart LR
+    Payment{{"sealed interface Payment"}}
+    Payment -->|permits| CC(["record CreditCard"])
+    Payment -->|permits| BT(["record BankTransfer"])
+    Payment -->|permits| UPI(["record UPI"])
 
     style Payment fill:#7C4DFF,color:#fff,stroke:#4A148C,stroke-width:2px
     style CC fill:#00BCD4,color:#fff,stroke:#006064
@@ -184,17 +184,19 @@ switch (result) {
 ```
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph "Algebraic Data Type"
-        Result["sealed Result&lt;T&gt;"]
-        Result --> Success["Success(T value)"]
-        Result --> Failure["Failure(String error)"]
+        direction LR
+        Result{{"sealed Result&lt;T&gt;"}}
+        Result --> Success(["Success(T value)"])
+        Result --> Failure(["Failure(String error)"])
     end
 
     subgraph "Pattern Match"
-        Switch["switch(result)"]
-        Switch -->|"case Success s"| Happy["use s.value()"]
-        Switch -->|"case Failure f"| Error["handle f.error()"]
+        direction LR
+        Switch{"switch(result)"}
+        Switch -->|"case Success s"| Happy(["use s.value()"])
+        Switch -->|"case Failure f"| Error(["handle f.error()"])
     end
 
     Result -.->|"exhaustive"| Switch
@@ -318,11 +320,11 @@ static String describeShape(Object shape) {
 ```
 
 ```mermaid
-graph TD
-    A["Object obj"] --> B{"Pattern Match"}
-    B -->|"instanceof Point(int x, int y)"| C["Destructure into x, y"]
-    B -->|"instanceof Line(Point s, Point e)"| D["Destructure nested records"]
-    B -->|"no match"| E["default branch"]
+flowchart LR
+    A(("Object obj")) --> B{"Pattern Match"}
+    B -->|"instanceof Point(int x, int y)"| C(["Destructure into x, y"])
+    B -->|"instanceof Line(Point s, Point e)"| D(["Destructure nested records"])
+    B -->|"no match"| E(["default branch"])
 
     style A fill:#37474F,color:#fff
     style B fill:#FFA000,color:#000
@@ -391,19 +393,21 @@ String processed = raw.translateEscapes();  // "Hello\nWorld"
 ### The Blocking Problem
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph "Platform Threads (Old Model)"
-        PT1["Thread-1<br/>blocked on DB"] --> OS1["OS Thread"]
-        PT2["Thread-2<br/>blocked on HTTP"] --> OS2["OS Thread"]
-        PT3["Thread-3<br/>blocked on I/O"] --> OS3["OS Thread"]
+        direction LR
+        PT1(("Thread-1<br/>blocked on DB")) --> OS1[["OS Thread"]]
+        PT2(("Thread-2<br/>blocked on HTTP")) --> OS2[["OS Thread"]]
+        PT3(("Thread-3<br/>blocked on I/O")) --> OS3[["OS Thread"]]
     end
 
     subgraph "Virtual Threads (Java 21)"
-        VT1["VThread-1"] -.->|"mounted"| C1["Carrier-1"]
-        VT2["VThread-2"] -.->|"parked"| Park["Heap<br/>(costs ~1KB)"]
-        VT3["VThread-3"] -.->|"mounted"| C1
-        VT4["VThread-4"] -.->|"parked"| Park
-        VT5["VThread-1M"] -.->|"mounted"| C2["Carrier-2"]
+        direction LR
+        VT1(("VThread-1")) -.->|"mounted"| C1[["Carrier-1"]]
+        VT2(("VThread-2")) -.->|"parked"| Park[/"Heap<br/>(costs ~1KB)"/]
+        VT3(("VThread-3")) -.->|"mounted"| C1
+        VT4(("VThread-4")) -.->|"parked"| Park
+        VT5(("VThread-1M")) -.->|"mounted"| C2[["Carrier-2"]]
     end
 
     style OS1 fill:#C62828,color:#fff
@@ -485,16 +489,16 @@ try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
 Java finally has interfaces that **guarantee encounter order** with first/last access:
 
 ```mermaid
-graph TD
-    SC["SequencedCollection"]
-    SC --> SM["SequencedMap"]
-    SC --> SS["SequencedSet"]
+flowchart LR
+    SC(("SequencedCollection"))
+    SC --> SM{{"SequencedMap"}}
+    SC --> SS{{"SequencedSet"}}
 
-    List["List"] --> SC
-    LinkedHashSet["LinkedHashSet"] --> SS
-    SortedSet["SortedSet / TreeSet"] --> SS
-    LinkedHashMap["LinkedHashMap"] --> SM
-    SortedMap["SortedMap / TreeMap"] --> SM
+    List(["List"]) --> SC
+    LinkedHashSet(["LinkedHashSet"]) --> SS
+    SortedSet(["SortedSet / TreeSet"]) --> SS
+    LinkedHashMap(["LinkedHashMap"]) --> SM
+    SortedMap(["SortedMap / TreeMap"]) --> SM
 
     style SC fill:#1565C0,color:#fff
     style SM fill:#6A1B9A,color:#fff

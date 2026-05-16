@@ -50,12 +50,12 @@ flowchart LR
 | **Use when** | Single-threaded | Never (use ConcurrentHashMap) | Multi-threaded |
 
 ```mermaid
-flowchart TD
-    Q["Need a Map?"]
-    Q -->|"Single thread?"| HM["HashMap"]
-    Q -->|"Multi-threaded?"| CHM["ConcurrentHashMap"]
-    Q -->|"Sorted keys?"| TM["TreeMap"]
-    Q -->|"Insertion order?"| LHM["LinkedHashMap"]
+flowchart LR
+    Q(("Need a Map?"))
+    Q -->|"Single thread?"| HM(["HashMap"])
+    Q -->|"Multi-threaded?"| CHM(["ConcurrentHashMap"])
+    Q -->|"Sorted keys?"| TM(["TreeMap"])
+    Q -->|"Insertion order?"| LHM(["LinkedHashMap"])
 
     style HM fill:#E8F5E9,stroke:#2E7D32,color:#000
     style CHM fill:#E3F2FD,stroke:#1565C0,color:#000

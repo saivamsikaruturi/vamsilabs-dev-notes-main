@@ -27,12 +27,12 @@ flowchart LR
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    Context["📋 Context\n- input: String\n- variables: Map"]
-    AbstractExpression["🔤 AbstractExpression\n(Interface)\n+ interpret(context)"]
-    TerminalExpression["🅰️ TerminalExpression\n+ interpret(context)"]
-    NonTerminalExpression["🔗 NonTerminalExpression\n- expressions[]\n+ interpret(context)"]
-    Client["👤 Client\n(builds AST)"]
+flowchart LR
+    Context[/"📋 Context\n- input: String\n- variables: Map"/]
+    AbstractExpression[["🔤 AbstractExpression\n(Interface)\n+ interpret(context)"]]
+    TerminalExpression(["🅰️ TerminalExpression\n+ interpret(context)"])
+    NonTerminalExpression{{"🔗 NonTerminalExpression\n- expressions[]\n+ interpret(context)"}}
+    Client(["👤 Client\n(builds AST)"])
 
     Client --> AbstractExpression
     Client --> Context
@@ -45,6 +45,65 @@ flowchart TD
     style TerminalExpression fill:#a78bfa,color:#fff
     style NonTerminalExpression fill:#7c3aed,color:#fff
     style Client fill:#8b5cf6,color:#fff
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class Expression {
+        <<interface>>
+        +interpret(RuleContext context) boolean
+    }
+    class RuleContext {
+        -variables: Map~String, Object~
+        +setVariable(String name, Object value) void
+        +getVariable(String name) Object
+        +getInt(String name) int
+        +getString(String name) String
+    }
+    class EqualsExpression {
+        -variable: String
+        -value: Object
+        +interpret(RuleContext context) boolean
+    }
+    class GreaterThanExpression {
+        -variable: String
+        -value: int
+        +interpret(RuleContext context) boolean
+    }
+    class ContainsExpression {
+        -variable: String
+        -substring: String
+        +interpret(RuleContext context) boolean
+    }
+    class AndExpression {
+        -left: Expression
+        -right: Expression
+        +interpret(RuleContext context) boolean
+    }
+    class OrExpression {
+        -left: Expression
+        -right: Expression
+        +interpret(RuleContext context) boolean
+    }
+    class NotExpression {
+        -expression: Expression
+        +interpret(RuleContext context) boolean
+    }
+
+    EqualsExpression ..|> Expression
+    GreaterThanExpression ..|> Expression
+    ContainsExpression ..|> Expression
+    AndExpression ..|> Expression
+    OrExpression ..|> Expression
+    NotExpression ..|> Expression
+    AndExpression o-- Expression : left/right
+    OrExpression o-- Expression : left/right
+    NotExpression o-- Expression : wraps
+    Expression ..> RuleContext : uses
 ```
 
 ---

@@ -282,13 +282,13 @@ A Semaphore maintains a set of **permits**. Threads acquire permits before acces
 ### How Semaphore Works
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "Semaphore(3) — 3 permits available"
-        S["Semaphore<br/>permits = 3"]
-        T1["Thread 1<br/>acquire() → permits=2"] --> S
-        T2["Thread 2<br/>acquire() → permits=1"] --> S
-        T3["Thread 3<br/>acquire() → permits=0"] --> S
-        T4["Thread 4<br/>acquire() → BLOCKED<br/>(no permits left)"] -.-> S
+        direction LR
+        T1{{"Thread 1<br/>acquire() → permits=2"}} --> S(("Semaphore<br/>permits = 3"))
+        T2{{"Thread 2<br/>acquire() → permits=1"}} --> S
+        T3{{"Thread 3<br/>acquire() → permits=0"}} --> S
+        T4[/"Thread 4<br/>acquire() → BLOCKED<br/>(no permits left)"/] -.-> S
     end
 ```
 
@@ -464,11 +464,11 @@ Under high contention, unfair semaphores are ~2x faster but may starve threads. 
 Under the hood, `Semaphore` is built on `AbstractQueuedSynchronizer` (AQS):
 
 ```mermaid
-flowchart TD
-    ACQ["acquire()"] --> CAS{"CAS: permits > 0?"}
-    CAS -->|Yes: permits--| SUCCESS["Return immediately"]
-    CAS -->|No: permits == 0| PARK["Add to CLH queue<br/>LockSupport.park()"]
-    PARK --> WAKEUP["Another thread releases<br/>LockSupport.unpark()"]
+flowchart LR
+    ACQ(("acquire()")) --> CAS{"CAS: permits > 0?"}
+    CAS -->|Yes: permits--| SUCCESS(["Return immediately"])
+    CAS -->|No: permits == 0| PARK{{"Add to CLH queue<br/>LockSupport.park()"}}
+    PARK --> WAKEUP[/"Another thread releases<br/>LockSupport.unpark()"/]
     WAKEUP --> CAS
 ```
 
@@ -706,12 +706,12 @@ This is what `ConcurrentLinkedQueue` implements internally. Two atomic pointers 
 The LMAX Disruptor achieves millions of events/sec by eliminating locks, false sharing, and garbage:
 
 ```mermaid
-graph LR
-    P1["Producer 1"] --> RB["Ring Buffer<br/>(pre-allocated array)"]
-    P2["Producer 2"] --> RB
-    RB --> C1["Consumer 1<br/>(event handler)"]
-    RB --> C2["Consumer 2<br/>(event handler)"]
-    RB --> C3["Consumer 3<br/>(journaler)"]
+flowchart LR
+    P1[/"Producer 1"/] --> RB{{"Ring Buffer<br/>(pre-allocated array)"}}
+    P2[/"Producer 2"/] --> RB
+    RB --> C1(["Consumer 1<br/>(event handler)"])
+    RB --> C2(["Consumer 2<br/>(event handler)"])
+    RB --> C3(["Consumer 3<br/>(journaler)"])
 ```
 
 **Key principles**:

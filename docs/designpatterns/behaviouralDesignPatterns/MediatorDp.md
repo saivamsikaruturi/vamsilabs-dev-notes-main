@@ -10,13 +10,13 @@
     At a busy airport, planes don't communicate directly with each other to coordinate landing and takeoff — that would be chaos. Instead, the **control tower** (Mediator) manages all communication. Pilots (Colleagues) talk only to the tower, and the tower coordinates their interactions. Adding a new runway or aircraft type doesn't require changing how planes communicate with each other.
 
 ```mermaid
-flowchart TD
-    T["🗼 Control Tower<br/>(Mediator)"]
-    P1["✈️ Flight AA101"] ---|talks to| T
-    P2["✈️ Flight BA202"] ---|talks to| T
-    P3["✈️ Flight LH303"] ---|talks to| T
-    P4["🛬 Runway 1"] ---|status| T
-    P5["🛫 Runway 2"] ---|status| T
+flowchart LR
+    T{{"🗼 Control Tower<br/>(Mediator)"}}
+    P1(["✈️ Flight AA101"]) ---|talks to| T
+    P2(["✈️ Flight BA202"]) ---|talks to| T
+    P3(["✈️ Flight LH303"]) ---|talks to| T
+    P4[/"🛬 Runway 1"/] ---|status| T
+    P5[/"🛫 Runway 2"/] ---|status| T
     
     style T fill:#FEF3C7,stroke:#D97706,stroke-width:3px,color:#000
     style P1 fill:#E3F2FD,stroke:#1565C0,color:#000
@@ -31,12 +31,12 @@ flowchart TD
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    Mediator["🏛️ Mediator\n(Interface)\n+ notify(sender, event)"]
-    ConcreteMediator["📡 ConcreteMediator\n- colleagues[]\n+ notify(sender, event)\n+ registerColleague()"]
-    Colleague["👥 Colleague\n(Abstract)\n- mediator\n+ send(event)\n+ receive(event)"]
-    ColleagueA["🅰️ ColleagueA\n+ send(event)\n+ receive(event)"]
-    ColleagueB["🅱️ ColleagueB\n+ send(event)\n+ receive(event)"]
+flowchart LR
+    Mediator[["🏛️ Mediator\n(Interface)\n+ notify(sender, event)"]]
+    ConcreteMediator{{"📡 ConcreteMediator\n- colleagues[]\n+ notify(sender, event)\n+ registerColleague()"}}
+    Colleague[["👥 Colleague\n(Abstract)\n- mediator\n+ send(event)\n+ receive(event)"]]
+    ColleagueA(["🅰️ ColleagueA\n+ send(event)\n+ receive(event)"])
+    ColleagueB(["🅱️ ColleagueB\n+ send(event)\n+ receive(event)"])
 
     ConcreteMediator --> Mediator
     ColleagueA --> Colleague
@@ -50,6 +50,52 @@ flowchart TD
     style Colleague fill:#8b5cf6,color:#fff
     style ColleagueA fill:#a78bfa,color:#fff
     style ColleagueB fill:#a78bfa,color:#fff
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class ChatMediator {
+        <<interface>>
+        +sendMessage(String message, User sender) void
+        +sendPrivateMessage(String message, User sender, User receiver) void
+        +addUser(User user) void
+        +removeUser(User user) void
+    }
+    class ChatRoom {
+        -roomName: String
+        -users: List~User~
+        +sendMessage(String message, User sender) void
+        +sendPrivateMessage(String message, User sender, User receiver) void
+        +addUser(User user) void
+        +removeUser(User user) void
+    }
+    class User {
+        <<abstract>>
+        #mediator: ChatMediator
+        #name: String
+        +send(String message)* void
+        +receive(String message)* void
+        +getName() String
+    }
+    class PremiumUser {
+        +send(String message) void
+        +receive(String message) void
+        +sendPrivate(String message, User receiver) void
+    }
+    class RegularUser {
+        +send(String message) void
+        +receive(String message) void
+    }
+
+    ChatRoom ..|> ChatMediator
+    User --> ChatMediator : communicates via
+    PremiumUser --|> User
+    RegularUser --|> User
+    ChatRoom --> User : coordinates
 ```
 
 ---

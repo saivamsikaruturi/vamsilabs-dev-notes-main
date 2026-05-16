@@ -245,7 +245,7 @@ Admin Dashboard
 </a>
 
 <a class="vtn-card" href="networks/network-security/">
-  <span class="vtn-card-icon">:material-shield-network:</span>
+  <span class="vtn-card-icon">:material-shield-lock:</span>
   <span class="vtn-card-body"><span class="vtn-card-title">Network Security</span><span class="vtn-card-desc">DPI, C2 detection, Zero Trust, threat telemetry</span></span>
 </a>
 

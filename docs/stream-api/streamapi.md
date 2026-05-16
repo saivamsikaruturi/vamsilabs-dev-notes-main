@@ -408,9 +408,9 @@ Map<String, Employee> topByDept = employees.stream()
 `flatMap` solves the problem of **streams within streams**. When `map` produces a `Stream<Stream<T>>`, `flatMap` flattens it to `Stream<T>`.
 
 ```mermaid
-graph TD
-    A["Stream of Lists<br/>[[1,2], [3,4], [5]]"] -->|map(List::stream)| B["Stream of Streams<br/>[Stream(1,2), Stream(3,4), Stream(5)]"]
-    A -->|flatMap(List::stream)| C["Flat Stream<br/>[1, 2, 3, 4, 5]"]
+flowchart LR
+    A{{"Stream of Lists<br/>[[1,2], [3,4], [5]]"}} -->|map(List::stream)| B[/"Stream of Streams<br/>[Stream(1,2), Stream(3,4), Stream(5)]"/]
+    A -->|flatMap(List::stream)| C(["Flat Stream<br/>[1, 2, 3, 4, 5]"])
     
     style A fill:#9C27B0,color:white
     style B fill:#F44336,color:white

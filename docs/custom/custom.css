@@ -8,8 +8,8 @@
 
 /* --- DESIGN TOKENS (Light Mode) --- */
 :root {
-  --vtn-font-heading: "Playfair Display", Georgia, serif;
-  --vtn-font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --vtn-font-heading: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --vtn-font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --vtn-font-mono: "JetBrains Mono", "Fira Code", monospace;
   --vtn-bg: #FAFAF9;
   --vtn-bg-alt: #F5F3F0;
@@ -88,6 +88,42 @@
   --md-footer-bg-color: #0C0A09;
   --md-footer-bg-color--dark: #0C0A09;
   --md-typeset-a-color: #F59E0B;
+  --md-text-font: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --md-code-font: "JetBrains Mono", "Fira Code", monospace;
+  --md-typeset-color: #FAFAF9;
+
+  /* Mermaid: force light-canvas dark-text so diagrams stay readable */
+  --md-mermaid-label-fg-color: #1C1917;
+  --md-mermaid-label-bg-color: transparent;
+  --md-mermaid-edge-color: #1C1917;
+  --md-mermaid-node-bg-color: rgba(180, 83, 9, 0.08);
+  --md-mermaid-node-fg-color: #B45309;
+  --md-mermaid-sequence-actor-bg-color: #F5F3F0;
+  --md-mermaid-sequence-actor-border-color: #B45309;
+  --md-mermaid-sequence-actor-fg-color: #1C1917;
+  --md-mermaid-sequence-actor-line-color: #A8A29E;
+  --md-mermaid-sequence-actorman-bg-color: #F5F3F0;
+  --md-mermaid-sequence-actorman-line-color: #B45309;
+  --md-mermaid-sequence-box-bg-color: rgba(180, 83, 9, 0.08);
+  --md-mermaid-sequence-box-fg-color: #44403C;
+  --md-mermaid-sequence-label-bg-color: rgba(180, 83, 9, 0.08);
+  --md-mermaid-sequence-label-fg-color: #B45309;
+  --md-mermaid-sequence-loop-bg-color: rgba(180, 83, 9, 0.08);
+  --md-mermaid-sequence-loop-border-color: #B45309;
+  --md-mermaid-sequence-loop-fg-color: #44403C;
+  --md-mermaid-sequence-message-fg-color: #44403C;
+  --md-mermaid-sequence-message-line-color: #44403C;
+  --md-mermaid-sequence-note-bg-color: #F5F3F0;
+  --md-mermaid-sequence-note-border-color: #D6D3D1;
+  --md-mermaid-sequence-note-fg-color: #1C1917;
+  --md-mermaid-sequence-number-bg-color: #B45309;
+  --md-mermaid-sequence-number-fg-color: #FFFFFF;
+}
+
+/* Force font family on both schemes */
+:root {
+  --md-text-font: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --md-code-font: "JetBrains Mono", "Fira Code", monospace;
 }
 
 /* ==========================================================================
@@ -182,15 +218,67 @@ body,
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
+[data-md-color-scheme="slate"] .md-typeset {
+  color: var(--vtn-text);
+}
+
+[data-md-color-scheme="slate"] .md-typeset h1,
+[data-md-color-scheme="slate"] .md-typeset h2,
+[data-md-color-scheme="slate"] .md-typeset h3 {
+  color: var(--vtn-text);
+}
+
+[data-md-color-scheme="slate"] .md-typeset h4 {
+  color: var(--vtn-text-secondary);
+}
+
+[data-md-color-scheme="slate"] .md-typeset strong {
+  color: var(--vtn-text);
+}
+
+[data-md-color-scheme="slate"] .md-sidebar {
+  background: var(--vtn-bg);
+}
+
+[data-md-color-scheme="slate"] .md-nav__link {
+  color: var(--vtn-text-secondary);
+}
+
+[data-md-color-scheme="slate"] .md-nav__item--nested > .md-nav__link {
+  color: var(--vtn-text-muted);
+}
+
+[data-md-color-scheme="slate"] .md-nav--secondary .md-nav__title {
+  color: var(--vtn-text-muted);
+}
+
+[data-md-color-scheme="slate"] .md-nav--secondary .md-nav__link {
+  color: var(--vtn-text-muted);
+}
+
 .md-header__title {
   font-family: var(--vtn-font-heading);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.95rem;
   letter-spacing: -0.01em;
+  max-width: none;
+  overflow: visible;
+}
+
+.md-header__topic {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .md-header__topic:first-child {
   font-weight: 800;
+  color: #FAFAF9;
+}
+
+.md-header__topic + .md-header__topic {
+  font-size: 0.82rem;
+  opacity: 0.85;
   color: #FAFAF9;
 }
 
@@ -206,6 +294,7 @@ body,
   background: #292524;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   overflow: visible;
+  position: relative;
 }
 
 .md-tabs .md-grid {
@@ -215,12 +304,27 @@ body,
 
 .md-tabs__list {
   overflow-x: auto;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
   flex-wrap: nowrap;
+  padding-bottom: 2px;
 }
 
 .md-tabs__list::-webkit-scrollbar {
-  display: none;
+  height: 3px;
+}
+
+.md-tabs__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.md-tabs__list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.md-tabs__list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 [data-md-color-scheme="slate"] .md-tabs {
@@ -230,9 +334,9 @@ body,
 .md-tabs__link {
   font-family: var(--vtn-font-body);
   font-weight: 500;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   opacity: 0.75;
-  padding: 0.6rem 0.85rem;
+  padding: 0.55rem 0.7rem;
   transition: all 0.15s ease;
   letter-spacing: 0.01em;
   white-space: nowrap;
@@ -263,6 +367,22 @@ body,
   border-radius: 1px;
 }
 
+/* Fit all tabs on laptop screens */
+@media screen and (max-width: 1440px) {
+  .md-tabs__link {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.5rem;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .md-tabs__link {
+    font-size: 0.72rem;
+    padding: 0.45rem 0.4rem;
+    letter-spacing: 0;
+  }
+}
+
 /* ==========================================================================
    SIDEBAR — clean, readable
    ========================================================================== */
@@ -274,7 +394,7 @@ body,
 
 .md-nav__link {
   font-family: var(--vtn-font-body);
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   font-weight: 400;
   color: var(--vtn-text-secondary);
   padding: 0.35rem 0.7rem;
@@ -298,68 +418,72 @@ body,
 .md-nav__item--nested > .md-nav__link {
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
   color: var(--vtn-text-muted);
   margin-top: 0.8rem;
 }
 
 .md-nav--secondary .md-nav__title {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: var(--vtn-text-muted);
 }
 
 /* ==========================================================================
-   TYPOGRAPHY — Serif headings + Sans body, editorial premium
+   TYPOGRAPHY — Inter system, clean hierarchy, modular scale
+   Scale: 16px (1rem) → 17.6px (1.1rem) → 20px (1.25rem) → 24px (1.5rem) → 32px (2rem)
    ========================================================================== */
 
 .md-typeset {
   font-family: var(--vtn-font-body);
-  font-size: 1.02rem;
-  line-height: 1.8;
-  color: var(--vtn-text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--vtn-text);
 }
 
 .md-typeset h1 {
   font-family: var(--vtn-font-heading);
   font-weight: 800;
-  font-size: 2.6rem;
-  letter-spacing: -0.02em;
+  font-size: 2rem;
+  letter-spacing: -0.025em;
   color: var(--vtn-text);
-  margin-bottom: 0.6rem;
-  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
 }
 
 .md-typeset h2 {
   font-family: var(--vtn-font-heading);
   font-weight: 700;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   color: var(--vtn-text);
-  margin-top: 2.8rem;
-  margin-bottom: 0.8rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
   padding-bottom: 0;
   border-bottom: none;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
 }
 
 .md-typeset h3 {
-  font-family: var(--vtn-font-body);
-  font-weight: 700;
-  font-size: 1.18rem;
+  font-family: var(--vtn-font-heading);
+  font-weight: 600;
+  font-size: 1.25rem;
   color: var(--vtn-text);
   margin-top: 2rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
 }
 
 .md-typeset h4 {
-  font-family: var(--vtn-font-body);
+  font-family: var(--vtn-font-heading);
   font-weight: 600;
-  color: var(--vtn-text-secondary);
-  font-size: 0.95rem;
+  color: var(--vtn-text);
+  font-size: 1.1rem;
   margin-top: 1.5rem;
+  line-height: 1.4;
 }
 
 .md-typeset strong {
@@ -659,14 +783,17 @@ body,
 }
 
 @media screen and (max-width: 768px) {
-  .md-typeset h1 { font-size: 1.8rem; }
-  .md-typeset h2 { font-size: 1.3rem; }
-  .md-typeset { font-size: 0.95rem; }
+  .md-typeset h1 { font-size: 1.75rem; }
+  .md-typeset h2 { font-size: 1.35rem; }
+  .md-typeset h3 { font-size: 1.15rem; }
+  .md-typeset { font-size: 1rem; }
   .vtn-hero h1 { font-size: 2rem !important; }
 }
 
 @media screen and (max-width: 550px) {
-  .md-typeset { font-size: 0.93rem; }
+  .md-typeset { font-size: 0.95rem; }
+  .md-typeset h1 { font-size: 1.5rem; }
+  .md-typeset h2 { font-size: 1.2rem; }
   .vtn-hero { padding: 2rem 1.2rem; margin-left: -0.5rem; margin-right: -0.5rem; border-radius: var(--vtn-radius); }
   .vtn-hero h1 { font-size: 1.7rem !important; }
 }
@@ -676,14 +803,14 @@ body,
    ========================================================================== */
 
 .md-top {
-  background: var(--vtn-text);
+  background: var(--vtn-brand) !important;
   color: white;
   border-radius: var(--vtn-radius-full);
   font-weight: 600;
 }
 
 .md-top:hover {
-  background: var(--vtn-brand);
+  background: var(--vtn-brand-dark) !important;
 }
 
 /* ==========================================================================
@@ -786,11 +913,11 @@ body,
 .vtn-hero h1 {
   font-family: var(--vtn-font-heading) !important;
   color: var(--vtn-text) !important;
-  font-size: 3rem !important;
-  font-weight: 900 !important;
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
   margin-bottom: 0.3rem !important;
-  letter-spacing: -0.02em !important;
-  line-height: 1.08 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.15 !important;
   -webkit-text-fill-color: var(--vtn-text) !important;
 }
 
@@ -1332,6 +1459,34 @@ body,
 .mermaid:hover {
   box-shadow: var(--vtn-shadow-md);
   transition: box-shadow var(--vtn-transition);
+}
+
+/* Dark mode diagrams: warm cream canvas with professional contrast */
+[data-md-color-scheme="slate"] .mermaid {
+  background: #F5F3F0;
+  border: 1px solid #57534E;
+  border-radius: var(--vtn-radius);
+  padding: 2em 1.5em;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --md-default-fg-color: #1C1917;
+  --md-default-fg-color--light: #44403C;
+  --md-default-fg-color--lighter: #D6D3D1;
+  --md-default-fg-color--lightest: #ECEAE6;
+  --md-default-bg-color: #F5F3F0;
+  --md-mermaid-edge-color: #1C1917;
+  --md-mermaid-label-bg-color: #F5F3F0;
+  --md-mermaid-label-fg-color: #1C1917;
+  --md-mermaid-node-bg-color: #ECEAE6;
+  --md-mermaid-node-fg-color: #1C1917;
+}
+
+/* Edge label rects — styled as visible cream boxes by JS */
+.mermaid .edgeLabel rect {
+  opacity: 1 !important;
+}
+.mermaid .edgeLabel rect[data-vtn-bg] {
+  opacity: 1 !important;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
 }
 
 /* ==========================================================================
@@ -2603,3 +2758,4 @@ body,
     font-size: 1.15rem;
   }
 }
+

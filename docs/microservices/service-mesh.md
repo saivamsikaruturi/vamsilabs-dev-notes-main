@@ -8,16 +8,16 @@
     Think of a **corporate mail room**. Every department has a mail clerk (sidecar proxy) who handles all incoming and outgoing letters. The clerk encrypts sensitive mail (mTLS), tracks delivery times (observability), redirects mail during moves (traffic routing), and blocks suspicious senders (security). Departments focus on their work — the mail system is transparent.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph WithoutMesh["❌ Without Service Mesh"]
-        A1["Service A<br/>+ retry logic<br/>+ circuit breaker<br/>+ mTLS<br/>+ logging"] --> B1["Service B<br/>+ retry logic<br/>+ circuit breaker<br/>+ mTLS<br/>+ logging"]
+        A1(["Service A<br/>+ retry logic<br/>+ circuit breaker<br/>+ mTLS<br/>+ logging"]) --> B1(["Service B<br/>+ retry logic<br/>+ circuit breaker<br/>+ mTLS<br/>+ logging"])
     end
     
     subgraph WithMesh["✅ With Service Mesh"]
-        A2["Service A<br/>(business logic only)"]
-        PA["Sidecar Proxy<br/>(handles everything)"]
-        B2["Service B<br/>(business logic only)"]
-        PB["Sidecar Proxy"]
+        A2[["Service A<br/>(business logic only)"]]
+        PA{{"Sidecar Proxy<br/>(handles everything)"}}
+        B2[["Service B<br/>(business logic only)"]]
+        PB{{"Sidecar Proxy"}}
         
         A2 --> PA --> PB --> B2
     end
@@ -33,21 +33,21 @@ flowchart TD
 ## 🏗️ Architecture
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph CP["Control Plane (Istiod)"]
-        Pilot["Pilot<br/>(Traffic rules)"]
-        Citadel["Citadel<br/>(Certificates)"]
-        Galley["Galley<br/>(Configuration)"]
+        Pilot{{"Pilot<br/>(Traffic rules)"}}
+        Citadel{{"Citadel<br/>(Certificates)"}}
+        Galley{{"Galley<br/>(Configuration)"}}
     end
     
     subgraph DP["Data Plane (Envoy Proxies)"]
         subgraph Pod1["Pod: Order Service"]
-            S1["App Container"]
-            E1["Envoy Sidecar"]
+            S1[["App Container"]]
+            E1(["Envoy Sidecar"])
         end
         subgraph Pod2["Pod: Payment Service"]
-            S2["App Container"]
-            E2["Envoy Sidecar"]
+            S2[["App Container"]]
+            E2(["Envoy Sidecar"])
         end
     end
 

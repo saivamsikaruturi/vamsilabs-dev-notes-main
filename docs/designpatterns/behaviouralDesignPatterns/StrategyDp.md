@@ -10,12 +10,12 @@
     Think of a GPS navigation app like Google Maps. You choose a **routing strategy** — fastest route, shortest distance, avoid tolls, or scenic route. The app (context) doesn't change; only the **algorithm** for computing the route changes. You can switch strategies at runtime based on your preference.
 
 ```mermaid
-flowchart TD
-    GPS["📱 Google Maps<br/>(Context)<br/>A → B"]
-    GPS -->|Strategy 1| F["🏎️ Fastest Route<br/>25 min via highway"]
-    GPS -->|Strategy 2| S["📏 Shortest Distance<br/>18 km through city"]
-    GPS -->|Strategy 3| T["💰 No Tolls<br/>35 min, free roads"]
-    GPS -->|Strategy 4| SC["🌅 Scenic Route<br/>45 min, beautiful views"]
+flowchart LR
+    GPS{{"📱 Google Maps<br/>(Context)<br/>A → B"}}
+    GPS -->|Strategy 1| F(["🏎️ Fastest Route<br/>25 min via highway"])
+    GPS -->|Strategy 2| S(["📏 Shortest Distance<br/>18 km through city"])
+    GPS -->|Strategy 3| T(["💰 No Tolls<br/>35 min, free roads"])
+    GPS -->|Strategy 4| SC(["🌅 Scenic Route<br/>45 min, beautiful views"])
     
     style GPS fill:#EDE9FE,stroke:#7C3AED,stroke-width:3px,color:#000
     style F fill:#FFCDD2,stroke:#C62828,color:#000
@@ -29,12 +29,12 @@ flowchart TD
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    Context["🎮 Context\n- strategy: Strategy\n+ setStrategy(s)\n+ executeStrategy()"]
-    Strategy["🧠 Strategy\n(Interface)\n+ execute(data)"]
-    ConcreteA["⚡ ConcreteStrategyA\n+ execute(data)"]
-    ConcreteB["🔥 ConcreteStrategyB\n+ execute(data)"]
-    ConcreteC["🌊 ConcreteStrategyC\n+ execute(data)"]
+flowchart LR
+    Context(["🎮 Context\n- strategy: Strategy\n+ setStrategy(s)\n+ executeStrategy()"])
+    Strategy[["🧠 Strategy\n(Interface)\n+ execute(data)"]]
+    ConcreteA{{"⚡ ConcreteStrategyA\n+ execute(data)"}}
+    ConcreteB{{"🔥 ConcreteStrategyB\n+ execute(data)"}}
+    ConcreteC{{"🌊 ConcreteStrategyC\n+ execute(data)"}}
 
     Context --> Strategy
     ConcreteA --> Strategy
@@ -46,6 +46,47 @@ flowchart TD
     style ConcreteA fill:#a78bfa,color:#fff
     style ConcreteB fill:#a78bfa,color:#fff
     style ConcreteC fill:#a78bfa,color:#fff
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class PaymentStrategy {
+        <<interface>>
+        +pay(BigDecimal amount) boolean
+        +getPaymentMethod() String
+    }
+    class ShoppingCart {
+        -items: List~Item~
+        -paymentStrategy: PaymentStrategy
+        +setPaymentStrategy(PaymentStrategy strategy) void
+        +addItem(Item item) void
+        +checkout() boolean
+    }
+    class CreditCardPayment {
+        -cardNumber: String
+        -cvv: String
+        +pay(BigDecimal amount) boolean
+        +getPaymentMethod() String
+    }
+    class PayPalPayment {
+        -email: String
+        +pay(BigDecimal amount) boolean
+        +getPaymentMethod() String
+    }
+    class CryptoPayment {
+        -walletAddress: String
+        +pay(BigDecimal amount) boolean
+        +getPaymentMethod() String
+    }
+
+    ShoppingCart --> PaymentStrategy : uses
+    CreditCardPayment ..|> PaymentStrategy
+    PayPalPayment ..|> PaymentStrategy
+    CryptoPayment ..|> PaymentStrategy
 ```
 
 ---

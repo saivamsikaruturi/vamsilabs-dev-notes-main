@@ -8,17 +8,17 @@
     Think of **different government departments**. Each department (Immigration, Tax, Health) keeps its own records. They can't directly access each other's databases. To get a citizen's full picture, they exchange documents through formal channels. Microservices data management works the same way.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Wrong["❌ Shared Database (Anti-Pattern)"]
-        SA["Service A"] --> SDB["🗄️ One Big Database"]
-        SB["Service B"] --> SDB
-        SC["Service C"] --> SDB
+        SA[["Service A"]] --> SDB[("🗄️ One Big Database")]
+        SB[["Service B"]] --> SDB
+        SC[["Service C"]] --> SDB
     end
     
     subgraph Right["✅ Database per Service"]
-        A["Order Service"] --> DA["🗄️ PostgreSQL"]
-        B["Product Service"] --> DB2["🗄️ MongoDB"]
-        C["Search Service"] --> DC["🗄️ Elasticsearch"]
+        A[["Order Service"]] --> DA[("🗄️ PostgreSQL")]
+        B[["Product Service"]] --> DB2[("🗄️ MongoDB")]
+        C[["Search Service"]] --> DC[("🗄️ Elasticsearch")]
     end
 
     style SDB fill:#FFCDD2,stroke:#C62828,color:#000
@@ -34,14 +34,14 @@ flowchart TD
 Query across services by calling multiple APIs and joining in-memory:
 
 ```mermaid
-flowchart TD
-    C["📱 Client: Get Order Details"]
-    C --> AC["🔧 API Composer / BFF"]
-    AC --> OS["Order Service<br/>order data"]
-    AC --> US["User Service<br/>customer info"]
-    AC --> PS["Product Service<br/>item details"]
-    AC --> SS["Shipping Service<br/>delivery status"]
-    AC --> Res["📋 Aggregated Response"]
+flowchart LR
+    C[/"📱 Client: Get Order Details"/]
+    C --> AC{{"🔧 API Composer / BFF"}}
+    AC --> OS[["Order Service<br/>order data"]]
+    AC --> US[["User Service<br/>customer info"]]
+    AC --> PS[["Product Service<br/>item details"]]
+    AC --> SS[["Shipping Service<br/>delivery status"]]
+    AC --> Res(["📋 Aggregated Response"])
 
     style AC fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
 ```
@@ -78,17 +78,17 @@ public class OrderDetailsComposer {
 Separate write model (optimized for updates) from read model (optimized for queries):
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Write["✏️ Command Side"]
-        WC["Write Command"] --> WS["Order Service"]
-        WS --> WDB["🗄️ PostgreSQL<br/>(normalized)"]
-        WS --> EV["📤 Publish Event"]
+        WC[/"Write Command"/] --> WS{{"Order Service"}}
+        WS --> WDB[("🗄️ PostgreSQL<br/>(normalized)")]
+        WS --> EV[/"📤 Publish Event"/]
     end
     
     subgraph Read["📖 Query Side"]
-        EV --> EP["Event Processor"]
-        EP --> RDB["🗄️ Elasticsearch / Redis<br/>(denormalized, fast reads)"]
-        Q["Read Query"] --> RDB
+        EV --> EP{{"Event Processor"}}
+        EP --> RDB[("🗄️ Elasticsearch / Redis<br/>(denormalized, fast reads)")]
+        Q[/"Read Query"/] --> RDB
     end
 
     style WDB fill:#E3F2FD,stroke:#1565C0,color:#000

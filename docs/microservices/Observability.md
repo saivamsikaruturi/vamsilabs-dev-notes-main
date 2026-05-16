@@ -8,11 +8,11 @@
     Think of a **hospital monitoring system**. **Metrics** = vital signs dashboard (heart rate, blood pressure). **Logs** = doctor's notes (detailed events). **Traces** = patient journey (ER → Lab → Surgery → ICU). Together, they give a complete picture of health. Without all three, you're diagnosing blindly.
 
 ```mermaid
-flowchart TD
-    O["📊 <b>OBSERVABILITY</b><br/>Can you explain WHY<br/>the system is broken?"]
-    O --> L["📝 <b>LOGS</b><br/>What happened?<br/>Detailed events"]
-    O --> M["📈 <b>METRICS</b><br/>How is it performing?<br/>Numeric measurements"]
-    O --> T["🔗 <b>TRACES</b><br/>Where did the request go?<br/>End-to-end journey"]
+flowchart LR
+    O(("📊 <b>OBSERVABILITY</b><br/>Can you explain WHY<br/>the system is broken?"))
+    O --> L[/"📝 <b>LOGS</b><br/>What happened?<br/>Detailed events"/]
+    O --> M[/"📈 <b>METRICS</b><br/>How is it performing?<br/>Numeric measurements"/]
+    O --> T[/"🔗 <b>TRACES</b><br/>Where did the request go?<br/>End-to-end journey"/]
 
     style O fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
     style L fill:#E8F5E9,stroke:#2E7D32,color:#000
@@ -214,18 +214,18 @@ Trace ID: abc123def456
 ## 🏗️ Full Observability Stack (Docker Compose)
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Services["Microservices"]
-        S1["Order Service"]
-        S2["Payment Service"]
-        S3["Inventory Service"]
+        S1[["Order Service"]]
+        S2[["Payment Service"]]
+        S3[["Inventory Service"]]
     end
     
     subgraph Observability["Observability Stack"]
-        P["Prometheus<br/>(Metrics)"]
-        L["Loki<br/>(Logs)"]
-        T["Tempo<br/>(Traces)"]
-        G["Grafana<br/>(Visualization)"]
+        P{{"Prometheus<br/>(Metrics)"}}
+        L{{"Loki<br/>(Logs)"}}
+        T{{"Tempo<br/>(Traces)"}}
+        G(["Grafana<br/>(Visualization)"])
     end
     
     S1 --> P

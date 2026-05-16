@@ -46,12 +46,12 @@ flowchart LR
 ## :triangular_ruler: Pattern Structure
 
 ```mermaid
-flowchart TD
-    Client["Client"]
-    Factory["Flyweight Factory\n(Cache/Pool)"]
-    Flyweight["Flyweight\n(interface)"]
-    ConcreteFW["Concrete Flyweight\n(shared, intrinsic state)"]
-    UnsharedFW["Unshared Flyweight\n(if needed)"]
+flowchart LR
+    Client(["Client"])
+    Factory{{"Flyweight Factory\n(Cache/Pool)"}}
+    Flyweight[["Flyweight\n(interface)"]]
+    ConcreteFW(["Concrete Flyweight\n(shared, intrinsic state)"])
+    UnsharedFW(["Unshared Flyweight\n(if needed)"])
 
     Client -->|requests| Factory
     Factory -->|returns cached| Flyweight
@@ -66,12 +66,47 @@ flowchart TD
     style UnsharedFW fill:#e0f2f1,stroke:#00695c,color:#000
 ```
 
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class TreeType {
+        -name: String
+        -color: String
+        -texture: byte[]
+        +draw(x, y, age) void
+        +getName() String
+    }
+    class TreeTypeFactory {
+        -cache: Map~String, TreeType~
+        +getTreeType(name, color, texture)$ TreeType
+        +getCacheSize()$ int
+    }
+    class Tree {
+        -x: int
+        -y: int
+        -age: int
+        -type: TreeType
+        +draw() void
+    }
+    class Forest {
+        -trees: List~Tree~
+        +plantTree(x, y, age, name, color, texture) void
+        +drawForest() void
+    }
+
+    TreeTypeFactory *-- TreeType : caches
+    Tree --> TreeType : shares
+    Forest o-- Tree : contains
+    Forest ..> TreeTypeFactory : requests flyweights
+```
+
 ### Intrinsic vs Extrinsic State
 
 ```mermaid
 flowchart LR
     subgraph Intrinsic["Intrinsic State (SHARED)"]
-        direction TB
+        direction LR
         I1["Immutable"]
         I2["Context-independent"]
         I3["Stored in flyweight"]
@@ -79,7 +114,7 @@ flowchart LR
     end
 
     subgraph Extrinsic["Extrinsic State (UNIQUE)"]
-        direction TB
+        direction LR
         E1["Varies per context"]
         E2["Passed by client"]
         E3["NOT stored in flyweight"]

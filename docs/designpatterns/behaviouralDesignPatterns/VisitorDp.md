@@ -10,12 +10,12 @@
     A tax inspector visits different types of businesses — restaurants, tech companies, factories. Each business type has different tax rules. The inspector (Visitor) applies different calculations depending on the business type, without the businesses needing to know tax logic. When tax law changes, you update the inspector — not every business class.
 
 ```mermaid
-flowchart TD
-    I["🕵️ Tax Inspector<br/>(Visitor)"]
-    I -->|visits| R["🍽️ Restaurant<br/>Tax: 5%"]
-    I -->|visits| T["💻 Tech Company<br/>Tax: 21%"]
-    I -->|visits| F["🏭 Factory<br/>Tax: 12%"]
-    I -->|visits| S["🏪 Shop<br/>Tax: 8%"]
+flowchart LR
+    I{{"🕵️ Tax Inspector<br/>(Visitor)"}}
+    I -->|visits| R(["🍽️ Restaurant<br/>Tax: 5%"])
+    I -->|visits| T(["💻 Tech Company<br/>Tax: 21%"])
+    I -->|visits| F(["🏭 Factory<br/>Tax: 12%"])
+    I -->|visits| S(["🏪 Shop<br/>Tax: 8%"])
     
     style I fill:#EDE9FE,stroke:#7C3AED,stroke-width:3px,color:#000
     style R fill:#FFF3E0,stroke:#E65100,color:#000
@@ -29,13 +29,13 @@ flowchart TD
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    Visitor["🚶 Visitor\n(Interface)\n+ visitElementA(a)\n+ visitElementB(b)"]
-    ConcreteVisitor1["📊 ConcreteVisitor1\n+ visitElementA(a)\n+ visitElementB(b)"]
-    ConcreteVisitor2["📈 ConcreteVisitor2\n+ visitElementA(a)\n+ visitElementB(b)"]
-    Element["📦 Element\n(Interface)\n+ accept(visitor)"]
-    ElementA["🔵 ElementA\n+ accept(visitor)\n+ operationA()"]
-    ElementB["🟣 ElementB\n+ accept(visitor)\n+ operationB()"]
+flowchart LR
+    Visitor[["🚶 Visitor\n(Interface)\n+ visitElementA(a)\n+ visitElementB(b)"]]
+    ConcreteVisitor1(["📊 ConcreteVisitor1\n+ visitElementA(a)\n+ visitElementB(b)"])
+    ConcreteVisitor2(["📈 ConcreteVisitor2\n+ visitElementA(a)\n+ visitElementB(b)"])
+    Element[["📦 Element\n(Interface)\n+ accept(visitor)"]]
+    ElementA(("🔵 ElementA\n+ accept(visitor)\n+ operationA()"))
+    ElementB(("🟣 ElementB\n+ accept(visitor)\n+ operationB()"))
 
     ConcreteVisitor1 --> Visitor
     ConcreteVisitor2 --> Visitor
@@ -50,6 +50,73 @@ flowchart TD
     style Element fill:#8b5cf6,color:#fff
     style ElementA fill:#a78bfa,color:#fff
     style ElementB fill:#a78bfa,color:#fff
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class DocumentVisitor {
+        <<interface>>
+        +visitParagraph(Paragraph paragraph) void
+        +visitImage(Image image) void
+        +visitTable(Table table) void
+    }
+    class DocumentElement {
+        <<interface>>
+        +accept(DocumentVisitor visitor) void
+    }
+    class Paragraph {
+        -text: String
+        -style: String
+        +accept(DocumentVisitor visitor) void
+        +getText() String
+        +getStyle() String
+    }
+    class Image {
+        -url: String
+        -width: int
+        -height: int
+        -altText: String
+        +accept(DocumentVisitor visitor) void
+    }
+    class Table {
+        -headers: String[]
+        -data: String[][]
+        +accept(DocumentVisitor visitor) void
+    }
+    class HtmlExportVisitor {
+        -html: StringBuilder
+        +visitParagraph(Paragraph paragraph) void
+        +visitImage(Image image) void
+        +visitTable(Table table) void
+        +getHtml() String
+    }
+    class MarkdownExportVisitor {
+        -md: StringBuilder
+        +visitParagraph(Paragraph paragraph) void
+        +visitImage(Image image) void
+        +visitTable(Table table) void
+        +getMarkdown() String
+    }
+    class StatisticsVisitor {
+        -wordCount: int
+        -imageCount: int
+        -tableCount: int
+        +visitParagraph(Paragraph paragraph) void
+        +visitImage(Image image) void
+        +visitTable(Table table) void
+    }
+
+    Paragraph ..|> DocumentElement
+    Image ..|> DocumentElement
+    Table ..|> DocumentElement
+    HtmlExportVisitor ..|> DocumentVisitor
+    MarkdownExportVisitor ..|> DocumentVisitor
+    StatisticsVisitor ..|> DocumentVisitor
+    DocumentElement --> DocumentVisitor : accepts
 ```
 
 ---

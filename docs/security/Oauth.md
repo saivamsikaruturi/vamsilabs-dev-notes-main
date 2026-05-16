@@ -345,16 +345,16 @@ state = base64(random_bytes(32))
 PKCE (Proof Key for Code Exchange, pronounced "pixy") prevents authorization code interception:
 
 ```mermaid
-graph TD
+flowchart LR
     style A fill:#4CAF50,color:#fff
     style B fill:#2196F3,color:#fff
     style C fill:#FF9800,color:#fff
     style D fill:#9C27B0,color:#fff
 
-    A[1. Client generates<br/>code_verifier = random 43-128 chars] --> B[2. Client computes<br/>code_challenge = BASE64URL SHA256 of code_verifier]
-    B --> C[3. Send code_challenge<br/>in /authorize request]
-    C --> D[4. Send code_verifier<br/>in /token request]
-    D --> E{Auth Server verifies<br/>SHA256 code_verifier == code_challenge}
+    A(["1. Client generates<br/>code_verifier = random 43-128 chars"]) --> B[["2. Client computes<br/>code_challenge = BASE64URL SHA256 of code_verifier"]]
+    B --> C{{"3. Send code_challenge<br/>in /authorize request"}}
+    C --> D[/"4. Send code_verifier<br/>in /token request"/]
+    D --> E{"Auth Server verifies<br/>SHA256 code_verifier == code_challenge"}
 
     style E fill:#F44336,color:#fff
 ```
@@ -508,19 +508,19 @@ public class AuthServerConfig {
 ## Summary Cheat Sheet
 
 ```mermaid
-graph TB
+flowchart LR
     style WEB fill:#4CAF50,color:#fff
     style SPA fill:#2196F3,color:#fff
     style MOB fill:#FF9800,color:#fff
     style SVC fill:#9C27B0,color:#fff
     style DEV fill:#F44336,color:#fff
 
-    Q{What type of client?}
-    Q -->|Server-side web app| WEB[Auth Code Grant<br/>+ client secret]
-    Q -->|Single Page App| SPA[Auth Code + PKCE<br/>+ BFF pattern]
-    Q -->|Mobile/Native app| MOB[Auth Code + PKCE<br/>+ secure storage]
-    Q -->|Service/daemon| SVC[Client Credentials]
-    Q -->|Input-limited device| DEV[Device Code Grant]
+    Q{"What type of client?"}
+    Q -->|Server-side web app| WEB(["Auth Code Grant<br/>+ client secret"])
+    Q -->|Single Page App| SPA[["Auth Code + PKCE<br/>+ BFF pattern"]]
+    Q -->|Mobile/Native app| MOB{{"Auth Code + PKCE<br/>+ secure storage"}}
+    Q -->|Service/daemon| SVC[/"Client Credentials"/]
+    Q -->|Input-limited device| DEV(("Device Code Grant"))
 ```
 
 !!! success "Key Takeaways for Interviews"

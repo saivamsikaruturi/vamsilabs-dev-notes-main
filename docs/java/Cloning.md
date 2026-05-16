@@ -7,19 +7,21 @@ Cloning creates a **copy of an object**. Java provides `Object.clone()`, but it'
 ## Shallow Copy vs Deep Copy
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph SHALLOW["⚠️ SHALLOW COPY"]
-        SO["original"] --> SP["Person<br/>name: Vamsi"]
-        SP --> SA["📍 Address: Bangalore"]
-        SC["clone"] --> SP2["Person<br/>name: Vamsi"]
+        direction LR
+        SO(("original")) --> SP{{"Person<br/>name: Vamsi"}}
+        SP --> SA[/"📍 Address: Bangalore"/]
+        SC(("clone")) --> SP2{{"Person<br/>name: Vamsi"}}
         SP2 --> SA
     end
 
     subgraph DEEP["✅ DEEP COPY"]
-        DO["original"] --> DP["Person<br/>name: Vamsi"]
-        DP --> DA["📍 Address: Bangalore"]
-        DC["clone"] --> DP2["Person<br/>name: Vamsi"]
-        DP2 --> DA2["📍 Address: Bangalore<br/>DIFFERENT object"]
+        direction LR
+        DO(("original")) --> DP{{"Person<br/>name: Vamsi"}}
+        DP --> DA[/"📍 Address: Bangalore"/]
+        DC(("clone")) --> DP2{{"Person<br/>name: Vamsi"}}
+        DP2 --> DA2[/"📍 Address: Bangalore<br/>DIFFERENT object"/]
     end
 
     style SHALLOW fill:#ffeaa7,stroke:#d4a84b,color:#333

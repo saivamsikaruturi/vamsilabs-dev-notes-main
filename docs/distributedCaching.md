@@ -206,11 +206,11 @@ cache_key = f"product:{product_id}:v{version}"
 Cache nodes subscribe to invalidation channels. When data changes, a message is published to invalidate across all nodes.
 
 ```mermaid
-flowchart TD
-    A[Writer Service] -->|Publish invalidation| B[Pub/Sub Channel]
-    B --> C[Cache Node 1]
-    B --> D[Cache Node 2]
-    B --> E[Cache Node 3]
+flowchart LR
+    A(["Writer Service"]) -->|Publish invalidation| B{{"Pub/Sub Channel"}}
+    B --> C[["Cache Node 1"]]
+    B --> D[["Cache Node 2"]]
+    B --> E[["Cache Node 3"]]
 
     style A fill:#4a9eff,color:#fff
     style B fill:#ff6b6b,color:#fff
@@ -236,13 +236,13 @@ flowchart TD
 2. **Probabilistic Early Expiration** — Each request has a small random chance to refresh the cache before TTL expires, spreading the load.
 
 ```mermaid
-flowchart TD
-    A[Cache Miss on Hot Key] --> B{Lock Acquired?}
-    B -->|Yes| C[Fetch from DB]
-    C --> D[Populate Cache]
-    D --> E[Release Lock]
-    B -->|No| F[Wait / Return Stale]
-    F --> G[Retry from Cache]
+flowchart LR
+    A(("Cache Miss on Hot Key")) --> B{"Lock Acquired?"}
+    B -->|Yes| C(["Fetch from DB"])
+    C --> D[/"Populate Cache"/]
+    D --> E[["Release Lock"]]
+    B -->|No| F(["Wait / Return Stale"])
+    F --> G[/"Retry from Cache"/]
 
     style A fill:#ff6b6b,color:#fff
     style B fill:#ffa94d,color:#fff
@@ -321,15 +321,15 @@ Also: cache the **null result** with a short TTL so repeated misses are absorbed
 Production systems often use multiple cache layers to balance latency, capacity, and freshness.
 
 ```mermaid
-flowchart TD
-    A[Application Request] --> B{L1: In-Process Cache}
-    B -->|Hit| C[Return ~nanoseconds]
-    B -->|Miss| D{L2: Distributed Cache}
-    D -->|Hit| E[Return ~1ms]
-    D -->|Miss| F{L3: Database}
-    F --> G[Return ~5-50ms]
-    G --> H[Populate L2]
-    H --> I[Populate L1]
+flowchart LR
+    A(["Application Request"]) --> B{"L1: In-Process Cache"}
+    B -->|Hit| C(("Return ~nanoseconds"))
+    B -->|Miss| D{"L2: Distributed Cache"}
+    D -->|Hit| E(("Return ~1ms"))
+    D -->|Miss| F{"L3: Database"}
+    F --> G[/"Return ~5-50ms"/]
+    G --> H[["Populate L2"]]
+    H --> I[["Populate L1"]]
 
     style A fill:#4a9eff,color:#fff
     style B fill:#51cf66,color:#fff
@@ -367,16 +367,16 @@ flowchart TD
 Maps both nodes and keys onto a virtual ring. Keys are assigned to the nearest node clockwise on the ring.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Ring["Hash Ring"]
         direction LR
-        N1[Node A<br/>pos: 0°]
-        N2[Node B<br/>pos: 120°]
-        N3[Node C<br/>pos: 240°]
+        N1(["Node A<br/>pos: 0°"])
+        N2(["Node B<br/>pos: 120°"])
+        N3(["Node C<br/>pos: 240°"])
     end
-    K1[Key 'user:42'<br/>hash: 85°] --> N2
-    K2[Key 'order:99'<br/>hash: 200°] --> N3
-    K3[Key 'session:7'<br/>hash: 350°] --> N1
+    K1[/"Key 'user:42'<br/>hash: 85°"/] --> N2
+    K2[/"Key 'order:99'<br/>hash: 200°"/] --> N3
+    K3[/"Key 'session:7'<br/>hash: 350°"/] --> N1
 
     style N1 fill:#4a9eff,color:#fff
     style N2 fill:#51cf66,color:#fff

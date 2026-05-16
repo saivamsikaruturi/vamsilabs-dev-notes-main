@@ -70,15 +70,15 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Diagram:**
     ```mermaid
-    flowchart TD
-        User -->|Post Tweet| TweetSvc[Tweet Service]
+    flowchart LR
+        User(("User")) -->|Post Tweet| TweetSvc(["Tweet Service"])
         TweetSvc --> DB[(Tweet DB)]
-        TweetSvc --> Fanout[Fan-out Service]
+        TweetSvc --> Fanout{{"Fan-out Service"}}
         Fanout -->|push| TLC[(Timeline Cache / Redis)]
-        User -->|Read Feed| TimelineSvc[Timeline Service]
+        User -->|Read Feed| TimelineSvc[["Timeline Service"]]
         TimelineSvc --> TLC
         TimelineSvc -->|pull for celebs| DB
-        TimelineSvc --> Ranker[Ranking Service]
+        TimelineSvc --> Ranker[/"Ranking Service"/]
     ```
 
 ---
@@ -328,14 +328,14 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Diagram:**
     ```mermaid
-    flowchart TD
-        Creator -->|Upload| US[Upload Service]
+    flowchart LR
+        Creator(("Creator")) -->|Upload| US(["Upload Service"])
         US --> S3[(Object Storage)]
-        S3 --> TP[Transcoding Pipeline]
+        S3 --> TP{{"Transcoding Pipeline"}}
         TP -->|HLS segments| S3
-        S3 --> CDN[CDN Edge Servers]
-        Viewer -->|Stream| CDN
-        Viewer -->|Search| Meta[Metadata Service]
+        S3 --> CDN[["CDN Edge Servers"]]
+        Viewer(("Viewer")) -->|Stream| CDN
+        Viewer -->|Search| Meta[/"Metadata Service"/]
     ```
 
 ---
@@ -465,14 +465,14 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Diagram:**
     ```mermaid
-    flowchart TD
-        User -->|Browse| Catalog[Product Catalog]
-        User -->|Add to Cart| Cart[Cart Service]
-        Cart -->|Checkout| Order[Order Service]
-        Order -->|Reserve| Inventory[Inventory Service]
-        Order -->|Charge| Payment[Payment Service]
-        Order -->|Ship| Fulfillment[Fulfillment Service]
-        Order -.->|Events| Kafka[Event Bus / Kafka]
+    flowchart LR
+        User(("User")) -->|Browse| Catalog[/"Product Catalog"/]
+        User -->|Add to Cart| Cart(["Cart Service"])
+        Cart -->|Checkout| Order{{"Order Service"}}
+        Order -->|Reserve| Inventory[["Inventory Service"]]
+        Order -->|Charge| Payment[["Payment Service"]]
+        Order -->|Ship| Fulfillment(["Fulfillment Service"])
+        Order -.->|Events| Kafka[/"Event Bus / Kafka"/]
     ```
 
 ---
@@ -562,14 +562,14 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Diagram:**
     ```mermaid
-    flowchart TD
-        User -->|Select Seats| SeatMap[Seat Map Service]
+    flowchart LR
+        User(("User")) -->|Select Seats| SeatMap[["Seat Map Service"]]
         SeatMap -->|Hold seats| Redis[(Redis Lock / TTL)]
-        User -->|Pay| Payment[Payment Service]
-        Payment -->|Confirm| Booking[Reservation Service]
+        User -->|Pay| Payment{{"Payment Service"}}
+        Payment -->|Confirm| Booking(["Reservation Service"])
         Booking -->|Release lock| Redis
         Booking --> DB[(Booking DB)]
-        Booking --> Notify[Notification Service]
+        Booking --> Notify[/"Notification Service"/]
     ```
 
 ---
@@ -820,12 +820,12 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Diagram:**
     ```mermaid
-    flowchart TD
-        User -->|DNS query| GeoDNS[GeoDNS]
-        GeoDNS -->|nearest PoP| Edge[Edge Server]
+    flowchart LR
+        User(("User")) -->|DNS query| GeoDNS{{"GeoDNS"}}
+        GeoDNS -->|nearest PoP| Edge(["Edge Server"])
         Edge -->|cache hit| User
-        Edge -->|cache miss| Shield[Origin Shield]
-        Shield -->|miss| Origin[Origin Server]
+        Edge -->|cache miss| Shield[["Origin Shield"]]
+        Shield -->|miss| Origin[/"Origin Server"/]
         Origin -->|content| Shield
         Shield -->|content| Edge
     ```
@@ -980,14 +980,14 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Diagram:**
     ```mermaid
-    flowchart TD
-        Vehicle -->|Enter| Gate[Entry Gate / Sensor]
-        Gate --> SpotMgr[Spot Management Service]
+    flowchart LR
+        Vehicle(("Vehicle")) -->|Enter| Gate(["Entry Gate / Sensor"])
+        Gate --> SpotMgr{{"Spot Management Service"}}
         SpotMgr -->|Assign spot| DB[(Parking DB)]
-        SpotMgr --> Display[Availability Display]
-        Vehicle -->|Exit| ExitGate[Exit Gate]
-        ExitGate --> Pricing[Pricing Engine]
-        Pricing --> Payment[Payment Service]
+        SpotMgr --> Display[/"Availability Display"/]
+        Vehicle -->|Exit| ExitGate(["Exit Gate"])
+        ExitGate --> Pricing[["Pricing Engine"]]
+        Pricing --> Payment[["Payment Service"]]
         Payment -->|Release spot| SpotMgr
     ```
 

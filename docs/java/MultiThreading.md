@@ -9,22 +9,22 @@ Multithreading is the foundation of concurrent programming in Java. It allows mu
 A **process** is an independent program with its own memory space. A **thread** is the smallest unit of CPU execution that runs within a process and shares its memory.
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph Process A
-        direction TB
-        A_HEAP[Shared Heap Memory]
-        A_T1[Thread 1<br/>Own Stack]
-        A_T2[Thread 2<br/>Own Stack]
-        A_T3[Thread 3<br/>Own Stack]
+        direction LR
+        A_HEAP[["Shared Heap Memory"]]
+        A_T1(("Thread 1<br/>Own Stack"))
+        A_T2(("Thread 2<br/>Own Stack"))
+        A_T3(("Thread 3<br/>Own Stack"))
         A_T1 --> A_HEAP
         A_T2 --> A_HEAP
         A_T3 --> A_HEAP
     end
     subgraph Process B
-        direction TB
-        B_HEAP[Shared Heap Memory]
-        B_T1[Thread 1<br/>Own Stack]
-        B_T2[Thread 2<br/>Own Stack]
+        direction LR
+        B_HEAP[["Shared Heap Memory"]]
+        B_T1(("Thread 1<br/>Own Stack"))
+        B_T2(("Thread 2<br/>Own Stack"))
         B_T1 --> B_HEAP
         B_T2 --> B_HEAP
     end
@@ -231,18 +231,20 @@ The JMM defines how threads interact through memory and what guarantees the JVM 
 ### The Problem: Why We Need a Memory Model
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "CPU 1"
-        T1["Thread 1"]
-        C1["L1/L2 Cache"]
+        direction LR
+        T1(("Thread 1"))
+        C1[["L1/L2 Cache"]]
         T1 --> C1
     end
     subgraph "CPU 2"
-        T2["Thread 2"]
-        C2["L1/L2 Cache"]
+        direction LR
+        T2(("Thread 2"))
+        C2[["L1/L2 Cache"]]
         T2 --> C2
     end
-    C1 --> RAM["Main Memory (RAM)"]
+    C1 --> RAM(["Main Memory (RAM)"])
     C2 --> RAM
 
     style RAM fill:#FEF3C7,stroke:#D97706,color:#92400E
@@ -368,14 +370,14 @@ Without `volatile`, the write to `instance` can be reordered before the construc
 ### How Intrinsic Locks (Monitors) Work
 
 ```mermaid
-graph TD
-    T1[Thread 1] -->|tries to enter| SYNC[synchronized block]
-    T2[Thread 2] -->|tries to enter| SYNC
-    T3[Thread 3] -->|tries to enter| SYNC
-    SYNC -->|acquires lock| OWNER[Lock Owner: Thread 1]
-    T2 -->|BLOCKED| QUEUE[Entry Set / Wait Queue]
+flowchart LR
+    T1(("Thread 1")) -->|tries to enter| SYNC{{"synchronized block"}}
+    T2(("Thread 2")) -->|tries to enter| SYNC
+    T3(("Thread 3")) -->|tries to enter| SYNC
+    SYNC -->|acquires lock| OWNER(["Lock Owner: Thread 1"])
+    T2 -->|BLOCKED| QUEUE[/"Entry Set / Wait Queue"/]
     T3 -->|BLOCKED| QUEUE
-    OWNER -->|exits block| RELEASE[Lock Released]
+    OWNER -->|exits block| RELEASE(["Lock Released"])
     RELEASE -->|one thread unblocked| QUEUE
 ```
 
@@ -390,8 +392,8 @@ The JVM applies progressive lock optimization:
 
 ```mermaid
 flowchart LR
-    B["Biased Locking<br/>(single thread, no CAS)"] -->|contention detected| T["Thin Lock<br/>(CAS on mark word)"]
-    T -->|spinning fails| F["Fat Lock<br/>(OS mutex, park thread)"]
+    B(["Biased Locking<br/>(single thread, no CAS)"]) -->|contention detected| T{{"Thin Lock<br/>(CAS on mark word)"}}
+    T -->|spinning fails| F{{"Fat Lock<br/>(OS mutex, park thread)"}}
 ```
 
 | Level | Mechanism | When | Cost |
@@ -617,10 +619,10 @@ StampedLock is NOT reentrant — do not use in recursive code.
 CAS is a CPU-level atomic instruction: "If the value at address X is currently V, set it to N. Return whether it succeeded."
 
 ```mermaid
-flowchart TD
-    READ["Read current value (expected = 5)"] --> COMPUTE["Compute new value (6)"]
+flowchart LR
+    READ[/"Read current value (expected = 5)"/] --> COMPUTE{{"Compute new value (6)"}}
     COMPUTE --> CAS{"CAS(expected=5, new=6)"}
-    CAS -->|Success: was 5, now 6| DONE["Operation complete"]
+    CAS -->|Success: was 5, now 6| DONE(["Operation complete"])
     CAS -->|Failure: value changed| READ
 ```
 
@@ -692,14 +694,14 @@ head.compareAndSet(current, newNode, stamp, stamp + 1);
 ### Thread Pool Architecture
 
 ```mermaid
-graph LR
-    TASKS[Task Queue<br/>BlockingQueue] --> T1[Worker Thread 1]
-    TASKS --> T2[Worker Thread 2]
-    TASKS --> T3[Worker Thread 3]
-    TASKS --> TN[Worker Thread N]
-    CLIENT1[Client] -->|submit task| TASKS
-    CLIENT2[Client] -->|submit task| TASKS
-    CLIENT3[Client] -->|submit task| TASKS
+flowchart LR
+    TASKS{{"Task Queue<br/>BlockingQueue"}} --> T1(["Worker Thread 1"])
+    TASKS --> T2(["Worker Thread 2"])
+    TASKS --> T3(["Worker Thread 3"])
+    TASKS --> TN(["Worker Thread N"])
+    CLIENT1(("Client")) -->|submit task| TASKS
+    CLIENT2(("Client")) -->|submit task| TASKS
+    CLIENT3(("Client")) -->|submit task| TASKS
 ```
 
 ### Types of Thread Pools
@@ -908,14 +910,14 @@ while (running) {
 ### ConcurrentHashMap Internals
 
 ```mermaid
-graph TD
-    CHM["ConcurrentHashMap"]
-    CHM --> S0["Segment 0<br/>(own lock)"]
-    CHM --> S1["Segment 1<br/>(own lock)"]
-    CHM --> S2["Segment 2<br/>(own lock)"]
-    CHM --> SN["Segment N<br/>(own lock)"]
-    S0 --> B0["Bucket 0 → Node → Node"]
-    S1 --> B1["Bucket 1 → Node → Node"]
+flowchart LR
+    CHM{{"ConcurrentHashMap"}}
+    CHM --> S0[["Segment 0<br/>(own lock)"]]
+    CHM --> S1[["Segment 1<br/>(own lock)"]]
+    CHM --> S2[["Segment 2<br/>(own lock)"]]
+    CHM --> SN[["Segment N<br/>(own lock)"]]
+    S0 --> B0(["Bucket 0 → Node → Node"])
+    S1 --> B1(["Bucket 1 → Node → Node"])
 ```
 
 **Java 8+**: No longer uses segments. Uses per-bucket CAS + `synchronized` on the head node of each bucket. Reads are lock-free (volatile reads of nodes).
@@ -1058,21 +1060,23 @@ Virtual threads are lightweight threads managed by the JVM, not the OS. They ena
 ### How Virtual Threads Work Internally
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "JVM Scheduler"
-        VT1["Virtual Thread 1<br/>(running)"]
-        VT2["Virtual Thread 2<br/>(blocked on I/O)"]
-        VT3["Virtual Thread 3<br/>(runnable)"]
+        direction LR
+        VT1(("Virtual Thread 1<br/>(running)"))
+        VT2(("Virtual Thread 2<br/>(blocked on I/O)"))
+        VT3(("Virtual Thread 3<br/>(runnable)"))
     end
     
     subgraph "Carrier Threads (ForkJoinPool)"
-        CT1["Carrier Thread 1"]
-        CT2["Carrier Thread 2"]
+        direction LR
+        CT1[["Carrier Thread 1"]]
+        CT2[["Carrier Thread 2"]]
     end
 
     VT1 -->|"mounted on"| CT1
     VT3 -->|"waiting for"| CT2
-    VT2 -->|"unmounted<br/>(parked)"| HEAP["Heap<br/>(continuation stored)"]
+    VT2 -->|"unmounted<br/>(parked)"| HEAP[/"Heap<br/>(continuation stored)"/]
 ```
 
 When a virtual thread blocks on I/O:

@@ -9,11 +9,11 @@ ClassLoaders are the gatekeepers of the JVM. Every class you use -- from `java.l
 The JVM uses a **three-tier hierarchy** of classloaders, each responsible for loading classes from a specific location.
 
 ```mermaid
-graph TD
-    BOOT["Bootstrap ClassLoader<br/>(Native C/C++)<br/>Loads: java.lang, java.util, java.io<br/>Source: jrt:/java.base (Java 9+)"]
-    PLAT["Platform ClassLoader<br/>(formerly Extension)<br/>Loads: javax.*, java.sql, java.xml<br/>Source: Platform modules"]
-    APP["Application ClassLoader<br/>(System ClassLoader)<br/>Loads: YOUR classes<br/>Source: -classpath / -cp"]
-    CUSTOM["Custom ClassLoader<br/>(User-defined)<br/>Loads: Plugin JARs, hot-deployed classes"]
+flowchart LR
+    BOOT[["Bootstrap ClassLoader<br/>(Native C/C++)<br/>Loads: java.lang, java.util, java.io<br/>Source: jrt:/java.base (Java 9+)"]]
+    PLAT[["Platform ClassLoader<br/>(formerly Extension)<br/>Loads: javax.*, java.sql, java.xml<br/>Source: Platform modules"]]
+    APP{{"Application ClassLoader<br/>(System ClassLoader)<br/>Loads: YOUR classes<br/>Source: -classpath / -cp"}}
+    CUSTOM(["Custom ClassLoader<br/>(User-defined)<br/>Loads: Plugin JARs, hot-deployed classes"])
 
     BOOT --> PLAT
     PLAT --> APP
@@ -293,9 +293,9 @@ Every thread has a **context classloader** accessible via `Thread.currentThread(
 **The problem:** Core Java classes (loaded by Bootstrap) sometimes need to load user-provided implementations (SPI pattern). But Bootstrap cannot see classes on the application classpath because delegation only goes upward.
 
 ```mermaid
-graph TD
-    BOOT["Bootstrap ClassLoader<br/>(loads ServiceLoader, JAXP, JNDI)"]
-    APP["Application ClassLoader<br/>(loads your SPI implementations)"]
+flowchart LR
+    BOOT[["Bootstrap ClassLoader<br/>(loads ServiceLoader, JAXP, JNDI)"]]
+    APP{{"Application ClassLoader<br/>(loads your SPI implementations)"}}
 
     BOOT -->|"parent of"| APP
     APP -.->|"Context ClassLoader<br/>breaks upward-only rule"| BOOT

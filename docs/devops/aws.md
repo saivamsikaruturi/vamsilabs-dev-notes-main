@@ -8,14 +8,14 @@
     Most FAANG system design interviews assume cloud deployment. You are expected to pick appropriate AWS services, reason about trade-offs (cost, latency, durability), and sketch architectures using real service names rather than generic "cloud storage" boxes.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph AWS["AWS Core Services"]
-        C["Compute<br/>EC2, Lambda, ECS"]
-        S["Storage<br/>S3, EBS, EFS"]
-        D["Database<br/>RDS, DynamoDB, Aurora"]
-        M["Messaging<br/>SQS, SNS, Kinesis"]
-        N["Networking<br/>VPC, Route 53, ELB"]
-        SEC["Security<br/>IAM, KMS, WAF"]
+        C{{"Compute<br/>EC2, Lambda, ECS"}}
+        S[/"Storage<br/>S3, EBS, EFS"/]
+        D[["Database<br/>RDS, DynamoDB, Aurora"]]
+        M(["Messaging<br/>SQS, SNS, Kinesis"])
+        N(("Networking<br/>VPC, Route 53, ELB"))
+        SEC{{"Security<br/>IAM, KMS, WAF"}}
     end
 
     C --> N
@@ -180,16 +180,16 @@ Fully managed API front door. Handles throttling, auth, caching, and request tra
 Orchestrate multiple Lambda functions and AWS services into serverless workflows.
 
 ```mermaid
-flowchart TD
-    Start["Order Received"] --> Validate["Validate Order"]
-    Validate -->|Valid| Reserve["Reserve Inventory"]
-    Validate -->|Invalid| Reject["Reject Order"]
-    Reserve --> Payment["Process Payment"]
-    Payment -->|Success| Ship["Ship Order"]
-    Payment -->|Failure| Release["Release Inventory"]
-    Ship --> Notify["Send Notification"]
+flowchart LR
+    Start(["Order Received"]) --> Validate{{"Validate Order"}}
+    Validate -->|Valid| Reserve[["Reserve Inventory"]]
+    Validate -->|Invalid| Reject(("Reject Order"))
+    Reserve --> Payment{"Process Payment"}
+    Payment -->|Success| Ship[/"Ship Order"/]
+    Payment -->|Failure| Release[["Release Inventory"]]
+    Ship --> Notify(["Send Notification"])
     Release --> Notify
-    Notify --> End["Complete"]
+    Notify --> End(("Complete"))
 ```
 
 ---
@@ -346,23 +346,23 @@ Real-time data streaming for high-volume, continuous data.
 Isolated network within AWS. You control IP ranges, subnets, route tables, and gateways.
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph VPC["VPC 10.0.0.0/16"]
         subgraph Public["Public Subnets"]
-            PS1["10.0.1.0/24<br/>AZ-a"]
-            PS2["10.0.2.0/24<br/>AZ-b"]
+            PS1(["10.0.1.0/24<br/>AZ-a"])
+            PS2(["10.0.2.0/24<br/>AZ-b"])
         end
         subgraph Private["Private Subnets"]
-            PR1["10.0.3.0/24<br/>AZ-a"]
-            PR2["10.0.4.0/24<br/>AZ-b"]
+            PR1[["10.0.3.0/24<br/>AZ-a"]]
+            PR2[["10.0.4.0/24<br/>AZ-b"]]
         end
         subgraph Data["Data Subnets"]
-            DS1["10.0.5.0/24<br/>AZ-a"]
-            DS2["10.0.6.0/24<br/>AZ-b"]
+            DS1[/"10.0.5.0/24<br/>AZ-a"/]
+            DS2[/"10.0.6.0/24<br/>AZ-b"/]
         end
     end
 
-    IGW["Internet Gateway"] --> Public
+    IGW{{"Internet Gateway"}} --> Public
     Public -->|"NAT GW"| Private
     Private --> Data
 

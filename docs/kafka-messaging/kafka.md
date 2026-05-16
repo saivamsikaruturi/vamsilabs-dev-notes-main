@@ -56,19 +56,19 @@ The fundamental unit of data in Kafka. An event represents "something happened."
 ### Topics & Partitions
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Topic["Topic: user-events"]
         subgraph P0["Partition 0"]
             direction LR
-            M0["offset 0"] --> M1["offset 1"] --> M2["offset 2"] --> M3["offset 3"]
+            M0(["offset 0"]) --> M1(["offset 1"]) --> M2(["offset 2"]) --> M3(["offset 3"])
         end
         subgraph P1["Partition 1"]
             direction LR
-            M4["offset 0"] --> M5["offset 1"] --> M6["offset 2"]
+            M4(["offset 0"]) --> M5(["offset 1"]) --> M6(["offset 2"])
         end
         subgraph P2["Partition 2"]
             direction LR
-            M7["offset 0"] --> M8["offset 1"] --> M9["offset 2"] --> M10["offset 3"] --> M11["offset 4"]
+            M7(["offset 0"]) --> M8(["offset 1"]) --> M9(["offset 2"]) --> M10(["offset 3"]) --> M11(["offset 4"])
         end
     end
 
@@ -88,15 +88,15 @@ flowchart TD
 ### Brokers & Cluster
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Cluster["Kafka Cluster"]
-        B1["Broker 1<br/>Leader: P0, P1"]
-        B2["Broker 2<br/>Leader: P2, P3"]
-        B3["Broker 3<br/>Leader: P4, P5"]
+        B1(["Broker 1<br/>Leader: P0, P1"])
+        B2(["Broker 2<br/>Leader: P2, P3"])
+        B3(["Broker 3<br/>Leader: P4, P5"])
     end
 
     subgraph ZK["Controller"]
-        C["KRaft Controller<br/>(replaces ZooKeeper)"]
+        C{{"KRaft Controller<br/>(replaces ZooKeeper)"}}
     end
 
     C --> B1
@@ -197,21 +197,21 @@ producer.send(new ProducerRecord<>("orders", customerId, orderJson));
 ### Consumer Group Model
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Topic["Topic: orders (4 partitions)"]
-        P0["P0"]
-        P1["P1"]
-        P2["P2"]
-        P3["P3"]
+        P0(("P0"))
+        P1(("P1"))
+        P2(("P2"))
+        P3(("P3"))
     end
 
     subgraph CG1["Consumer Group: order-processor"]
-        C1["Consumer 1"]
-        C2["Consumer 2"]
+        C1[["Consumer 1"]]
+        C2[["Consumer 2"]]
     end
 
     subgraph CG2["Consumer Group: analytics"]
-        C3["Consumer 3"]
+        C3[["Consumer 3"]]
     end
 
     P0 --> C1
@@ -276,11 +276,11 @@ flowchart LR
 ## Delivery Semantics
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Semantics["Delivery Guarantees"]
-        ALO["At-Least-Once<br/>✅ No data loss<br/>⚠️ Possible duplicates"]
-        AMO["At-Most-Once<br/>⚠️ Possible data loss<br/>✅ No duplicates"]
-        EO["Exactly-Once<br/>✅ No data loss<br/>✅ No duplicates"]
+        ALO{{"At-Least-Once<br/>✅ No data loss<br/>⚠️ Possible duplicates"}}
+        AMO{{"At-Most-Once<br/>⚠️ Possible data loss<br/>✅ No duplicates"}}
+        EO{{"Exactly-Once<br/>✅ No data loss<br/>✅ No duplicates"}}
     end
 
     ALO ---|"commit AFTER processing"| ALO
@@ -444,14 +444,14 @@ orders
 ### Why Kafka is Fast
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Performance["Why Kafka Achieves Millions of msg/sec"]
-        SEQ["Sequential I/O<br/>Append-only log, no random seeks"]
-        ZC["Zero-Copy Transfer<br/>sendfile() syscall, no user-space copy"]
-        BATCH["Batching<br/>Amortize network overhead"]
-        COMP["Compression<br/>Batch-level compression"]
-        PAGE["Page Cache<br/>OS caches hot data in RAM"]
-        PART["Partitioning<br/>Parallel processing"]
+        SEQ(["Sequential I/O<br/>Append-only log, no random seeks"])
+        ZC[/"Zero-Copy Transfer<br/>sendfile() syscall, no user-space copy"/]
+        BATCH{{"Batching<br/>Amortize network overhead"}}
+        COMP[["Compression<br/>Batch-level compression"]]
+        PAGE(["Page Cache<br/>OS caches hot data in RAM"])
+        PART{{"Partitioning<br/>Parallel processing"}}
     end
 
     style SEQ fill:#E8F5E9,stroke:#2E7D32,color:#000

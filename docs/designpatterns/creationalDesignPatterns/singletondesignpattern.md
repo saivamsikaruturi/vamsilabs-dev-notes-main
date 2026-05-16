@@ -26,17 +26,36 @@ flowchart LR
 ## 🏗️ Structure
 
 ```mermaid
-flowchart TD
-    A[Client Code] -->|getInstance| B[Singleton Class]
-    B --> C[Private Static Instance]
-    B --> D[Private Constructor]
-    B --> E[Public getInstance Method]
+flowchart LR
+    A(["Client Code"]) -->|getInstance| B{{"Singleton Class"}}
+    B --> C(("Private Static Instance"))
+    B --> D{"Private Constructor"}
+    B --> E(["Public getInstance Method"])
     
     style A fill:#E3F2FD,stroke:#1565C0,color:#000
     style B fill:#FFF3E0,stroke:#E65100,color:#000
     style C fill:#E8F5E9,stroke:#2E7D32,color:#000
     style D fill:#FCE4EC,stroke:#C62828,color:#000
     style E fill:#E8F5E9,stroke:#2E7D32,color:#000
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class Singleton {
+        -instance$ : Singleton
+        -Singleton()
+        +getInstance()$ Singleton
+    }
+    class Client {
+    }
+    Client ..> Singleton : calls getInstance()
+
+    style Singleton fill:#FFF3E0,stroke:#E65100,color:#000
+    style Client fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---

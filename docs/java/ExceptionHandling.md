@@ -7,28 +7,28 @@ Exceptions are events that **disrupt the normal flow** of a program. Proper exce
 ## Exception Hierarchy Diagram
 
 ```mermaid
-flowchart TD
-    T[Throwable]
-    T --> E[Error]
-    T --> EX[Exception]
+flowchart LR
+    T(("Throwable"))
+    T --> E{{"Error"}}
+    T --> EX{{"Exception"}}
 
-    E --> OOM[OutOfMemoryError]
-    E --> SOE[StackOverflowError]
-    E --> VE[VirtualMachineError]
+    E --> OOM(["OutOfMemoryError"])
+    E --> SOE(["StackOverflowError"])
+    E --> VE(["VirtualMachineError"])
 
-    EX --> RE[RuntimeException<br/>UNCHECKED]
-    EX --> CE[Checked Exceptions]
+    EX --> RE{{"RuntimeException<br/>UNCHECKED"}}
+    EX --> CE{{"Checked Exceptions"}}
 
-    RE --> NPE[NullPointerException]
-    RE --> AIOB[ArrayIndexOutOfBoundsException]
-    RE --> CCE[ClassCastException]
-    RE --> IAE[IllegalArgumentException]
-    RE --> AE[ArithmeticException]
+    RE --> NPE(["NullPointerException"])
+    RE --> AIOB(["ArrayIndexOutOfBoundsException"])
+    RE --> CCE(["ClassCastException"])
+    RE --> IAE(["IllegalArgumentException"])
+    RE --> AE(["ArithmeticException"])
 
-    CE --> IOE[IOException]
-    CE --> SQLE[SQLException]
-    CE --> CNFE[ClassNotFoundException]
-    CE --> IE[InterruptedException]
+    CE --> IOE(["IOException"])
+    CE --> SQLE(["SQLException"])
+    CE --> CNFE(["ClassNotFoundException"])
+    CE --> IE(["InterruptedException"])
 
     style T fill:#4a148c,stroke:#4a148c,color:#ffffff
     style E fill:#b71c1c,stroke:#b71c1c,color:#ffffff
@@ -52,18 +52,18 @@ flowchart TD
 ## Exception Flow — try/catch/finally Execution
 
 ```mermaid
-flowchart TD
-    START([Enter try block]) --> CODE[Execute try code]
-    CODE -->|No Exception| FINALLY1[Execute finally block]
-    CODE -->|Exception thrown| MATCH{Matching<br/>catch block?}
+flowchart LR
+    START(["Enter try block"]) --> CODE{{"Execute try code"}}
+    CODE -->|No Exception| FINALLY1{{"Execute finally block"}}
+    CODE -->|Exception thrown| MATCH{"Matching<br/>catch block?"}
 
-    MATCH -->|Yes| CATCH[Execute catch block]
-    MATCH -->|No| FINALLY2[Execute finally block]
-    FINALLY2 --> PROPAGATE([Propagate exception up the call stack])
+    MATCH -->|Yes| CATCH{{"Execute catch block"}}
+    MATCH -->|No| FINALLY2{{"Execute finally block"}}
+    FINALLY2 --> PROPAGATE(["Propagate exception up the call stack"])
 
-    CATCH --> FINALLY3[Execute finally block]
-    FINALLY1 --> RETURN1([Return value from try])
-    FINALLY3 --> RETURN2([Continue after try-catch-finally])
+    CATCH --> FINALLY3{{"Execute finally block"}}
+    FINALLY1 --> RETURN1(["Return value from try"])
+    FINALLY3 --> RETURN2(["Continue after try-catch-finally"])
 
     NOTE1[/"NOTE: If finally has a return,<br/>it OVERRIDES the try/catch return!<br/>Never return from finally."/]
 

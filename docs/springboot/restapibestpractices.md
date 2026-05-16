@@ -1,293 +1,386 @@
-# 🌐 REST API Best Practices
+# REST API Best Practices
 
-> **Design APIs like a FAANG engineer — naming conventions, status codes, pagination, error handling, and more.**
+> Production-grade REST API design with Spring Boot. Internals, gotchas, and patterns from real-world APIs (Stripe, GitHub, Shopify).
 
 ```mermaid
 flowchart LR
-    A["Client"] -->|HTTP Request| B["REST API"]
-    B -->|JSON Response| A
-    B --> C["Resources"]
-    B --> D["Status Codes"]
-    B --> E["HATEOAS"]
-    B --> F["Versioning"]
-
-    style A fill:#DBEAFE,stroke:#2563EB
-    style B fill:#D1FAE5,stroke:#059669
-    style C fill:#FEF3C7,stroke:#D97706
-    style D fill:#FEF3C7,stroke:#D97706
-    style E fill:#FEF3C7,stroke:#D97706
-    style F fill:#FEF3C7,stroke:#D97706
+    Client -->|"HTTP Request"| Gateway["API Gateway"]
+    Gateway --> Auth["Auth Filter"]
+    Auth --> RateLimit["Rate Limiter"]
+    RateLimit --> Controller["@RestController"]
+    Controller --> Service["Service Layer"]
+    Service --> Repo["Repository"]
+    Repo --> DB[(Database)]
+    Controller -->|"JSON Response"| Client
 ```
 
 ---
 
-## 🧠 What is REST?
+## Richardson Maturity Model
 
-!!! abstract "REST = Representational State Transfer"
-    REST is an architectural style for building APIs that uses HTTP methods to perform CRUD operations on **resources** (represented as URLs). A RESTful API is **stateless** — each request contains all information needed to process it.
-
-### Stateless Architecture
+Most APIs claim to be "RESTful" but stop at Level 2. Know the levels — interviewers love this.
 
 ```mermaid
-flowchart TD
-    A["Client Request 1"] --> LB["Load Balancer"]
-    B["Client Request 2"] --> LB
-    C["Client Request 3"] --> LB
-    LB --> S1["Server 1"]
-    LB --> S2["Server 2"]
-    LB --> S3["Server 3"]
-
-    style LB fill:#DBEAFE,stroke:#2563EB
-    style S1 fill:#D1FAE5,stroke:#059669
-    style S2 fill:#D1FAE5,stroke:#059669
-    style S3 fill:#D1FAE5,stroke:#059669
+flowchart LR
+    L0[/"Level 0: Single URI, single verb (RPC/SOAP)"/]
+    L1{{"Level 1: Multiple URIs (resources), single verb"}}
+    L2{{"Level 2: HTTP verbs + status codes (most APIs today)"}}
+    L3(["Level 3: HATEOAS — hypermedia controls in responses"])
+    L0 --> L1 --> L2 --> L3
 ```
 
-!!! tip "Why Stateless?"
-    - **Scalable** — Any server can handle any request
-    - **Available** — If a server fails, traffic routes elsewhere
-    - **Simple** — No session state to synchronize
+| Level | What You Get | Example |
+|-------|-------------|---------|
+| 0 | Single endpoint, POST everything | `POST /api` with action in body |
+| 1 | Resources with URIs | `POST /orders`, `POST /users` |
+| 2 | Correct HTTP methods + status codes | `GET /orders/42` returns 200 |
+| 3 | Hypermedia links guide the client | Response includes `_links` |
+
+!!! info "Real World"
+    Most production APIs (Stripe, GitHub, Twilio) live at Level 2. HATEOAS (Level 3) is rare outside enterprise. Spring HATEOAS exists, but adoption is low.
 
 ---
 
-## 📝 HTTP Methods
+## URL Naming Conventions
 
-| Method | Purpose | Idempotent | Safe | Request Body |
-|--------|---------|:----------:|:----:|:------------:|
-| **GET** | Retrieve resource(s) | ✅ | ✅ | No |
-| **POST** | Create a resource | ❌ | ❌ | Yes |
-| **PUT** | Full update (replace) | ✅ | ❌ | Yes |
-| **PATCH** | Partial update | ❌ | ❌ | Yes |
-| **DELETE** | Remove a resource | ✅ | ❌ | No |
+### Golden Rules
 
-!!! tip "Idempotent = Same result no matter how many times you call it"
-    - `PUT /users/1 {name: "John"}` — always results in the same state
-    - `POST /users {name: "John"}` — creates a NEW user each time
-    - `DELETE /users/1` — first call deletes, subsequent calls return 404 (same final state)
+1. **Nouns, not verbs** — the HTTP method IS the verb
+2. **Plural nouns** — `/orders` not `/order`
+3. **Kebab-case** — `/order-items` not `/orderItems`
+4. **Hierarchy for relationships** — `/users/42/orders`
+5. **Max 2 levels of nesting** — beyond that, use query params or top-level resources
 
-### Spring Boot Controller Example
+| Bad | Good | Why |
+|-----|------|-----|
+| `GET /getUsers` | `GET /users` | Method already says GET |
+| `POST /createOrder` | `POST /orders` | Redundant verb |
+| `DELETE /user/1/remove` | `DELETE /users/1` | URL verb is noise |
+| `/users/1/orders/5/items/3/reviews` | `/reviews?itemId=3` | Too deep |
+| `/user` | `/users` | Always plural |
+
+### Actions That Don't Map to CRUD
+
+Some operations are inherently RPC-like. Use a verb sub-resource:
+
+```
+POST /orders/99/cancel
+POST /users/42/activate
+POST /payments/123/refund
+POST /reports/generate
+```
+
+!!! tip "Convention"
+    Stripe uses this pattern extensively: `POST /v1/charges/{id}/refund`. It is pragmatic and widely accepted.
+
+---
+
+## HTTP Methods and Idempotency
+
+| Method | Semantics | Idempotent | Safe | Has Body |
+|--------|-----------|:----------:|:----:|:--------:|
+| GET | Read resource(s) | Yes | Yes | No |
+| POST | Create / trigger action | No | No | Yes |
+| PUT | Full replacement | Yes | No | Yes |
+| PATCH | Partial update | No* | No | Yes |
+| DELETE | Remove resource | Yes | No | No |
+
+!!! warning "PATCH Idempotency Gotcha"
+    `PATCH /users/1 {"age": 30}` looks idempotent, but `PATCH /users/1 {"balance": "+10"}` is NOT — it increments each time. PATCH is not guaranteed idempotent by the HTTP spec.
+
+!!! danger "PUT Pitfall"
+    `PUT` means **full replacement**. If you send `PUT /users/1 {"name": "Alice"}` without the `email` field, the email becomes `null`. Many teams accidentally use PUT when they mean PATCH.
+
+### Idempotency Keys (Stripe Pattern)
+
+For non-idempotent operations (payments, order creation), use an `Idempotency-Key` header to prevent duplicate processing on retries:
 
 ```java
-@RestController
-@RequestMapping("/api/v1/users")
-@RequiredArgsConstructor
-public class UserController {
+@PostMapping("/payments")
+public ResponseEntity<PaymentDto> createPayment(
+        @RequestHeader("Idempotency-Key") String idempotencyKey,
+        @Valid @RequestBody PaymentRequest request) {
 
-    private final UserService userService;
-
-    @GetMapping
-    public ResponseEntity<Page<UserDto>> getUsers(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        return ResponseEntity.ok(userService.findAll(PageRequest.of(page, size)));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserRequest request) {
-        UserDto created = userService.create(request);
-        URI location = URI.create("/api/v1/users/" + created.getId());
-        return ResponseEntity.created(location).body(created);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateUserRequest request) {
-        return ResponseEntity.ok(userService.update(id, request));
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<UserDto> patchUser(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> updates) {
-        return ResponseEntity.ok(userService.patch(id, updates));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
+    // Check cache first — return stored response if key exists
+    return paymentCache.findByKey(idempotencyKey)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> {
+            PaymentDto result = paymentService.process(request);
+            paymentCache.store(idempotencyKey, result, Duration.ofHours(24));
+            return ResponseEntity.status(CREATED).body(result);
+        });
 }
 ```
 
 ---
 
-## 📊 HTTP Status Codes
+## HTTP Status Codes
 
 ### Success (2xx)
 
-| Code | Meaning | When to Use |
-|------|---------|-------------|
-| `200 OK` | Request succeeded | GET, PUT, PATCH responses |
-| `201 Created` | Resource created | POST (include `Location` header) |
-| `202 Accepted` | Processing started | Async operations |
-| `204 No Content` | Success, no body | DELETE, PUT with no response body |
+| Code | When | Spring Boot |
+|------|------|-------------|
+| 200 OK | GET, PUT, PATCH succeeded | `ResponseEntity.ok(body)` |
+| 201 Created | POST created a resource | `ResponseEntity.created(uri).body(dto)` |
+| 202 Accepted | Async job started (not done yet) | `ResponseEntity.accepted().body(jobStatus)` |
+| 204 No Content | DELETE succeeded, nothing to return | `ResponseEntity.noContent().build()` |
 
 ### Client Errors (4xx)
 
-| Code | Meaning | When to Use |
-|------|---------|-------------|
-| `400 Bad Request` | Invalid input | Validation failure, malformed JSON |
-| `401 Unauthorized` | Not authenticated | Missing or invalid credentials |
-| `403 Forbidden` | Not authorized | Authenticated but lacks permission |
-| `404 Not Found` | Resource doesn't exist | Invalid ID or path |
-| `405 Method Not Allowed` | Wrong HTTP method | POST to a GET-only endpoint |
-| `409 Conflict` | State conflict | Duplicate resource, version mismatch |
-| `422 Unprocessable Entity` | Semantic error | Valid JSON but business rule violation |
-| `429 Too Many Requests` | Rate limited | Include `Retry-After` header |
+| Code | When | Common Mistake |
+|------|------|----------------|
+| 400 Bad Request | Malformed JSON, missing required field | Using 400 for everything |
+| 401 Unauthorized | No credentials or expired token | Confusing with 403 |
+| 403 Forbidden | Authenticated but lacks permission | Should never leak resource existence |
+| 404 Not Found | Resource does not exist | Returning 200 with empty body |
+| 405 Method Not Allowed | POST to a GET-only endpoint | - |
+| 409 Conflict | Duplicate email, optimistic lock failure | Using 400 instead |
+| 422 Unprocessable Entity | Valid JSON but violates business rule | Not using at all |
+| 429 Too Many Requests | Rate limit exceeded | Missing `Retry-After` header |
 
 ### Server Errors (5xx)
 
-| Code | Meaning | When to Use |
-|------|---------|-------------|
-| `500 Internal Server Error` | Unexpected failure | Unhandled exceptions |
-| `502 Bad Gateway` | Upstream failure | Downstream service unavailable |
-| `503 Service Unavailable` | Temporarily down | Maintenance, overloaded |
+| Code | When |
+|------|------|
+| 500 Internal Server Error | Unhandled exception (your bug) |
+| 502 Bad Gateway | Upstream service returned garbage |
+| 503 Service Unavailable | Overloaded or in maintenance |
+| 504 Gateway Timeout | Upstream took too long |
+
+!!! danger "Never Expose Stack Traces"
+    A 500 response should return a generic message in production. Stack traces leak internal architecture to attackers. Use `@RestControllerAdvice` to catch everything.
 
 ---
 
-## 🏷️ Naming Conventions
+## Request/Response Design
 
-!!! tip "Golden Rules"
-    1. **Use nouns, not verbs** — resources are things, not actions
-    2. **Use plural nouns** — `/users` not `/user`
-    3. **Use kebab-case** — `/order-items` not `/orderItems`
-    4. **Use hierarchy for relationships** — `/users/42/orders`
+### DTOs Over Entities
 
-| ❌ Bad | ✅ Good | Why |
-|--------|---------|-----|
-| `/getUsers` | `/users` | HTTP method already implies GET |
-| `/createUser` | `POST /users` | Verb is redundant with HTTP method |
-| `/user/1/delete` | `DELETE /users/1` | Use HTTP method, not URL verb |
-| `/getUserOrders` | `/users/1/orders` | Use hierarchy |
-| `/user` | `/users` | Always plural |
+Never expose JPA entities directly. They leak internal schema, cause lazy-loading exceptions, and create security holes (mass assignment).
 
-### Special Actions (RPC-style exceptions)
+```java
+// Request DTO — only fields the client can set
+public record CreateProductRequest(
+    @NotBlank String name,
+    @Positive BigDecimal price,
+    @NotNull Long categoryId
+) {}
 
-Some operations don't map cleanly to CRUD. Use a verb sub-resource:
-
-```
-POST /users/42/activate
-POST /orders/99/cancel
-POST /reports/generate
+// Response DTO — only fields the client should see
+public record ProductResponse(
+    Long id,
+    String name,
+    BigDecimal price,
+    String categoryName,
+    Instant createdAt
+) {}
 ```
 
----
+!!! warning "Mass Assignment Attack"
+    If you bind request JSON directly to a JPA entity, an attacker can send `{"role": "ADMIN"}` and escalate privileges. Always use separate DTOs.
 
-## 📖 Versioning Strategies
+### Response Envelope Pattern
 
-=== "URI Path (Most Common)"
-
-    ```
-    GET /api/v1/users
-    GET /api/v2/users
-    ```
-
-    ```java
-    @RestController
-    @RequestMapping("/api/v1/users")
-    public class UserControllerV1 { }
-
-    @RestController
-    @RequestMapping("/api/v2/users")
-    public class UserControllerV2 { }
-    ```
-
-=== "Request Header"
-
-    ```
-    GET /api/users
-    Accept: application/vnd.myapp.v2+json
-    ```
-
-    ```java
-    @GetMapping(value = "/users", headers = "X-API-Version=2")
-    public List<UserV2Dto> getUsersV2() { }
-    ```
-
-=== "Query Parameter"
-
-    ```
-    GET /api/users?version=2
-    ```
-
-    ```java
-    @GetMapping(value = "/users", params = "version=2")
-    public List<UserV2Dto> getUsersV2() { }
-    ```
-
-!!! tip "Recommendation"
-    **URI Path versioning** is the most explicit, cacheable, and widely used in industry (Google, Stripe, GitHub).
-
----
-
-## 📄 Pagination
-
-### Request
-
-```
-GET /api/v1/users?page=0&size=20&sort=createdAt,desc
-```
-
-### Response (Spring Data Style)
+Wrap responses in a consistent envelope for metadata:
 
 ```json
 {
-  "content": [
-    {"id": 1, "name": "Alice"},
-    {"id": 2, "name": "Bob"}
-  ],
-  "page": {
-    "number": 0,
-    "size": 20,
-    "totalElements": 156,
-    "totalPages": 8
+  "data": { "id": 42, "name": "Wireless Mouse", "price": 29.99 },
+  "meta": { "requestId": "req_abc123", "timestamp": "2025-03-15T10:30:00Z" }
+}
+```
+
+### HATEOAS (Level 3 REST)
+
+The response tells the client what it can do next:
+
+```java
+@GetMapping("/{id}")
+public EntityModel<OrderResponse> getOrder(@PathVariable Long id) {
+    OrderResponse order = orderService.findById(id);
+    return EntityModel.of(order,
+        linkTo(methodOn(OrderController.class).getOrder(id)).withSelfRel(),
+        linkTo(methodOn(OrderController.class).cancelOrder(id)).withRel("cancel"),
+        linkTo(methodOn(PaymentController.class).getPayment(order.paymentId())).withRel("payment")
+    );
+}
+```
+
+Response:
+
+```json
+{
+  "id": 99,
+  "status": "PENDING",
+  "total": 149.99,
+  "_links": {
+    "self": { "href": "/api/v1/orders/99" },
+    "cancel": { "href": "/api/v1/orders/99/cancel" },
+    "payment": { "href": "/api/v1/payments/pay_abc" }
   }
 }
 ```
 
-### Spring Boot Implementation
+---
+
+## Pagination
+
+### Offset-Based vs Cursor-Based
+
+| | Offset (`?page=5&size=20`) | Cursor (`?after=abc123&limit=20`) |
+|---|---|---|
+| Pros | Simple, random access | Stable with real-time inserts/deletes |
+| Cons | Skips/duplicates on concurrent writes, slow at high offsets (DB does `OFFSET 10000`) | No random access, no "jump to page 5" |
+| Use When | Admin dashboards, moderate data | Feeds, infinite scroll, large datasets |
+
+!!! info "Why High Offsets Are Slow"
+    `SELECT * FROM products OFFSET 100000 LIMIT 20` — the DB still scans 100,000 rows to skip them. Cursor pagination uses `WHERE id > :lastId LIMIT 20` which uses an index seek.
+
+### Spring Boot Offset Pagination
 
 ```java
-@GetMapping
-public ResponseEntity<Page<UserDto>> getUsers(
-        @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
-        Pageable pageable) {
-    return ResponseEntity.ok(userService.findAll(pageable));
+@GetMapping("/products")
+public ResponseEntity<Page<ProductResponse>> listProducts(
+        @PageableDefault(size = 20, sort = "createdAt", direction = DESC) Pageable pageable) {
+    return ResponseEntity.ok(productService.findAll(pageable));
+}
+```
+
+Request: `GET /api/v1/products?page=0&size=20&sort=price,asc`
+
+### Spring Boot Cursor Pagination
+
+```java
+@GetMapping("/feed")
+public ResponseEntity<CursorPage<PostResponse>> getFeed(
+        @RequestParam(required = false) String after,
+        @RequestParam(defaultValue = "20") int limit) {
+
+    List<Post> posts = (after == null)
+        ? postRepo.findTopByOrderByCreatedAtDesc(Limit.of(limit + 1))
+        : postRepo.findByIdLessThanOrderByCreatedAtDesc(decodeCursor(after), Limit.of(limit + 1));
+
+    boolean hasMore = posts.size() > limit;
+    if (hasMore) posts = posts.subList(0, limit);
+
+    String nextCursor = hasMore ? encodeCursor(posts.getLast().getId()) : null;
+    return ResponseEntity.ok(new CursorPage<>(posts.stream().map(this::toDto).toList(), nextCursor));
 }
 ```
 
 ---
 
-## ❌ Error Handling (RFC 7807 — Problem Details)
+## Filtering, Sorting, Searching
 
-!!! abstract "Standard Error Format"
-    RFC 7807 defines a standard JSON format for error responses, supported natively in Spring Boot 3+.
+### Filtering
 
-### Error Response Structure
+Use query params. Keep it flat and composable:
+
+```
+GET /api/v1/products?category=electronics&minPrice=10&maxPrice=100&inStock=true
+```
+
+Spring Boot with Specification pattern:
+
+```java
+@GetMapping("/products")
+public Page<ProductResponse> search(
+        @RequestParam(required = false) String category,
+        @RequestParam(required = false) BigDecimal minPrice,
+        @RequestParam(required = false) BigDecimal maxPrice,
+        @RequestParam(required = false) Boolean inStock,
+        Pageable pageable) {
+
+    Specification<Product> spec = Specification.where(null);
+    if (category != null) spec = spec.and(hasCategory(category));
+    if (minPrice != null) spec = spec.and(priceGreaterThan(minPrice));
+    if (maxPrice != null) spec = spec.and(priceLessThan(maxPrice));
+    if (inStock != null) spec = spec.and(isInStock(inStock));
+
+    return productRepo.findAll(spec, pageable).map(mapper::toResponse);
+}
+```
+
+### Sorting
+
+```
+GET /api/v1/products?sort=price,asc&sort=name,desc
+```
+
+Spring's `Pageable` handles multi-field sorting automatically from query params.
+
+### Full-Text Search
+
+```
+GET /api/v1/products?q=wireless+mouse
+```
+
+For simple cases, use `LIKE` or PostgreSQL `tsvector`. For production search, offload to Elasticsearch/OpenSearch and expose a `/search` endpoint.
+
+---
+
+## Versioning Strategies
+
+| Strategy | Example | Pros | Cons |
+|----------|---------|------|------|
+| URI Path | `/api/v1/users` | Explicit, cacheable, easy to route | URL changes |
+| Custom Header | `X-API-Version: 2` | Clean URLs | Hidden, not cacheable |
+| Media Type | `Accept: application/vnd.app.v2+json` | RESTful purist choice | Complex, tooling issues |
+| Query Param | `?version=2` | Simple | Ugly, caching issues |
+
+=== "URI Path (Recommended)"
+
+    ```java
+    @RestController
+    @RequestMapping("/api/v1/orders")
+    public class OrderControllerV1 {
+        @GetMapping("/{id}")
+        public OrderV1Response getOrder(@PathVariable Long id) { ... }
+    }
+
+    @RestController
+    @RequestMapping("/api/v2/orders")
+    public class OrderControllerV2 {
+        @GetMapping("/{id}")
+        public OrderV2Response getOrder(@PathVariable Long id) { ... }
+    }
+    ```
+
+=== "Media Type"
+
+    ```java
+    @GetMapping(value = "/{id}", produces = "application/vnd.myapp.v2+json")
+    public OrderV2Response getOrderV2(@PathVariable Long id) { ... }
+    ```
+
+=== "Header-Based"
+
+    ```java
+    @GetMapping(value = "/{id}", headers = "X-API-Version=2")
+    public OrderV2Response getOrderV2(@PathVariable Long id) { ... }
+    ```
+
+!!! tip "Industry Choice"
+    Stripe, Google, and GitHub all use URI path versioning. It is the most debuggable (visible in logs, browser, curl).
+
+---
+
+## Error Handling — RFC 7807 Problem Details
+
+Spring Boot 3+ supports RFC 7807 natively. No more custom error formats.
+
+### Standard Error Response
 
 ```json
 {
-  "type": "https://api.myapp.com/errors/validation-failed",
-  "title": "Validation Failed",
-  "status": 400,
-  "detail": "The request body contains invalid fields",
-  "instance": "/api/v1/users",
+  "type": "https://api.shopify.example/errors/out-of-stock",
+  "title": "Product Out of Stock",
+  "status": 409,
+  "detail": "Product 'Wireless Mouse' (SKU: WM-001) has 0 units available",
+  "instance": "/api/v1/orders",
+  "timestamp": "2025-03-15T10:30:00Z",
   "errors": [
-    {
-      "field": "email",
-      "message": "must be a valid email address"
-    },
-    {
-      "field": "age",
-      "message": "must be greater than 0"
-    }
+    { "field": "items[0].quantity", "message": "requested 5 but only 0 available" }
   ]
 }
 ```
@@ -299,179 +392,375 @@ public ResponseEntity<Page<UserDto>> getUsers(
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ProblemDetail handleNotFound(ResourceNotFoundException ex) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-            HttpStatus.NOT_FOUND, ex.getMessage());
-        problem.setTitle("Resource Not Found");
-        problem.setType(URI.create("https://api.myapp.com/errors/not-found"));
-        return problem;
+    public ProblemDetail handleNotFound(ResourceNotFoundException ex, HttpServletRequest req) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        pd.setTitle("Resource Not Found");
+        pd.setType(URI.create("https://api.example.com/errors/not-found"));
+        pd.setInstance(URI.create(req.getRequestURI()));
+        pd.setProperty("timestamp", Instant.now());
+        return pd;
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ProblemDetail handleValidation(ConstraintViolationException ex) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-            HttpStatus.BAD_REQUEST, "Validation failed");
-        problem.setTitle("Validation Error");
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
+        pd.setTitle("Validation Error");
 
-        List<Map<String, String>> errors = ex.getConstraintViolations().stream()
-            .map(v -> Map.of(
-                "field", v.getPropertyPath().toString(),
-                "message", v.getMessage()))
+        List<Map<String, String>> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
+            .map(fe -> Map.of("field", fe.getField(), "message", fe.getDefaultMessage()))
             .toList();
+        pd.setProperty("errors", fieldErrors);
+        return pd;
+    }
 
-        problem.setProperty("errors", errors);
-        return problem;
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    public ProblemDetail handleConflict(OptimisticLockingFailureException ex) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        pd.setTitle("Conflict — Resource Modified");
+        pd.setProperty("suggestion", "Re-fetch the resource and retry your update");
+        return pd;
+    }
+
+    // Catch-all: never leak stack traces
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handleUnexpected(Exception ex) {
+        log.error("Unhandled exception", ex);
+        return ProblemDetail.forStatusAndDetail(
+            HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
     }
 }
 ```
+
+!!! tip "Enable RFC 7807 Globally"
+    In `application.yml`:
+    ```yaml
+    spring:
+      mvc:
+        problemdetails:
+          enabled: true
+    ```
 
 ---
 
-## 🔗 HATEOAS (Hypermedia as the Engine of Application State)
+## Rate Limiting
 
-!!! abstract "What is HATEOAS?"
-    The API response includes **links** telling the client what actions are available next — no need to hardcode URLs.
+### Response Headers (Industry Standard)
 
-```json
-{
-  "id": 42,
-  "name": "John Doe",
-  "email": "john@example.com",
-  "_links": {
-    "self": { "href": "/api/v1/users/42" },
-    "orders": { "href": "/api/v1/users/42/orders" },
-    "update": { "href": "/api/v1/users/42", "method": "PUT" },
-    "delete": { "href": "/api/v1/users/42", "method": "DELETE" }
-  }
-}
+```
+HTTP/1.1 200 OK
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 742
+X-RateLimit-Reset: 1623456789
+
+HTTP/1.1 429 Too Many Requests
+Retry-After: 30
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 0
 ```
 
-### Spring HATEOAS Example
+### Spring Boot with Bucket4j
 
 ```java
-@GetMapping("/{id}")
-public EntityModel<UserDto> getUser(@PathVariable Long id) {
-    UserDto user = userService.findById(id);
+@Component
+public class RateLimitFilter extends OncePerRequestFilter {
 
-    return EntityModel.of(user,
-        linkTo(methodOn(UserController.class).getUser(id)).withSelfRel(),
-        linkTo(methodOn(UserController.class).getUsers(Pageable.unpaged())).withRel("users"),
-        linkTo(methodOn(OrderController.class).getOrdersByUser(id)).withRel("orders")
-    );
+    private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res,
+                                     FilterChain chain) throws ServletException, IOException {
+        String clientId = resolveClientId(req);
+        Bucket bucket = buckets.computeIfAbsent(clientId, this::createBucket);
+        ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
+
+        res.setHeader("X-RateLimit-Limit", "100");
+        res.setHeader("X-RateLimit-Remaining", String.valueOf(probe.getRemainingTokens()));
+
+        if (probe.isConsumed()) {
+            chain.doFilter(req, res);
+        } else {
+            res.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+            res.setHeader("Retry-After", String.valueOf(probe.getNanosToWaitForRefill() / 1_000_000_000));
+            res.getWriter().write("{\"title\":\"Rate Limit Exceeded\",\"status\":429}");
+        }
+    }
+
+    private Bucket createBucket(String key) {
+        return Bucket.builder()
+            .addLimit(Bandwidth.classic(100, Refill.intervally(100, Duration.ofMinutes(1))))
+            .build();
+    }
 }
 ```
 
+!!! info "Production Rate Limiting"
+    For distributed systems, use Redis-backed rate limiting (Spring Cloud Gateway has built-in `RequestRateLimiter` filter with Redis). Single-node `ConcurrentHashMap` only works for single-instance deployments.
+
 ---
 
-## 🔄 Content Negotiation
+## Content Negotiation
 
-Allow clients to specify desired response format:
+Spring Boot auto-negotiates based on the `Accept` header. Add XML support with one dependency:
+
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformat-xml</artifactId>
+</dependency>
+```
 
 ```java
 @GetMapping(value = "/{id}", produces = {
     MediaType.APPLICATION_JSON_VALUE,
     MediaType.APPLICATION_XML_VALUE
 })
-public UserDto getUser(@PathVariable Long id) {
-    return userService.findById(id);
+public ProductResponse getProduct(@PathVariable Long id) {
+    return productService.findById(id);
 }
 ```
 
-**Client specifies format via `Accept` header:**
+Request with `Accept: application/xml` returns XML. Default is JSON.
 
-```
-GET /api/v1/users/42
-Accept: application/json
-
-GET /api/v1/users/42
-Accept: application/xml
-```
+!!! warning "Content-Type vs Accept"
+    `Content-Type` = "I am sending you this format" (request body). `Accept` = "I want the response in this format". Mixing these up is a common interview mistake.
 
 ---
 
-## 🛡️ Idempotency
+## API Documentation — SpringDoc / OpenAPI
 
-!!! warning "Why Idempotency Matters"
-    Network failures happen. If a client retries a request, will it cause duplicate side effects?
+### Setup
 
-### Idempotency Key Pattern
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.5.0</version>
+</dependency>
+```
+
+```yaml
+# application.yml
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+```
+
+### Annotating Endpoints
 
 ```java
-@PostMapping("/payments")
-public ResponseEntity<PaymentDto> createPayment(
-        @RequestHeader("Idempotency-Key") String idempotencyKey,
-        @Valid @RequestBody PaymentRequest request) {
+@Operation(summary = "Create a new order", description = "Places an order for the authenticated user")
+@ApiResponses({
+    @ApiResponse(responseCode = "201", description = "Order created"),
+    @ApiResponse(responseCode = "400", description = "Invalid request body"),
+    @ApiResponse(responseCode = "409", description = "Insufficient stock")
+})
+@PostMapping("/orders")
+public ResponseEntity<OrderResponse> createOrder(
+        @Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Order details") CreateOrderRequest request) {
+    // ...
+}
+```
 
-    // Check if this key was already processed
-    Optional<Payment> existing = paymentService.findByIdempotencyKey(idempotencyKey);
-    if (existing.isPresent()) {
-        return ResponseEntity.ok(toDto(existing.get())); // Return cached response
+!!! tip "Documentation as Code"
+    SpringDoc generates the OpenAPI spec from your code. Keep annotations close to controller methods. The Swagger UI at `/swagger-ui.html` is auto-generated — no separate YAML file needed.
+
+---
+
+## Security Best Practices
+
+### Authentication Flow
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API as Spring Boot API
+    participant Auth as Auth Server (OAuth2)
+    participant DB as Database
+
+    Client->>Auth: POST /oauth/token (credentials)
+    Auth-->>Client: JWT access_token + refresh_token
+    Client->>API: GET /api/v1/orders (Bearer token)
+    API->>API: Validate JWT signature + claims
+    API->>DB: Fetch orders for user
+    API-->>Client: 200 OK + orders
+```
+
+### Security Checklist
+
+| Practice | Implementation |
+|----------|---------------|
+| Always HTTPS | Redirect HTTP -> HTTPS at load balancer |
+| Use short-lived JWTs | 15 min access token + refresh token |
+| Validate all input | `@Valid` + Bean Validation + custom validators |
+| Rate limit auth endpoints | Stricter limits on `/login`, `/register` |
+| CORS restrictions | Explicit allowed origins, never `*` in production |
+| No sensitive data in URLs | Tokens/passwords in headers or body only |
+| Audit logging | Log who did what, when, from where |
+
+### CORS Configuration
+
+```java
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                    .allowedOrigins("https://myapp.com", "https://admin.myapp.com")
+                    .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
+                    .allowedHeaders("Authorization", "Content-Type")
+                    .exposedHeaders("X-RateLimit-Remaining")
+                    .maxAge(3600);
+            }
+        };
+    }
+}
+```
+
+### Input Validation
+
+```java
+public record CreateUserRequest(
+    @NotBlank @Size(min = 2, max = 50)
+    String name,
+
+    @NotBlank @Email
+    String email,
+
+    @NotBlank @Size(min = 8, max = 100)
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).+$",
+             message = "must contain uppercase, digit, and special char")
+    String password,
+
+    @Past
+    LocalDate dateOfBirth
+) {}
+```
+
+!!! danger "SQL Injection Still Happens"
+    Never concatenate user input into queries. Use `@Query` with `:namedParams` or Spring Data derived methods. JPA parameterized queries handle escaping.
+
+---
+
+## Complete Controller Example (E-Commerce)
+
+Putting it all together — a production-style controller:
+
+```java
+@RestController
+@RequestMapping("/api/v1/products")
+@RequiredArgsConstructor
+@Tag(name = "Products", description = "Product catalog management")
+public class ProductController {
+
+    private final ProductService productService;
+
+    @GetMapping
+    @Operation(summary = "List products with filtering and pagination")
+    public ResponseEntity<Page<ProductResponse>> listProducts(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) String q,
+            @PageableDefault(size = 20, sort = "createdAt", direction = DESC) Pageable pageable) {
+        return ResponseEntity.ok(productService.search(category, minPrice, maxPrice, q, pageable));
     }
 
-    Payment payment = paymentService.process(request, idempotencyKey);
-    return ResponseEntity.status(HttpStatus.CREATED).body(toDto(payment));
+    @GetMapping("/{id}")
+    @Operation(summary = "Get product by ID")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.findById(id));
+    }
+
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Create a new product (admin only)")
+    public ResponseEntity<ProductResponse> createProduct(
+            @Valid @RequestBody CreateProductRequest request) {
+        ProductResponse created = productService.create(request);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}").buildAndExpand(created.id()).toUri();
+        return ResponseEntity.created(location).body(created);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductResponse> replaceProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateProductRequest request) {
+        return ResponseEntity.ok(productService.replace(id, request));
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductResponse> updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody PatchProductRequest request) {
+        return ResponseEntity.ok(productService.patch(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable Long id) {
+        productService.delete(id);
+    }
 }
 ```
 
 ---
 
-## 🚦 Rate Limiting
+## Interview Questions & Answers
 
-Include rate limit info in response headers:
+??? question "1. What is the Richardson Maturity Model?"
+    Four levels of REST maturity. Level 0: single URI, single verb (RPC). Level 1: resources with URIs. Level 2: proper HTTP verbs and status codes. Level 3: HATEOAS with hypermedia links. Most production APIs (Stripe, GitHub) target Level 2. Level 3 adds discoverability but is rarely implemented due to complexity and client coupling.
 
-```
-HTTP/1.1 200 OK
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 87
-X-RateLimit-Reset: 1623456789
+??? question "2. PUT vs PATCH — when do you use each?"
+    PUT = full replacement. You must send ALL fields; missing ones become null. PATCH = partial update, only send changed fields. Gotcha: PUT is always idempotent, PATCH is NOT guaranteed idempotent (e.g., `{"balance": "+10"}`). Use PATCH for typical "update this field" operations. Use PUT when the client owns the full representation.
 
-HTTP/1.1 429 Too Many Requests
-Retry-After: 60
-```
+??? question "3. How do you make POST idempotent?"
+    Use an `Idempotency-Key` header. The client generates a unique key (UUID). Server stores the key + response. On retry with the same key, return the cached response instead of processing again. Stripe popularized this pattern. Store keys in Redis with a TTL (24h is typical).
 
----
+??? question "4. What is the difference between 401 and 403?"
+    401 Unauthorized = not authenticated (who are you? show credentials). 403 Forbidden = authenticated but not authorized (I know who you are, you cannot do this). On a 401, the client should re-authenticate. On a 403, re-authenticating will not help — the user lacks the required role/permission.
 
-## 📋 Complete Best Practices Checklist
+??? question "5. Offset pagination vs cursor pagination — tradeoffs?"
+    Offset: simple, supports "jump to page N", but breaks with concurrent writes (skipped/duplicate items) and degrades at high offsets (DB scans all skipped rows). Cursor: stable under concurrent writes, fast at any depth (uses index seek), but no random page access. Use offset for admin dashboards; cursor for user-facing feeds and infinite scroll.
 
-| Practice | Description |
-|----------|-------------|
-| Use nouns, not verbs | `/users` not `/getUsers` |
-| Use plural resources | `/orders` not `/order` |
-| Use proper HTTP methods | GET=read, POST=create, PUT=replace, PATCH=update, DELETE=remove |
-| Return proper status codes | 201 for created, 204 for deleted, 404 for not found |
-| Version your API | `/api/v1/...` |
-| Paginate collections | `?page=0&size=20` |
-| Support filtering/sorting | `?status=active&sort=name,asc` |
-| Use Problem Details for errors | RFC 7807 format |
-| Implement rate limiting | 429 + Retry-After header |
-| Use HTTPS always | Never expose plain HTTP |
-| Document with OpenAPI/Swagger | Auto-generate from code |
-| Use idempotency keys | For non-idempotent operations |
+??? question "6. How does Spring Boot 3 handle RFC 7807 Problem Details?"
+    Spring Boot 3 has native support. Return `ProblemDetail` from exception handlers. Set `spring.mvc.problemdetails.enabled=true`. The response automatically includes `type`, `title`, `status`, `detail`, `instance`. You can add custom properties via `setProperty()`. Extend `ResponseEntityExceptionHandler` in your `@RestControllerAdvice` for consistent error formatting.
 
----
+??? question "7. How do you prevent mass assignment vulnerabilities?"
+    Never bind request JSON directly to JPA entities. Use separate request DTOs with only the fields the client is allowed to set. The DTO is validated with Bean Validation, then mapped to the entity in the service layer. This prevents attackers from injecting fields like `role` or `isAdmin` that exist on the entity but should not be client-settable.
 
-## 🎯 Interview Questions & Answers
+??? question "8. Why is URI path versioning preferred over header versioning?"
+    URI path (`/api/v1/`) is visible in logs, browser address bars, curl commands, and cache keys. Header versioning hides the version, making debugging harder. URI path works with all HTTP caches (CDNs, proxies) without custom config. Downside: version is part of the URL, so URL changes on version bump — but in practice this is manageable.
 
-??? question "1. What makes an API RESTful?"
-    A RESTful API follows REST principles: uses HTTP methods correctly, is stateless, identifies resources via URIs, uses standard status codes, and supports content negotiation. Bonus: uses HATEOAS for discoverability.
+??? question "9. How do you implement rate limiting in a distributed system?"
+    Use a centralized store (Redis) with a sliding window or token bucket algorithm. Spring Cloud Gateway has a built-in `RequestRateLimiter` filter backed by Redis. Return `429 Too Many Requests` with `Retry-After` and `X-RateLimit-*` headers. For per-user limits, key on the authenticated user ID; for anonymous, key on IP (but beware shared IPs behind NAT/CDN).
 
-??? question "2. What is the difference between PUT and PATCH?"
-    **PUT** replaces the entire resource (send ALL fields — missing fields become null). **PATCH** updates only the specified fields (partial update). PUT is idempotent; PATCH is not necessarily idempotent.
+??? question "10. What is content negotiation and how does Spring handle it?"
+    The client specifies desired response format via the `Accept` header. Spring Boot resolves the best matching `HttpMessageConverter`. JSON is the default (Jackson). Add `jackson-dataformat-xml` for XML support. Use `produces` in `@GetMapping` to restrict formats. Custom media types (e.g., `application/vnd.app.v2+json`) enable media-type versioning.
 
-??? question "3. What does idempotent mean?"
-    An operation is idempotent if making the same request multiple times produces the same result as making it once. GET, PUT, DELETE are idempotent. POST is NOT idempotent (each call may create a new resource).
+??? question "11. How do you design a search/filter API that scales?"
+    Flat query parameters for simple filters (`?status=active&minPrice=10`). Use Spring Data Specifications for composable, type-safe queries. For full-text search, offload to Elasticsearch. Always combine filters with pagination. Add index hints for common query patterns. Avoid allowing arbitrary `ORDER BY` — whitelist sortable fields to prevent index misses.
 
-??? question "4. How do you handle errors in a REST API?"
-    Use appropriate HTTP status codes (4xx for client errors, 5xx for server errors) and return structured error bodies following RFC 7807 (Problem Details). Include: type, title, status, detail, and optionally field-level errors.
+??? question "12. What HTTP status code do you return for validation errors vs business rule violations?"
+    400 Bad Request for syntactic/structural issues (malformed JSON, missing required fields, type mismatches). 422 Unprocessable Entity for semantic/business rule violations (valid JSON but "cannot place order — insufficient balance"). In practice, many APIs use 400 for both — the key is consistent, structured error bodies with field-level details.
 
-??? question "5. What is HATEOAS?"
-    Hypermedia as the Engine of Application State. The API response includes links to related resources and available actions, allowing clients to navigate the API dynamically without hardcoded URLs. It's the highest maturity level (Level 3) of the Richardson Maturity Model.
+??? question "13. How do you secure a REST API beyond authentication?"
+    Input validation (Bean Validation + custom). Rate limiting (per-user and per-endpoint). CORS restrictions (explicit origins, never `*`). HTTPS everywhere. Short-lived tokens (15 min JWT + refresh). Audit logging. No sensitive data in URLs or logs. OWASP headers (X-Content-Type-Options, Strict-Transport-Security). SQL injection prevention via parameterized queries. Principle of least privilege on endpoints (`@PreAuthorize`).
 
-??? question "6. How do you version a REST API?"
-    Three strategies: **URI path** (`/api/v1/users` — most common), **Header** (`Accept: application/vnd.app.v2+json`), **Query param** (`?version=2`). URI path is simplest and most cacheable.
+??? question "14. When should you use 202 Accepted?"
+    When the server has accepted the request but processing is not yet complete. Classic examples: video transcoding, report generation, bulk imports. Return a 202 with a body containing a job ID and a status-check URL (`Location: /api/v1/jobs/abc123`). The client polls or uses webhooks to get the final result. Never return 200 and pretend async work is done.
 
-??? question "7. What is the difference between 401 and 403?"
-    **401 Unauthorized** = not authenticated (who are you?). **403 Forbidden** = authenticated but not authorized (I know who you are, but you cannot do this). 401 means "log in again"; 403 means "you do not have permission."
-
-??? question "8. How should you implement pagination?"
-    Use query parameters (`?page=0&size=20&sort=field,direction`). Return metadata with the response: current page, total elements, total pages. Spring Data's `Pageable` + `Page<T>` handles this out of the box.
+??? question "15. What is HATEOAS and is it worth implementing?"
+    HATEOAS = responses include links to available actions (like HTML links for machines). Benefit: client decouples from URL structure; the API becomes self-documenting. Cost: extra complexity, larger payloads, clients rarely use it dynamically. Verdict: valuable for public APIs with many consumers (reduces breaking changes). Overkill for internal microservice-to-microservice calls where both sides are under your control.

@@ -10,18 +10,18 @@
     Every house follows the same construction **template**: lay foundation, build walls, install roof, add windows, paint. But a **wooden house** uses timber frames while a **brick house** uses masonry. The **overall process** (template) stays the same; only specific **steps** differ between types. The architect defines the template; the builders customize the steps.
 
 ```mermaid
-flowchart TD
-    T["📐 Template: Build House"]
-    T --> S1["1️⃣ Lay Foundation"]
-    S1 --> S2["2️⃣ Build Walls"]
-    S2 --> S3["3️⃣ Install Roof"]
-    S3 --> S4["4️⃣ Add Windows"]
-    S4 --> S5["5️⃣ Paint"]
+flowchart LR
+    T{{"📐 Template: Build House"}}
+    T --> S1(["1️⃣ Lay Foundation"])
+    S1 --> S2(["2️⃣ Build Walls"])
+    S2 --> S3(["3️⃣ Install Roof"])
+    S3 --> S4(["4️⃣ Add Windows"])
+    S4 --> S5(["5️⃣ Paint"])
     
-    S2 -.->|wooden| W["🪵 Timber Frames"]
-    S2 -.->|brick| B["🧱 Masonry"]
-    S3 -.->|wooden| WR["🏡 Wooden Shingles"]
-    S3 -.->|brick| BR["🏠 Clay Tiles"]
+    S2 -.->|wooden| W[/"🪵 Timber Frames"/]
+    S2 -.->|brick| B[/"🧱 Masonry"/]
+    S3 -.->|wooden| WR[/"🏡 Wooden Shingles"/]
+    S3 -.->|brick| BR[/"🏠 Clay Tiles"/]
     
     style T fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#000
     style S1 fill:#F3E5F5,stroke:#6A1B9A,color:#000
@@ -40,10 +40,10 @@ flowchart TD
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    AbstractClass["📋 AbstractClass\n+ templateMethod()\n# step1()\n# step2() — abstract\n# step3() — abstract\n# hook()"]
-    ConcreteClassA["🏠 ConcreteClassA\n# step2()\n# step3()"]
-    ConcreteClassB["🏢 ConcreteClassB\n# step2()\n# step3()\n# hook()"]
+flowchart LR
+    AbstractClass[["📋 AbstractClass\n+ templateMethod()\n# step1()\n# step2() — abstract\n# step3() — abstract\n# hook()"]]
+    ConcreteClassA(["🏠 ConcreteClassA\n# step2()\n# step3()"])
+    ConcreteClassB(["🏢 ConcreteClassB\n# step2()\n# step3()\n# hook()"])
 
     ConcreteClassA --> AbstractClass
     ConcreteClassB --> AbstractClass
@@ -51,6 +51,37 @@ flowchart TD
     style AbstractClass fill:#7c3aed,color:#fff
     style ConcreteClassA fill:#a78bfa,color:#fff
     style ConcreteClassB fill:#a78bfa,color:#fff
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class DataProcessor {
+        <<abstract>>
+        +process(String source) void
+        #extractData()* String
+        #parseData(String rawData)* List~Record~
+        #generateReport(List~Record~ records)* void
+        #filterData(List~Record~ records) List~Record~
+        #analyzeData(List~Record~ records) void
+    }
+    class CsvDataProcessor {
+        #extractData() String
+        #parseData(String rawData) List~Record~
+        #generateReport(List~Record~ records) void
+    }
+    class ApiDataProcessor {
+        #extractData() String
+        #parseData(String rawData) List~Record~
+        #filterData(List~Record~ records) List~Record~
+        #generateReport(List~Record~ records) void
+    }
+
+    CsvDataProcessor --|> DataProcessor
+    ApiDataProcessor --|> DataProcessor
 ```
 
 ---

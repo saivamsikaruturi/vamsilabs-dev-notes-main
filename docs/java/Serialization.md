@@ -7,16 +7,16 @@ Serialization converts an **object into a byte stream** so it can be saved to a 
 ## How It Works
 
 ```mermaid
-graph LR
-    subgraph Serialization ✍️
+flowchart LR
+    subgraph Serialization
         direction LR
-        A["☕ Java Object"] -->|serialize| B["🔢 Byte Stream"]
-        B --> C["💾 File / DB / Network"]
+        A(("Java Object")) -->|serialize| B[/"Byte Stream"/]
+        B --> C(["File / DB / Network"])
     end
-    subgraph Deserialization 📖
+    subgraph Deserialization
         direction LR
-        D["💾 File / DB / Network"] -->|deserialize| E["🔢 Byte Stream"]
-        E --> F["☕ Java Object<br/><i>restored</i>"]
+        D(["File / DB / Network"]) -->|deserialize| E[/"Byte Stream"/]
+        E --> F(("Java Object<br/><i>restored</i>"))
     end
 
     style A fill:#4CAF50,color:#fff
@@ -198,9 +198,9 @@ public class Product implements Externalizable {
 ## Serialization with Inheritance
 
 ```mermaid
-graph TD
-    Parent["🚫 Parent<br/><i>NOT Serializable</i><br/>Fields get DEFAULT values"]
-    Child["✅ Child<br/><i>Serializable</i><br/>Fields ARE serialized"]
+flowchart LR
+    Parent{{"Parent<br/><i>NOT Serializable</i><br/>Fields get DEFAULT values"}}
+    Child(["Child<br/><i>Serializable</i><br/>Fields ARE serialized"])
     Parent -->|extends| Child
 
     style Parent fill:#FF5252,color:#fff,stroke:#B71C1C,stroke-width:2px

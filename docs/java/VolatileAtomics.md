@@ -9,19 +9,22 @@ These are the **low-level building blocks** of thread-safe code. Understanding t
 Without `volatile`, one thread's changes to a variable may **never be seen** by another thread.
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph CPU Core 1
-        T1["🧵 Thread-1<br/>CPU Cache: flag = <b>true</b>"]
+        direction LR
+        T1(("Thread-1<br/>CPU Cache: flag = <b>true</b>"))
     end
     subgraph CPU Core 2
-        T2["🧵 Thread-2<br/>CPU Cache: flag = <b>false</b><br/><i>never sees update!</i>"]
+        direction LR
+        T2(("Thread-2<br/>CPU Cache: flag = <b>false</b><br/><i>never sees update!</i>"))
     end
     subgraph Main Memory
-        MM["🗄️ flag = true"]
+        direction LR
+        MM[["flag = true"]]
     end
 
     T1 -->|writes| MM
-    MM -.->|❌ NOT synced| T2
+    MM -.->|NOT synced| T2
 
     style T1 fill:#4CAF50,color:#fff
     style T2 fill:#F44336,color:#fff
@@ -135,11 +138,11 @@ if (initialized.compareAndSet(false, true)) {
 CAS is the CPU instruction that makes Atomic classes work. It's **lock-free** — no thread ever blocks.
 
 ```mermaid
-graph TD
-    Start["🔄 CAS(memory, expected, new)"] --> Read["1️⃣ Read current value"]
+flowchart LR
+    Start(("CAS(memory, expected, new)")) --> Read[/"Read current value"/]
     Read --> Check{"current == expected?"}
-    Check -->|"✅ Yes"| Write["2️⃣ Write new_value<br/>🎉 SUCCESS"]
-    Check -->|"❌ No"| Retry["3️⃣ Do nothing<br/>🔁 FAIL — retry"]
+    Check -->|"Yes"| Write(["Write new_value<br/>SUCCESS"])
+    Check -->|"No"| Retry(["Do nothing<br/>FAIL — retry"])
     Retry --> Read
 
     style Start fill:#7C4DFF,color:#fff

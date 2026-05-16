@@ -115,20 +115,20 @@ int larger = Utils.max(10, 20);                 // 20
 Restrict what types can be used with generics.
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph legend["🎯 Type Parameter Hierarchy"]
-        direction TB
-        W["<b>? (Unbounded)</b><br/>Any type at all"]
-        UB["<b>? extends T</b><br/>Upper Bound — T or subtypes"]
-        LB["<b>? super T</b><br/>Lower Bound — T or supertypes"]
+        direction LR
+        W(["<b>? (Unbounded)</b><br/>Any type at all"])
+        UB(["<b>? extends T</b><br/>Upper Bound — T or subtypes"])
+        LB(["<b>? super T</b><br/>Lower Bound — T or supertypes"])
     end
 
     subgraph example["Example: Number Hierarchy"]
-        direction TB
-        OBJ["Object"]
-        NUM["Number"]
-        INT["Integer"]
-        DBL["Double"]
+        direction LR
+        OBJ(("Object"))
+        NUM(("Number"))
+        INT(("Integer"))
+        DBL(("Double"))
         
         OBJ --> NUM
         NUM --> INT
@@ -136,10 +136,10 @@ flowchart TB
     end
 
     subgraph bounds["Wildcard Scope"]
-        direction TB
-        EXT["? extends Number<br/>✅ Integer, Double, Float<br/>❌ Object, String"]
-        SUP["? super Integer<br/>✅ Integer, Number, Object<br/>❌ Double, String"]
-        UNB["?<br/>✅ Anything"]
+        direction LR
+        EXT{{"? extends Number<br/>✅ Integer, Double, Float<br/>❌ Object, String"}}
+        SUP{{"? super Integer<br/>✅ Integer, Number, Object<br/>❌ Double, String"}}
+        UNB{{"?<br/>✅ Anything"}}
     end
 
     W --- UNB
@@ -249,7 +249,7 @@ You can **write** T to it, but when **reading** you only get `Object`.
 ```mermaid
 flowchart LR
     subgraph PRODUCER["📤 PRODUCER (extends)"]
-        direction TB
+        direction LR
         P1["Collection<b> PRODUCES </b>data"]
         P2["You <b>READ</b> from it"]
         P3["Use: <b>? extends T</b>"]
@@ -257,7 +257,7 @@ flowchart LR
     end
 
     subgraph CONSUMER["📥 CONSUMER (super)"]
-        direction TB
+        direction LR
         C1["Collection <b>CONSUMES</b> data"]
         C2["You <b>WRITE</b> to it"]
         C3["Use: <b>? super T</b>"]
@@ -265,7 +265,7 @@ flowchart LR
     end
 
     subgraph BOTH["🔄 BOTH"]
-        direction TB
+        direction LR
         B1["Read AND Write"]
         B2["Use: <b>T</b> (no wildcard)"]
         B1 --> B2
@@ -323,14 +323,14 @@ Java generics are a **compile-time feature**. At runtime, all generic type infor
 ```mermaid
 flowchart LR
     subgraph SOURCE["📝 Source Code (Compile Time)"]
-        direction TB
+        direction LR
         S1["List&lt;String&gt; names"]
         S2["List&lt;Integer&gt; ages"]
         S3["Box&lt;Double&gt; box"]
     end
 
     subgraph COMPILER["⚙️ Java Compiler"]
-        direction TB
+        direction LR
         C1["✅ Type Check"]
         C2["✅ Insert Casts"]
         C3["🗑️ Erase Types"]
@@ -338,7 +338,7 @@ flowchart LR
     end
 
     subgraph BYTECODE["💾 Bytecode (Runtime)"]
-        direction TB
+        direction LR
         B1["List names"]
         B2["List ages"]
         B3["Box box"]
@@ -348,7 +348,7 @@ flowchart LR
     SOURCE --> COMPILER --> BYTECODE
 
     subgraph CANT["❌ Cannot Do at Runtime"]
-        direction TB
+        direction LR
         X1["new T()"]
         X2["instanceof List&lt;String&gt;"]
         X3["new T[10]"]
@@ -418,19 +418,19 @@ void process(List<Integer> list) {}  // COMPILE ERROR — same erasure: process(
 Use this flowchart in interviews to quickly decide which wildcard to use:
 
 ```mermaid
-flowchart TD
-    START["🤔 Which wildcard<br/>should I use?"]
+flowchart LR
+    START(("🤔 Which wildcard<br/>should I use?"))
     Q1{"Do you know the<br/>exact type?"}
     Q2{"Do you need to<br/>READ or WRITE?"}
     Q3{"Only READ<br/>or only WRITE?"}
     Q4{"Do you care about<br/>the type at all?"}
 
-    A1["Use concrete type<br/><b>List&lt;T&gt;</b>"]
-    A2["Use <b>? extends T</b><br/>📤 Producer Extends"]
-    A3["Use <b>? super T</b><br/>📥 Consumer Super"]
-    A4["Use concrete <b>T</b><br/>No wildcard needed"]
-    A5["Use <b>?</b><br/>Unbounded wildcard"]
-    A6["Use concrete type<br/><b>List&lt;MyClass&gt;</b>"]
+    A1[["Use concrete type<br/><b>List&lt;T&gt;</b>"]]
+    A2(["Use <b>? extends T</b><br/>📤 Producer Extends"])
+    A3(["Use <b>? super T</b><br/>📥 Consumer Super"])
+    A4[/"Use concrete <b>T</b><br/>No wildcard needed"/]
+    A5{{"Use <b>?</b><br/>Unbounded wildcard"}}
+    A6[/"Use concrete type<br/><b>List&lt;MyClass&gt;</b>"/]
 
     START --> Q1
     Q1 -->|"Yes, same type"| A6

@@ -46,18 +46,18 @@ flowchart LR
 ## String vs StringBuilder vs StringBuffer — Decision Flowchart
 
 ```mermaid
-flowchart TD
-    START([Need to work with text?]) --> Q1{Will the string<br/>be modified?}
+flowchart LR
+    START(["Need to work with text?"]) --> Q1{"Will the string<br/>be modified?"}
 
-    Q1 -->|No - value is constant| STR[Use String<br/>Immutable, cached, safe]
-    Q1 -->|Yes - building/modifying| Q2{Multiple threads<br/>accessing it?}
+    Q1 -->|No - value is constant| STR(["Use String<br/>Immutable, cached, safe"])
+    Q1 -->|Yes - building/modifying| Q2{"Multiple threads<br/>accessing it?"}
 
-    Q2 -->|No - single thread| SB[Use StringBuilder<br/>Fastest, no sync overhead]
-    Q2 -->|Yes - shared across threads| SBF[Use StringBuffer<br/>Synchronized, thread-safe]
+    Q2 -->|No - single thread| SB(["Use StringBuilder<br/>Fastest, no sync overhead"])
+    Q2 -->|Yes - shared across threads| SBF(["Use StringBuffer<br/>Synchronized, thread-safe"])
 
-    STR --> TIP1["Tip: String Pool saves memory<br/>hashCode is cached for HashMap keys"]
-    SB --> TIP2["Tip: Use for loops, concatenation<br/>O(n) vs O(n squared) with String +"]
-    SBF --> TIP3["Tip: Consider StringBuilder +<br/>external sync for better control"]
+    STR --> TIP1[/"Tip: String Pool saves memory<br/>hashCode is cached for HashMap keys"/]
+    SB --> TIP2[/"Tip: Use for loops, concatenation<br/>O(n) vs O(n squared) with String +"/]
+    SBF --> TIP3[/"Tip: Consider StringBuilder +<br/>external sync for better control"/]
 
     style START fill:#4a148c,stroke:#4a148c,color:#ffffff
     style Q1 fill:#fff9c4,stroke:#f9a825

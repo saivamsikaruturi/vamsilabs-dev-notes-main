@@ -26,14 +26,14 @@ flowchart LR
 ## 🏗️ Structure
 
 ```mermaid
-flowchart TD
-    A[Client] -->|clone| B[Prototype Interface]
-    B --> C[ConcretePrototype A]
-    B --> D[ConcretePrototype B]
-    C -->|clone| E[Copy of A]
-    D -->|clone| F[Copy of B]
+flowchart LR
+    A(["Client"]) -->|clone| B[["Prototype Interface"]]
+    B --> C{{"ConcretePrototype A"}}
+    B --> D{{"ConcretePrototype B"}}
+    C -->|clone| E(("Copy of A"))
+    D -->|clone| F(("Copy of B"))
     
-    G[Prototype Registry] -->|stores| C
+    G[/"Prototype Registry"/] -->|stores| C
     G -->|stores| D
     A -->|lookup| G
 
@@ -44,6 +44,45 @@ flowchart TD
     style E fill:#C8E6C9,stroke:#2E7D32,color:#000
     style F fill:#C8E6C9,stroke:#2E7D32,color:#000
     style G fill:#F3E5F5,stroke:#6A1B9A,color:#000
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class Prototype {
+        <<interface>>
+        +clone() Prototype
+    }
+    class Employee {
+        -name : String
+        -department : String
+        -address : Address
+        -skills : List~String~
+        +clone() Employee
+        +shallowClone() Employee
+    }
+    class Address {
+        -street : String
+        -city : String
+        -country : String
+    }
+    class ShapePrototypeRegistry {
+        -prototypes : Map~String, Shape~
+        +get(String key) Shape
+        +register(String key, Shape prototype) void
+    }
+
+    Employee ..|> Prototype
+    Employee *-- Address : contains
+    ShapePrototypeRegistry o-- Prototype : stores
+
+    style Prototype fill:#FFF3E0,stroke:#E65100,color:#000
+    style Employee fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Address fill:#E3F2FD,stroke:#1565C0,color:#000
+    style ShapePrototypeRegistry fill:#F3E5F5,stroke:#6A1B9A,color:#000
 ```
 
 ---

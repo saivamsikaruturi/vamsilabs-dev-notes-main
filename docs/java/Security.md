@@ -9,11 +9,11 @@ Java ships with a battle-tested security framework built into the platform. From
 Java security is built on multiple layers that work together to protect applications at every level.
 
 ```mermaid
-graph TB
-    L1["Language Safety<br/><i>Type safety, bounds checking</i>"] --> L2["Bytecode Verification<br/><i>Class loader validates bytecode</i>"]
-    L2 --> L3["Access Control<br/><i>SecurityManager (deprecated JDK 17+)</i>"]
-    L3 --> L4["Cryptography — JCA / JCE<br/><i>Hashing, encryption, signatures</i>"]
-    L4 --> L5["Secure Communication — JSSE<br/><i>TLS/SSL, HTTPS</i>"]
+flowchart LR
+    L1(["Language Safety<br/><i>Type safety, bounds checking</i>"]) --> L2{{"Bytecode Verification<br/><i>Class loader validates bytecode</i>"}}
+    L2 --> L3{{"Access Control<br/><i>SecurityManager (deprecated JDK 17+)</i>"}}
+    L3 --> L4{{"Cryptography — JCA / JCE<br/><i>Hashing, encryption, signatures</i>"}}
+    L4 --> L5(["Secure Communication — JSSE<br/><i>TLS/SSL, HTTPS</i>"])
 ```
 
 | Layer | Package | Purpose |

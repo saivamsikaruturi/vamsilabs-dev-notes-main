@@ -26,17 +26,17 @@ flowchart LR
 ## ❓ When to Use Async vs Sync
 
 ```mermaid
-flowchart TD
-    Q["Does the caller need<br/>an immediate response?"]
-    Q -->|"Yes"| Sync["🔄 Synchronous<br/>(REST/gRPC)"]
-    Q -->|"No"| Async["📨 Asynchronous<br/>(Kafka/RabbitMQ)"]
+flowchart LR
+    Q{"Does the caller need<br/>an immediate response?"}
+    Q -->|"Yes"| Sync{{"🔄 Synchronous<br/>(REST/gRPC)"}}
+    Q -->|"No"| Async{{"📨 Asynchronous<br/>(Kafka/RabbitMQ)"}}
     
-    Sync --> S1["Payment validation"]
-    Sync --> S2["User authentication"]
+    Sync --> S1(["Payment validation"])
+    Sync --> S2(["User authentication"])
     
-    Async --> A1["Send notification"]
-    Async --> A2["Update analytics"]
-    Async --> A3["Process in background"]
+    Async --> A1(["Send notification"])
+    Async --> A2(["Update analytics"])
+    Async --> A3(["Process in background"])
 
     style Sync fill:#E3F2FD,stroke:#1565C0,color:#000
     style Async fill:#E8F5E9,stroke:#2E7D32,color:#000
@@ -54,22 +54,22 @@ flowchart TD
 ## 🏗️ Kafka Architecture
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Cluster["Kafka Cluster"]
         subgraph Topic["📋 Topic: order-events"]
-            P0["Partition 0<br/>msg1, msg4, msg7"]
-            P1["Partition 1<br/>msg2, msg5, msg8"]
-            P2["Partition 2<br/>msg3, msg6, msg9"]
+            P0[("Partition 0<br/>msg1, msg4, msg7")]
+            P1[("Partition 1<br/>msg2, msg5, msg8")]
+            P2[("Partition 2<br/>msg3, msg6, msg9")]
         end
     end
     
-    Prod1["Producer 1"] --> P0
-    Prod2["Producer 2"] --> P1
+    Prod1[/"Producer 1"/] --> P0
+    Prod2[/"Producer 2"/] --> P1
     Prod2 --> P2
     
     subgraph CG["Consumer Group A"]
-        C1["Consumer 1"] 
-        C2["Consumer 2"]
+        C1{{"Consumer 1"}} 
+        C2{{"Consumer 2"}}
     end
     
     P0 --> C1

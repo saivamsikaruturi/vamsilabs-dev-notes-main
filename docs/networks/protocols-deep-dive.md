@@ -211,16 +211,16 @@ sequenceDiagram
 ### Zero Trust Microsegmentation Architecture
 
 ```mermaid
-flowchart TD
-    PE["Policy Engine\n(Identity + Device Health + Risk)"]
+flowchart LR
+    PE{{"Policy Engine\n(Identity + Device Health + Risk)"}}
 
     PE -->|"distributes policies"| WLA
     PE -->|"distributes policies"| WLB
     PE -->|"distributes policies"| WLC
 
-    WLA["Workload A"] <-->|"allowed"| DBA["Database A"]
-    WLC["Workload C"] <-->|"allowed"| APIC["API C"]
-    WLA x--x|"DEFAULT DENY"| WLB["Workload B"]
+    WLA(["Workload A"]) <-->|"allowed"| DBA[["Database A"]]
+    WLC(["Workload C"]) <-->|"allowed"| APIC[["API C"]]
+    WLA x--x|"DEFAULT DENY"| WLB(["Workload B"])
     WLB x--x|"DEFAULT DENY"| WLC
 
     style PE fill:#FEF3C7,stroke:#D97706,color:#92400E

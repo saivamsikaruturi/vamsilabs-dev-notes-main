@@ -40,13 +40,14 @@ sequenceDiagram
 Introduced in Java 1.4: **buffer-oriented**, **channel-based** I/O with optional **non-blocking** mode.
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "NIO Architecture"
-        S[Selector] -->|monitors| C1[SocketChannel 1]
-        S -->|monitors| C2[SocketChannel 2]
-        S -->|monitors| C3[ServerSocketChannel]
-        C1 -->|reads/writes| B1[ByteBuffer]
-        C2 -->|reads/writes| B2[ByteBuffer]
+        direction LR
+        S(("Selector")) -->|monitors| C1[["SocketChannel 1"]]
+        S -->|monitors| C2[["SocketChannel 2"]]
+        S -->|monitors| C3[["ServerSocketChannel"]]
+        C1 -->|reads/writes| B1[/"ByteBuffer"/]
+        C2 -->|reads/writes| B2[/"ByteBuffer"/]
     end
 ```
 
@@ -129,11 +130,11 @@ while (!channel.finishConnect()) { /* do other work */ }
 A **single thread** monitors multiple channels for readiness events.
 
 ```mermaid
-graph LR
-    SEL[Selector] -->|OP_ACCEPT| SSC[ServerSocketChannel]
-    SEL -->|OP_READ| SC1[Client 1]
-    SEL -->|OP_READ| SC2[Client 2]
-    SEL -->|OP_WRITE| SC3[Client 3]
+flowchart LR
+    SEL(("Selector")) -->|OP_ACCEPT| SSC[["ServerSocketChannel"]]
+    SEL -->|OP_READ| SC1(["Client 1"])
+    SEL -->|OP_READ| SC2(["Client 2"])
+    SEL -->|OP_WRITE| SC3(["Client 3"])
 ```
 
 | Operation | Constant | Meaning |
@@ -176,16 +177,18 @@ while (true) {
 ## Blocking vs Non-blocking I/O
 
 ```mermaid
-graph TB
+flowchart LR
     subgraph "Blocking I/O"
-        T1[Thread 1] -->|blocked| C1[Client 1]
-        T2[Thread 2] -->|blocked| C2[Client 2]
-        TN[Thread N] -->|blocked| CN[Client N]
+        direction LR
+        T1(("Thread 1")) -->|blocked| C1(["Client 1"])
+        T2(("Thread 2")) -->|blocked| C2(["Client 2"])
+        TN(("Thread N")) -->|blocked| CN(["Client N"])
     end
     subgraph "Non-blocking I/O"
-        ET[Event Loop] -->|ready?| NC1[Client 1]
-        ET -->|ready?| NC2[Client 2]
-        ET -->|ready?| NCN[Client N]
+        direction LR
+        ET{{"Event Loop"}} -->|ready?| NC1(["Client 1"])
+        ET -->|ready?| NC2(["Client 2"])
+        ET -->|ready?| NCN(["Client N"])
     end
 ```
 
@@ -238,20 +241,22 @@ sequenceDiagram
 ## Event Loop Pattern (Netty/Reactor)
 
 ```mermaid
-graph TD
+flowchart LR
     subgraph "Boss Group (1 thread)"
-        BOSS[Boss EventLoop] -->|accept| SSC2[ServerSocketChannel]
+        direction LR
+        BOSS{{"Boss EventLoop"}} -->|accept| SSC2[["ServerSocketChannel"]]
     end
     subgraph "Worker Group (N threads)"
-        W1[Worker EventLoop 1]
-        W2[Worker EventLoop 2]
+        direction LR
+        W1{{"Worker EventLoop 1"}}
+        W2{{"Worker EventLoop 2"}}
     end
     BOSS -->|register| W1
     BOSS -->|register| W2
-    W1 -->|I/O| CH1[Channel 1]
-    W1 -->|I/O| CH2[Channel 2]
-    W2 -->|I/O| CH3[Channel 3]
-    CH1 --> P1[Pipeline: Decode > Logic > Encode]
+    W1 -->|I/O| CH1(["Channel 1"])
+    W1 -->|I/O| CH2(["Channel 2"])
+    W2 -->|I/O| CH3(["Channel 3"])
+    CH1 --> P1(["Pipeline: Decode > Logic > Encode"])
 ```
 
 **How Netty uses NIO:** Boss EventLoop accepts connections via Selector, Worker EventLoops each run a Selector monitoring many channels. Channel Pipeline chains handlers. Zero-copy via direct buffers and `transferTo()`.
@@ -392,15 +397,15 @@ client.newWebSocketBuilder()
 | Custom binary protocols | Netty | Codec pipeline, backpressure |
 
 ```mermaid
-graph TD
-    START{What are you building?} -->|File I/O| F{File size?}
-    START -->|Network Server| N{Connections?}
-    START -->|HTTP Client| HC[Java HttpClient]
-    F -->|Small| FS[Files.readString]
-    F -->|Large| FL[MappedByteBuffer]
-    N -->|< 1000| NL[java.io thread-per-conn]
-    N -->|1K-10K| NM[NIO Selector]
-    N -->|> 10K| NH[Netty]
+flowchart LR
+    START{"What are you building?"} -->|File I/O| F{"File size?"}
+    START -->|Network Server| N{"Connections?"}
+    START -->|HTTP Client| HC(["Java HttpClient"])
+    F -->|Small| FS(["Files.readString"])
+    F -->|Large| FL(["MappedByteBuffer"])
+    N -->|"< 1000"| NL(["java.io thread-per-conn"])
+    N -->|1K-10K| NM(["NIO Selector"])
+    N -->|"> 10K"| NH(["Netty"])
 ```
 
 ---

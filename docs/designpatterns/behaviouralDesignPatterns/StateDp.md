@@ -28,12 +28,12 @@ flowchart LR
 ## 🏗️ Pattern Structure
 
 ```mermaid
-flowchart TD
-    Context["🎮 Context\n- state: State\n+ setState(state)\n+ request()"]
-    State["🔄 State\n(Interface)\n+ handle(context)"]
-    ConcreteStateA["🟢 ConcreteStateA\n+ handle(context)"]
-    ConcreteStateB["🟡 ConcreteStateB\n+ handle(context)"]
-    ConcreteStateC["🔴 ConcreteStateC\n+ handle(context)"]
+flowchart LR
+    Context(["🎮 Context\n- state: State\n+ setState(state)\n+ request()"])
+    State[["🔄 State\n(Interface)\n+ handle(context)"]]
+    ConcreteStateA(("🟢 ConcreteStateA\n+ handle(context)"))
+    ConcreteStateB(("🟡 ConcreteStateB\n+ handle(context)"))
+    ConcreteStateC(("🔴 ConcreteStateC\n+ handle(context)"))
 
     Context --> State
     ConcreteStateA --> State
@@ -47,6 +47,67 @@ flowchart TD
     style ConcreteStateA fill:#22c55e,color:#fff
     style ConcreteStateB fill:#eab308,color:#000
     style ConcreteStateC fill:#ef4444,color:#fff
+```
+
+---
+
+## UML Class Diagram
+
+```mermaid
+classDiagram
+    class OrderState {
+        <<interface>>
+        +next(Order order) void
+        +previous(Order order) void
+        +cancel(Order order) void
+        +getStatus() String
+    }
+    class Order {
+        -state: OrderState
+        -orderId: String
+        +setState(OrderState state) void
+        +nextStep() void
+        +previousStep() void
+        +cancel() void
+        +getStatus() String
+    }
+    class PendingState {
+        +next(Order order) void
+        +previous(Order order) void
+        +cancel(Order order) void
+        +getStatus() String
+    }
+    class ConfirmedState {
+        +next(Order order) void
+        +previous(Order order) void
+        +cancel(Order order) void
+        +getStatus() String
+    }
+    class ShippedState {
+        +next(Order order) void
+        +previous(Order order) void
+        +cancel(Order order) void
+        +getStatus() String
+    }
+    class DeliveredState {
+        +next(Order order) void
+        +previous(Order order) void
+        +cancel(Order order) void
+        +getStatus() String
+    }
+    class CancelledState {
+        +next(Order order) void
+        +previous(Order order) void
+        +cancel(Order order) void
+        +getStatus() String
+    }
+
+    Order --> OrderState : delegates to
+    PendingState ..|> OrderState
+    ConfirmedState ..|> OrderState
+    ShippedState ..|> OrderState
+    DeliveredState ..|> OrderState
+    CancelledState ..|> OrderState
 ```
 
 ---

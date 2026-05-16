@@ -36,27 +36,27 @@ The client sees a **single virtual IP (VIP)**. The LB transparently fans out tra
 ### L4 (Transport Layer) vs L7 (Application Layer)
 
 ```mermaid
-flowchart TB
+flowchart LR
     classDef l4Style fill:#3498DB,stroke:#2471A3,color:#fff
     classDef l7Style fill:#9B59B6,stroke:#7D3C98,color:#fff
     classDef noteStyle fill:#F9E79F,stroke:#D4AC0D,color:#333
 
     subgraph L4["L4 - Transport Layer"]
         direction LR
-        A1[Sees: IP, Port, TCP/UDP]:::l4Style
-        A2[Fast packet forwarding]:::l4Style
-        A3[No payload inspection]:::l4Style
+        A1{{"Sees: IP, Port, TCP/UDP"}}:::l4Style
+        A2(["Fast packet forwarding"]):::l4Style
+        A3[/"No payload inspection"/]:::l4Style
     end
 
     subgraph L7["L7 - Application Layer"]
         direction LR
-        B1[Sees: HTTP headers, URL, cookies]:::l7Style
-        B2[Content-based routing]:::l7Style
-        B3[SSL termination, caching]:::l7Style
+        B1{{"Sees: HTTP headers, URL, cookies"}}:::l7Style
+        B2(["Content-based routing"]):::l7Style
+        B3[/"SSL termination, caching"/]:::l7Style
     end
 
-    L4 -.->|"Lower latency, less CPU"| N1[Use for raw throughput]:::noteStyle
-    L7 -.->|"More intelligence, more CPU"| N2[Use for microservices routing]:::noteStyle
+    L4 -.->|"Lower latency, less CPU"| N1(["Use for raw throughput"]):::noteStyle
+    L7 -.->|"More intelligence, more CPU"| N2(["Use for microservices routing"]):::noteStyle
 ```
 
 | Feature | L4 (Transport) | L7 (Application) |
@@ -165,7 +165,7 @@ flowchart LR
     classDef reqStyle fill:#F39C12,stroke:#B9770E,color:#fff
 
     subgraph Ring["Hash Ring (0 to 2^32)"]
-        direction TB
+        direction LR
         S1["Server A (pos 90)"]:::ringStyle
         S2["Server B (pos 200)"]:::ringStyle
         S3["Server C (pos 310)"]:::ringStyle
@@ -220,25 +220,25 @@ A load balancer must detect unhealthy backends and stop sending them traffic.
 ### Active vs Passive Health Checks
 
 ```mermaid
-flowchart TB
+flowchart LR
     classDef activeStyle fill:#2ECC71,stroke:#1B8C4E,color:#fff
     classDef passiveStyle fill:#E74C3C,stroke:#A93226,color:#fff
     classDef lbStyle fill:#E67E22,stroke:#A85C16,color:#fff
 
-    LB[Load Balancer]:::lbStyle
+    LB{{"Load Balancer"}}:::lbStyle
 
     subgraph Active["Active Health Checks"]
-        direction TB
-        A1["LB sends periodic probe (every 5-30s)"]:::activeStyle
-        A2["Expects 200 OK or TCP ACK"]:::activeStyle
-        A3["Marks server DOWN after N failures"]:::activeStyle
+        direction LR
+        A1[/"LB sends periodic probe (every 5-30s)"/]:::activeStyle
+        A2(["Expects 200 OK or TCP ACK"]):::activeStyle
+        A3[["Marks server DOWN after N failures"]]:::activeStyle
     end
 
     subgraph Passive["Passive Health Checks"]
-        direction TB
-        P1["LB monitors real traffic responses"]:::passiveStyle
-        P2["Detects 5xx errors or timeouts"]:::passiveStyle
-        P3["Marks DOWN after error threshold"]:::passiveStyle
+        direction LR
+        P1[/"LB monitors real traffic responses"/]:::passiveStyle
+        P2(["Detects 5xx errors or timeouts"]):::passiveStyle
+        P3[["Marks DOWN after error threshold"]]:::passiveStyle
     end
 
     LB --> Active
@@ -287,17 +287,17 @@ Some applications require that a client's requests consistently reach the same b
 The load balancer itself must not be a single point of failure.
 
 ```mermaid
-flowchart TB
+flowchart LR
     classDef activeStyle fill:#27AE60,stroke:#1B7A43,color:#fff
     classDef passiveStyle fill:#95A5A6,stroke:#717D7E,color:#fff
     classDef vipStyle fill:#8E44AD,stroke:#6C3483,color:#fff
     classDef clientStyle fill:#4A90D9,stroke:#2C5F8A,color:#fff
 
-    Client[Clients]:::clientStyle --> VIP[Virtual IP / Floating IP]:::vipStyle
-    VIP --> LB1[LB Active]:::activeStyle
-    VIP -.->|"failover"| LB2[LB Standby]:::passiveStyle
+    Client(("Clients")):::clientStyle --> VIP{{"Virtual IP / Floating IP"}}:::vipStyle
+    VIP --> LB1(["LB Active"]):::activeStyle
+    VIP -.->|"failover"| LB2[/"LB Standby"/]:::passiveStyle
     LB1 <-->|"heartbeat (VRRP)"| LB2
-    LB1 --> Servers[Backend Pool]
+    LB1 --> Servers[["Backend Pool"]]
     LB2 -.-> Servers
 ```
 
@@ -334,19 +334,19 @@ flowchart TB
 GSLB distributes traffic across **geographically distributed data centers** using DNS-based routing.
 
 ```mermaid
-flowchart TB
+flowchart LR
     classDef clientStyle fill:#4A90D9,stroke:#2C5F8A,color:#fff
     classDef dnsStyle fill:#F39C12,stroke:#B9770E,color:#fff
     classDef dcStyle fill:#27AE60,stroke:#1B7A43,color:#fff
 
-    User[User in Europe]:::clientStyle --> DNS[GeoDNS / GSLB]:::dnsStyle
-    DNS -->|"Closest DC"| EU[EU Data Center]:::dcStyle
-    DNS -.->|"Failover"| US[US Data Center]:::dcStyle
-    DNS -.->|"Failover"| APAC[APAC Data Center]:::dcStyle
+    User(("User in Europe")):::clientStyle --> DNS{{"GeoDNS / GSLB"}}:::dnsStyle
+    DNS -->|"Closest DC"| EU(["EU Data Center"]):::dcStyle
+    DNS -.->|"Failover"| US(["US Data Center"]):::dcStyle
+    DNS -.->|"Failover"| APAC(["APAC Data Center"]):::dcStyle
 
-    EU --> LB1[Regional LB]
-    US --> LB2[Regional LB]
-    APAC --> LB3[Regional LB]
+    EU --> LB1[/"Regional LB"/]
+    US --> LB2[/"Regional LB"/]
+    APAC --> LB3[/"Regional LB"/]
 ```
 
 ### How GeoDNS Works
