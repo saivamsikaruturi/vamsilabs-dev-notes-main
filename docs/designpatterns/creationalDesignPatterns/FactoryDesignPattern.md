@@ -9,21 +9,14 @@
 
 ```mermaid
 flowchart LR
-    HQ{{"🏢 Headquarters<br/>(Factory Interface)<br/>'Deliver this package!'"}}
-    HQ --> L(["🏪 Local Office"])
-    HQ --> O(["🏪 Overseas Office"])
-    HQ --> E(["🏪 Express Office"])
-    L -->|creates| T(("🚛 Truck"))
-    O -->|creates| S(("🚢 Ship"))
-    E -->|creates| P(("✈️ Plane"))
+    HQ["🏢 Headquarters"] -->|"local"| L["🏪 Local Office"] -->|"creates"| T(["🚛 Truck"])
+    HQ -->|"overseas"| O["🏪 Overseas Office"] -->|"creates"| S(["🚢 Ship"])
     
     style HQ fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
     style L fill:#E8F5E9,stroke:#2E7D32,color:#000
     style O fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style E fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style T fill:#BBDEFB,stroke:#1565C0,color:#000
-    style S fill:#BBDEFB,stroke:#1565C0,color:#000
-    style P fill:#BBDEFB,stroke:#1565C0,color:#000
+    style T fill:#FFF8E1,stroke:#F9A825,color:#000
+    style S fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---
@@ -32,21 +25,21 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A(["Client"]) --> B[["Creator - Abstract"]]
-    B --> C{{"ConcreteCreatorA"}}
-    B --> D{{"ConcreteCreatorB"}}
-    C -->|creates| E(("ProductA"))
-    D -->|creates| F(("ProductB"))
-    E --> G[["Product Interface"]]
-    F --> G
+    A["🟢 Client"] -->|"uses"| B[["🏭 Creator"]]
+    B -->|"extends"| C{{"📧 EmailFactory"}}
+    B -->|"extends"| D{{"📱 SmsFactory"}}
+    C -->|"creates"| E(["📧 Email"])
+    D -->|"creates"| F(["📱 Sms"])
+    E -.->|"implements"| G[["📦 Product"]]
+    F -.->|"implements"| G
 
-    style A fill:#E3F2FD,stroke:#1565C0,color:#000
-    style B fill:#FFF3E0,stroke:#E65100,color:#000
-    style C fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style D fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style E fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style F fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style G fill:#FCE4EC,stroke:#C62828,color:#000
+    style A fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style B fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style C fill:#E3F2FD,stroke:#1565C0,color:#000
+    style D fill:#E3F2FD,stroke:#1565C0,color:#000
+    style E fill:#FFF8E1,stroke:#F9A825,color:#000
+    style F fill:#FFF8E1,stroke:#F9A825,color:#000
+    style G fill:#FFF3E0,stroke:#E65100,color:#000
 ```
 
 ---

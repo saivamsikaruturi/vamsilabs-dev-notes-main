@@ -9,16 +9,16 @@
 
 ```mermaid
 flowchart LR
-    A["👤 Citizen A"] -->|Who's the president?| P["🏛️ THE PRESIDENT<br/>(only ONE)"]
-    B["👤 Citizen B"] -->|Who's the president?| P
-    C["👤 Citizen C"] -->|Who's the president?| P
-    D["👤 Citizen D"] -->|Who's the president?| P
+    A["👤 Citizen A"] -->|"asks"| P["🏛️ The President"]
+    B["👤 Citizen B"] -->|"asks"| P
+    C["👤 Citizen C"] -->|"asks"| P
+    P -->|"same answer"| R(["🎯 One Instance"])
     
-    style P fill:#FEF3C7,stroke:#D97706,stroke-width:3px,color:#000
+    style P fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
     style A fill:#E3F2FD,stroke:#1565C0,color:#000
     style B fill:#E3F2FD,stroke:#1565C0,color:#000
     style C fill:#E3F2FD,stroke:#1565C0,color:#000
-    style D fill:#E3F2FD,stroke:#1565C0,color:#000
+    style R fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---
@@ -27,16 +27,14 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A(["Client Code"]) -->|getInstance| B{{"Singleton Class"}}
-    B --> C(("Private Static Instance"))
-    B --> D{"Private Constructor"}
-    B --> E(["Public getInstance Method"])
+    A["🟢 Client"] -->|"getInstance()"| B[["🎯 Singleton"]]
+    B -->|"returns"| C(["📦 Single Instance"])
+    D["🔒 Private Constructor"] -.->|"blocks new"| B
     
-    style A fill:#E3F2FD,stroke:#1565C0,color:#000
-    style B fill:#FFF3E0,stroke:#E65100,color:#000
-    style C fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style A fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style B fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style C fill:#FFF8E1,stroke:#F9A825,color:#000
     style D fill:#FCE4EC,stroke:#C62828,color:#000
-    style E fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---

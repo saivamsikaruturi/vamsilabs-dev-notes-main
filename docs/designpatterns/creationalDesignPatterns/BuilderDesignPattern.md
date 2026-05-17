@@ -9,14 +9,13 @@
 
 ```mermaid
 flowchart LR
-    A["🍞 Bun"] --> B["🥩 Patty"] --> C["🧀 Cheese"] --> D["🥬 Lettuce"] --> E["🍅 Tomato"] --> F["🍔 BURGER!"]
+    A["🍞 Bun"] -->|"add"| B["🥩 Patty"] -->|"add"| C["🧀 Cheese"] -->|"add"| D["🥬 Toppings"] -->|"build!"| F["🍔 Burger!"]
     
     style A fill:#FFF3E0,stroke:#E65100,color:#000
-    style B fill:#FFCCBC,stroke:#BF360C,color:#000
-    style C fill:#FFF9C4,stroke:#F57F17,color:#000
-    style D fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style E fill:#FFCDD2,stroke:#C62828,color:#000
-    style F fill:#FEF3C7,stroke:#D97706,stroke-width:3px,color:#000
+    style B fill:#FCE4EC,stroke:#C62828,color:#000
+    style C fill:#FFF8E1,stroke:#F9A825,color:#000
+    style D fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style F fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
 ```
 
 ---
@@ -25,18 +24,18 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A[Director] --> B[Builder Interface]
-    B --> C[ConcreteBuilder A]
-    B --> D[ConcreteBuilder B]
-    C -->|builds| E[Product A]
-    D -->|builds| F[Product B]
+    A["🟢 Director"] -->|"directs"| B[["🔨 Builder"]]
+    B -->|"extends"| C{{"🏠 House Builder"}}
+    B -->|"extends"| D{{"🏢 Office Builder"}}
+    C -->|"builds"| E(["🏠 House"])
+    D -->|"builds"| F(["🏢 Office"])
 
-    style A fill:#E3F2FD,stroke:#1565C0,color:#000
-    style B fill:#FFF3E0,stroke:#E65100,color:#000
-    style C fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style D fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style E fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style F fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    style A fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style B fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style C fill:#E3F2FD,stroke:#1565C0,color:#000
+    style D fill:#E3F2FD,stroke:#1565C0,color:#000
+    style E fill:#FFF8E1,stroke:#F9A825,color:#000
+    style F fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---

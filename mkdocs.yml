@@ -106,6 +106,9 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 
+hooks:
+  - hooks/mermaid_compact.py
+
 plugins:
   - search:
       separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
@@ -134,7 +137,7 @@ nav:
       - Learning Path: learning.md
       - Shortcuts: shortcuts.md
       - Git: git.md
-      - Interview Questions: interviewquestions.md
+      - Interview Preparation Strategy: interviewquestions.md
       - DSA: dsa.md
       - Behavioral (Amazon LPs): behavioral/behavioral.md
   - Java:

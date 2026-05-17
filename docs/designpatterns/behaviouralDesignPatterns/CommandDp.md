@@ -11,18 +11,13 @@
 
 ```mermaid
 flowchart LR
-    You["🧑 You<br/>(Client)"] -->|"'I want pasta'"| W["📝 Waiter<br/>(Invoker)"]
-    W -->|writes order slip| O["🎫 Order Slip<br/>(Command Object)"]
-    O -->|queued & sent| C["👨‍🍳 Chef<br/>(Receiver)"]
-    C --> F["🍝 Food Ready!"]
-    O -.->|can undo!| X["❌ Cancel Order"]
-    
-    style You fill:#E3F2FD,stroke:#1565C0,color:#000
+    You["🧑 You"] -->|"orders"| W["📝 Waiter"] -->|"writes"| O["🎫 Order Slip"] -->|"sends to"| C["👨‍🍳 Chef"] -->|"makes"| F["🍝 Food Ready"]
+
+    style You fill:#E8F5E9,stroke:#2E7D32,color:#000
     style W fill:#FFF3E0,stroke:#E65100,color:#000
-    style O fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#000
-    style C fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style F fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style X fill:#FFCDD2,stroke:#C62828,color:#000
+    style O fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#000
+    style C fill:#E3F2FD,stroke:#1565C0,color:#000
+    style F fill:#FCE4EC,stroke:#C62828,color:#000
 ```
 
 ---
@@ -31,28 +26,21 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Client(["👤 Client\ncreates commands"])
-    Invoker{{"📋 Invoker\n- command: Command\n+ executeCommand()\n+ undoCommand()"}}
-    Command[["🎯 Command\n(Interface)\n+ execute()\n+ undo()"]]
-    ConcreteCommandA(["⚡ ConcreteCommandA\n- receiver\n+ execute()\n+ undo()"])
-    ConcreteCommandB(["🔥 ConcreteCommandB\n- receiver\n+ execute()\n+ undo()"])
-    Receiver[/"🔧 Receiver\n+ action()\n+ reverseAction()"/]
+    Client["👤 Client"] -->|"creates"| CmdA{{"⚡ Command A"}}
+    Client -->|"creates"| CmdB{{"🔥 Command B"}}
+    Client -->|"configures"| Invoker["📋 Invoker"]
+    Invoker -->|"calls"| Command[["🎯 Command"]]
+    CmdA -->|"implements"| Command
+    CmdB -->|"implements"| Command
+    CmdA -.->|"acts on"| Receiver["🔧 Receiver"]
+    CmdB -.->|"acts on"| Receiver
 
-    Client --> Invoker
-    Client --> ConcreteCommandA
-    Client --> ConcreteCommandB
-    Invoker --> Command
-    ConcreteCommandA --> Command
-    ConcreteCommandB --> Command
-    ConcreteCommandA --> Receiver
-    ConcreteCommandB --> Receiver
-
-    style Client fill:#7c3aed,color:#fff
-    style Invoker fill:#8b5cf6,color:#fff
-    style Command fill:#6d28d9,color:#fff
-    style ConcreteCommandA fill:#a78bfa,color:#fff
-    style ConcreteCommandB fill:#a78bfa,color:#fff
-    style Receiver fill:#c4b5fd,color:#000
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Invoker fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Command fill:#FFF3E0,stroke:#E65100,color:#000
+    style CmdA fill:#E3F2FD,stroke:#1565C0,color:#000
+    style CmdB fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Receiver fill:#FCE4EC,stroke:#C62828,color:#000
 ```
 
 ---

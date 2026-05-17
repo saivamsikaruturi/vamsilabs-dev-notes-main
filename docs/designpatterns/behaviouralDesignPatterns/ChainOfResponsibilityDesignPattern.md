@@ -11,20 +11,18 @@
 
 ```mermaid
 flowchart LR
-    U["😤 Angry Customer<br/>'My order is wrong!'"] --> L1["🎧 Level 1<br/>Basic Support"]
-    L1 -->|can't fix| L2["👔 Level 2<br/>Senior Agent"]
-    L2 -->|can't fix| M["🧑‍💼 Manager"]
-    M -->|can't fix| E["👨‍💻 Engineering"]
-    E --> S["✅ Solved!"]
-    L1 -.->|might fix here| S2["✅ Solved!"]
-    
-    style U fill:#FFCDD2,stroke:#C62828,color:#000
-    style L1 fill:#FFF9C4,stroke:#F57F17,color:#000
+    U["😤 Customer"] -->|"calls"| L1["🎧 Level 1"]
+    L1 -->|"escalates"| L2["👔 Level 2"]
+    L2 -->|"escalates"| M["🧑‍💼 Manager"]
+    M -->|"escalates"| E["👨‍💻 Engineering"]
+    E -->|"resolves"| S(["✅ Solved!"])
+
+    style U fill:#FCE4EC,stroke:#C62828,stroke-width:2px,color:#000
+    style L1 fill:#FFF3E0,stroke:#E65100,color:#000
     style L2 fill:#FFF3E0,stroke:#E65100,color:#000
     style M fill:#E3F2FD,stroke:#1565C0,color:#000
-    style E fill:#EDE9FE,stroke:#7C3AED,color:#000
-    style S fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style S2 fill:#C8E6C9,stroke:#2E7D32,color:#000
+    style E fill:#E3F2FD,stroke:#1565C0,color:#000
+    style S fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---
@@ -33,24 +31,17 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Client["👤 Client"]
-    Handler["🔗 Handler\n(Abstract)\n- next: Handler\n+ handle(request)\n+ setNext(handler)"]
-    HandlerA["🟣 HandlerA\n+ handle(request)"]
-    HandlerB["🟪 HandlerB\n+ handle(request)"]
-    HandlerC["🟣 HandlerC\n+ handle(request)"]
+    Client["👤 Client"] -->|"sends request"| Handler[["🔗 Handler"]]
+    Handler -.->|"implements"| HandlerA{{"🟣 HandlerA"}}
+    Handler -.->|"implements"| HandlerB{{"🟪 HandlerB"}}
+    HandlerA -->|"passes to"| HandlerB
+    HandlerB -->|"passes to"| HandlerC{{"🟣 HandlerC"}}
 
-    Client --> Handler
-    HandlerA --> Handler
-    HandlerB --> Handler
-    HandlerC --> Handler
-    HandlerA -.->|"passes to"| HandlerB
-    HandlerB -.->|"passes to"| HandlerC
-
-    style Client fill:#7c3aed,color:#fff
-    style Handler fill:#6d28d9,color:#fff
-    style HandlerA fill:#8b5cf6,color:#fff
-    style HandlerB fill:#a78bfa,color:#fff
-    style HandlerC fill:#c4b5fd,color:#000
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Handler fill:#FFF3E0,stroke:#E65100,color:#000
+    style HandlerA fill:#E3F2FD,stroke:#1565C0,color:#000
+    style HandlerB fill:#E3F2FD,stroke:#1565C0,color:#000
+    style HandlerC fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---

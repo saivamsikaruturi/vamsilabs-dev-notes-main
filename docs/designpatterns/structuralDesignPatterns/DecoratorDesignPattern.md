@@ -11,16 +11,14 @@
 
 ```mermaid
 flowchart LR
-    A["☕ Plain Coffee<br/>$2"] --> B["🥛 + Milk<br/>$2.50"]
-    B --> C["🍫 + Chocolate<br/>$3.00"]
-    C --> D["🍦 + Whipped Cream<br/>$3.75"]
-    D --> E["✨ Final Drink!<br/>Same cup, extra powers"]
-    
-    style A fill:#EFEBE9,stroke:#4E342E,color:#000
-    style B fill:#FFF3E0,stroke:#E65100,color:#000
-    style C fill:#FBE9E7,stroke:#BF360C,color:#000
-    style D fill:#FCE4EC,stroke:#C62828,color:#000
-    style E fill:#E8F5E9,stroke:#2E7D32,stroke-width:3px,color:#000
+    A["☕ Plain Coffee"] -->|"+ milk"| B["🥛 Latte"]
+    B -->|"+ chocolate"| C["🍫 Mocha"]
+    C -->|"+ cream"| D["✨ Final Drink!"]
+
+    style A fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style B fill:#E3F2FD,stroke:#1565C0,color:#000
+    style C fill:#E3F2FD,stroke:#1565C0,color:#000
+    style D fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---
@@ -29,23 +27,18 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Component[["Component\n(interface)"]]
-    ConcreteComponent(["Concrete\nComponent"])
-    Decorator{{"Base Decorator\n(abstract)"}}
-    DecoratorA(["Decorator A"])
-    DecoratorB(["Decorator B"])
+    Component[["🎯 Component"]]
+    CC(["📦 Concrete Component"]) -->|"implements"| Component
+    Decorator{{"🎁 Base Decorator"}} -->|"implements"| Component
+    Decorator -.->|"wraps"| Component
+    DecA(["🅰️ Decorator A"]) -->|"extends"| Decorator
+    DecB(["🅱️ Decorator B"]) -->|"extends"| Decorator
 
-    ConcreteComponent -->|implements| Component
-    Decorator -->|implements| Component
-    Decorator -->|wraps| Component
-    DecoratorA -->|extends| Decorator
-    DecoratorB -->|extends| Decorator
-
-    style Component fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style ConcreteComponent fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style Decorator fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style DecoratorA fill:#b2dfdb,stroke:#00695c,color:#000
-    style DecoratorB fill:#b2dfdb,stroke:#00695c,color:#000
+    style Component fill:#FFF3E0,stroke:#E65100,color:#000
+    style CC fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Decorator fill:#FFF3E0,stroke:#E65100,color:#000
+    style DecA fill:#E3F2FD,stroke:#1565C0,color:#000
+    style DecB fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ## UML Class Diagram

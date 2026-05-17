@@ -11,15 +11,16 @@
 
 ```mermaid
 flowchart LR
-    Score["🎼 Sheet Music<br/>(Expression)<br/>C D E F G"]
-    Score --> P["🎹 Pianist<br/>(Interpreter 1)<br/>Piano sounds"]
-    Score --> V["🎻 Violinist<br/>(Interpreter 2)<br/>Violin sounds"]
-    Score --> G["🎸 Guitarist<br/>(Interpreter 3)<br/>Guitar sounds"]
-    
-    style Score fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
+    Score["🎼 Sheet Music"] -->|"reads"| P["🎹 Pianist"]
+    P -->|"next"| V["🎻 Violinist"]
+    V -->|"next"| G["🎸 Guitarist"]
+    G -->|"produces"| Sound(["🎵 Music"])
+
+    style Score fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#000
     style P fill:#E3F2FD,stroke:#1565C0,color:#000
     style V fill:#FCE4EC,stroke:#C62828,color:#000
     style G fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Sound fill:#FFF3E0,stroke:#E65100,color:#000
 ```
 
 ---
@@ -28,23 +29,17 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Context[/"📋 Context\n- input: String\n- variables: Map"/]
-    AbstractExpression[["🔤 AbstractExpression\n(Interface)\n+ interpret(context)"]]
-    TerminalExpression(["🅰️ TerminalExpression\n+ interpret(context)"])
-    NonTerminalExpression{{"🔗 NonTerminalExpression\n- expressions[]\n+ interpret(context)"}}
-    Client(["👤 Client\n(builds AST)"])
+    Client["👤 Client"] -->|"builds"| Expr[["🔤 Expression"]]
+    Client -->|"provides"| Context(["📋 Context"])
+    Expr -->|"implements"| Terminal{{"🅰️ Terminal"}}
+    Expr -->|"implements"| NonTerminal{{"🔗 NonTerminal"}}
+    NonTerminal -.->|"contains"| Expr
 
-    Client --> AbstractExpression
-    Client --> Context
-    TerminalExpression --> AbstractExpression
-    NonTerminalExpression --> AbstractExpression
-    NonTerminalExpression -.->|"contains"| AbstractExpression
-
-    style Context fill:#c4b5fd,color:#000
-    style AbstractExpression fill:#6d28d9,color:#fff
-    style TerminalExpression fill:#a78bfa,color:#fff
-    style NonTerminalExpression fill:#7c3aed,color:#fff
-    style Client fill:#8b5cf6,color:#fff
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Expr fill:#FFF3E0,stroke:#E65100,color:#000
+    style Context fill:#FCE4EC,stroke:#C62828,color:#000
+    style Terminal fill:#E3F2FD,stroke:#1565C0,color:#000
+    style NonTerminal fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---

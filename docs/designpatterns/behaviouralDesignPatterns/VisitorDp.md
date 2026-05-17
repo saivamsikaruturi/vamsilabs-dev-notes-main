@@ -11,17 +11,16 @@
 
 ```mermaid
 flowchart LR
-    I{{"🕵️ Tax Inspector<br/>(Visitor)"}}
-    I -->|visits| R(["🍽️ Restaurant<br/>Tax: 5%"])
-    I -->|visits| T(["💻 Tech Company<br/>Tax: 21%"])
-    I -->|visits| F(["🏭 Factory<br/>Tax: 12%"])
-    I -->|visits| S(["🏪 Shop<br/>Tax: 8%"])
-    
-    style I fill:#EDE9FE,stroke:#7C3AED,stroke-width:3px,color:#000
+    I{{"🕵️ Tax Inspector"}} -->|"visits"| R(["🍽️ Restaurant"])
+    R -->|"next"| T(["💻 Tech Company"])
+    T -->|"next"| F(["🏭 Factory"])
+    F -->|"done"| Result(["📋 Tax Report"])
+
+    style I fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#000
     style R fill:#FFF3E0,stroke:#E65100,color:#000
     style T fill:#E3F2FD,stroke:#1565C0,color:#000
-    style F fill:#EFEBE9,stroke:#4E342E,color:#000
-    style S fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style F fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Result fill:#FCE4EC,stroke:#C62828,color:#000
 ```
 
 ---
@@ -30,26 +29,18 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Visitor[["🚶 Visitor\n(Interface)\n+ visitElementA(a)\n+ visitElementB(b)"]]
-    ConcreteVisitor1(["📊 ConcreteVisitor1\n+ visitElementA(a)\n+ visitElementB(b)"])
-    ConcreteVisitor2(["📈 ConcreteVisitor2\n+ visitElementA(a)\n+ visitElementB(b)"])
-    Element[["📦 Element\n(Interface)\n+ accept(visitor)"]]
-    ElementA(("🔵 ElementA\n+ accept(visitor)\n+ operationA()"))
-    ElementB(("🟣 ElementB\n+ accept(visitor)\n+ operationB()"))
+    Element[["📦 Element"]] -.->|"accept"| Visitor[["🚶 Visitor"]]
+    Visitor -->|"implements"| CV1{{"📊 Visitor1"}}
+    Visitor -->|"implements"| CV2{{"📈 Visitor2"}}
+    Element -->|"implements"| EA{{"🔵 ElementA"}}
+    Element -->|"implements"| EB{{"🟣 ElementB"}}
 
-    ConcreteVisitor1 --> Visitor
-    ConcreteVisitor2 --> Visitor
-    ElementA --> Element
-    ElementB --> Element
-    ElementA -.->|"visitor.visitElementA(this)"| Visitor
-    ElementB -.->|"visitor.visitElementB(this)"| Visitor
-
-    style Visitor fill:#6d28d9,color:#fff
-    style ConcreteVisitor1 fill:#7c3aed,color:#fff
-    style ConcreteVisitor2 fill:#7c3aed,color:#fff
-    style Element fill:#8b5cf6,color:#fff
-    style ElementA fill:#a78bfa,color:#fff
-    style ElementB fill:#a78bfa,color:#fff
+    style Visitor fill:#FFF3E0,stroke:#E65100,color:#000
+    style CV1 fill:#FFF8E1,stroke:#F9A825,color:#000
+    style CV2 fill:#FFF8E1,stroke:#F9A825,color:#000
+    style Element fill:#E3F2FD,stroke:#1565C0,color:#000
+    style EA fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style EB fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---

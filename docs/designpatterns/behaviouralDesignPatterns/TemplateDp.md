@@ -11,28 +11,17 @@
 
 ```mermaid
 flowchart LR
-    T{{"📐 Template: Build House"}}
-    T --> S1(["1️⃣ Lay Foundation"])
-    S1 --> S2(["2️⃣ Build Walls"])
-    S2 --> S3(["3️⃣ Install Roof"])
-    S3 --> S4(["4️⃣ Add Windows"])
-    S4 --> S5(["5️⃣ Paint"])
-    
-    S2 -.->|wooden| W[/"🪵 Timber Frames"/]
-    S2 -.->|brick| B[/"🧱 Masonry"/]
-    S3 -.->|wooden| WR[/"🏡 Wooden Shingles"/]
-    S3 -.->|brick| BR[/"🏠 Clay Tiles"/]
-    
-    style T fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#000
-    style S1 fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style S2 fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style S3 fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style S4 fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style S5 fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    T["📐 Build House"] -->|"step 1"| S1["🧱 Foundation"] -->|"step 2"| S2["🏗️ Walls"] -->|"step 3"| S3["🏠 Roof"] -->|"step 4"| S4["🎨 Paint"]
+    S2 -.->|"wooden"| W["🪵 Timber"]
+    S2 -.->|"brick"| B["🧱 Masonry"]
+
+    style T fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#000
+    style S1 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style S2 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style S3 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style S4 fill:#E3F2FD,stroke:#1565C0,color:#000
     style W fill:#FFF3E0,stroke:#E65100,color:#000
-    style B fill:#FFCCBC,stroke:#BF360C,color:#000
-    style WR fill:#FFF3E0,stroke:#E65100,color:#000
-    style BR fill:#FFCCBC,stroke:#BF360C,color:#000
+    style B fill:#FCE4EC,stroke:#C62828,color:#000
 ```
 
 ---
@@ -41,16 +30,14 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    AbstractClass[["📋 AbstractClass\n+ templateMethod()\n# step1()\n# step2() — abstract\n# step3() — abstract\n# hook()"]]
-    ConcreteClassA(["🏠 ConcreteClassA\n# step2()\n# step3()"])
-    ConcreteClassB(["🏢 ConcreteClassB\n# step2()\n# step3()\n# hook()"])
+    Abstract[["📋 Abstract Class"]] -->|"defines"| Template(["🔲 Template Method"])
+    ConcreteA{{"🏠 Concrete A"}} -->|"extends"| Abstract
+    ConcreteB{{"🏢 Concrete B"}} -->|"extends"| Abstract
 
-    ConcreteClassA --> AbstractClass
-    ConcreteClassB --> AbstractClass
-
-    style AbstractClass fill:#7c3aed,color:#fff
-    style ConcreteClassA fill:#a78bfa,color:#fff
-    style ConcreteClassB fill:#a78bfa,color:#fff
+    style Abstract fill:#FFF3E0,stroke:#E65100,color:#000
+    style Template fill:#FFF8E1,stroke:#F9A825,color:#000
+    style ConcreteA fill:#E3F2FD,stroke:#1565C0,color:#000
+    style ConcreteB fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---

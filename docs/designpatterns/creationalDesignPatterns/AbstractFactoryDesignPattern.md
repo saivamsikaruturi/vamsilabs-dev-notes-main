@@ -9,27 +9,20 @@
 
 ```mermaid
 flowchart LR
-    Store{{"🏬 Furniture Store<br/>(Abstract Factory)"}}
-    Store -->|Style: Modern| M(["🏪 Modern Factory"])
-    Store -->|Style: Victorian| V(["🏪 Victorian Factory"])
-    
-    M --> MC(("🪑 Modern Chair"))
-    M --> MS(("🛋️ Modern Sofa"))
-    M --> MT(("🪵 Modern Table"))
-    
-    V --> VC(("🪑 Victorian Chair"))
-    V --> VS(("🛋️ Victorian Sofa"))
-    V --> VT(("🪵 Victorian Table"))
+    Store["🏬 Furniture Store"] -->|"Modern"| M["🏪 Modern Factory"]
+    M -->|"creates"| MC(["🪑 Chair"]) --> MS(["🛋️ Sofa"]) --> MT(["🪵 Table"])
+    Store -->|"Victorian"| V["🏪 Victorian Factory"]
+    V -->|"creates"| VC(["🪑 Chair"]) --> VS(["🛋️ Sofa"]) --> VT(["🪵 Table"])
 
     style Store fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
     style M fill:#E3F2FD,stroke:#1565C0,color:#000
     style V fill:#FCE4EC,stroke:#C62828,color:#000
-    style MC fill:#BBDEFB,stroke:#1565C0,color:#000
-    style MS fill:#BBDEFB,stroke:#1565C0,color:#000
-    style MT fill:#BBDEFB,stroke:#1565C0,color:#000
-    style VC fill:#F8BBD0,stroke:#C62828,color:#000
-    style VS fill:#F8BBD0,stroke:#C62828,color:#000
-    style VT fill:#F8BBD0,stroke:#C62828,color:#000
+    style MC fill:#E3F2FD,stroke:#1565C0,color:#000
+    style MS fill:#E3F2FD,stroke:#1565C0,color:#000
+    style MT fill:#E3F2FD,stroke:#1565C0,color:#000
+    style VC fill:#FCE4EC,stroke:#C62828,color:#000
+    style VS fill:#FCE4EC,stroke:#C62828,color:#000
+    style VT fill:#FCE4EC,stroke:#C62828,color:#000
 ```
 
 ---
@@ -38,30 +31,22 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Client(["Client Code"]) --> AF[["AbstractFactory Interface"]]
-    AF --> CF1{{"ConcreteFactory1 - Dark Theme"}}
-    AF --> CF2{{"ConcreteFactory2 - Light Theme"}}
-    
-    CF1 -->|creates| PA1(["Dark Button"])
-    CF1 -->|creates| PB1(["Dark Checkbox"])
-    CF2 -->|creates| PA2(["Light Button"])
-    CF2 -->|creates| PB2(["Light Checkbox"])
-    
-    PA1 --> IPA[["Button Interface"]]
-    PA2 --> IPA
-    PB1 --> IPB[["Checkbox Interface"]]
-    PB2 --> IPB
+    Client["🟢 Client"] -->|"uses"| AF[["🏗️ UIFactory"]]
+    AF -->|"extends"| CF1{{"🌙 Dark Factory"}}
+    AF -->|"extends"| CF2{{"☀️ Light Factory"}}
+    CF1 -->|"creates"| PA1(["🌙 Dark Button"])
+    CF1 -->|"creates"| PB1(["🌙 Dark Checkbox"])
+    CF2 -->|"creates"| PA2(["☀️ Light Button"])
+    CF2 -->|"creates"| PB2(["☀️ Light Checkbox"])
 
-    style Client fill:#E3F2FD,stroke:#1565C0,color:#000
-    style AF fill:#FFF3E0,stroke:#E65100,color:#000
-    style CF1 fill:#37474F,stroke:#263238,color:#FFF
-    style CF2 fill:#FFFDE7,stroke:#F57F17,color:#000
-    style PA1 fill:#455A64,stroke:#263238,color:#FFF
-    style PB1 fill:#455A64,stroke:#263238,color:#FFF
-    style PA2 fill:#FFF9C4,stroke:#F57F17,color:#000
-    style PB2 fill:#FFF9C4,stroke:#F57F17,color:#000
-    style IPA fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style IPB fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style AF fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style CF1 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style CF2 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style PA1 fill:#FFF8E1,stroke:#F9A825,color:#000
+    style PB1 fill:#FFF8E1,stroke:#F9A825,color:#000
+    style PA2 fill:#FFF8E1,stroke:#F9A825,color:#000
+    style PB2 fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---
@@ -136,14 +121,14 @@ classDiagram
     LightThemeFactory ..> LightCheckbox : creates
 
     style UIFactory fill:#FFF3E0,stroke:#E65100,color:#000
-    style DarkThemeFactory fill:#37474F,stroke:#263238,color:#FFF
+    style DarkThemeFactory fill:#CFD8DC,stroke:#37474F,color:#000
     style LightThemeFactory fill:#FFFDE7,stroke:#F57F17,color:#000
     style Button fill:#E8F5E9,stroke:#2E7D32,color:#000
     style Checkbox fill:#F3E5F5,stroke:#6A1B9A,color:#000
     style TextField fill:#E3F2FD,stroke:#1565C0,color:#000
-    style DarkButton fill:#455A64,stroke:#263238,color:#FFF
+    style DarkButton fill:#CFD8DC,stroke:#37474F,color:#000
     style LightButton fill:#FFF9C4,stroke:#F57F17,color:#000
-    style DarkCheckbox fill:#455A64,stroke:#263238,color:#FFF
+    style DarkCheckbox fill:#CFD8DC,stroke:#37474F,color:#000
     style LightCheckbox fill:#FFF9C4,stroke:#F57F17,color:#000
 ```
 

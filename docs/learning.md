@@ -7,55 +7,18 @@ A structured roadmap for Java backend engineers targeting FAANG-level roles. Fol
 ## Roadmap Overview
 
 ```mermaid
-flowchart LR
-    subgraph "Phase 1 — Foundations (Months 1-2)"
-        A(["Java Basics & OOP"]) --> B[["Collections & Generics"]]
-        B --> C[/"Exception Handling & I/O"/]
-        C --> D{{"JVM Internals & GC"}}
-    end
+flowchart TD
+    P1["🟢 Phase 1 — Foundations\nJava · OOP · Collections · JVM"]
+    P2["🟡 Phase 2 — Core Engineering\nSpring Boot · SQL · Threading · Testing"]
+    P3["🔴 Phase 3 — Distributed Systems\nMicroservices · Kafka · System Design · DevOps"]
+    P4["🟣 Phase 4 — Interview Ready\nDSA 200 Problems · Mocks · Behavioral"]
 
-    subgraph "Phase 2 — Core Engineering (Months 3-4)"
-        D --> E(["Multithreading & Concurrency"])
-        D --> F(["SOLID Principles & Design Patterns"])
-        F --> G{{"Spring Boot & REST APIs"}}
-        E --> G
-        G --> H[["SQL & Database Design"]]
-        H --> I[/"Testing — JUnit, Mockito, Testcontainers"/]
-    end
+    P1 -->|"Months 1-2"| P2 -->|"Months 3-4"| P3 -->|"Months 5-6"| P4
 
-    subgraph "Phase 3 — Distributed Systems (Months 5-6)"
-        I --> J{{"Microservices Architecture"}}
-        J --> K(["Kafka & Event-Driven Systems"])
-        K --> L(("System Design"))
-        L --> M[/"DevOps — Docker, K8s, CI/CD"/]
-        M --> N[["Cloud — AWS / GCP"]]
-        J --> O[/"Security — OAuth, JWT, mTLS"/]
-    end
-
-    subgraph "Phase 4 — Interview Ready (Months 7-8)"
-        L --> P(["DSA — 200 Problems by Pattern"])
-        P --> Q{{"Mock Interviews & Timed Practice"}}
-        Q --> R[["Behavioral Prep — STAR Stories"]]
-    end
-
-    style A fill:#d1fae5,stroke:#059669
-    style B fill:#d1fae5,stroke:#059669
-    style C fill:#d1fae5,stroke:#059669
-    style D fill:#d1fae5,stroke:#059669
-    style E fill:#fef3c7,stroke:#d97706
-    style F fill:#fef3c7,stroke:#d97706
-    style G fill:#fef3c7,stroke:#d97706
-    style H fill:#fef3c7,stroke:#d97706
-    style I fill:#fef3c7,stroke:#d97706
-    style J fill:#fee2e2,stroke:#dc2626
-    style K fill:#fee2e2,stroke:#dc2626
-    style L fill:#fee2e2,stroke:#dc2626
-    style M fill:#fee2e2,stroke:#dc2626
-    style N fill:#fee2e2,stroke:#dc2626
-    style O fill:#fee2e2,stroke:#dc2626
-    style P fill:#ede9fe,stroke:#7c3aed
-    style Q fill:#ede9fe,stroke:#7c3aed
-    style R fill:#ede9fe,stroke:#7c3aed
+    style P1 fill:#d1fae5,stroke:#059669,color:#000
+    style P2 fill:#fef3c7,stroke:#d97706,color:#000
+    style P3 fill:#fee2e2,stroke:#dc2626,color:#000
+    style P4 fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 !!! info "Difficulty Legend"

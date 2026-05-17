@@ -6,13 +6,11 @@
 
 ```mermaid
 flowchart LR
-    C["🟡 <b>CREATIONAL</b><br/>Object Creation"] --> Q["❓ Core Question:<br/>HOW should objects<br/>be created?"]
-    Q --> G1["✅ Hide creation logic"]
-    Q --> G2["✅ Flexible instantiation"]
-    Q --> G3["✅ Decouple from concrete classes"]
+    C["🟡 Creational"] -->|"asks"| Q["❓ How to create?"]
+    Q -->|"goal"| G1["✅ Hide logic"] --> G2["✅ Flexible"] --> G3["✅ Decoupled"]
     
-    style C fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style Q fill:#FFF3E0,stroke:#E65100,color:#000
+    style C fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style Q fill:#FEF3C7,stroke:#D97706,color:#000
     style G1 fill:#E8F5E9,stroke:#2E7D32,color:#000
     style G2 fill:#E8F5E9,stroke:#2E7D32,color:#000
     style G3 fill:#E8F5E9,stroke:#2E7D32,color:#000
@@ -48,18 +46,18 @@ Creational patterns solve this by **encapsulating** which classes get instantiat
 
 ```mermaid
 flowchart LR
-    Start{"🤔 How should I create this object?"}
-    Start -->|"Only ONE instance ever?"| Sing(["🎯 Singleton"])
-    Start -->|"Multiple types, pick at runtime?"| Fact(["🏭 Factory Method"])
-    Start -->|"Families of related objects?"| AF(["🏗️ Abstract Factory"])
-    Start -->|"Many optional parameters?"| Build(["🔨 Builder"])
-    Start -->|"Creation is expensive, copy instead?"| Proto(["🧬 Prototype"])
+    Start{"🤔 How to create?"}
+    Start -->|"one instance?"| Sing(["🎯 Singleton"])
+    Start -->|"pick type at runtime?"| Fact(["🏭 Factory"])
+    Fact -->|"whole family?"| AF(["🏗️ Abstract Factory"])
+    Start -->|"many options?"| Build(["🔨 Builder"])
+    Start -->|"expensive? clone!"| Proto(["🧬 Prototype"])
     
     style Start fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
     style Sing fill:#E3F2FD,stroke:#1565C0,color:#000
     style Fact fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style AF fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style Build fill:#FFF3E0,stroke:#E65100,color:#000
+    style AF fill:#FFF3E0,stroke:#E65100,color:#000
+    style Build fill:#FFF8E1,stroke:#F9A825,color:#000
     style Proto fill:#FCE4EC,stroke:#C62828,color:#000
 ```
 

@@ -11,29 +11,18 @@
 
 ```mermaid
 flowchart LR
-    subgraph Remotes["📱 Remotes (Abstraction)"]
-        R1(["🎮 Basic Remote"])
-        R2(["🎮 Advanced Remote"])
-    end
-    
-    subgraph TVs["📺 TVs (Implementation)"]
-        T1[/"Sony LCD"/]
-        T2[/"Samsung OLED"/]
-        T3[/"LG QLED"/]
-    end
-    
-    R1 ---|🌉 bridge| T1
-    R1 ---|🌉 bridge| T2
-    R1 ---|🌉 bridge| T3
-    R2 ---|🌉 bridge| T1
-    R2 ---|🌉 bridge| T2
-    R2 ---|🌉 bridge| T3
-    
-    style R1 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style R2 fill:#BBDEFB,stroke:#1565C0,color:#000
-    style T1 fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style T2 fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style T3 fill:#A5D6A7,stroke:#2E7D32,color:#000
+    R["📱 Any Remote"] -->|"🌉 bridge"| T["📺 Any TV"]
+    R --> Note1(["🎮 Basic Remote"])
+    R --> Note2(["🎮 Advanced Remote"])
+    T --> Note3{{"Sony LCD"}}
+    T --> Note4{{"Samsung OLED"}}
+
+    style R fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#000
+    style T fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
+    style Note1 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Note2 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Note3 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Note4 fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---
@@ -42,27 +31,16 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph Abstraction["Abstraction Hierarchy"]
-        Abs["Abstraction"]
-        RefAbs["Refined\nAbstraction"]
-        RefAbs -->|extends| Abs
-    end
+    Abs[["🎯 Abstraction"]] -->|"has-a (bridge)"| Impl[["⚙️ Implementor"]]
+    RefAbs{{"🔧 Refined Abstraction"}} -->|"extends"| Abs
+    ImplA{{"📦 Concrete Impl A"}} -->|"implements"| Impl
+    ImplB{{"📦 Concrete Impl B"}} -->|"implements"| Impl
 
-    subgraph Implementation["Implementation Hierarchy"]
-        Impl["Implementor\n(interface)"]
-        ImplA["Concrete\nImplementor A"]
-        ImplB["Concrete\nImplementor B"]
-        ImplA -->|implements| Impl
-        ImplB -->|implements| Impl
-    end
-
-    Abs -->|"has-a (bridge)"| Impl
-
-    style Abs fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style RefAbs fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style Impl fill:#b2dfdb,stroke:#00695c,color:#000
-    style ImplA fill:#e0f2f1,stroke:#00695c,color:#000
-    style ImplB fill:#e0f2f1,stroke:#00695c,color:#000
+    style Abs fill:#FFF3E0,stroke:#E65100,color:#000
+    style RefAbs fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Impl fill:#FFF3E0,stroke:#E65100,color:#000
+    style ImplA fill:#E3F2FD,stroke:#1565C0,color:#000
+    style ImplB fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ## UML Class Diagram
@@ -113,28 +91,20 @@ classDiagram
 
 ```mermaid
 flowchart LR
-    Shape{{"Shape"}}
-    RC(("Red Circle"))
-    BC(("Blue Circle"))
-    RS(["Red Square"])
-    BS(["Blue Square"])
-    RR(["Red Rectangle"])
-    BR(["Blue Rectangle"])
+    Shape{{"💥 Shape"}} --> RC(["Red Circle"])
+    RC --> BC(["Blue Circle"])
+    BC --> RS(["Red Square"])
+    RS --> BS(["Blue Square"])
+    BS --> RR(["Red Rectangle"])
+    RR --> BR(["Blue Rectangle"])
 
-    Shape --> RC
-    Shape --> BC
-    Shape --> RS
-    Shape --> BS
-    Shape --> RR
-    Shape --> BR
-
-    style Shape fill:#ffecb3,stroke:#f57f17,color:#000
-    style RC fill:#ffcdd2,stroke:#c62828,color:#000
-    style BC fill:#bbdefb,stroke:#1565c0,color:#000
-    style RS fill:#ffcdd2,stroke:#c62828,color:#000
-    style BS fill:#bbdefb,stroke:#1565c0,color:#000
-    style RR fill:#ffcdd2,stroke:#c62828,color:#000
-    style BR fill:#bbdefb,stroke:#1565c0,color:#000
+    style Shape fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style RC fill:#FCE4EC,stroke:#C62828,color:#000
+    style BC fill:#E3F2FD,stroke:#1565C0,color:#000
+    style RS fill:#FCE4EC,stroke:#C62828,color:#000
+    style BS fill:#E3F2FD,stroke:#1565C0,color:#000
+    style RR fill:#FCE4EC,stroke:#C62828,color:#000
+    style BR fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 **6 classes** for 3 shapes x 2 colors. Adding one color = 3 more classes. Adding one shape = 2 more classes. This grows as `M x N`!

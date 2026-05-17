@@ -1549,6 +1549,137 @@ body,
 }
 
 /* ==========================================================================
+   LOGIN GATE OVERLAY
+   ========================================================================== */
+
+#vtn-login-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--md-default-bg-color, #fff);
+}
+.vtn-login-gate-card {
+  background: var(--md-default-bg-color, #fff);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+.vtn-login-gate-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.vtn-login-gate-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--vtn-text, #1C1917);
+}
+.vtn-login-gate-card p {
+  margin: 0 0 1.5rem;
+  font-size: 0.85rem;
+  color: var(--vtn-text-secondary, #57534E);
+  line-height: 1.5;
+}
+.vtn-login-gate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--vtn-brand, #B45309);
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(180, 83, 9, 0.3);
+  transition: all 0.2s ease;
+}
+.vtn-login-gate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+}
+
+/* ==========================================================================
+   INTERVIEW PREP HIGHLIGHT BANNER
+   ========================================================================== */
+
+.vtn-interview-highlight {
+  margin: 1.5rem 0;
+}
+.vtn-interview-highlight-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFF8E1 100%);
+  border: 2px solid var(--vtn-brand);
+  border-radius: var(--vtn-radius);
+  box-shadow: 0 2px 12px rgba(180, 83, 9, 0.12);
+}
+.vtn-interview-highlight-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+.vtn-interview-highlight-text {
+  flex: 1;
+}
+.vtn-interview-highlight-text h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #92400E;
+}
+.vtn-interview-highlight-text p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #78350F;
+  line-height: 1.5;
+}
+.vtn-interview-highlight-btn {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--vtn-brand);
+  border-radius: 20px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.3);
+  transition: all 0.2s ease;
+}
+.vtn-interview-highlight-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(180, 83, 9, 0.4);
+  color: #fff;
+}
+[data-md-color-scheme="slate"] .vtn-interview-highlight-inner {
+  background: linear-gradient(135deg, #44310d 0%, #3d2e0a 100%);
+  border-color: #B45309;
+}
+[data-md-color-scheme="slate"] .vtn-interview-highlight-text h3 {
+  color: #FDE68A;
+}
+[data-md-color-scheme="slate"] .vtn-interview-highlight-text p {
+  color: #FCD34D;
+}
+@media (max-width: 600px) {
+  .vtn-interview-highlight-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* ==========================================================================
    PROGRESS TRACKING
    ========================================================================== */
 

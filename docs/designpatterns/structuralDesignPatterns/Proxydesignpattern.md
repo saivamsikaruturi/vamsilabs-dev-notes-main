@@ -11,14 +11,14 @@
 
 ```mermaid
 flowchart LR
-    You["🛒 You<br/>'Pay $50'"] --> CC["💳 Credit Card<br/>(PROXY)<br/>✓ Check limit<br/>✓ Log transaction<br/>✓ Fraud check"]
-    CC --> Bank["🏦 Bank Account<br/>(Real Subject)<br/>Balance: $5,000"]
-    Bank --> Done["✅ Payment<br/>Complete!"]
-    
+    You["🛒 You"] -->|"pays"| CC["💳 Credit Card"]
+    CC -->|"delegates"| Bank["🏦 Bank Account"]
+    Bank -->|"confirms"| Done["✅ Done!"]
+
     style You fill:#E3F2FD,stroke:#1565C0,color:#000
-    style CC fill:#FFF3E0,stroke:#E65100,stroke-width:3px,color:#000
+    style CC fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
     style Bank fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style Done fill:#C8E6C9,stroke:#2E7D32,color:#000
+    style Done fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---
@@ -27,20 +27,15 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Client["Client"]
-    Subject["Subject\n(interface)"]
-    RealSubject["Real Subject"]
-    Proxy["Proxy"]
+    Client["🖥️ Client"] -->|"uses"| Subject[["🎯 Subject"]]
+    Proxy{{"🛡️ Proxy"}} -->|"implements"| Subject
+    Proxy -.->|"delegates"| Real(["📦 Real Subject"])
+    Real -->|"implements"| Subject
 
-    Client -->|uses| Subject
-    RealSubject -->|implements| Subject
-    Proxy -->|implements| Subject
-    Proxy -->|delegates to| RealSubject
-
-    style Client fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style Subject fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style RealSubject fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style Proxy fill:#b2dfdb,stroke:#00695c,color:#000
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Subject fill:#FFF3E0,stroke:#E65100,color:#000
+    style Proxy fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Real fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ## UML Class Diagram
@@ -74,25 +69,18 @@ classDiagram
 
 ```mermaid
 flowchart LR
-    Proxy{{"Proxy Pattern"}}
-    Virtual(["Virtual Proxy\n(Lazy Loading)"])
-    Protection(["Protection Proxy\n(Access Control)"])
-    Remote(["Remote Proxy\n(Network)"])
-    Cache(["Caching Proxy\n(Performance)"])
-    Logging(["Logging Proxy\n(Diagnostics)"])
+    Proxy{{"🛡️ Proxy Pattern"}} --> Virtual(["💤 Virtual"])
+    Virtual --> Protection(["🔒 Protection"])
+    Protection --> Remote(["🌐 Remote"])
+    Remote --> Cache(["⚡ Caching"])
+    Cache --> Logging(["📝 Logging"])
 
-    Proxy --> Virtual
-    Proxy --> Protection
-    Proxy --> Remote
-    Proxy --> Cache
-    Proxy --> Logging
-
-    style Proxy fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style Virtual fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style Protection fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style Remote fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style Cache fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style Logging fill:#c8e6c9,stroke:#2e7d32,color:#000
+    style Proxy fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style Virtual fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Protection fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Remote fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Cache fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Logging fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---

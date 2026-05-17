@@ -11,16 +11,14 @@
 
 ```mermaid
 flowchart LR
-    A["🔌 US Plug<br/>(your charger)"] -->|doesn't fit!| B["🚫"]
-    A --> C["🔄 Power Adapter<br/>(converts interface)"]
-    C --> D["🏠 EU Socket<br/>(expected interface)"]
-    D --> E["⚡ Power flows!"]
-    
-    style A fill:#BBDEFB,stroke:#1565C0,color:#000
-    style B fill:#FFCDD2,stroke:#C62828,color:#000
-    style C fill:#FFF3E0,stroke:#E65100,stroke-width:3px,color:#000
-    style D fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style E fill:#E8F5E9,stroke:#2E7D32,color:#000
+    A["🔌 US Plug"] -->|"doesn't fit"| B["🔄 Adapter"]
+    B -->|"converts"| C["🏠 EU Socket"]
+    C -->|"powers"| D["⚡ Success!"]
+
+    style A fill:#E3F2FD,stroke:#1565C0,color:#000
+    style B fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style C fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style D fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---
@@ -29,19 +27,14 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Client["Client"]
-    Target["Target Interface"]
-    Adapter["Adapter"]
-    Adaptee["Adaptee\n(Incompatible Class)"]
+    Client["🖥️ Client"] -->|"uses"| Target[["🎯 Target Interface"]]
+    Adapter{{"🔄 Adapter"}} -->|"implements"| Target
+    Adapter -->|"delegates"| Adaptee(["📦 Adaptee"])
 
-    Client -->|uses| Target
-    Adapter -->|implements| Target
-    Adapter -->|wraps/delegates| Adaptee
-
-    style Client fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style Target fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style Adapter fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style Adaptee fill:#ffecb3,stroke:#f57f17,color:#000
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Target fill:#FFF3E0,stroke:#E65100,color:#000
+    style Adapter fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Adaptee fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ## UML Class Diagram
@@ -75,24 +68,24 @@ classDiagram
 
 ```mermaid
 flowchart LR
-    subgraph ObjectAdapter["Object Adapter (Composition)"]
+    subgraph OA["Object Adapter (Composition)"]
         direction LR
-        OA_Adapter(["Adapter"]) -->|has-a| OA_Adaptee[/"Adaptee"/]
-        OA_Adapter -->|implements| OA_Target[["Target"]]
+        OA_Adapter{{"🔄 Adapter"}} -->|"has-a"| OA_Adaptee(["📦 Adaptee"])
+        OA_Adapter -->|"implements"| OA_Target[["🎯 Target"]]
     end
 
-    subgraph ClassAdapter["Class Adapter (Inheritance)"]
+    subgraph CA["Class Adapter (Inheritance)"]
         direction LR
-        CA_Adapter(["Adapter"]) -->|extends| CA_Adaptee[/"Adaptee"/]
-        CA_Adapter -->|implements| CA_Target[["Target"]]
+        CA_Adapter{{"🔄 Adapter"}} -->|"extends"| CA_Adaptee(["📦 Adaptee"])
+        CA_Adapter -->|"implements"| CA_Target[["🎯 Target"]]
     end
 
-    style OA_Adapter fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style OA_Adaptee fill:#ffecb3,stroke:#f57f17,color:#000
-    style OA_Target fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style CA_Adapter fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style CA_Adaptee fill:#ffecb3,stroke:#f57f17,color:#000
-    style CA_Target fill:#c8e6c9,stroke:#2e7d32,color:#000
+    style OA_Adapter fill:#E3F2FD,stroke:#1565C0,color:#000
+    style OA_Adaptee fill:#FFF8E1,stroke:#F9A825,color:#000
+    style OA_Target fill:#FFF3E0,stroke:#E65100,color:#000
+    style CA_Adapter fill:#E3F2FD,stroke:#1565C0,color:#000
+    style CA_Adaptee fill:#FFF8E1,stroke:#F9A825,color:#000
+    style CA_Target fill:#FFF3E0,stroke:#E65100,color:#000
 ```
 
 ---

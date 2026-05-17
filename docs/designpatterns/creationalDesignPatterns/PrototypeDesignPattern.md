@@ -9,15 +9,13 @@
 
 ```mermaid
 flowchart LR
-    O["🧫 Original Cell<br/>(fully configured)"] -->|clone!| C1["🧫 Clone 1<br/>(identical copy)"]
-    O -->|clone!| C2["🧫 Clone 2<br/>(identical copy)"]
-    C1 -->|mutate| M1["🦠 Mutated Cell A"]
-    C2 -->|mutate| M2["🦠 Mutated Cell B"]
+    O["🧫 Original Cell"] -->|"clone!"| C1["🧫 Clone 1"] -->|"mutate"| M1["🦠 Variant A"]
+    O -->|"clone!"| C2["🧫 Clone 2"] -->|"mutate"| M2["🦠 Variant B"]
     
-    style O fill:#E8F5E9,stroke:#2E7D32,stroke-width:3px,color:#000
-    style C1 fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style C2 fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style M1 fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    style O fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
+    style C1 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style C2 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style M1 fill:#FFF8E1,stroke:#F9A825,color:#000
     style M2 fill:#FCE4EC,stroke:#C62828,color:#000
 ```
 
@@ -27,23 +25,20 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A(["Client"]) -->|clone| B[["Prototype Interface"]]
-    B --> C{{"ConcretePrototype A"}}
-    B --> D{{"ConcretePrototype B"}}
-    C -->|clone| E(("Copy of A"))
-    D -->|clone| F(("Copy of B"))
-    
-    G[/"Prototype Registry"/] -->|stores| C
-    G -->|stores| D
-    A -->|lookup| G
+    A["🟢 Client"] -->|"lookup"| G["📋 Registry"]
+    G -->|"returns"| B[["🧬 Prototype"]]
+    B -->|"extends"| C{{"📄 Document"}}
+    B -->|"extends"| D{{"🎨 Shape"}}
+    C -->|"clone"| E(["📄 Doc Copy"])
+    D -->|"clone"| F(["🎨 Shape Copy"])
 
-    style A fill:#E3F2FD,stroke:#1565C0,color:#000
-    style B fill:#FFF3E0,stroke:#E65100,color:#000
-    style C fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style D fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style E fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style F fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style G fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    style A fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style G fill:#FCE4EC,stroke:#C62828,color:#000
+    style B fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style C fill:#E3F2FD,stroke:#1565C0,color:#000
+    style D fill:#E3F2FD,stroke:#1565C0,color:#000
+    style E fill:#FFF8E1,stroke:#F9A825,color:#000
+    style F fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---

@@ -11,16 +11,13 @@
 
 ```mermaid
 flowchart LR
-    A["🚫 No Money<br/>State"] -->|insert coin| B["💰 Has Money<br/>State"]
-    B -->|select item| C["⚙️ Dispensing<br/>State"]
-    C -->|item dropped| D["🎉 Take Item<br/>State"]
-    D -->|done| A
-    B -->|eject coin| A
-    
-    style A fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#000
-    style B fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#000
-    style C fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#000
-    style D fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#000
+    A["🚫 No Money"] -->|"insert coin"| B["💰 Has Money"] -->|"select item"| C["⚙️ Dispensing"] -->|"item drops"| D["🎉 Take Item"]
+    D -->|"done"| A
+
+    style A fill:#FCE4EC,stroke:#C62828,stroke-width:2px,color:#000
+    style B fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#000
+    style C fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#000
+    style D fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
 ```
 
 ---
@@ -29,24 +26,15 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Context(["🎮 Context\n- state: State\n+ setState(state)\n+ request()"])
-    State[["🔄 State\n(Interface)\n+ handle(context)"]]
-    ConcreteStateA(("🟢 ConcreteStateA\n+ handle(context)"))
-    ConcreteStateB(("🟡 ConcreteStateB\n+ handle(context)"))
-    ConcreteStateC(("🔴 ConcreteStateC\n+ handle(context)"))
+    Context["🎮 Context"] -->|"delegates to"| State[["🔄 State"]]
+    StateA{{"🟢 State A"}} -->|"implements"| State
+    StateB{{"🟡 State B"}} -->|"implements"| State
+    StateA -.->|"transitions to"| StateB
 
-    Context --> State
-    ConcreteStateA --> State
-    ConcreteStateB --> State
-    ConcreteStateC --> State
-    ConcreteStateA -.->|"transitions to"| ConcreteStateB
-    ConcreteStateB -.->|"transitions to"| ConcreteStateC
-
-    style Context fill:#7c3aed,color:#fff
-    style State fill:#6d28d9,color:#fff
-    style ConcreteStateA fill:#22c55e,color:#fff
-    style ConcreteStateB fill:#eab308,color:#000
-    style ConcreteStateC fill:#ef4444,color:#fff
+    style Context fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style State fill:#FFF3E0,stroke:#E65100,color:#000
+    style StateA fill:#E3F2FD,stroke:#1565C0,color:#000
+    style StateB fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---

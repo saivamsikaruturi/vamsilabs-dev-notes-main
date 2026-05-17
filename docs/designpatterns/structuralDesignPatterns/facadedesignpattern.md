@@ -11,20 +11,16 @@
 
 ```mermaid
 flowchart LR
-    You(["🧳 You (Guest)<br/>'I need help!'"]) --> C{{"🛎️ CONCIERGE<br/>(Facade)"}}
-    C --> K(("👨‍🍳 Kitchen"))
-    C --> H(("🧹 Housekeeping"))
-    C --> T(("🚕 Taxi Service"))
-    C --> R(("🍽️ Restaurant"))
-    C --> S(("🧖 Spa"))
-    
-    style You fill:#E3F2FD,stroke:#1565C0,color:#000
-    style C fill:#FEF3C7,stroke:#D97706,stroke-width:3px,color:#000
-    style K fill:#FFF9C4,stroke:#F57F17,color:#000
-    style H fill:#FFF9C4,stroke:#F57F17,color:#000
-    style T fill:#FFF9C4,stroke:#F57F17,color:#000
-    style R fill:#FFF9C4,stroke:#F57F17,color:#000
-    style S fill:#FFF9C4,stroke:#F57F17,color:#000
+    You["🧳 You"] -->|"asks"| C{{"🛎️ Concierge"}}
+    C -->|"calls"| K["👨‍🍳 Kitchen"]
+    C -->|"calls"| T["🚕 Taxi"]
+    C -->|"calls"| S["🧖 Spa"]
+
+    style You fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style C fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style K fill:#E3F2FD,stroke:#1565C0,color:#000
+    style T fill:#E3F2FD,stroke:#1565C0,color:#000
+    style S fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---
@@ -33,25 +29,16 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Client["Client"]
-    Facade["Facade"]
-    SubA["Subsystem A"]
-    SubB["Subsystem B"]
-    SubC["Subsystem C"]
-    SubD["Subsystem D"]
+    Client["🖥️ Client"] -->|"simple API"| Facade{{"🏛️ Facade"}}
+    Facade -->|"orchestrates"| SubA(["⚙️ Subsystem A"])
+    Facade -->|"orchestrates"| SubB(["⚙️ Subsystem B"])
+    SubA --> SubC(["⚙️ Subsystem C"])
 
-    Client -->|simple API| Facade
-    Facade --> SubA
-    Facade --> SubB
-    Facade --> SubC
-    Facade --> SubD
-
-    style Client fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style Facade fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style SubA fill:#fff9c4,stroke:#f57f17,color:#000
-    style SubB fill:#fff9c4,stroke:#f57f17,color:#000
-    style SubC fill:#fff9c4,stroke:#f57f17,color:#000
-    style SubD fill:#fff9c4,stroke:#f57f17,color:#000
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Facade fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style SubA fill:#E3F2FD,stroke:#1565C0,color:#000
+    style SubB fill:#E3F2FD,stroke:#1565C0,color:#000
+    style SubC fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ## UML Class Diagram

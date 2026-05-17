@@ -11,19 +11,16 @@
 
 ```mermaid
 flowchart LR
-    T{{"🗼 Control Tower<br/>(Mediator)"}}
-    P1(["✈️ Flight AA101"]) ---|talks to| T
-    P2(["✈️ Flight BA202"]) ---|talks to| T
-    P3(["✈️ Flight LH303"]) ---|talks to| T
-    P4[/"🛬 Runway 1"/] ---|status| T
-    P5[/"🛫 Runway 2"/] ---|status| T
-    
-    style T fill:#FEF3C7,stroke:#D97706,stroke-width:3px,color:#000
+    P1(["✈️ Flight AA101"]) -->|"talks to"| T{{"🗼 Control Tower"}}
+    P2(["✈️ Flight BA202"]) -->|"talks to"| T
+    T -->|"coordinates"| R1(["🛬 Runway 1"])
+    T -->|"coordinates"| R2(["🛫 Runway 2"])
+
+    style T fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
     style P1 fill:#E3F2FD,stroke:#1565C0,color:#000
     style P2 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style P3 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style P4 fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style P5 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style R1 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style R2 fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---
@@ -32,24 +29,24 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Mediator[["🏛️ Mediator\n(Interface)\n+ notify(sender, event)"]]
-    ConcreteMediator{{"📡 ConcreteMediator\n- colleagues[]\n+ notify(sender, event)\n+ registerColleague()"}}
-    Colleague[["👥 Colleague\n(Abstract)\n- mediator\n+ send(event)\n+ receive(event)"]]
-    ColleagueA(["🅰️ ColleagueA\n+ send(event)\n+ receive(event)"])
-    ColleagueB(["🅱️ ColleagueB\n+ send(event)\n+ receive(event)"])
+    Mediator[["🏛️ Mediator"]]
+    ConcreteMediator{{"📡 ConcreteMediator"}}
+    Colleague[["👥 Colleague"]]
+    ColleagueA{{"🅰️ ColleagueA"}}
+    ColleagueB{{"🅱️ ColleagueB"}}
 
-    ConcreteMediator --> Mediator
-    ColleagueA --> Colleague
-    ColleagueB --> Colleague
-    Colleague --> Mediator
+    ConcreteMediator -->|"implements"| Mediator
+    ColleagueA -->|"extends"| Colleague
+    ColleagueB -->|"extends"| Colleague
+    Colleague -.->|"talks to"| Mediator
     ConcreteMediator -.->|"coordinates"| ColleagueA
     ConcreteMediator -.->|"coordinates"| ColleagueB
 
-    style Mediator fill:#6d28d9,color:#fff
-    style ConcreteMediator fill:#7c3aed,color:#fff
-    style Colleague fill:#8b5cf6,color:#fff
-    style ColleagueA fill:#a78bfa,color:#fff
-    style ColleagueB fill:#a78bfa,color:#fff
+    style Mediator fill:#FFF3E0,stroke:#E65100,color:#000
+    style ConcreteMediator fill:#FFF3E0,stroke:#E65100,color:#000
+    style Colleague fill:#E3F2FD,stroke:#1565C0,color:#000
+    style ColleagueA fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style ColleagueB fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---

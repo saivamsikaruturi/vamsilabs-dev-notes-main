@@ -326,11 +326,11 @@ flowchart LR
     B -->|"instanceof Line(Point s, Point e)"| D(["Destructure nested records"])
     B -->|"no match"| E(["default branch"])
 
-    style A fill:#37474F,color:#fff
-    style B fill:#FFA000,color:#000
-    style C fill:#2E7D32,color:#fff
-    style D fill:#1565C0,color:#fff
-    style E fill:#757575,color:#fff
+    style A fill:#CFD8DC,color:#000
+    style B fill:#FFF3E0,color:#000
+    style C fill:#E8F5E9,color:#000
+    style D fill:#E3F2FD,color:#000
+    style E fill:#EEEEEE,color:#000
 ```
 
 ---

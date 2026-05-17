@@ -11,17 +11,13 @@
 
 ```mermaid
 flowchart LR
-    R["🎮 Remote<br/>(Iterator)"] -->|next ▶️| C1["📺 Ch 1<br/>News"]
-    C1 -->|next ▶️| C2["📺 Ch 2<br/>Sports"]
-    C2 -->|next ▶️| C3["📺 Ch 3<br/>Movies"]
-    C3 -->|next ▶️| C4["📺 Ch 4<br/>Music"]
-    C4 -.->|◀️ prev| C3
-    
-    style R fill:#EDE9FE,stroke:#7C3AED,stroke-width:3px,color:#000
+    R["🎮 Remote"] -->|"next"| C1["📺 News"] -->|"next"| C2["📺 Sports"] -->|"next"| C3["📺 Movies"]
+    C3 -.->|"prev"| C2
+
+    style R fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#000
     style C1 fill:#E3F2FD,stroke:#1565C0,color:#000
     style C2 fill:#E8F5E9,stroke:#2E7D32,color:#000
     style C3 fill:#FFF3E0,stroke:#E65100,color:#000
-    style C4 fill:#FCE4EC,stroke:#C62828,color:#000
 ```
 
 ---
@@ -30,23 +26,17 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Client(["👤 Client"])
-    Iterator[["🔁 Iterator\n(Interface)\n+ hasNext(): boolean\n+ next(): Element\n+ remove()"]]
-    ConcreteIterator(["⚡ ConcreteIterator\n- currentPosition\n+ hasNext()\n+ next()"])
-    Aggregate[["📦 Aggregate\n(Interface)\n+ createIterator(): Iterator"]]
-    ConcreteAggregate{{"🗂️ ConcreteAggregate\n- elements[]\n+ createIterator()"}}
+    Client["👤 Client"] -->|"uses"| Iterator[["🔁 Iterator"]]
+    Client -->|"asks"| Aggregate[["📦 Aggregate"]]
+    ConcreteAgg{{"🗂️ Concrete Aggregate"}} -->|"implements"| Aggregate
+    ConcreteAgg -.->|"creates"| ConcreteIt{{"⚡ Concrete Iterator"}}
+    ConcreteIt -->|"implements"| Iterator
 
-    Client --> Iterator
-    Client --> Aggregate
-    ConcreteIterator --> Iterator
-    ConcreteAggregate --> Aggregate
-    ConcreteAggregate -.->|"creates"| ConcreteIterator
-
-    style Client fill:#7c3aed,color:#fff
-    style Iterator fill:#6d28d9,color:#fff
-    style ConcreteIterator fill:#a78bfa,color:#fff
-    style Aggregate fill:#8b5cf6,color:#fff
-    style ConcreteAggregate fill:#c4b5fd,color:#000
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Iterator fill:#FFF3E0,stroke:#E65100,color:#000
+    style Aggregate fill:#FFF3E0,stroke:#E65100,color:#000
+    style ConcreteAgg fill:#E3F2FD,stroke:#1565C0,color:#000
+    style ConcreteIt fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---

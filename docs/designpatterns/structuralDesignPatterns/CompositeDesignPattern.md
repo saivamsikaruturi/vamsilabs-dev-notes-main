@@ -11,22 +11,17 @@
 
 ```mermaid
 flowchart LR
-    Root{{"📁 Root Folder<br/>getSize() = 850KB"}}
-    Root --> F1(["📄 readme.md<br/>50KB"])
-    Root --> Src{{"📁 src/<br/>getSize() = 500KB"}}
-    Root --> F2(["📄 config.yml<br/>300KB"])
-    Src --> S1(["📄 App.java<br/>200KB"])
-    Src --> S2(["📄 Utils.java<br/>150KB"])
-    Src --> Sub{{"📁 models/<br/>getSize() = 150KB"}}
-    Sub --> M1(["📄 User.java<br/>150KB"])
-    
+    Root{{"📁 Root"}} -->|"contains"| Src{{"📁 src/"}}
+    Root -->|"contains"| F1(["📄 readme.md"])
+    Src -->|"contains"| S1(["📄 App.java"])
+    Src -->|"contains"| Sub{{"📁 models/"}}
+    Sub -->|"contains"| M1(["📄 User.java"])
+
     style Root fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
     style Src fill:#FFF3E0,stroke:#E65100,color:#000
     style Sub fill:#FFF3E0,stroke:#E65100,color:#000
     style F1 fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style F2 fill:#E8F5E9,stroke:#2E7D32,color:#000
     style S1 fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style S2 fill:#E8F5E9,stroke:#2E7D32,color:#000
     style M1 fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
@@ -36,17 +31,15 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Component[["Component\n(interface)\noperation()"]]
-    Leaf(["Leaf\noperation()"])
-    Composite{{"Composite\nadd(Component)\nremove(Component)\noperation()"}}
+    Client["🖥️ Client"] -->|"uses"| Component[["🎯 Component"]]
+    Leaf(["🍃 Leaf"]) -->|"implements"| Component
+    Composite{{"🌳 Composite"}} -->|"implements"| Component
+    Composite -.->|"contains 0..n"| Component
 
-    Leaf -->|implements| Component
-    Composite -->|implements| Component
-    Composite -->|contains 0..n| Component
-
-    style Component fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style Leaf fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style Composite fill:#b2dfdb,stroke:#00695c,color:#000
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Component fill:#FFF3E0,stroke:#E65100,color:#000
+    style Leaf fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Composite fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ## UML Class Diagram
@@ -85,28 +78,18 @@ classDiagram
 
 ```mermaid
 flowchart LR
-    CEO{{"CEO\n(Composite)"}}
-    VP1{{"VP Engineering\n(Composite)"}}
-    VP2{{"VP Sales\n(Composite)"}}
-    Dev1(["Developer 1\n(Leaf)"])
-    Dev2(["Developer 2\n(Leaf)"])
-    QA(["QA Engineer\n(Leaf)"])
-    Sales1(["Sales Rep\n(Leaf)"])
+    CEO{{"👔 CEO"}} -->|"manages"| VP1{{"👔 VP Engineering"}}
+    CEO -->|"manages"| VP2{{"👔 VP Sales"}}
+    VP1 --> Dev1(["👨‍💻 Developer 1"])
+    VP1 --> Dev2(["👨‍💻 Developer 2"])
+    VP2 --> Sales1(["💼 Sales Rep"])
 
-    CEO --> VP1
-    CEO --> VP2
-    VP1 --> Dev1
-    VP1 --> Dev2
-    VP1 --> QA
-    VP2 --> Sales1
-
-    style CEO fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style VP1 fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style VP2 fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style Dev1 fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style Dev2 fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style QA fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style Sales1 fill:#e8f5e9,stroke:#2e7d32,color:#000
+    style CEO fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#000
+    style VP1 fill:#FFF3E0,stroke:#E65100,color:#000
+    style VP2 fill:#FFF3E0,stroke:#E65100,color:#000
+    style Dev1 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Dev2 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Sales1 fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---

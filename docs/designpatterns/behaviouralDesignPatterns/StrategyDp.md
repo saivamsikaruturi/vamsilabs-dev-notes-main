@@ -11,17 +11,16 @@
 
 ```mermaid
 flowchart LR
-    GPS{{"📱 Google Maps<br/>(Context)<br/>A → B"}}
-    GPS -->|Strategy 1| F(["🏎️ Fastest Route<br/>25 min via highway"])
-    GPS -->|Strategy 2| S(["📏 Shortest Distance<br/>18 km through city"])
-    GPS -->|Strategy 3| T(["💰 No Tolls<br/>35 min, free roads"])
-    GPS -->|Strategy 4| SC(["🌅 Scenic Route<br/>45 min, beautiful views"])
-    
-    style GPS fill:#EDE9FE,stroke:#7C3AED,stroke-width:3px,color:#000
-    style F fill:#FFCDD2,stroke:#C62828,color:#000
-    style S fill:#BBDEFB,stroke:#1565C0,color:#000
-    style T fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style SC fill:#FFF9C4,stroke:#F57F17,color:#000
+    GPS["📱 Google Maps"] -->|"picks"| F["🏎️ Fastest Route"]
+    F --> S["📏 Shortest Route"]
+    S --> T["💰 No Tolls"]
+    T --> SC["🌅 Scenic Route"]
+
+    style GPS fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
+    style F fill:#FCE4EC,stroke:#C62828,color:#000
+    style S fill:#E3F2FD,stroke:#1565C0,color:#000
+    style T fill:#FFF8E1,stroke:#F9A825,color:#000
+    style SC fill:#FFF3E0,stroke:#E65100,color:#000
 ```
 
 ---
@@ -30,22 +29,14 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Context(["🎮 Context\n- strategy: Strategy\n+ setStrategy(s)\n+ executeStrategy()"])
-    Strategy[["🧠 Strategy\n(Interface)\n+ execute(data)"]]
-    ConcreteA{{"⚡ ConcreteStrategyA\n+ execute(data)"}}
-    ConcreteB{{"🔥 ConcreteStrategyB\n+ execute(data)"}}
-    ConcreteC{{"🌊 ConcreteStrategyC\n+ execute(data)"}}
+    Context["🎮 Context"] -->|"delegates to"| Strategy[["🧠 Strategy"]]
+    ConcreteA{{"⚡ Strategy A"}} -->|"implements"| Strategy
+    ConcreteB{{"🔥 Strategy B"}} -->|"implements"| Strategy
 
-    Context --> Strategy
-    ConcreteA --> Strategy
-    ConcreteB --> Strategy
-    ConcreteC --> Strategy
-
-    style Context fill:#7c3aed,color:#fff
-    style Strategy fill:#6d28d9,color:#fff
-    style ConcreteA fill:#a78bfa,color:#fff
-    style ConcreteB fill:#a78bfa,color:#fff
-    style ConcreteC fill:#a78bfa,color:#fff
+    style Context fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Strategy fill:#FFF3E0,stroke:#E65100,color:#000
+    style ConcreteA fill:#E3F2FD,stroke:#1565C0,color:#000
+    style ConcreteB fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---

@@ -11,34 +11,16 @@
 
 ```mermaid
 flowchart LR
-    subgraph Document["📄 Document (100,000 chars)"]
-        P1["position: 1"] 
-        P2["position: 2"]
-        P3["position: 3"]
-        P4["position: 4"]
-        P5["position: 5"]
-    end
-    
-    subgraph Pool["🏊 Flyweight Pool (only 26 objects!)"]
-        A["🅰️ 'A'"]
-        B["🅱️ 'B'"]
-        C["©️ 'C'"]
-    end
-    
-    P1 --> A
-    P2 --> B
-    P3 --> A
-    P4 --> C
-    P5 --> A
-    
-    style A fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
+    Doc["📄 100K chars"] -->|"shares"| Pool{{"🏊 Flyweight Pool"}}
+    Pool -->|"only 26 objects!"| A(["🅰️ 'A'"])
+    Pool --> B(["🅱️ 'B'"])
+    Pool --> C(["©️ 'C'"])
+
+    style Doc fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#000
+    style Pool fill:#FFF3E0,stroke:#E65100,color:#000
+    style A fill:#E8F5E9,stroke:#2E7D32,color:#000
     style B fill:#E3F2FD,stroke:#1565C0,color:#000
-    style C fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style P1 fill:#FFF9C4,stroke:#F57F17,color:#000
-    style P2 fill:#FFF9C4,stroke:#F57F17,color:#000
-    style P3 fill:#FFF9C4,stroke:#F57F17,color:#000
-    style P4 fill:#FFF9C4,stroke:#F57F17,color:#000
-    style P5 fill:#FFF9C4,stroke:#F57F17,color:#000
+    style C fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---
@@ -47,23 +29,15 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Client(["Client"])
-    Factory{{"Flyweight Factory\n(Cache/Pool)"}}
-    Flyweight[["Flyweight\n(interface)"]]
-    ConcreteFW(["Concrete Flyweight\n(shared, intrinsic state)"])
-    UnsharedFW(["Unshared Flyweight\n(if needed)"])
+    Client["🖥️ Client"] -->|"requests"| Factory{{"🏭 Flyweight Factory"}}
+    Factory -->|"returns cached"| FW[["🎯 Flyweight"]]
+    ConcreteFW(["📦 Concrete Flyweight"]) -->|"implements"| FW
+    Client -.->|"passes extrinsic state"| FW
 
-    Client -->|requests| Factory
-    Factory -->|returns cached| Flyweight
-    ConcreteFW -->|implements| Flyweight
-    UnsharedFW -->|implements| Flyweight
-    Client -->|passes extrinsic state| Flyweight
-
-    style Client fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style Factory fill:#a5d6a7,stroke:#1b5e20,color:#000
-    style Flyweight fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style ConcreteFW fill:#b2dfdb,stroke:#00695c,color:#000
-    style UnsharedFW fill:#e0f2f1,stroke:#00695c,color:#000
+    style Client fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Factory fill:#E3F2FD,stroke:#1565C0,color:#000
+    style FW fill:#FFF3E0,stroke:#E65100,color:#000
+    style ConcreteFW fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ## UML Class Diagram
@@ -105,32 +79,17 @@ classDiagram
 
 ```mermaid
 flowchart LR
-    subgraph Intrinsic["Intrinsic State (SHARED)"]
-        direction LR
-        I1["Immutable"]
-        I2["Context-independent"]
-        I3["Stored in flyweight"]
-        I4["e.g., tree type, color, texture"]
-    end
+    Int["🔒 Intrinsic State"] -->|"immutable"| Shared(["Shared in flyweight"])
+    Shared -->|"e.g."| Ex1(["tree type, color"])
+    Ext["🔓 Extrinsic State"] -->|"varies"| Unique(["Passed by client"])
+    Unique -->|"e.g."| Ex2(["position, scale"])
 
-    subgraph Extrinsic["Extrinsic State (UNIQUE)"]
-        direction LR
-        E1["Varies per context"]
-        E2["Passed by client"]
-        E3["NOT stored in flyweight"]
-        E4["e.g., position, scale, rotation"]
-    end
-
-    style Intrinsic fill:#c8e6c9,stroke:#2e7d32,color:#000
-    style Extrinsic fill:#fff9c4,stroke:#f57f17,color:#000
-    style I1 fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style I2 fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style I3 fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style I4 fill:#e8f5e9,stroke:#2e7d32,color:#000
-    style E1 fill:#fffde7,stroke:#f57f17,color:#000
-    style E2 fill:#fffde7,stroke:#f57f17,color:#000
-    style E3 fill:#fffde7,stroke:#f57f17,color:#000
-    style E4 fill:#fffde7,stroke:#f57f17,color:#000
+    style Int fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
+    style Shared fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Ex1 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Ext fill:#FFF8E1,stroke:#F9A825,stroke-width:2px,color:#000
+    style Unique fill:#FFF8E1,stroke:#F9A825,color:#000
+    style Ex2 fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---

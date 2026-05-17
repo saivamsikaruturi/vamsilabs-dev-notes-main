@@ -11,17 +11,16 @@
 
 ```mermaid
 flowchart LR
-    G["🎮 Game State<br/>HP: 100, Level 5<br/>Pos: Castle"]
-    G -->|save| S1["💾 Save Slot 1<br/>HP:100, Lvl 5"]
-    G -->|play more...| G2["🎮 Game State<br/>HP: 30, Level 7<br/>Pos: Dragon Lair"]
-    G2 -->|save| S2["💾 Save Slot 2<br/>HP:30, Lvl 7"]
-    G2 -->|died! load slot 1| R["🔄 Restored!<br/>HP: 100, Level 5"]
-    
-    style G fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style G2 fill:#FFCDD2,stroke:#C62828,color:#000
-    style S1 fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#000
-    style S2 fill:#EDE9FE,stroke:#7C3AED,stroke-width:2px,color:#000
-    style R fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#000
+    G["🎮 Playing"] -->|"save"| S1(["💾 Save Slot 1"])
+    G -->|"keep playing"| G2["🎮 Boss Fight"]
+    G2 -->|"save"| S2(["💾 Save Slot 2"])
+    G2 -->|"died! restore"| R["🔄 Restored!"]
+
+    style G fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
+    style G2 fill:#FCE4EC,stroke:#C62828,color:#000
+    style S1 fill:#FFF8E1,stroke:#F9A825,color:#000
+    style S2 fill:#FFF8E1,stroke:#F9A825,color:#000
+    style R fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---
@@ -30,18 +29,14 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Originator(["🎮 Originator\n- state\n+ createMemento(): Memento\n+ restore(memento)"])
-    Memento{{"💾 Memento\n- savedState\n+ getState()"}}
-    Caretaker[/"📂 Caretaker\n- history: List〈Memento〉\n+ save()\n+ undo()"/]
+    Caretaker["📂 Caretaker"] -->|"requests save"| Originator[["🎮 Originator"]]
+    Originator -->|"creates"| Memento{{"💾 Memento"}}
+    Caretaker -->|"stores"| Memento
+    Caretaker -.->|"restores"| Originator
 
-    Originator -.->|"creates"| Memento
-    Originator -.->|"restores from"| Memento
-    Caretaker --> Memento
-    Caretaker --> Originator
-
-    style Originator fill:#7c3aed,color:#fff
-    style Memento fill:#6d28d9,color:#fff
-    style Caretaker fill:#a78bfa,color:#fff
+    style Caretaker fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Originator fill:#FFF3E0,stroke:#E65100,color:#000
+    style Memento fill:#FFF8E1,stroke:#F9A825,color:#000
 ```
 
 ---

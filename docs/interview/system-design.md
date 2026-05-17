@@ -8,37 +8,29 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A URL shortener maps a long URL to a compact alias and redirects users via a key-value lookup -- it is fundamentally a distributed hash table with an HTTP interface.
 
-    - Generate a unique short URL for any long URL
-    - Redirect short URL to the original with low latency
-    - Handle 100M+ URLs; short links expire optionally
-    - Analytics: click count, geo, referrer
+    **Why it exists:** Shorten ugly links for sharing, track click analytics, and enforce link expiration policies without touching the target site.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **API Gateway** -- accepts shorten / redirect requests
-    - **Shortening Service** -- generates a unique 7-char key (Base62 encoding of auto-increment ID or MD5 hash truncation)
-    - **Key-Value Store** (Redis + DynamoDB/Cassandra) -- maps short key to long URL
-    - **Analytics Service** -- async click event processing via Kafka
+    - **Write path:** Client POSTs a long URL. The Shortening Service generates a 7-char key (Base62 encoding of a Snowflake ID -- collision-free by design). The key-to-URL mapping is persisted in a KV store (DynamoDB/Cassandra) with Redis as a read-through cache.
+    - **Read path:** GET `/abc123` hits the API Gateway, looks up Redis (then DB on miss), and returns a 302 redirect. A Kafka event fires for async analytics.
 
-    **Key Decisions:**
+    **When to use this pattern:** Any system needing stable, compact references to mutable resources -- feature flags, deep-link routing, QR codes.
 
-    - **Base62 vs hashing:** Base62 on a counter avoids collisions; use a distributed ID generator (Snowflake) for scale
-    - **Read-heavy** (~100:1 read-to-write): put a CDN / cache in front of the redirect path
-    - **301 vs 302 redirect:** 302 (temporary) lets you capture analytics; 301 is cached by browsers
+    **Gotchas:**
+
+    - **301 vs 302:** Use 302 (temporary) if you need analytics; 301 gets cached by browsers and you lose visibility.
+    - **Hash collisions:** MD5 truncation causes collisions at scale -- prefer counter-based Base62.
+    - **Hot keys:** A viral short link can melt a single cache shard; pre-warm popular keys across CDN PoPs.
+    - **Custom aliases:** Need a uniqueness check + reservation system separate from auto-generated keys.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        Client -->|POST /shorten| API[API Gateway]
-        API --> SS[Shortening Service]
-        SS --> DB[(Key-Value Store)]
-        Client -->|GET /abc123| API
-        API --> RS[Redirect Service]
-        RS --> Cache[(Redis Cache)]
-        Cache -.->|miss| DB
-        RS --> Analytics[Analytics via Kafka]
+    ```
+    Write:  Client ──POST /shorten──▶ API Gateway ──▶ Shortening Service ──▶ Key-Value Store
+    Read:   Client ──GET /abc123──▶ API Gateway ──▶ Redirect Service ──▶ Redis Cache ──miss──▶ Key-Value Store
+                                                          └──▶ Analytics (Kafka)
     ```
 
 ---
@@ -47,38 +39,32 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A timeline system pre-computes personalized feeds using a hybrid fan-out model -- push for regular users, pull for celebrities -- to balance write amplification against read latency.
 
-    - Users post tweets (text, images, video)
-    - Home timeline shows tweets from followed users, ranked by relevance/time
-    - Support 500M users, 600K tweets/sec read at peak
-    - Near real-time timeline updates
+    **Why it exists:** Users expect a fresh, ranked feed in under 200ms. Naive pull-on-read (query all followed accounts at read time) collapses at 500M users.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Tweet Service** -- write path: persist tweet to DB, fan-out to followers
-    - **Fan-out Service** -- push model for normal users, pull model for celebrities (hybrid)
-    - **Timeline Cache** (Redis sorted sets per user) -- pre-computed home timelines
-    - **Ranking Service** -- ML-based scoring before serving
-    - **Media Service** -- stores images/video in object storage + CDN
+    - **Write path:** A tweet is persisted to the Tweet DB. The Fan-out Service pushes the tweet ID into each follower's Timeline Cache (Redis sorted set, capped at ~800 entries). For celebrities (>10K followers), fan-out is skipped to avoid write storms.
+    - **Read path:** The Timeline Service fetches the user's pre-built cache, then merges in recent tweets from any followed celebrities (pull model). A Ranking Service applies ML scoring before returning the final feed.
+    - **Media:** Images/video go to object storage + CDN; only media references are stored in tweet records.
 
-    **Key Decisions:**
+    **When to use:** Any "personalized aggregation" feed -- LinkedIn updates, Instagram stories, notification inboxes.
 
-    - **Fan-out on write vs read:** hybrid approach -- push for users with < 10K followers, pull on read for celebrities to avoid fan-out storms
-    - **Timeline cache size:** keep last 800 tweets per user in Redis
-    - **Sharding:** shard tweet storage by tweet ID; timeline cache sharded by user ID
+    **Gotchas:**
+
+    - **Fan-out storms:** A celebrity with 50M followers posting frequently can overwhelm queue workers -- always cap and defer.
+    - **Cache invalidation on unfollow:** Must remove old tweets from the timeline cache or accept stale entries draining naturally.
+    - **Sharding mismatch:** Tweet storage is sharded by tweet ID; timeline cache by user ID. Cross-shard joins are expensive -- avoid them on the hot path.
+    - **Ranking freshness:** Stale ML features (engagement counts) degrade ranking quality; use a real-time feature store.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        User(("User")) -->|Post Tweet| TweetSvc(["Tweet Service"])
-        TweetSvc --> DB[(Tweet DB)]
-        TweetSvc --> Fanout{{"Fan-out Service"}}
-        Fanout -->|push| TLC[(Timeline Cache / Redis)]
-        User -->|Read Feed| TimelineSvc[["Timeline Service"]]
-        TimelineSvc --> TLC
-        TimelineSvc -->|pull for celebs| DB
-        TimelineSvc --> Ranker[/"Ranking Service"/]
+    ```
+    Write:  User ──Post Tweet──▶ Tweet Service ──▶ Tweet DB
+                                      └──▶ Fan-out Service ──push──▶ Timeline Cache (Redis)
+    Read:   User ──Read Feed──▶ Timeline Service ──▶ Timeline Cache
+                                      ├──pull for celebs──▶ Tweet DB
+                                      └──▶ Ranking Service
     ```
 
 ---
@@ -87,37 +73,31 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A chat system delivers messages in real-time over persistent WebSocket connections, with an offline queue and push notifications as the fallback -- it is an ordered, durable, fan-out messaging pipeline with end-to-end encryption.
 
-    - 1-to-1 and group messaging with delivery guarantees (sent, delivered, read)
-    - Support media (images, video, documents)
-    - End-to-end encryption; offline message queue
-    - Presence (online/offline/typing indicators)
+    **Why it exists:** Users demand instant delivery with receipt confirmation (sent/delivered/read). HTTP request-response is too slow and wasteful for real-time bidirectional communication.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **WebSocket Gateway** -- persistent connections for real-time bidirectional messaging
-    - **Chat Service** -- routes messages, manages sessions
-    - **Message Store** (Cassandra/HBase) -- append-only, partitioned by conversation ID
-    - **Presence Service** -- heartbeat-based online status via Redis
-    - **Push Notification Service** -- for offline users (APNs / FCM)
+    - **Connection layer:** Clients maintain a WebSocket to a Gateway server. A session registry (Redis) maps user ID to their gateway instance.
+    - **Message routing:** Chat Service receives a message, assigns a monotonic sequence ID per conversation (ensures ordering), writes to an append-only Message Store (Cassandra, partitioned by conversation ID), then routes to the recipient's gateway. If the recipient is offline, the message is queued and a push notification fires (APNs/FCM).
+    - **Presence:** Clients send heartbeats every 30s; Presence Service (Redis TTL keys) marks users online/offline and broadcasts typing indicators.
 
-    **Key Decisions:**
+    **When to use:** Any real-time bidirectional system -- live support, collaborative editing, multiplayer game chat.
 
-    - **WebSockets vs long polling:** WebSockets for mobile and web; fall back to long polling if needed
-    - **Message ordering:** use server-assigned monotonic sequence IDs per conversation
-    - **Group chat fan-out:** small groups (< 256) send directly; large groups use pub/sub
+    **Gotchas:**
+
+    - **Message ordering:** Network reordering can deliver messages out of sequence. Server-assigned sequence IDs per conversation are the fix -- never trust client timestamps.
+    - **Group fan-out:** Small groups (<256) can direct-send. Large groups need pub/sub to avoid O(N) writes per message on the gateway.
+    - **WebSocket reconnection:** Mobile clients drop connections constantly. Must support session resumption and replay of missed messages from the last seen sequence ID.
+    - **E2E encryption key exchange:** Losing device keys means losing message history -- need a secure backup/recovery mechanism.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        ClientA <-->|WebSocket| GW[WS Gateway]
-        GW <--> ChatSvc[Chat Service]
-        ChatSvc --> MQ[(Message Store)]
-        ChatSvc <-->|WebSocket| GW2[WS Gateway]
-        GW2 <--> ClientB
-        ChatSvc --> Push[Push Notification]
-        ChatSvc --> Presence[Presence Service / Redis]
+    ```
+    Client A ◀──WebSocket──▶ WS Gateway ◀──▶ Chat Service ◀──▶ WS Gateway ◀──WebSocket──▶ Client B
+                                                   ├──▶ Message Store
+                                                   ├──▶ Push Notification
+                                                   └──▶ Presence Service (Redis)
     ```
 
 ---
@@ -126,27 +106,25 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A notification service is a channel-agnostic delivery pipeline that accepts a "notify user X about event Y" request and routes it through the right channel (push, SMS, email) based on user preferences and delivery priority.
 
-    - Send push, SMS, and email notifications at scale (millions/day)
-    - Pluggable provider support (APNs, FCM, Twilio, SendGrid)
-    - User preference management (opt-in, quiet hours, frequency capping)
-    - Guaranteed delivery with retry; deduplication
+    **Why it exists:** Every backend service needs to reach users, but none should own the complexity of provider integrations, preference management, deduplication, or retry logic. Centralizing this prevents notification fatigue and duplicates.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Notification API** -- accepts notification requests from internal services
-    - **Priority Queue** (Kafka topics by priority) -- buffers and orders outbound messages
-    - **Worker Pools** -- per-channel workers (push, SMS, email) consume from queues
-    - **Template Service** -- manages notification templates and personalization
-    - **Preference Store** -- user channel preferences, rate limits
+    - **Ingestion:** Internal services call the Notification API with a payload and idempotency key. The API returns 202 Accepted immediately -- everything downstream is async.
+    - **Routing:** The Preference Store determines which channels the user has enabled and whether quiet hours or frequency caps apply. Messages are enqueued into priority-based Kafka topics.
+    - **Delivery:** Per-channel Worker Pools consume from queues, render templates via the Template Service, and dispatch through providers (APNs, FCM, Twilio, SendGrid). Failures trigger retry with exponential backoff.
+    - **Fallback chain:** If push delivery fails (token expired), the system escalates to SMS, then email.
 
-    **Key Decisions:**
+    **When to use:** Any platform with multiple notification triggers -- e-commerce order updates, social interactions, security alerts.
 
-    - **At-least-once delivery** with idempotency keys for deduplication
-    - **Rate limiting per user** to prevent notification fatigue
-    - **Fallback chain:** push fails -> SMS -> email
-    - **Async processing** end-to-end; callers get 202 Accepted
+    **Gotchas:**
+
+    - **Deduplication is critical:** Without idempotency keys, retries from upstream services cause duplicate notifications -- users notice and get annoyed fast.
+    - **Token staleness:** Mobile push tokens expire silently. You need a feedback loop (APNs feedback service) to prune dead tokens.
+    - **Frequency capping per user AND per channel:** A user getting 20 emails/day will unsubscribe. Cap globally and per-category.
+    - **Observability:** Notifications cross many services -- trace each notification end-to-end with a correlation ID or debugging is impossible.
 
 ---
 
@@ -154,26 +132,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A rate limiter is middleware that enforces request quotas per client using atomic counters in Redis -- it protects backends from abuse and ensures fair resource allocation across tenants.
 
-    - Limit API requests per user/IP within a time window
-    - Support multiple strategies (fixed window, sliding window, token bucket)
-    - Distributed: works across multiple API server instances
-    - Low latency overhead (< 1ms per check)
+    **Why it exists:** Without rate limiting, a single misbehaving client (or a bot) can starve legitimate users of resources. It is also a contractual enforcement mechanism for tiered API plans.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Rate Limiter Middleware** -- sits in front of the application layer (or in the API gateway)
-    - **Redis** -- centralized counter store; atomic INCR + EXPIRE operations
-    - **Rules Engine** -- configurable rules per endpoint, user tier, or API key
-    - **Response headers:** `X-RateLimit-Remaining`, `Retry-After`
+    - **Placement:** Sits in the API Gateway or as a sidecar. Every inbound request is checked against a rules engine that maps (endpoint, user tier, API key) to a quota.
+    - **Counter store:** Redis holds per-key counters. A Lua script atomically increments the counter and checks against the limit -- if exceeded, the request is rejected with 429 and a `Retry-After` header.
+    - **Algorithms:** Token bucket (refills at a steady rate, allows bursts up to bucket size) is the industry standard. Sliding window counter is a simpler alternative with good accuracy.
 
-    **Key Decisions:**
+    **When to use:** Public APIs, login endpoints (brute force protection), webhook dispatchers, any multi-tenant system.
 
-    - **Token bucket** is the most flexible (allows bursts); sliding window log is the most accurate
-    - **Fixed window** has boundary burst issues; **sliding window counter** is a good hybrid
-    - **Local + distributed:** use a local in-memory cache synced periodically with Redis for ultra-low latency
-    - **Race conditions:** use Redis Lua scripts for atomic check-and-decrement
+    **Gotchas:**
+
+    - **Fixed window boundary burst:** A user can fire 100 requests at 11:59:59 and 100 more at 12:00:00 -- effectively 2x the limit. Sliding window counters fix this.
+    - **Distributed race conditions:** Two API servers reading the same counter simultaneously can both allow a request. Redis Lua scripts (or `INCR` returning the new value) eliminate this.
+    - **Redis failure mode:** Decide upfront -- fail open (allow all) risks abuse; fail closed (deny all) causes outages. Most production systems fail open with local fallback counters.
+    - **Clock skew between nodes** can cause inconsistent enforcement -- always use Redis server time, not local clocks.
 
 ---
 
@@ -181,38 +157,32 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A distributed cache is an in-memory key-value cluster that uses consistent hashing to partition data across nodes, delivering sub-millisecond reads by eliminating disk I/O from the hot path.
 
-    - In-memory key-value store with sub-millisecond reads
-    - Support TTL, eviction policies (LRU, LFU), and multiple data structures
-    - Horizontal scaling across nodes; fault tolerance
-    - Replication for high availability
+    **Why it exists:** Databases are too slow for repeated hot-path reads. A cache layer absorbs 99% of read traffic, reducing DB load by orders of magnitude and cutting P99 latency from 20ms to <1ms.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Cache Nodes** -- each holds a partition of the keyspace in memory
-    - **Consistent Hashing Ring** -- maps keys to nodes; minimizes redistribution on scale events
-    - **Replication** -- primary-replica per partition (async or semi-sync)
-    - **Client Library** -- handles routing, connection pooling, retry
+    - **Partitioning:** A consistent hashing ring with virtual nodes maps each key to a primary node. Virtual nodes (150-200 per physical node) ensure even distribution.
+    - **Replication:** Each partition has one primary and N replicas (async replication for speed, semi-sync for durability). On primary failure, a replica promotes.
+    - **Client library:** Performs key hashing locally, routes directly to the correct node, maintains connection pools, and handles failover/retry.
+    - **Eviction:** When memory fills, evict using LRU (default) or LFU (better for power-law access patterns). TTLs provide explicit expiry.
 
-    **Key Decisions:**
+    **When to use:** Session stores, feed caches, leaderboard sorted sets, rate limiter counters -- anywhere read latency matters.
 
-    - **Consistent hashing with virtual nodes** to balance load evenly
-    - **Eviction policy:** LRU is default; LFU better for skewed access patterns
-    - **Persistence:** optional RDB snapshots + AOF for durability (trade-off: memory vs disk I/O)
-    - **Cache aside vs write-through vs write-behind:** cache-aside is simplest; write-behind for write-heavy
+    **Gotchas:**
+
+    - **Cache stampede:** When a hot key expires, hundreds of threads simultaneously hit the DB. Use a distributed lock (single-flight) to let one thread rebuild the cache.
+    - **Consistency gap:** Cache-aside means the cache can serve stale data after a DB write. For critical paths, use write-through or explicit invalidation.
+    - **Memory fragmentation:** Long-running Redis instances fragment memory. Monitor `mem_fragmentation_ratio` and restart periodically.
+    - **Hot key problem:** A viral tweet cached on one node can saturate that node's NIC. Replicate hot keys across multiple nodes or use client-local caching.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        App[Application] --> CL[Client Library]
-        CL -->|hash key| Ring[Consistent Hash Ring]
-        Ring --> N1[Node 1 Primary]
-        Ring --> N2[Node 2 Primary]
-        Ring --> N3[Node 3 Primary]
-        N1 --> R1[Node 1 Replica]
-        N2 --> R2[Node 2 Replica]
-        N3 --> R3[Node 3 Replica]
+    ```
+    Application ──▶ Client Library ──hash(key)──▶ Consistent Hash Ring
+                                                       ├──▶ Node 1 (Primary) ──▶ Node 1 (Replica)
+                                                       ├──▶ Node 2 (Primary) ──▶ Node 2 (Replica)
+                                                       └──▶ Node 3 (Primary) ──▶ Node 3 (Replica)
     ```
 
 ---
@@ -221,26 +191,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    Autocomplete serves top-K prefix-matched suggestions from a pre-computed trie in under 100ms -- it is a read-optimized data structure with an offline pipeline that keeps suggestions fresh.
 
-    - Return top suggestions as the user types (within 100ms)
-    - Rank by popularity, personalization, and recency
-    - Handle billions of queries per day
-    - Update suggestion index near real-time as trends change
+    **Why it exists:** Guiding users to popular queries reduces typos, accelerates search, and increases engagement. Every keystroke is a network round-trip, so latency must be sub-100ms.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Trie Service** -- in-memory prefix trie with top-K suggestions precomputed at each node
-    - **Data Collection Service** -- aggregates query logs via Kafka into frequency counts
-    - **Index Builder** (offline) -- periodically rebuilds the trie from aggregated data
-    - **Ranking Layer** -- blends popularity, recency, and user personalization
+    - **Serving layer:** An in-memory prefix trie stores the top 10-15 suggestions pre-computed at each node. A lookup is O(prefix length) -- no tree traversal needed beyond the prefix.
+    - **Data pipeline:** Query logs stream through Kafka to a Data Collection Service that aggregates frequency counts (sampled 1-in-10 to reduce volume). An offline Index Builder rebuilds the trie every 15 minutes from aggregated data and swaps it atomically.
+    - **Ranking:** Blends raw popularity, recency decay, and per-user personalization (recent searches from browser cache).
 
-    **Key Decisions:**
+    **When to use:** Search bars, address fields, IDE code completion, command palettes -- anywhere prefix prediction saves user effort.
 
-    - **Trie with top-K cache** at each node avoids traversal at query time
-    - **Sharding by prefix range** (a-m on shard 1, n-z on shard 2) distributes load
-    - **Sampling queries** (1 in N) to reduce data collection volume
-    - **Two-tier:** local browser cache (recent queries) + server-side suggestions
+    **Gotchas:**
+
+    - **Sharding by prefix range** (a-m, n-z) sounds clean but creates hot shards -- "s" and "c" prefixes dominate English. Use load-aware splitting instead.
+    - **Trending queries:** The 15-minute rebuild lag means you miss breaking news. Add a real-time "trending" overlay with a separate fast path.
+    - **Offensive suggestions:** Pre-compute a blocklist filter on the output. Never serve raw user queries without sanitization.
+    - **Browser-side caching:** Cache recent server responses by prefix in localStorage to eliminate redundant calls on the same session.
 
 ---
 
@@ -248,27 +216,25 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A web crawler is a distributed fetching pipeline that discovers, downloads, and indexes billions of web pages using a prioritized URL frontier, politeness controls, and content deduplication.
 
-    - Crawl billions of web pages; respect robots.txt and politeness policies
-    - Deduplicate URLs and content; handle dynamic/JavaScript-rendered pages
-    - Prioritize pages by importance (PageRank, freshness)
-    - Fault-tolerant and resumable
+    **Why it exists:** Search engines need fresh copies of the web. You cannot query what you have not crawled. The crawler must balance coverage, freshness, and politeness while operating at enormous scale.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **URL Frontier** (priority queue) -- manages URLs to crawl, ordered by priority
-    - **Fetcher Workers** -- distributed HTTP fetchers with rate limiting per domain
-    - **DNS Resolver Cache** -- avoids repeated DNS lookups
-    - **Content Parser** -- extracts links, stores content
-    - **Dedup Service** -- URL dedup via Bloom filter; content dedup via SimHash
+    - **URL Frontier:** A multi-queue priority system. Front queues prioritize by PageRank/freshness. Back queues enforce per-host politeness (one active request per domain, respecting `Crawl-Delay`).
+    - **Fetcher workers:** Distributed HTTP clients pull URLs from the frontier. Consistent hashing assigns domains to specific workers so one site is never hit by multiple workers simultaneously.
+    - **Processing pipeline:** Content Parser extracts links (discovered URLs re-enter the frontier) and stores page content. A Bloom filter deduplicates URLs; SimHash detects near-duplicate content.
+    - **DNS cache:** A local DNS resolver cache avoids millions of redundant lookups.
 
-    **Key Decisions:**
+    **When to use:** Search engines, price comparison scrapers, archival systems, SEO audit tools.
 
-    - **BFS vs DFS:** BFS for breadth coverage; priority-based BFS for quality
-    - **Politeness:** per-host crawl delay queue; obey robots.txt and Crawl-Delay
-    - **Consistent hashing** assigns URL domains to specific workers (avoids hammering one site from multiple workers)
-    - **Checkpointing** the frontier to disk for crash recovery
+    **Gotchas:**
+
+    - **Spider traps:** Infinite URL spaces (calendars, session IDs in URLs) will exhaust your frontier. Set max depth and use URL normalization aggressively.
+    - **JavaScript-rendered pages:** Many modern sites need headless browser rendering (Puppeteer). This is 10-50x slower -- only use it for high-value domains.
+    - **robots.txt compliance:** Not optional. Violating it gets your IP blocked and your company sued.
+    - **Checkpoint the frontier:** If you lose the frontier state, you restart from scratch. Periodic disk snapshots are non-negotiable for multi-day crawls.
 
 ---
 
@@ -276,27 +242,25 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    News feed ranking is a two-pass ML scoring pipeline -- a lightweight retrieval stage narrows millions of candidates to hundreds, then a heavy neural ranker scores them per-user in real time.
 
-    - Rank posts from friends/followed accounts by relevance, not just time
-    - Handle billions of posts daily; personalized per user
-    - Support real-time signals (new likes, comments) updating rank
-    - A/B testable for ranking model changes
+    **Why it exists:** Chronological feeds bury important content under noise. Ranking maximizes user engagement by surfacing the most relevant posts, which directly drives platform retention and ad revenue.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Candidate Generation** -- fetch recent posts from followed users (fan-out on write cache)
-    - **Feature Extraction** -- compute features: post age, engagement, author affinity, content type
-    - **Ranking Model** -- ML model (gradient boosted trees or neural network) scores each candidate
-    - **Re-ranking / Filtering** -- diversity rules, dedup, policy filters (misinformation, NSFW)
-    - **Serving Layer** -- returns top-N ranked posts with pagination
+    - **Candidate generation:** Pull ~2000 recent posts from followed accounts (pre-materialized in a fan-out cache) plus injected posts (ads, recommended content).
+    - **Feature extraction:** For each candidate, compute features -- post age, engagement velocity, author affinity score, content type, and user interaction history. Real-time features (likes in the last 5 min) come from a feature store (Redis/Feast).
+    - **Scoring:** A two-pass approach -- first pass uses a lightweight model (logistic regression) to cut to top 500, second pass uses a deep neural network for precise scoring.
+    - **Re-ranking:** Apply diversity rules (no 3 posts from same author in a row), policy filters (NSFW, misinformation), and business rules (ad spacing).
 
-    **Key Decisions:**
+    **When to use:** Any personalized content surface -- social feeds, email inbox priority, news aggregators, recommendation carousels.
 
-    - **Two-pass ranking:** lightweight first pass to narrow candidates, heavy ML scoring on top 500
-    - **Feature store** (Redis/Feast) for real-time features like recent engagement
-    - **Online learning** to adapt to trends quickly vs batch model retraining
-    - **Engagement vs well-being:** balance clicks/likes with meaningful interactions
+    **Gotchas:**
+
+    - **Filter bubble:** Pure engagement optimization creates echo chambers. Add explicit diversity and serendipity objectives to the loss function.
+    - **Feature freshness:** Stale engagement counts (cached 5 min ago) cause the model to under-rank newly viral posts. Balance cache TTL against serving cost.
+    - **Position bias:** Users click top-ranked items regardless of quality. Use position-debiased training or inverse propensity weighting.
+    - **A/B testing at scale:** Feed ranking changes require interleaving experiments (not just split tests) to detect subtle quality shifts.
 
 ---
 
@@ -304,38 +268,30 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A video streaming platform is a write-heavy transcoding pipeline feeding a read-heavy CDN -- raw uploads become multi-resolution HLS/DASH segments served adaptively based on the viewer's bandwidth.
 
-    - Upload, transcode, and stream video at scale (4K, multiple resolutions)
-    - Adaptive bitrate streaming based on network conditions
-    - Support 100M+ concurrent viewers during peak
-    - Content recommendation engine
+    **Why it exists:** Raw video files are massive and codec-specific. Streaming demands adaptive bitrate delivery, edge caching for global latency, and efficient storage tiering to manage petabytes economically.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Upload Service** -- accepts video uploads, stores raw files in object storage (S3)
-    - **Transcoding Pipeline** -- distributed workers (FFmpeg) encode into multiple resolutions/codecs (HLS/DASH segments)
-    - **CDN** -- edge servers cache and serve video segments close to users
-    - **Streaming API** -- serves manifest files; client pulls segments adaptively
-    - **Metadata & Search Service** -- video catalog, tags, search index
+    - **Upload path:** Creator uploads raw video to the Upload Service, which writes to object storage (S3). A Transcoding Pipeline (DAG-based: split into chunks, encode each in parallel across resolutions/codecs, merge) produces HLS segments at 240p through 4K.
+    - **Storage:** Transcoded segments stored in S3 with hot/warm/cold tiering. Rarely-viewed encodes (e.g., 4K for a 10-view video) are deleted after 90 days.
+    - **Streaming path:** The client fetches a manifest file listing available qualities. The ABR algorithm on the client switches segment quality dynamically based on measured throughput. CDN edge servers cache popular segments.
 
-    **Key Decisions:**
+    **When to use:** Any media-heavy platform -- live streaming, e-learning, podcast hosting, surveillance playback.
 
-    - **Adaptive bitrate streaming (ABR):** HLS or DASH protocols; client switches quality based on bandwidth
-    - **Transcoding:** use a DAG-based pipeline (split -> encode -> merge) for parallelism
-    - **CDN placement:** pre-populate popular content; long-tail served from origin
-    - **Storage cost:** hot/warm/cold tiering; delete low-view encodes after 90 days
+    **Gotchas:**
+
+    - **Transcoding cost:** Encoding all resolutions for every upload is wasteful. Use "just-in-time" transcoding for low-view content -- only produce 720p initially, add 4K if viewership grows.
+    - **CDN cache efficiency:** Long-tail content has low cache hit rates. An origin shield layer prevents thundering herd on cache misses.
+    - **Live streaming:** Cannot pre-transcode. Need ultra-low-latency encoding pipelines (sub-5s glass-to-glass) with chunked transfer encoding.
+    - **DRM integration:** Content protection (Widevine, FairPlay) adds complexity to the manifest and key delivery, and different browsers need different DRM schemes.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        Creator(("Creator")) -->|Upload| US(["Upload Service"])
-        US --> S3[(Object Storage)]
-        S3 --> TP{{"Transcoding Pipeline"}}
-        TP -->|HLS segments| S3
-        S3 --> CDN[["CDN Edge Servers"]]
-        Viewer(("Viewer")) -->|Stream| CDN
-        Viewer -->|Search| Meta[/"Metadata Service"/]
+    ```
+    Upload: Creator ──▶ Upload Service ──▶ Object Storage (S3) ──▶ Transcoding Pipeline ──HLS segments──▶ S3
+    Watch:  Viewer ──Stream──▶ CDN Edge Servers ◀── S3
+            Viewer ──Search──▶ Metadata Service
     ```
 
 ---
@@ -344,27 +300,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A cloud file storage system splits files into content-addressed blocks, syncs only changed blocks across devices (delta sync), and uses a metadata service to track the file tree, versions, and permissions.
 
-    - Upload, download, sync files across devices
-    - File versioning and conflict resolution
-    - Sharing with permissions (view, edit, comment)
-    - Efficient sync: only transfer changed blocks (delta sync)
+    **Why it exists:** Users need seamless multi-device access to files with automatic sync, versioning, and sharing. Uploading entire files on every change is bandwidth-prohibitive -- block-level delta sync reduces transfer by 90%+.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **API Gateway** -- authentication, routing, rate limiting
-    - **Metadata Service** -- file tree, permissions, versions stored in relational DB
-    - **Block Storage Service** -- splits files into 4MB blocks, content-addressed (SHA-256), stored in object storage
-    - **Sync Service** -- long-polling / WebSocket-based change notification to clients
-    - **Dedup Service** -- block-level dedup across users using content hashes
+    - **Upload:** Files are chunked into 4MB blocks, each hashed (SHA-256). Only blocks with new hashes are uploaded -- this enables both delta sync and cross-user deduplication. Blocks are stored in object storage; the Metadata Service (relational DB) tracks the file tree, block references, versions, and ACLs.
+    - **Sync:** When a file changes on one device, the Sync Service pushes a change notification (long-poll or WebSocket) to other connected clients. Clients fetch only the new/changed block hashes and download the diff.
+    - **Conflict resolution:** Last-writer-wins for non-overlapping edits. For simultaneous edits to the same file, the system creates a "conflict copy" and notifies the user.
 
-    **Key Decisions:**
+    **When to use:** Any collaborative document platform, backup services, asset management systems, enterprise content management.
 
-    - **Block-level delta sync:** only upload changed blocks, not entire files
-    - **Conflict resolution:** last-writer-wins for simple conflicts; create conflict copies for simultaneous edits
-    - **Chunked uploads** with resumption for large files
-    - **Cold storage tier** for files not accessed in 90+ days
+    **Gotchas:**
+
+    - **Small file overhead:** A 1KB file still requires metadata writes, block storage overhead, and sync notifications. Batch small files or store inline in metadata.
+    - **Resumable uploads are mandatory:** Mobile networks drop connections. Without chunked resumable uploads (like tus protocol), large file uploads will never complete reliably.
+    - **Permission propagation delay:** Revoking access must immediately invalidate all cached copies on shared devices -- eventual consistency is not acceptable for security-sensitive shares.
+    - **Storage cost explosion:** Versioning without limits means a frequently-edited 1GB file consumes 100GB over time. Implement version limits or tiered retention.
 
 ---
 
@@ -372,39 +325,31 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A ride-sharing system is a real-time geospatial matching engine -- it ingests driver GPS pings every 4 seconds into a spatial index and matches riders to the nearest available drivers within milliseconds.
 
-    - Match riders with nearby available drivers in real-time
-    - Real-time GPS tracking and ETA computation
-    - Surge pricing based on supply-demand
-    - Payment processing and trip history
+    **Why it exists:** The core value is reducing the time-to-pickup. This requires a constantly-updated spatial index, efficient proximity queries, and a trip state machine that coordinates two independent mobile actors (rider + driver).
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Location Service** -- drivers send GPS pings every 4 seconds; stored in a geospatial index
-    - **Matching Service** -- finds nearest available drivers using geospatial queries (Geohash / QuadTree)
-    - **Trip Service** -- manages trip lifecycle (request -> match -> pickup -> drop-off)
-    - **Pricing Service** -- dynamic pricing based on demand/supply ratio per zone
-    - **ETA Service** -- graph-based routing (Dijkstra / A*) with live traffic data
+    - **Location ingestion:** Drivers emit GPS pings every 3-4s. The Location Service upserts their position into a geospatial index (Geohash in Redis or a QuadTree for density-adaptive cells).
+    - **Matching:** When a rider requests, the Matching Service queries drivers within an expanding radius (start 1km, expand to 5km). It scores candidates by ETA (not straight-line distance) using real-time routing, then dispatches to the best match.
+    - **Trip lifecycle:** A Trip Service state machine (request -> matched -> en-route -> arrived -> in-trip -> completed) with idempotent transitions ensures exactly-once processing even under network retries.
+    - **Pricing:** A Pricing Service computes surge multipliers per hex-cell based on realtime supply/demand ratios.
 
-    **Key Decisions:**
+    **When to use:** Any two-sided marketplace with real-time spatial matching -- delivery logistics, ambulance dispatch, field service routing.
 
-    - **Geohash vs QuadTree:** Geohash is simpler and maps well to key-value stores; QuadTree adapts to density
-    - **Dispatch radius expansion:** start with 1km; expand if no drivers found
-    - **Consistency:** trip state machine with idempotent transitions; two-phase commit for payment
-    - **Supply positioning:** ML model suggests idle drivers move to high-demand zones
+    **Gotchas:**
+
+    - **Geohash boundary problem:** A driver 50m away might be in an adjacent geohash cell. Always query neighboring cells (8 surrounding cells) for proximity searches.
+    - **GPS drift in urban canyons:** Tall buildings cause 50-100m GPS errors. Use map-matching (snap to nearest road) to correct raw coordinates.
+    - **Race condition on dispatch:** Two riders requesting simultaneously might both get matched to the same driver. Use optimistic locking on driver availability with a short hold.
+    - **ETA accuracy:** Routing graphs with stale traffic data produce wrong ETAs. Feed live probe data (from other drivers on the road) back into the graph weights.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        Rider -->|Request Ride| API[API Gateway]
-        API --> Match[Matching Service]
-        Match --> Geo[(Geospatial Index)]
-        Driver -->|GPS ping| LocSvc[Location Service]
-        LocSvc --> Geo
-        Match --> Trip[Trip Service]
-        Trip --> Price[Pricing Service]
-        Trip --> Pay[Payment Service]
+    ```
+    Rider ──Request Ride──▶ API Gateway ──▶ Matching Service ──▶ Geospatial Index ◀── Location Service ◀──GPS ping── Driver
+                                                  └──▶ Trip Service ──▶ Pricing Service
+                                                                   └──▶ Payment Service
     ```
 
 ---
@@ -413,27 +358,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A food delivery system is a three-sided marketplace (customer, restaurant, driver) orchestrated by a dispatch optimizer that batches nearby orders, predicts prep times, and minimizes total delivery time across all active orders.
 
-    - Users browse restaurants, place orders, track delivery in real-time
-    - Match orders with delivery drivers; optimize multi-order batching
-    - Restaurant order management (accept, prepare, ready for pickup)
-    - ETA prediction for preparation + delivery
+    **Why it exists:** The key challenge is coordination across three independent actors with competing timelines -- the driver must arrive at the restaurant exactly when food is ready, not 10 minutes early (wasted time) or 10 minutes late (cold food).
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Restaurant Service** -- menus, availability, hours
-    - **Order Service** -- order lifecycle (placed -> confirmed -> preparing -> ready -> picked up -> delivered)
-    - **Dispatch Service** -- assigns drivers using optimization algorithms (minimize total delivery time)
-    - **Tracking Service** -- real-time GPS tracking via WebSockets
-    - **ETA Service** -- ML model predicting prep time + travel time
+    - **Order placement:** Customer places an order through the Order Service. The restaurant confirms via KDS integration. An ETA Service predicts prep time (ML model trained on historical restaurant speed, order complexity, current queue depth) + travel time.
+    - **Dispatch optimization:** The Dispatch Service runs a batching algorithm -- group nearby orders heading in similar directions to the same driver. This is a variant of the vehicle routing problem, solved with heuristics at scale.
+    - **Real-time tracking:** Drivers emit GPS pings; a Tracking Service pushes location updates to customers via WebSocket. The ETA is continuously refined using live position.
 
-    **Key Decisions:**
+    **When to use:** Any logistics platform with pickup-and-delivery coordination -- grocery delivery, pharmacy, laundry services.
 
-    - **Batching orders:** group nearby orders to the same driver to improve efficiency
-    - **Two-sided marketplace:** balance driver supply with order demand per zone
-    - **Idempotent order placement** to prevent duplicate charges on network retries
-    - **Kitchen display system (KDS) integration** for restaurant-side order management
+    **Gotchas:**
+
+    - **Prep time prediction is everything:** If you dispatch a driver before the food is ready, the driver waits (earns nothing, gets frustrated). If too late, food sits and quality drops. Invest heavily in per-restaurant ML models.
+    - **Order batching trade-offs:** Batching improves driver utilization but increases delivery time for the second customer. Cap batch size and add fairness constraints.
+    - **Idempotent order placement:** Mobile networks retry POSTs. Without idempotency keys, customers get charged twice -- this is a top customer support issue.
+    - **Restaurant capacity limits:** A viral promotion can flood a restaurant with 200 simultaneous orders. Implement real-time order throttling per restaurant.
 
 ---
 
@@ -441,38 +383,33 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    An e-commerce order system uses the saga pattern to coordinate distributed transactions across inventory reservation, payment capture, and fulfillment -- ensuring no overselling while handling millions of concurrent checkouts.
 
-    - Handle millions of concurrent orders during peak (Prime Day)
-    - Inventory management with strong consistency (no overselling)
-    - Order lifecycle: cart -> checkout -> payment -> fulfillment -> delivery
-    - Support multiple fulfillment centers and shipping options
+    **Why it exists:** A single checkout touches 5+ services (cart, inventory, payment, fraud, fulfillment). Traditional ACID transactions cannot span these boundaries. Sagas provide eventual consistency with compensating actions on failure.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Product Catalog Service** -- product info, pricing, images (read-heavy, cached)
-    - **Cart Service** -- per-user shopping cart (Redis for active, DB for persistence)
-    - **Order Service** -- orchestrates the checkout flow via saga pattern
-    - **Inventory Service** -- real-time stock tracking with pessimistic locking on checkout
-    - **Payment Service** -- integrates with payment providers; handles refunds
+    - **Browse path (read-heavy):** Product Catalog Service serves from cache (CDN + Redis). Search uses a denormalized read model (CQRS) optimized for filtering and faceting.
+    - **Checkout path (write-heavy):** The Order Service orchestrates a saga: (1) reserve inventory (pessimistic lock on stock row), (2) charge payment, (3) confirm order. If payment fails, a compensating action releases the inventory reservation.
+    - **Fulfillment:** Once confirmed, the order routes to the nearest fulfillment center with available stock. Events are published to Kafka for downstream systems (shipping, notifications, analytics).
+    - **Event sourcing:** Every state transition is an immutable event -- enables full audit trails and easy rebuilding of order state.
 
-    **Key Decisions:**
+    **When to use:** Any multi-step transaction spanning services -- insurance claims processing, travel booking, subscription management.
 
-    - **Saga pattern** for distributed transactions across inventory, payment, and order services
-    - **Inventory reservation:** reserve stock at checkout, release after timeout if payment fails
-    - **CQRS:** separate read models (product search) from write models (order processing)
-    - **Event sourcing** on order state changes for full audit trail
+    **Gotchas:**
+
+    - **Inventory hot spots:** Flash sales on a single item cause lock contention on one DB row. Pre-shard inventory counters (e.g., 10 counter rows per popular SKU) and aggregate.
+    - **Saga compensation timing:** If payment succeeds but fulfillment cannot ship, you need an automated refund path. Partial failures in sagas require well-designed compensating transactions.
+    - **Cart abandonment:** Reserved inventory held too long (15 min timeout) during peak means real buyers see "out of stock." Tune reservation TTL aggressively.
+    - **Price consistency:** Price shown at browse time may differ from checkout time due to cache staleness. Always re-validate price at order creation.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        User(("User")) -->|Browse| Catalog[/"Product Catalog"/]
-        User -->|Add to Cart| Cart(["Cart Service"])
-        Cart -->|Checkout| Order{{"Order Service"}}
-        Order -->|Reserve| Inventory[["Inventory Service"]]
-        Order -->|Charge| Payment[["Payment Service"]]
-        Order -->|Ship| Fulfillment(["Fulfillment Service"])
-        Order -.->|Events| Kafka[/"Event Bus / Kafka"/]
+    ```
+    User ──Browse──▶ Product Catalog
+    User ──Add to Cart──▶ Cart Service ──Checkout──▶ Order Service ──Reserve──▶ Inventory Service
+                                                          ├──Charge──▶ Payment Service
+                                                          ├──Ship──▶ Fulfillment Service
+                                                          └──Events──▶ Kafka (Event Bus)
     ```
 
 ---
@@ -481,28 +418,25 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A payment system guarantees exactly-once money movement through idempotency keys, a double-entry ledger, and a two-phase flow (authorize then capture) -- the entire architecture is built around the principle that losing money or charging twice is unacceptable.
 
-    - Process credit card, debit, and bank payments securely
-    - Exactly-once payment semantics (idempotency)
-    - PCI-DSS compliance; tokenize card data
-    - Support refunds, disputes, and multi-currency
+    **Why it exists:** Money movement is the hardest distributed systems problem because failures are not retryable without consequence. Every timeout, crash, or network partition can result in either lost revenue or double-charging a customer.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Payment API** -- accepts payment intents with idempotency keys
-    - **Payment Processing Service** -- orchestrates auth, capture, settlement
-    - **Tokenization Service** -- replaces card numbers with tokens (PCI scope reduction)
-    - **Ledger Service** -- double-entry bookkeeping for every transaction
-    - **Risk/Fraud Engine** -- ML-based fraud scoring before authorization
+    - **Ingestion:** Merchant calls Payment API with a payment intent + idempotency key. The Tokenization Service replaces raw card numbers with tokens (reduces PCI scope from the entire system to one isolated service).
+    - **Processing:** The Risk Engine scores the transaction for fraud. If approved, the Payment Processing Service authorizes with the card network (Visa/MC), returning an auth code. Capture happens separately (on fulfillment) or immediately.
+    - **Recording:** The Ledger Service records every movement as a double-entry (debit merchant acquiring account, credit card network). This ledger is the source of truth -- it must always balance.
+    - **Notifications:** State changes publish events; webhooks notify merchants asynchronously.
 
-    **Key Decisions:**
+    **When to use:** Any system handling money -- marketplaces, subscription billing, payroll, lending platforms.
 
-    - **Idempotency keys** on every payment request to prevent double charges
-    - **Two-phase payment:** authorize first, capture on fulfillment
-    - **Double-entry ledger** ensures every credit has a matching debit (audit-proof)
-    - **Retry with exponential backoff** for downstream payment processor timeouts
-    - **Event-driven architecture** for webhook notifications to merchants
+    **Gotchas:**
+
+    - **Timeout ambiguity:** If the auth call to Visa times out, you do not know if the charge succeeded. You MUST query status before retrying, or you double-charge.
+    - **Idempotency key scope:** The key must cover the entire request (amount + currency + recipient). A different amount with the same key should be rejected, not processed.
+    - **Currency precision:** Never use floating point for money. Use integer cents (or smallest currency unit). JPY has no decimal places; BHD has 3.
+    - **Reconciliation drift:** Your ledger and the bank's ledger will diverge. Build a daily reconciliation job that detects and alerts on mismatches.
 
 ---
 
@@ -510,27 +444,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A hotel booking system separates the eventually-consistent search path (fast, cached, tolerates staleness) from the strongly-consistent booking path (pessimistic locking on inventory to prevent double-booking).
 
-    - Search available rooms by location, dates, guests, and price
-    - Handle concurrent booking attempts for the same room
-    - Support cancellations with refund policies
-    - Price variations by season, demand, and room type
+    **Why it exists:** Hotel inventory is inherently limited and time-bound (room X on date Y can only be sold once). The system must handle high search traffic (millions of queries) while guaranteeing that the booking path never oversells beyond configured overbooking limits.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Search Service** -- Elasticsearch index of hotels with availability filters
-    - **Inventory Service** -- room availability calendar; uses pessimistic locking or optimistic concurrency
-    - **Booking Service** -- manages reservation lifecycle
-    - **Pricing Service** -- dynamic pricing engine with revenue management rules
-    - **Review Service** -- user reviews and ratings
+    - **Search path:** An Elasticsearch index stores hotel metadata, amenities, photos, and pre-aggregated availability. Results are cached aggressively (TTL 30-60s) -- slight staleness is acceptable since booking will revalidate.
+    - **Booking path:** When a user confirms, the Booking Service calls the Inventory Service, which uses pessimistic row-level locking (or optimistic versioning with retry) on the availability calendar for those specific dates. If available, it decrements and creates the reservation atomically.
+    - **Pricing:** A dynamic Pricing Service computes rates based on season, demand/supply ratio, competitor prices, and hotel-configured rules. Prices in search results may differ from final booking price (always revalidate).
 
-    **Key Decisions:**
+    **When to use:** Any time-slotted inventory system -- co-working spaces, car rentals, appointment scheduling, event venues.
 
-    - **Overbooking strategy:** some hotels intentionally overbook by a small %; system must support this
-    - **Concurrency:** use database-level row locking or optimistic versioning on the availability row
-    - **Search vs booking consistency:** search results may show stale availability; booking is strongly consistent
-    - **Caching:** aggressive caching on search (TTL 30s-60s); no caching on booking path
+    **Gotchas:**
+
+    - **Intentional overbooking:** Hotels routinely overbook by 5-15% (expecting cancellations). Your inventory model must support overbooking thresholds, not just hard limits.
+    - **Search/booking consistency gap:** A user sees "available" in search but gets "sold out" at booking. Minimize this with shorter cache TTLs for low-inventory rooms and real-time availability badges.
+    - **Date range locking complexity:** Booking a 5-night stay requires atomically locking inventory across 5 date rows. Use a single transaction or a composite lock.
+    - **Cancellation cascade:** Free cancellation policies mean a percentage of bookings will cancel. The system must release inventory and trigger refunds without manual intervention.
 
 ---
 
@@ -538,38 +469,31 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A ticket booking system uses distributed locks with TTL (Redis `SET NX EX`) to hold seats temporarily during checkout, combined with a virtual waiting room to absorb flash-sale stampedes -- the core challenge is preventing double-booking under extreme concurrency.
 
-    - Users select seats for events; seats must not be double-booked
-    - Handle flash sales (100K+ users trying to book simultaneously)
-    - Temporary seat hold during checkout (5-10 min TTL)
-    - Waitlist support for sold-out events
+    **Why it exists:** When 100K users simultaneously try to book the same 500 seats, naive concurrent access causes overselling. The system must serialize access to each seat while keeping the experience fast and fair.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Seat Map Service** -- real-time seat availability with visual seat selection
-    - **Reservation Service** -- temporary hold with TTL; converts to confirmed booking on payment
-    - **Queue Service** -- virtual waiting room during high-demand events
-    - **Payment Service** -- processes payment within hold window
-    - **Notification Service** -- booking confirmation, waitlist alerts
+    - **Virtual queue:** During high-demand events, users enter a FIFO waiting room (processed in batches of N). This converts unbounded concurrency into controlled throughput.
+    - **Seat selection:** The Seat Map Service shows real-time availability. When a user selects seats, the Reservation Service acquires a distributed lock per seat (Redis `SET NX EX 300` -- 5-min TTL). If the lock is already held, the seat appears unavailable.
+    - **Checkout:** The user must complete payment within the hold window. On success, the Reservation Service converts the hold to a confirmed booking in the database (optimistic locking with version column). On timeout/failure, the Redis lock auto-expires and seats return to available.
 
-    **Key Decisions:**
+    **When to use:** Any limited-inventory selection system with time-bounded holds -- concert/sports tickets, flash sales, exam slot registration, limited-edition drops.
 
-    - **Distributed lock per seat** (Redis `SET NX EX`) for temporary holds -- auto-expires if user abandons
-    - **Virtual queue** for flash sales: users enter a FIFO queue, processed in batches
-    - **Optimistic locking** with version column on seat status to prevent race conditions
-    - **Exactly-once booking:** idempotency key tied to user + event + seats
+    **Gotchas:**
+
+    - **Hold expiry race:** If payment completes at second 299 of a 300s hold, the lock might expire before the confirmation write lands. Extend the lock during payment processing.
+    - **Seat map staleness:** The visual seat map can show stale state if not pushed via WebSocket. A user selects a seat that was just locked by someone else -- handle gracefully with immediate retry.
+    - **Bot prevention:** Flash sales attract bots. CAPTCHA at queue entry, device fingerprinting, and rate limiting are essential -- pure technical solutions are insufficient without anti-bot measures.
+    - **Partial booking failure:** User selects 4 seats, payment succeeds for all, but one seat lock expired. Must handle atomically -- all-or-nothing booking with compensating refund if needed.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        User(("User")) -->|Select Seats| SeatMap[["Seat Map Service"]]
-        SeatMap -->|Hold seats| Redis[(Redis Lock / TTL)]
-        User -->|Pay| Payment{{"Payment Service"}}
-        Payment -->|Confirm| Booking(["Reservation Service"])
-        Booking -->|Release lock| Redis
-        Booking --> DB[(Booking DB)]
-        Booking --> Notify[/"Notification Service"/]
+    ```
+    User ──Select Seats──▶ Seat Map Service ──Hold seats──▶ Redis Lock (TTL)
+    User ──Pay──▶ Payment Service ──Confirm──▶ Reservation Service ──Release lock──▶ Redis
+                                                      ├──▶ Booking DB
+                                                      └──▶ Notification Service
     ```
 
 ---
@@ -578,26 +502,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A social network graph stores billions of relationship edges in a sharded adjacency list and precomputes friend-of-friend connections offline -- real-time multi-hop graph traversals do not scale at billion-edge graphs.
 
-    - Store and query social relationships (follow, friend, block)
-    - Efficient friend-of-friend queries (2nd degree connections)
-    - Mutual friends computation; "People you may know" suggestions
-    - Scale to billions of edges
+    **Why it exists:** Social features (mutual friends, "people you may know," connection degree) all require graph queries. At Facebook scale (400B+ edges), no single graph database handles this; you need a custom sharded adjacency store with precomputation.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Graph Database** (Neo4j or custom adjacency list on sharded storage) -- stores user nodes and relationship edges
-    - **Graph Query Service** -- handles traversals (friends of friends, shortest path)
-    - **Recommendation Service** -- suggests connections based on mutual friends, interests, and graph proximity
-    - **Cache Layer** -- cache friend lists and follower counts in Redis
+    - **Storage:** Each user has an adjacency list stored in a sharded KV store (user_id -> list of connected user_ids + edge type). Bidirectional edges for friendships (write to both adjacency lists atomically); unidirectional for follows.
+    - **Read path:** Direct friend lookups are O(1) from cache (Redis). Mutual friends = set intersection of two friend lists -- fast for users with <5K friends, precomputed for celebrities.
+    - **Recommendation pipeline:** Offline MapReduce jobs compute 2nd-degree connections (friends of friends minus existing friends), ranked by mutual friend count and shared attributes. Results are materialized into a recommendation cache.
 
-    **Key Decisions:**
+    **When to use:** Social networks, professional networks (LinkedIn), trust/reputation systems, knowledge graphs, fraud detection rings.
 
-    - **Adjacency list in a sharded key-value store** scales better than a single graph DB for very large networks
-    - **Bidirectional edges** for friendships; unidirectional for follows
-    - **Precompute 2nd-degree connections** offline for "people you may know"
-    - **Graph partitioning:** minimize cross-shard traversals by co-locating communities
+    **Gotchas:**
+
+    - **Graph partitioning is NP-hard:** Social graphs have high connectivity. Random partitioning causes most traversals to cross shards. Use community detection (Louvain algorithm) to co-locate dense clusters.
+    - **Celebrity nodes (supernodes):** A user with 50M followers has a 50M-entry adjacency list. Shard their follower list separately and never materialize it fully in memory.
+    - **Edge consistency:** Adding a friendship requires writing to both users' adjacency lists. If one write fails, you have a dangling unidirectional edge. Use async reconciliation.
+    - **Real-time traversal depth:** Never allow unbounded traversals in the online path. Cap at 2 hops; deeper analysis goes offline.
 
 ---
 
@@ -605,37 +527,32 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A distributed message queue is an append-only commit log partitioned across brokers -- it achieves millions of messages/sec by leveraging sequential disk I/O, OS page cache, and partition-level parallelism with consumer groups.
 
-    - Publish-subscribe with topic-based routing
-    - Durable, ordered, and replayable message storage
-    - High throughput (millions of messages/sec) with low latency
-    - Consumer groups with partition-level parallelism
+    **Why it exists:** Microservices need decoupled, durable, ordered communication. Unlike traditional queues (RabbitMQ) that delete messages on consumption, a commit log retains messages for replay -- enabling event sourcing, stream processing, and consumer independence.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Broker Cluster** -- each broker stores partitions as append-only log segments on disk
-    - **ZooKeeper / Raft Controller** -- cluster metadata, leader election, partition assignment
-    - **Producer** -- publishes to a topic partition (round-robin, key-based, or custom partitioner)
-    - **Consumer Groups** -- each partition consumed by exactly one consumer in a group
-    - **Replication** -- each partition has N replicas; ISR (in-sync replicas) for durability guarantees
+    - **Write path:** Producers send messages to a topic partition (determined by key hash or round-robin). The partition leader appends to its log segment on disk (sequential write -- as fast as network). Replicas in the ISR (in-sync replica set) pull and acknowledge.
+    - **Read path:** Each consumer group assigns partitions to consumers (one partition per consumer max). Consumers track their own offset -- they can rewind, replay, or skip independently.
+    - **Durability:** `acks=all` means the producer waits for all ISR replicas to confirm. The controller (ZooKeeper or KRaft) handles leader election on broker failure.
+    - **Retention:** Messages persist for configured duration (default 7 days) or size. Compacted topics retain only the latest value per key (useful for changelogs).
 
-    **Key Decisions:**
+    **When to use:** Event-driven architectures, stream processing (Flink/Spark), CDC pipelines, audit logs, inter-service communication at scale.
 
-    - **Append-only log** on disk: sequential I/O is fast; use OS page cache for reads
-    - **Partition count** determines max parallelism -- choose based on throughput needs
-    - **Acks setting:** `acks=all` for durability, `acks=1` for lower latency
-    - **Retention:** time-based (7 days) or size-based; compacted topics for changelogs
+    **Gotchas:**
+
+    - **Partition count is (nearly) immutable:** Adding partitions after the fact breaks key-based ordering guarantees. Over-provision initially (2-3x expected parallelism).
+    - **Consumer lag death spiral:** If consumers fall behind and retention expires, messages are lost. Monitor consumer lag as a critical metric and autoscale consumers.
+    - **Ordering guarantee scope:** Ordering is per-partition only. If you need global order, use a single partition (sacrificing parallelism) or implement sequence-number-based ordering in the consumer.
+    - **Rebalancing storms:** Adding/removing consumers triggers partition rebalancing, causing brief processing pauses. Use cooperative rebalancing (incremental) to minimize impact.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        P1[Producer] -->|write| B1[Broker 1 - Partition 0 Leader]
-        P2[Producer] -->|write| B2[Broker 2 - Partition 1 Leader]
-        B1 -->|replicate| B3[Broker 3 - Partition 0 Replica]
-        B2 -->|replicate| B1b[Broker 1 - Partition 1 Replica]
-        B1 -->|consume| C1[Consumer Group A - Consumer 1]
-        B2 -->|consume| C2[Consumer Group A - Consumer 2]
+    ```
+    Producer 1 ──write──▶ Broker 1 (Partition 0 Leader) ──replicate──▶ Broker 3 (P0 Replica)
+    Producer 2 ──write──▶ Broker 2 (Partition 1 Leader) ──replicate──▶ Broker 1 (P1 Replica)
+    Broker 1 ──consume──▶ Consumer Group A - Consumer 1
+    Broker 2 ──consume──▶ Consumer Group A - Consumer 2
     ```
 
 ---
@@ -644,27 +561,25 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A distributed KV store partitions data across nodes using consistent hashing, stores it in LSM trees for write optimization, and uses quorum-based replication with tunable consistency (W + R > N = strong, W=1/R=1 = fast eventual).
 
-    - Fast reads and writes (single-digit ms latency at P99)
-    - Horizontal scaling with automatic partitioning
-    - Tunable consistency (strong or eventual)
-    - Support range queries on sort key
+    **Why it exists:** Relational databases hit a scaling ceiling. A KV store trades flexible queries for predictable single-digit-ms latency at any scale by constraining access patterns to partition key + optional sort key lookups.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Router / Request Coordinator** -- determines which partition handles the request
-    - **Storage Nodes** -- each manages multiple partitions; data stored in LSM trees (memtable + SSTables)
-    - **Consistent Hashing Ring** -- maps partition key to a set of nodes
-    - **Replication** -- quorum-based (W + R > N for strong consistency)
-    - **Anti-entropy** -- Merkle trees for replica synchronization; gossip protocol for failure detection
+    - **Routing:** A Request Coordinator hashes the partition key to determine which node group owns the data. Consistent hashing with virtual nodes ensures balanced distribution and minimal data movement on scale events.
+    - **Storage engine:** Each node uses an LSM tree -- writes go to an in-memory memtable (fast), which periodically flushes to immutable SSTables on disk. Background compaction merges SSTables to reclaim space and maintain read performance.
+    - **Replication:** Data replicates to N nodes (typically 3). Quorum settings control consistency: W=2, R=2 guarantees strong consistency; W=1, R=1 provides low-latency eventual consistency.
+    - **Anti-entropy:** Merkle trees detect replica divergence; gossip protocol detects node failures within seconds.
 
-    **Key Decisions:**
+    **When to use:** Session stores, user profiles, IoT telemetry, shopping carts -- any workload with known access patterns and predictable key structure.
 
-    - **LSM tree** for write-optimized storage; periodic compaction merges SSTables
-    - **Quorum reads/writes:** configurable (N=3, W=2, R=2 for strong; W=1, R=1 for fast eventual)
-    - **Partition key design** is critical -- avoid hot partitions (e.g., don't use date as partition key)
-    - **Vector clocks or last-writer-wins** for conflict resolution in eventually consistent mode
+    **Gotchas:**
+
+    - **Hot partition (the #1 killer):** A bad partition key (e.g., date, or a celebrity user ID) concentrates all traffic on one node. Design composite keys that distribute evenly.
+    - **LSM write amplification:** Compaction rewrites data multiple times. Under sustained write-heavy load, compaction can fall behind and read latency spikes (more SSTables to scan).
+    - **Conflict resolution in eventual mode:** Two concurrent writes to the same key on different replicas = conflict. Vector clocks preserve both versions (application resolves); last-writer-wins is simpler but lossy.
+    - **Scan operations are expensive:** Full table scans on a distributed KV store touch every partition. Design your access patterns to avoid them entirely.
 
 ---
 
@@ -672,27 +587,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A search engine builds inverted indexes (term -> document IDs) sharded across nodes, uses BM25 for relevance scoring, and achieves near-real-time indexing through a segment-based architecture where new documents become searchable within 1 second of ingestion.
 
-    - Full-text search with relevance ranking across billions of documents
-    - Support filters, facets, aggregations, and fuzzy matching
-    - Near real-time indexing (< 1 second from write to searchable)
-    - Horizontally scalable and fault-tolerant
+    **Why it exists:** Relational databases cannot do full-text search efficiently. An inverted index provides O(1) term lookups with pre-computed relevance scores, enabling sub-100ms search across billions of documents.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Indexing Pipeline** -- tokenize, analyze, and build inverted index from documents
-    - **Inverted Index** -- maps terms to document IDs with positions and frequencies
-    - **Shards** -- each index split into N shards distributed across nodes
-    - **Query Coordinator** -- scatter query to all relevant shards, gather and merge results
-    - **Replica Shards** -- each shard has replicas for HA and read scaling
+    - **Indexing:** Documents are analyzed (tokenized, lowercased, stemmed) and added to an inverted index -- each term maps to a posting list of (doc_id, term_frequency, positions). New documents land in an in-memory buffer, then flush to an immutable segment on disk (refresh interval, default 1s).
+    - **Search (scatter-gather):** A Query Coordinator sends the query to all relevant shards in parallel. Each shard scores local documents using BM25 (term frequency * inverse document frequency, length-normalized), returns top-K results. The coordinator merges and re-ranks globally.
+    - **Scaling:** Each index has N primary shards (set at creation, immutable) with R replica shards for HA and read throughput.
 
-    **Key Decisions:**
+    **When to use:** Product search, log analytics, document retrieval, autocomplete backends, any full-text or structured filtering workload.
 
-    - **TF-IDF / BM25** for relevance scoring
-    - **Segment-based architecture:** immutable segments merged periodically (like LSM trees)
-    - **Near real-time:** new documents visible after a "refresh" interval (default 1s)
-    - **Shard sizing:** target 10-50GB per shard for optimal performance
+    **Gotchas:**
+
+    - **Shard count is permanent:** You cannot change the number of primary shards after creation without reindexing. Over-shard initially or use index aliases with rollover.
+    - **Deep pagination kills performance:** Requesting page 1000 (offset 10000) requires each shard to return 10000 results to the coordinator. Use `search_after` cursor pagination instead.
+    - **Segment merging I/O storms:** Too many small segments degrade read performance. Forced merges during off-peak hours or background merge throttling is essential.
+    - **Mapping explosion:** Dynamic mapping with high-cardinality fields (user-generated JSON keys) creates millions of fields in the index, bloating memory and slowing queries. Always define explicit mappings.
 
 ---
 
@@ -700,38 +612,30 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A monitoring system scrapes time-series metrics from services, stores them in a purpose-built TSDB with Gorilla compression, and evaluates alert rules periodically -- it is the nervous system that makes distributed systems operable.
 
-    - Collect and store time-series metrics from thousands of services
-    - Support queries like "P99 latency of service X over last 24h"
-    - Alerting on threshold breaches
-    - Retention: high-res for 15 days, downsampled for 1 year
+    **Why it exists:** You cannot fix what you cannot see. Without metrics, debugging production issues is guesswork. The system must handle millions of data points per second, support ad-hoc queries over weeks of data, and fire alerts within seconds of threshold breaches.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Metric Collectors / Agents** -- scrape or receive metrics from services
-    - **Time-Series Database** -- stores metric data points (timestamp, value, labels)
-    - **Query Engine** -- PromQL-like language for aggregations, rate calculations
-    - **Alert Manager** -- evaluates rules periodically, triggers notifications
-    - **Dashboard Service** (Grafana-like) -- visualizes queries
+    - **Collection:** Pull-based (Prometheus model) -- a collector scrapes HTTP `/metrics` endpoints at configured intervals. Push-based for ephemeral jobs (batch jobs that die before being scraped).
+    - **Storage (TSDB):** Time-series are chunked into 2-hour blocks. Within each chunk, timestamps use delta-of-delta encoding and values use XOR/Gorilla compression -- achieving 1.37 bytes per data point (vs 16 bytes raw). Older blocks downsample to 5m/1h resolution.
+    - **Query engine:** PromQL-like language supports rate(), histogram_quantile(), aggregations across label dimensions. Queries scatter across time blocks and merge.
+    - **Alerting:** Alert Manager evaluates rules every 15-60s, deduplicates firing alerts, groups related alerts, and routes to PagerDuty/Slack based on severity.
 
-    **Key Decisions:**
+    **When to use:** Every production system needs this. Also: IoT sensor monitoring, business KPI dashboards, SLA tracking.
 
-    - **Pull vs push model:** pull (Prometheus-style) is simpler for service discovery; push for ephemeral jobs
-    - **Storage:** chunked time-series with delta/gorilla compression (10x compression ratio)
-    - **Downsampling:** aggregate older data to 5m/1h resolution to save storage
-    - **Label cardinality:** high cardinality labels (user IDs) explode storage -- design labels carefully
+    **Gotchas:**
+
+    - **Label cardinality explosion:** Adding `user_id` as a label creates millions of unique time series. TSDB performance degrades linearly with series count. Keep labels low-cardinality (service, method, status_code).
+    - **Pull model and short-lived processes:** A 30-second batch job may start and die between scrape intervals. Use a push gateway or event-based export for these.
+    - **Alert fatigue:** Too many alerts = all alerts ignored. Implement tiered severity, auto-resolving alerts, and alert grouping to keep signal-to-noise ratio high.
+    - **Retention cost:** Raw 10-second metrics for 1000 services for 1 year is terabytes. Downsample aggressively after 15 days -- nobody queries second-resolution data from 6 months ago.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        Svc1[Service 1] -->|scrape| Collector[Metric Collector]
-        Svc2[Service 2] -->|scrape| Collector
-        Collector --> TSDB[(Time-Series DB)]
-        TSDB --> Query[Query Engine]
-        Query --> Dashboard[Grafana Dashboard]
-        TSDB --> Alert[Alert Manager]
-        Alert --> PagerDuty[PagerDuty / Slack]
+    ```
+    Service 1 ──scrape──▶ Metric Collector ──▶ Time-Series DB ──▶ Query Engine ──▶ Grafana Dashboard
+    Service 2 ──scrape──┘                            └──▶ Alert Manager ──▶ PagerDuty / Slack
     ```
 
 ---
@@ -740,27 +644,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    An online judge executes untrusted user code in sandboxed containers with strict resource limits (CPU, memory, time), compares output against expected results, and scales horizontally to handle contest-time submission bursts.
 
-    - Users write and submit code in multiple languages (Java, Python, C++)
-    - Execute code in a sandboxed environment with CPU/memory/time limits
-    - Compare output against expected test cases; return pass/fail/TLE/MLE
-    - Support contests with thousands of concurrent submissions
+    **Why it exists:** Running arbitrary user code is inherently dangerous (fork bombs, infinite loops, file system access). The system must provide strong isolation guarantees while maintaining fast turnaround (<5s per submission) even during contests with 10K concurrent users.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Web IDE** -- browser-based code editor with syntax highlighting
-    - **Submission Service** -- accepts code, enqueues for execution
-    - **Execution Queue** (RabbitMQ / SQS) -- buffers submissions during high load
-    - **Judge Workers** -- sandboxed containers (Docker/gVisor) compile and run code with resource limits
-    - **Result Service** -- compares stdout with expected output, stores verdict
+    - **Submission path:** User submits code via the Web IDE. The Submission Service assigns an ID and enqueues to an Execution Queue (SQS/RabbitMQ) -- this decouples submission rate from execution capacity.
+    - **Execution:** Judge Workers pull from the queue, spin up a sandboxed container (gVisor or Docker with seccomp + no network + cgroup limits), compile the code, run it against each test case with strict limits (2s CPU, 256MB RAM), and capture stdout/stderr.
+    - **Judging:** The Result Service compares actual output against expected output (exact match or custom checker for floating-point problems). Verdicts: AC, WA, TLE, MLE, RE, CE.
 
-    **Key Decisions:**
+    **When to use:** Competitive programming platforms, coding interviews, educational auto-graders, CI/CD test runners.
 
-    - **Sandboxing:** use containers with seccomp profiles, no network access, cgroup limits
-    - **Resource limits:** 2s CPU time, 256MB RAM per submission; kill on exceed
-    - **Autoscaling workers** during contests; pre-warm containers per language
-    - **Plagiarism detection:** MOSS-like token comparison on submissions
+    **Gotchas:**
+
+    - **Container cold start:** Spinning up a fresh container per submission adds 1-2s latency. Pre-warm a pool of containers per language to eliminate this.
+    - **Fork bomb / resource exhaustion:** Without cgroup PID limits, a fork bomb can crash the host. Set `pids.max=64` in the cgroup and kill the entire process tree on timeout.
+    - **Filesystem attacks:** User code can attempt to read `/etc/passwd` or fill disk. Use read-only root filesystem + tiny writable tmpfs with size limits.
+    - **Non-deterministic output:** Multithreaded programs may produce different output across runs. Either disallow threads or run multiple times and accept any valid output ordering.
 
 ---
 
@@ -768,27 +669,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A nearby-friends service ingests GPS updates into a geospatial index and pushes proximity notifications via pub/sub -- the key insight is to only compute proximity for mutually-opted-in, currently-active friend pairs, not all-pairs.
 
-    - Show friends within a configurable radius who opted in to location sharing
-    - Near real-time updates as friends move
-    - Privacy controls (share with specific friends, time-limited sharing)
-    - Scale to millions of concurrent active users
+    **Why it exists:** Users want ambient awareness of nearby friends without actively checking. The system must balance real-time freshness against mobile battery drain and backend compute cost.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Location Ingestion Service** -- receives GPS updates from mobile clients every 30 seconds
-    - **Geospatial Index** (Redis with geospatial commands or custom Geohash index) -- stores current locations
-    - **Proximity Service** -- for each user, query friends within radius using geo queries
-    - **Pub/Sub Layer** -- subscribe to friend location channels; push updates via WebSocket
-    - **Privacy Service** -- enforces sharing permissions and expiry
+    - **Ingestion:** Mobile clients send GPS updates every 30s (or on significant movement >100m). The Location Ingestion Service writes to a geospatial index (Redis GEOADD or a custom geohash-based index).
+    - **Proximity computation:** Rather than brute-force all-pairs, the system subscribes each active user to a pub/sub channel for each of their opted-in friends. When friend A's location updates, the system checks if any subscriber is within radius -- if yes, push a notification via WebSocket.
+    - **Privacy layer:** The Privacy Service enforces per-friend sharing permissions, time-limited shares (auto-expire after 1 hour), and ghost mode. All proximity checks pass through this layer.
 
-    **Key Decisions:**
+    **When to use:** Social apps (Snap Map, Find My Friends), safety/check-in apps, location-based games, delivery driver visibility for customers.
 
-    - **Geohash precision:** use 6-char geohash (~1.2km cells) for nearby queries; adjust for radius
-    - **Push vs poll:** push updates via WebSocket when a friend's location changes significantly (> 100m)
-    - **Fan-out per user:** only compute proximity for active friends (not all friends)
-    - **Battery optimization:** reduce update frequency when user is stationary
+    **Gotchas:**
+
+    - **Battery drain is the #1 user complaint:** GPS polling every 30s kills battery. Use significant-change location APIs (iOS/Android), geofencing, and reduce frequency when stationary.
+    - **Geohash boundary problem:** Two friends 50m apart can be in adjacent geohash cells. Always query the 8 neighboring cells, not just the current one.
+    - **Privacy misconfiguration exposure:** A bug that leaks location to non-authorized friends is a critical privacy incident. Defense in depth -- check permissions at ingestion, at query time, AND at the delivery layer.
+    - **Stale locations:** If a user closes the app, their last known location persists. Show a "last seen X minutes ago" indicator and expire locations after an inactivity threshold.
 
 ---
 
@@ -796,38 +694,31 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A CDN is a globally distributed cache that serves static content from edge servers close to users, using GeoDNS for routing and an origin shield to protect backend servers from thundering herd -- it trades storage cost for latency reduction.
 
-    - Cache and serve static content (images, JS, CSS, video) from edge servers close to users
-    - Reduce latency and origin server load
-    - Support cache invalidation and purging
-    - Handle millions of requests per second globally
+    **Why it exists:** Physics is the bottleneck. A user in Tokyo requesting content from a US-East origin adds 150ms of network RTT. Edge caching eliminates this for cacheable content, which is 80%+ of web traffic (images, JS, CSS, video).
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Edge PoPs (Points of Presence)** -- servers in 50+ cities worldwide; serve cached content
-    - **Origin Shield** -- intermediate cache layer protecting the origin from thundering herd
-    - **DNS-based Routing** -- GeoDNS resolves to the nearest edge PoP
-    - **Cache Control** -- respects HTTP cache headers (Cache-Control, ETag, Last-Modified)
-    - **Purge API** -- allows origin to invalidate cached content globally
+    - **Routing:** User's DNS query hits GeoDNS, which resolves to the IP of the nearest PoP (Point of Presence) based on the resolver's location.
+    - **Cache hit (fast path):** Edge server has the content cached. Serve directly with TLS terminated at edge. Response time: 5-20ms.
+    - **Cache miss:** Edge requests from the Origin Shield (an intermediate cache layer shared across multiple PoPs). If the shield also misses, it fetches from the origin server. This two-tier hierarchy prevents thundering herd on the origin.
+    - **Invalidation:** The Purge API propagates invalidation to all edge PoPs. `stale-while-revalidate` serves stale content while fetching fresh copies in background.
 
-    **Key Decisions:**
+    **When to use:** Any content-heavy platform -- media streaming, e-commerce product images, SPA assets, API responses for read-heavy endpoints.
 
-    - **Pull vs push CDN:** pull (cache on first request) is simpler; push for pre-populated popular content
-    - **Cache key design:** URL + Vary headers; be careful with query parameters
-    - **Stale-while-revalidate:** serve stale content while fetching fresh copy in background
-    - **TLS termination at edge** to reduce latency (no TLS round-trip to origin)
+    **Gotchas:**
+
+    - **Cache key pollution:** Query parameter variations (`?v=1`, `?utm_source=x`) create duplicate cache entries for the same content. Normalize and strip irrelevant params from cache keys.
+    - **Purge propagation delay:** Global purge takes 5-30 seconds to reach all PoPs. During this window, users may receive stale content. Use versioned URLs (`/style.abc123.css`) for instant invalidation.
+    - **Long-tail cache inefficiency:** Only the top ~20% of content gets good cache hit rates. Long-tail items are fetched from origin on every request -- an origin shield is critical to consolidate these misses.
+    - **TLS certificate management:** TLS termination at 200+ PoPs means distributing and rotating certificates globally. Automate with ACME/Let's Encrypt or managed certificates.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        User(("User")) -->|DNS query| GeoDNS{{"GeoDNS"}}
-        GeoDNS -->|nearest PoP| Edge(["Edge Server"])
-        Edge -->|cache hit| User
-        Edge -->|cache miss| Shield[["Origin Shield"]]
-        Shield -->|miss| Origin[/"Origin Server"/]
-        Origin -->|content| Shield
-        Shield -->|content| Edge
+    ```
+    User ──DNS query──▶ GeoDNS ──nearest PoP──▶ Edge Server ──cache hit──▶ User
+                                                      └──cache miss──▶ Origin Shield ──miss──▶ Origin Server
+                                                                              └──content──▶ Edge ──▶ User
     ```
 
 ---
@@ -836,26 +727,26 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A Snowflake ID generator produces globally unique, time-sortable 64-bit IDs without coordination by encoding timestamp + machine ID + sequence counter into a single integer -- each node generates 4096 IDs per millisecond independently.
 
-    - Generate globally unique, roughly time-ordered 64-bit IDs
-    - High throughput (10K+ IDs/sec per node)
-    - No coordination between nodes (no central DB sequence)
-    - IDs should be sortable by creation time
+    **Why it exists:** Auto-increment IDs require a central database (bottleneck). UUIDs are 128-bit and not sortable. Snowflake gives you the best of both worlds: compact, sortable, distributed, and collision-free by construction.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **ID Structure (64 bits):** `[1 bit unused][41 bits timestamp][10 bits machine ID][12 bits sequence]`
-    - **Timestamp** -- milliseconds since custom epoch (gives ~69 years of IDs)
-    - **Machine ID** -- assigned via ZooKeeper or config (supports 1024 machines)
-    - **Sequence** -- per-millisecond counter (4096 IDs per ms per machine)
+    - **Bit layout (64 bits):** `[1 unused][41 bits timestamp][10 bits machine ID][12 bits sequence]`
+    - **Timestamp:** Milliseconds since a custom epoch (e.g., 2024-01-01). 41 bits = ~69 years of headroom. Custom epoch maximizes this range.
+    - **Machine ID (10 bits):** Supports 1024 machines. Assigned at startup via ZooKeeper, config file, or Kubernetes pod ordinal.
+    - **Sequence (12 bits):** Per-millisecond counter (0-4095). If exhausted within 1ms, spin-wait until the next millisecond.
+    - **Generation:** Concatenate current_ms | machine_id | next_sequence. No network calls, no locks, pure local computation.
 
-    **Key Decisions:**
+    **When to use:** Primary keys in distributed databases, event ordering in event-sourced systems, trace IDs, anything needing time-sortable unique identifiers.
 
-    - **Clock skew:** if system clock goes backward, wait until clock catches up or throw error
-    - **No single point of failure:** each machine generates IDs independently
-    - **Custom epoch** (e.g., 2024-01-01) maximizes the 41-bit timestamp range
-    - **Alternative approaches:** UUID (128-bit, not sortable), DB auto-increment (bottleneck), ULID (string-based, sortable)
+    **Gotchas:**
+
+    - **Clock skew / NTP jump backward:** If the system clock moves backward, generating an ID with an old timestamp causes collisions. Defense: detect backward jumps, refuse to generate IDs until clock catches up, and alert immediately.
+    - **Machine ID reuse after restart:** If a machine restarts and reuses the same machine ID within the same millisecond, collisions occur. Use ZooKeeper lease or wait 1ms before generating.
+    - **Bit allocation trade-offs:** More timestamp bits = longer lifespan but fewer machines/throughput. More sequence bits = higher per-node throughput but fewer machines. Tune for your scale.
+    - **ID leaks information:** Timestamps in IDs expose creation time and traffic volume. If this is sensitive, obfuscate with a reversible transformation.
 
 ---
 
@@ -863,27 +754,25 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    An email system separates storage into blob (email body + attachments) and structured metadata (subject, labels, thread ID) -- enabling fast search and threading while efficiently storing petabytes of messages with deduplication on shared attachments.
 
-    - Send and receive emails (SMTP inbound/outbound)
-    - Store and search emails per user (labels, folders, threads)
-    - Spam and phishing detection
-    - Support attachments up to 25MB
+    **Why it exists:** Email is the universal communication protocol. The system must handle SMTP ingestion at scale, spam filtering (>80% of inbound email is spam), full-text search across years of messages, and reliable delivery despite adversarial senders.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **SMTP Gateway** -- inbound: receives emails from the internet; outbound: sends via SMTP relay
-    - **Email Processing Pipeline** -- spam filtering, virus scanning, threading, labeling
-    - **Email Store** -- per-user email storage (wide-column DB or blob store + metadata index)
-    - **Search Service** -- full-text index on email subject, body, sender, recipients
-    - **Notification Service** -- push notifications for new emails
+    - **Inbound:** SMTP Gateway receives email, validates SPF/DKIM/DMARC, passes through a Processing Pipeline (spam ML classifier, virus scan, phishing URL detection). If clean, email body is stored as a blob, metadata is indexed, and threading is computed using `In-Reply-To` / `References` headers.
+    - **Storage:** Two-tier -- metadata (from, subject, labels, date, thread_id) in a structured store for fast queries and filtering; body + attachments in object storage referenced by content hash (enables deduplication across recipients of the same email).
+    - **Search:** Full-text inverted index on subject, body, sender, recipients. Supports operators like `from:boss after:2024-01-01 has:attachment`.
+    - **Outbound:** Compose service creates MIME message, SMTP relay delivers with retry, bounce handling, and reputation management.
 
-    **Key Decisions:**
+    **When to use:** Enterprise communication platforms, transactional email services, newsletter systems.
 
-    - **Storage model:** store email body as a blob; metadata (subject, from, date, labels) in a structured index
-    - **Threading:** use `In-Reply-To` and `References` headers to group conversations
-    - **Spam detection:** ML classifier on sender reputation, content analysis, SPF/DKIM/DMARC checks
-    - **Attachment handling:** store in object storage; reference by ID in email metadata
+    **Gotchas:**
+
+    - **Spam false positives:** Marking a legitimate email as spam is worse than letting spam through. Use a confidence threshold and quarantine borderline cases rather than silently dropping.
+    - **Attachment storage explosion:** A 10MB attachment sent to 1000 recipients should be stored once, not 1000 times. Content-addressable storage with reference counting is essential.
+    - **Thread breaking:** Some email clients do not set `In-Reply-To` correctly. Fallback to subject-line matching (Re: prefix stripping) for threading heuristics.
+    - **Sender reputation:** Sending too many emails too fast from a new IP gets you blacklisted. Warm up IPs gradually and implement feedback loop processing (RFC 5965).
 
 ---
 
@@ -891,27 +780,24 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A pastebin is a simple write-once, read-many content store with pre-generated unique keys -- it is essentially a URL shortener where the value is text content instead of a redirect URL, served through a CDN for read scalability.
 
-    - Users paste text and get a unique shareable URL
-    - Support expiration (1 hour, 1 day, never), syntax highlighting, and private pastes
-    - Handle high read traffic (read:write ratio ~10:1)
-    - Paste size limit (e.g., 10MB)
+    **Why it exists:** Quick, frictionless sharing of text snippets (code, logs, configs) without login or file management overhead. The simplicity is the feature -- design complexity should be minimal.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **API Service** -- create paste (POST), read paste (GET), delete paste (DELETE)
-    - **Key Generation Service** -- generates unique 8-char keys (pre-generated pool using Base62)
-    - **Object Storage** -- paste content stored in S3 or similar blob store
-    - **Metadata Store** (MySQL/PostgreSQL) -- paste metadata: key, user, expiration, visibility
-    - **CDN / Cache** -- cache popular pastes at the edge
+    - **Write path:** User POSTs content. The API Service grabs a pre-generated 8-char Base62 key from the Key Generation Service (a background process that maintains a pool of unused keys in a database). Content is stored in object storage (S3); metadata (key, user, expiration, visibility, language) goes to a relational DB.
+    - **Read path:** GET `/abc12345` hits the CDN/cache first. On miss, the API Service fetches metadata from DB and content from object storage. Popular pastes are cached at the edge with long TTLs.
+    - **Cleanup:** A background cron job scans for expired pastes, deletes content from object storage, removes metadata, and recycles keys back to the pool.
 
-    **Key Decisions:**
+    **When to use:** Code sharing, error log sharing, configuration snippets, interview coding pads -- any ephemeral text sharing use case.
 
-    - **Pre-generated keys** in a pool (KGS) avoids runtime collision handling
-    - **Cleanup job:** background cron deletes expired pastes and reclaims keys
-    - **Private pastes:** use longer keys (16 chars) or require authentication
-    - **Rate limiting** per IP to prevent abuse
+    **Gotchas:**
+
+    - **Key exhaustion:** 8-char Base62 = 218 trillion combinations, so exhaustion is unlikely. But key recycling after expiration requires careful handling -- a recycled key serving different content breaks old shared links.
+    - **Abuse prevention:** Without rate limiting, pastebins become malware/phishing hosting platforms. Implement per-IP rate limits, content scanning for known malicious patterns, and DMCA takedown APIs.
+    - **Private paste security:** A short key (8 chars) is brute-forceable. Private pastes need either longer keys (16+ chars, ~96 bits of entropy) or authentication-gated access.
+    - **Large paste handling:** A 10MB paste stored and served directly from the API tier will bottleneck the service. Stream from object storage and enforce size limits at upload time.
 
 ---
 
@@ -919,19 +805,16 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    An API rate limiter uses a token bucket algorithm (industry standard at Stripe, AWS, GitHub) with Redis-backed atomic operations to enforce per-client quotas -- it allows short bursts while maintaining a smooth average rate across distributed API servers.
 
-    - Enforce rate limits per API key, user, or IP across distributed servers
-    - Support multiple algorithms (token bucket, sliding window counter, leaky bucket)
-    - Return standard rate limit headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `Retry-After`)
-    - Sub-millisecond decision latency
+    **Why it exists:** Rate limiting is both a protection mechanism (prevent abuse, DDoS) and a business mechanism (enforce tier-based API plans). The token bucket specifically was chosen because it models real-world usage better than fixed windows -- users naturally burst.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Rate Limiter SDK** -- embedded in API gateway or as a sidecar proxy
-    - **Rules Store** -- defines limits per endpoint, plan tier, and client
-    - **Redis Backend** -- atomic counter operations per key with TTL
-    - **Sync Layer** -- local counters synced to Redis; local-first for speed
+    - **Token bucket state:** Each client has a bucket with capacity C (max burst) that refills at rate R tokens/second. Each request consumes 1 token. If the bucket is empty, return 429.
+    - **Distributed implementation:** State lives in Redis. A Lua script atomically computes: tokens_available = min(C, last_tokens + refill_since_last_request) - 1. This single atomic operation handles both refill and consumption.
+    - **Local-first optimization:** An SDK in the API gateway maintains a local counter synced to Redis periodically. This avoids a Redis RTT on every request while accepting minor over-admission.
+    - **Multi-tier enforcement:** Apply multiple limits simultaneously (100/min AND 5000/hour AND 50K/day per API key).
 
     **Algorithm Comparison:**
 
@@ -943,12 +826,14 @@ Use this page as a rapid-review reference before system design interviews. Each 
     | **Fixed Window** | Simplest | Burst at window boundaries |
     | **Leaky Bucket** | Smooth output rate | No burst allowance |
 
-    **Key Decisions:**
+    **When to use:** Public APIs, login/auth endpoints, webhook dispatchers, internal service-to-service calls, any shared resource with finite capacity.
 
-    - **Token bucket** is industry standard (used by Stripe, AWS); allows short bursts while enforcing average rate
-    - **Redis Lua scripts** for atomic check-and-decrement to avoid race conditions
-    - **Graceful degradation:** if Redis is down, fail open (allow) or fail closed (deny) based on policy
-    - **Multi-tier limits:** e.g., 100/min AND 5000/hour per user
+    **Gotchas:**
+
+    - **Distributed race condition:** Without atomic operations, two servers can both read "1 token remaining" and both allow -- exceeding the limit. Redis Lua scripts or `DECR` returning negative values are the fix.
+    - **Redis failure mode decision:** Fail-open (allow all) risks abuse during outages; fail-closed (deny all) causes self-inflicted outages. Most production systems fail-open with a local in-memory fallback.
+    - **Client identification ambiguity:** Rate limit by API key, user ID, or IP? Users behind corporate NATs share one IP -- rate limiting by IP blocks entire companies. Prefer authenticated identity when available.
+    - **Header contract:** Always return `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `Retry-After`. Clients that respect these headers reduce unnecessary retries, lowering overall load.
 
 ---
 
@@ -956,39 +841,32 @@ Use this page as a rapid-review reference before system design interviews. Each 
 
     **Answer:**
 
-    **Requirements:**
+    A parking lot system is an OOP/low-level design question disguised as system design -- the core is a state machine per spot (available/reserved/occupied) with optimistic locking to prevent double-assignment at entry gates.
 
-    - Track available spots across multiple floors and spot types (compact, regular, large, handicapped)
-    - Assign nearest available spot on entry; free spot on exit
-    - Calculate parking fee based on duration and vehicle type
-    - Display real-time availability on signs and mobile app
+    **Why it exists (as an interview question):** It tests your ability to model real-world entities cleanly, handle concurrency at physical constraints (gates), and resist the urge to over-engineer. A single parking lot is NOT a distributed systems problem -- keep it proportional.
 
-    **High-Level Design:**
+    **How it works internally:**
 
-    - **Entry/Exit Controller** -- sensors or ticket machines at gates; triggers spot assignment/release
-    - **Spot Management Service** -- maintains spot state (available/occupied) per floor and type
-    - **Pricing Engine** -- calculates fee based on duration, vehicle type, and time of day
-    - **Display Service** -- pushes availability counts to floor signs and mobile app
-    - **Payment Service** -- accepts cash, card, or mobile payment at exit
+    - **Entry flow:** Vehicle arrives at gate. Entry Controller triggers Spot Management Service to find the nearest available spot matching vehicle type (compact/regular/large). Spot status atomically transitions from AVAILABLE to OCCUPIED via optimistic locking (version column). A ticket is issued with entry_time and assigned spot.
+    - **Exit flow:** Vehicle arrives at exit gate. The Pricing Engine computes fee based on (exit_time - entry_time) * rate_for_vehicle_type, applying time-of-day multipliers. Payment is processed; spot status reverts to AVAILABLE.
+    - **Real-time display:** The Display Service subscribes to spot state changes and pushes updated counts (by floor and type) to LED signs and mobile app.
 
-    **Key Decisions:**
+    **Data model:** `ParkingSpot(id, floor, type, status, version)`, `Ticket(id, spot_id, vehicle_plate, entry_time, exit_time, fee, status)`
 
-    - **Spot assignment strategy:** nearest to entrance (for user convenience) or fill by zone (for even distribution)
-    - **Data model:** `ParkingSpot(id, floor, type, status)`, `Ticket(id, spot_id, entry_time, exit_time, fee)`
-    - **Concurrency:** use optimistic locking on spot status to prevent double-assignment
-    - **Scalability:** a single parking lot is not a distributed system problem -- keep it simple; for a chain of lots, use a central service with per-lot caches
+    **When to use this pattern:** Any resource allocation system with physical constraints -- warehouse bin assignment, dock scheduling, desk booking in offices.
+
+    **Gotchas:**
+
+    - **Over-engineering trap:** Do NOT propose Kafka, microservices, or distributed databases for a single parking lot. Interviewers want to see you calibrate complexity to the problem scale.
+    - **Concurrency at the gate:** Two cars arriving simultaneously at different gates can both be assigned the same "nearest" spot. Optimistic locking with retry (pick next-nearest on conflict) handles this cleanly.
+    - **Sensor unreliability:** Physical sensors fail. A car leaves without triggering the exit sensor = ghost-occupied spot. Build a reconciliation process that checks sensor data against payment records.
+    - **Multi-lot chain:** Only if the interviewer asks about scaling to 1000 lots should you introduce a central service, per-lot caches, and cross-lot availability aggregation.
 
     **Diagram:**
-    ```mermaid
-    flowchart LR
-        Vehicle(("Vehicle")) -->|Enter| Gate(["Entry Gate / Sensor"])
-        Gate --> SpotMgr{{"Spot Management Service"}}
-        SpotMgr -->|Assign spot| DB[(Parking DB)]
-        SpotMgr --> Display[/"Availability Display"/]
-        Vehicle -->|Exit| ExitGate(["Exit Gate"])
-        ExitGate --> Pricing[["Pricing Engine"]]
-        Pricing --> Payment[["Payment Service"]]
-        Payment -->|Release spot| SpotMgr
+    ```
+    Vehicle ──Enter──▶ Entry Gate ──▶ Spot Management Service ──Assign spot──▶ Parking DB
+                                              └──▶ Availability Display
+    Vehicle ──Exit──▶ Exit Gate ──▶ Pricing Engine ──▶ Payment Service ──Release spot──▶ Spot Management
     ```
 
 ---

@@ -75,6 +75,18 @@ Admin Dashboard
 </div>
 
 
+<!-- Interview Prep Highlight -->
+<div class="vtn-interview-highlight" markdown>
+<div class="vtn-interview-highlight-inner">
+<div class="vtn-interview-highlight-icon">🎯</div>
+<div class="vtn-interview-highlight-text">
+<h3>Interview Preparation Strategy</h3>
+<p>The complete meta-guide — DSA roadmap, system design prep, behavioral STAR stories, problem-solving frameworks, and week-by-week study plans. <strong>Start here if you're preparing for interviews.</strong></p>
+</div>
+<a class="vtn-interview-highlight-btn" href="interviewquestions/">Open Strategy Guide →</a>
+</div>
+</div>
+
 <!-- What's New Banner -->
 <div class="vtn-whats-new" markdown>
 <span class="vtn-whats-new-badge">NEW</span>

@@ -11,16 +11,13 @@
 
 ```mermaid
 flowchart LR
-    YT["🎬 YouTube Channel<br/>(Subject)<br/>'New video uploaded!'"] --> N1["🔔 Subscriber A<br/>gets notified"]
-    YT --> N2["🔔 Subscriber B<br/>gets notified"]
-    YT --> N3["🔔 Subscriber C<br/>gets notified"]
-    YT --> N4["🔔 Subscriber D<br/>gets notified"]
-    
-    style YT fill:#FFCDD2,stroke:#C62828,stroke-width:3px,color:#000
-    style N1 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style N2 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style N3 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style N4 fill:#E3F2FD,stroke:#1565C0,color:#000
+    YT["🎬 YouTube Channel"] -->|"uploads video"| N["🔔 Notification"] -->|"reaches"| SA["👤 Subscriber A"]
+    N -->|"reaches"| SB["👤 Subscriber B"]
+
+    style YT fill:#FCE4EC,stroke:#C62828,stroke-width:2px,color:#000
+    style N fill:#FFF8E1,stroke:#F9A825,color:#000
+    style SA fill:#E3F2FD,stroke:#1565C0,color:#000
+    style SB fill:#E3F2FD,stroke:#1565C0,color:#000
 ```
 
 ---
@@ -29,24 +26,24 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Subject[["📢 Subject\n(Observable)"]]
-    ConcreteSubject{{"🏢 ConcreteSubject\n- state\n+ attach(observer)\n+ detach(observer)\n+ notifyAll()"}}
-    Observer[["👁️ Observer\n(Interface)\n+ update(state)"]]
-    ConcreteObserverA(["📱 ConcreteObserverA\n+ update(state)"])
-    ConcreteObserverB(["💻 ConcreteObserverB\n+ update(state)"])
+    Subject[["📢 Subject"]]
+    ConcreteSubject{{"🏢 Concrete Subject"}}
+    Observer[["👁️ Observer"]]
+    ObsA{{"📱 Observer A"}}
+    ObsB{{"💻 Observer B"}}
 
-    Subject --> Observer
-    ConcreteSubject --> Subject
-    ConcreteObserverA --> Observer
-    ConcreteObserverB --> Observer
-    ConcreteSubject -.->|"notifies"| ConcreteObserverA
-    ConcreteSubject -.->|"notifies"| ConcreteObserverB
+    ConcreteSubject -->|"implements"| Subject
+    Subject -->|"holds ref to"| Observer
+    ObsA -->|"implements"| Observer
+    ObsB -->|"implements"| Observer
+    ConcreteSubject -.->|"notifies"| ObsA
+    ConcreteSubject -.->|"notifies"| ObsB
 
-    style Subject fill:#7c3aed,color:#fff
-    style ConcreteSubject fill:#8b5cf6,color:#fff
-    style Observer fill:#6d28d9,color:#fff
-    style ConcreteObserverA fill:#a78bfa,color:#fff
-    style ConcreteObserverB fill:#a78bfa,color:#fff
+    style Subject fill:#FFF3E0,stroke:#E65100,color:#000
+    style ConcreteSubject fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Observer fill:#FFF3E0,stroke:#E65100,color:#000
+    style ObsA fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style ObsB fill:#E8F5E9,stroke:#2E7D32,color:#000
 ```
 
 ---
