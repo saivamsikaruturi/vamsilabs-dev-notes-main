@@ -109,6 +109,46 @@ Without an adapter, you'd face:
 
 ---
 
+## Without This Pattern
+
+```java
+// BAD: Client directly coupled to third-party XML library
+public class ReportGenerator {
+
+    public void generateReport() {
+        LegacyXmlService xmlService = new LegacyXmlService();
+        String xmlData = xmlService.getXmlData();
+
+        // Parsing XML manually in every client that needs JSON
+        String json = xmlData.replace("<data><name>", "{\"name\": \"")
+                             .replace("</name></data>", "\"}");
+
+        // What if we switch to a YAML library tomorrow?
+        // Every single client class must be rewritten!
+        renderChart(json);
+    }
+
+    // Another method also needs the conversion — duplicated logic
+    public void exportData() {
+        LegacyXmlService xmlService = new LegacyXmlService();
+        String xmlData = xmlService.getXmlData();
+        String json = xmlData.replace("<data><name>", "{\"name\": \"")
+                             .replace("</name></data>", "\"}");
+        writeToFile(json);
+    }
+}
+```
+
+**Problems:**
+
+- **Tight coupling**: Every client directly depends on the third-party `LegacyXmlService` and its XML format — changing the library forces changes everywhere
+- **Duplicated conversion logic**: XML-to-JSON translation is copy-pasted across multiple methods and classes
+- **Violates Open/Closed Principle**: Adding a new data source (e.g., CSV) requires modifying all existing client classes
+- **Violates Single Responsibility Principle**: The `ReportGenerator` handles both report logic AND data format conversion
+- **Pain point**: When the third-party library updates its API or you need to swap it for a different vendor, you must hunt down and rewrite every place that touches it
+
+---
+
 ## :white_check_mark: The Solution
 
 The Adapter pattern introduces a **wrapper class** that translates one interface into another. The client works with the Target interface; the Adapter translates those calls into the format the Adaptee understands.

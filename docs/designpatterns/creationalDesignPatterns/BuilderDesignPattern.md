@@ -92,10 +92,10 @@ classDiagram
 
 ## ❓ The Problem
 
-Consider creating an `HttpRequest` object with many optional parameters:
+### Without This Pattern
 
 ```java
-// Telescoping constructor anti-pattern — which parameter is which?!
+// Approach 1: Telescoping constructor — which parameter is which?!
 HttpRequest request = new HttpRequest(
     "https://api.example.com",  // url
     "POST",                      // method
@@ -108,15 +108,23 @@ HttpRequest request = new HttpRequest(
     true,                        // keepAlive
     null                         // certificate
 );
+
+// Approach 2: JavaBean setters — object is mutable and can be used half-configured
+HttpRequest request2 = new HttpRequest();
+request2.setUrl("https://api.example.com");
+request2.setMethod("POST");
+// Oops, forgot to set contentType... used in production incomplete!
+request2.setBody("{\"key\":\"value\"}");
+// Another thread reads request2 while we're still configuring it!
 ```
 
-Problems with constructors and setters:
+**Problems:**
 
-1. **Telescoping constructors** — too many parameters, impossible to read
-2. **Parameter confusion** — same types make it easy to swap arguments
-3. **Inconsistent state** — with setters, object can be used before fully configured
-4. **No immutability** — setters force the object to be mutable
-5. **Complex validation** — hard to validate combinations of parameters
+- **Telescoping constructors** — 10+ parameters of similar types (`boolean`, `String`, `int`) make it trivial to swap arguments silently; the compiler cannot catch `new HttpRequest(url, "POST", body, contentType, ...)` vs the correct order
+- **Parameter confusion** — was `true` for `followRedirects` or `keepAlive`? Code review cannot tell without checking the constructor signature
+- **Inconsistent state** — with setters, the object can be passed around before all required fields are set, causing NullPointerExceptions deep in the call stack
+- **No immutability** — setters force the object to remain mutable; any code with a reference can change it, creating thread-safety bugs
+- **Complex validation impossible** — you cannot validate that "if method is GET, body must be null" because fields are set independently at different times
 
 ---
 

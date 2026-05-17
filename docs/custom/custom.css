@@ -1446,14 +1446,17 @@ body,
 
 .mermaid {
   margin: 1.5em 0;
-  padding: 1.5em 1em;
-  min-height: 200px;
+  padding: 1em 0.75em;
   background: var(--vtn-surface);
   border: 1px solid var(--vtn-border);
   border-radius: var(--vtn-radius);
   text-align: center;
   overflow-x: auto;
   box-shadow: var(--vtn-shadow-sm);
+}
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
 }
 
 .mermaid:hover {
@@ -1466,7 +1469,7 @@ body,
   background: #F5F3F0;
   border: 1px solid #57534E;
   border-radius: var(--vtn-radius);
-  padding: 2em 1.5em;
+  padding: 1em 0.75em;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
   --md-default-fg-color: #1C1917;
   --md-default-fg-color--light: #44403C;
@@ -1478,6 +1481,48 @@ body,
   --md-mermaid-label-fg-color: #1C1917;
   --md-mermaid-node-bg-color: #ECEAE6;
   --md-mermaid-node-fg-color: #1C1917;
+}
+
+/* Dark mode: force dark text on cream canvas for elements WITHOUT inline color */
+[data-md-color-scheme="slate"] .mermaid .edgeLabel,
+[data-md-color-scheme="slate"] .mermaid .edgeLabel span,
+[data-md-color-scheme="slate"] .mermaid .relationshipLabel,
+[data-md-color-scheme="slate"] .mermaid .messageText,
+[data-md-color-scheme="slate"] .mermaid .loopText,
+[data-md-color-scheme="slate"] .mermaid .labelText,
+[data-md-color-scheme="slate"] .mermaid .actor,
+[data-md-color-scheme="slate"] .mermaid .legend text,
+[data-md-color-scheme="slate"] .mermaid .classTitleText,
+[data-md-color-scheme="slate"] .mermaid .classText {
+  fill: #1C1917 !important;
+  color: #1C1917 !important;
+}
+[data-md-color-scheme="slate"] .mermaid .relation,
+[data-md-color-scheme="slate"] .mermaid .edgePath .path,
+[data-md-color-scheme="slate"] .mermaid .flowchart-link,
+[data-md-color-scheme="slate"] .mermaid line {
+  stroke: #1C1917 !important;
+}
+[data-md-color-scheme="slate"] .mermaid marker path {
+  fill: #1C1917 !important;
+  stroke: #1C1917 !important;
+}
+[data-md-color-scheme="slate"] .mermaid .classGroup rect {
+  stroke: #78716C !important;
+}
+[data-md-color-scheme="slate"] .mermaid .classGroup line {
+  stroke: #A8A29E !important;
+}
+[data-md-color-scheme="slate"] .mermaid .cluster rect {
+  fill: #ECEAE6 !important;
+  stroke: #D6D3D1 !important;
+}
+
+/* Node text color is propagated from inline styles by JS (fixNodeColors).
+   classLabel text inherits from mermaid's own styling. */
+.mermaid .classLabel text,
+.mermaid .classLabel tspan {
+  fill: inherit !important;
 }
 
 /* Edge label rects — styled as visible cream boxes by JS */

@@ -111,6 +111,54 @@ Without a facade, the client code must know about and interact with **5 differen
 
 ---
 
+## Without This Pattern
+
+```java
+// BAD: Every client must know about and coordinate 5 subsystems
+public class CheckoutController {
+
+    public void handleCheckout(String userId, String productId, int qty, String address) {
+        // Client is forced to know the internal orchestration order
+        InventoryService inventory = new InventoryService();
+        PaymentService payment = new PaymentService();
+        ShippingService shipping = new ShippingService();
+        NotificationService notification = new NotificationService();
+        OrderDatabase orderDb = new OrderDatabase();
+
+        if (!inventory.checkStock(productId, qty)) {
+            throw new RuntimeException("Out of stock");
+        }
+        inventory.reserveStock(productId, qty);
+        boolean paid = payment.charge(userId, 29.99 * qty);
+        if (!paid) {
+            inventory.releaseStock(productId, qty); // manual rollback!
+            throw new RuntimeException("Payment failed");
+        }
+        String orderId = orderDb.createOrder(userId, productId, qty);
+        String trackingId = shipping.createShipment(orderId, address);
+        notification.sendEmail(userId, "Order " + orderId + " confirmed");
+        notification.sendSms(userId, "Tracking: " + trackingId);
+    }
+}
+
+// Another controller duplicates the SAME orchestration logic!
+public class MobileCheckoutController {
+    public void checkout(/* same parameters */) {
+        // Copy-pasted orchestration — any bug fix must be applied in BOTH places
+    }
+}
+```
+
+**Problems:**
+
+- **Tight coupling to subsystems**: Every client (web controller, mobile controller, batch job) directly depends on 5+ internal services — a change in any subsystem API breaks all clients
+- **Duplicated orchestration logic**: The same multi-step workflow is copy-pasted across controllers — bug fixes and order changes must be applied in multiple places
+- **Fragile error handling**: Manual rollback logic (release stock if payment fails) is the client's responsibility — easy to forget and introduce inconsistencies
+- **Violates Law of Demeter**: The controller "reaches through" multiple layers, knowing intimate details about inventory, payment, and shipping APIs
+- **Pain point**: A new developer joins and needs to build an admin "place order on behalf of customer" feature — they must reverse-engineer the exact 7-step orchestration sequence from existing code, hoping they get the order and error handling right
+
+---
+
 ## :white_check_mark: The Solution
 
 The Facade pattern provides a **single entry point** that orchestrates multiple subsystem operations. Clients interact with one simple method; the facade handles all the complexity internally.

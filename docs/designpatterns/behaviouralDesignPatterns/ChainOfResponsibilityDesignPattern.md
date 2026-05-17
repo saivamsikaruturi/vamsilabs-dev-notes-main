@@ -106,6 +106,34 @@ You have a request that could be handled by multiple handlers, but:
 
 **Example:** An HTTP request passes through authentication, authorization, rate limiting, logging, and validation — each middleware can stop or pass the request forward.
 
+### Without This Pattern
+
+```java
+public class RequestProcessor {
+    public void handleRequest(HttpRequest request) {
+        // All handling logic in ONE monolithic method
+        if (request.getHeader("Authorization") == null) {
+            throw new UnauthorizedException("No token");
+        }
+        if (rateLimitExceeded(request.getRemoteAddr())) {
+            throw new TooManyRequestsException();
+        }
+        if (!isValidPayload(request.getBody())) {
+            throw new BadRequestException("Invalid payload");
+        }
+        log(request);
+        // Adding a new check? Modify THIS class. Reordering? Refactor THIS method.
+        processBusinessLogic(request);
+    }
+}
+```
+
+- **Monolithic method** — all handling logic lives in one massive method; adding a new check bloats it further
+- **Violates Single Responsibility** — authentication, rate limiting, validation, and logging are all in one class
+- **Cannot reorder or reconfigure dynamically** — the processing order is hardcoded; different endpoints cannot have different filter chains
+- **Not reusable** — the rate-limiting logic cannot be extracted and used in a different service without copy-paste
+- **Pain point:** The team wants to skip authentication for health-check endpoints but apply it everywhere else. Without a chain, you add yet another `if` at the top of the method, creating a tangled nest of special cases
+
 ---
 
 ## ✅ The Solution

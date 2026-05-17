@@ -120,6 +120,40 @@ You need to evaluate expressions or sentences in a simple language or DSL:
 
 Without the Interpreter pattern, you'd write monolithic parsers with complex conditional logic that's hard to extend with new grammar rules.
 
+### Without This Pattern
+
+```java
+public class RuleEngine {
+    public boolean evaluate(String rule, Map<String, Object> context) {
+        // Monolithic parser with hardcoded grammar handling
+        if (rule.contains(" AND ")) {
+            String[] parts = rule.split(" AND ");
+            return evaluate(parts[0].trim(), context)
+                && evaluate(parts[1].trim(), context);
+        } else if (rule.contains(" OR ")) {
+            String[] parts = rule.split(" OR ");
+            return evaluate(parts[0].trim(), context)
+                || evaluate(parts[1].trim(), context);
+        } else if (rule.contains(" > ")) {
+            String[] parts = rule.split(" > ");
+            int val = (Integer) context.get(parts[0].trim());
+            return val > Integer.parseInt(parts[1].trim());
+        } else if (rule.contains(" == ")) {
+            String[] parts = rule.split(" == ");
+            return context.get(parts[0].trim()).equals(parts[1].trim());
+        }
+        // Nested expressions? Operator precedence? Good luck.
+        throw new IllegalArgumentException("Cannot parse: " + rule);
+    }
+}
+```
+
+- **Cannot handle nested expressions** — `(age > 18 AND country == US) OR role == admin` breaks the naive string splitting approach
+- **No operator precedence** — AND/OR priority must be manually coded with fragile string manipulation
+- **Impossible to extend** — adding a new operator (CONTAINS, NOT, BETWEEN) requires modifying the monolithic method
+- **Not composable** — rules cannot be programmatically constructed, combined, or reused as building blocks
+- **Pain point:** A business analyst requests a rule with 3 levels of nesting and mixed AND/OR. The string-parsing approach produces wrong results because `split(" AND ")` greedily splits inside parenthesized groups — and fixing it means writing a full parser anyway
+
 ---
 
 ## ✅ The Solution

@@ -110,6 +110,36 @@ Collections can have complex internal structures (trees, graphs, stacks, hash ta
 
 **Example:** A social network graph where you want to iterate over a user's friends — by depth-first, breadth-first, or filtered by location — without exposing the graph internals.
 
+### Without This Pattern
+
+```java
+public class NotificationList {
+    private Notification[] notifications;
+    private int count;
+
+    // Exposing internals so clients can traverse
+    public Notification[] getNotifications() { return notifications; }
+    public int getCount() { return count; }
+}
+
+// Client code — tightly coupled to internal structure
+public class NotificationRenderer {
+    public void render(NotificationList list) {
+        // Client must KNOW it's an array and how count works
+        for (int i = 0; i < list.getCount(); i++) {
+            display(list.getNotifications()[i]);
+        }
+        // If NotificationList changes to a LinkedList? ALL clients break.
+    }
+}
+```
+
+- **Breaks encapsulation** — clients access the raw internal array, creating a dependency on the data structure choice
+- **Duplication** — every client that traverses the collection reimplements the same loop logic
+- **No alternative traversals** — you cannot easily support reverse, filtered, or sorted iteration without changing client code
+- **Fragile to refactoring** — changing from an array to a `List` or `TreeSet` breaks every caller that uses `getNotifications()[i]`
+- **Pain point:** When the team decides to change from an array to a database-backed lazy collection, dozens of client classes must be rewritten because they all assume array indexing
+
 ---
 
 ## ✅ The Solution

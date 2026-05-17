@@ -153,6 +153,43 @@ That's **M shapes x N renderers = M*N classes**. Adding a new renderer means mod
 
 ---
 
+## Without This Pattern
+
+```java
+// BAD: Separate class for EVERY combination of shape + renderer
+public class CircleOpenGL {
+    public void draw() { System.out.println("OpenGL circle"); }
+}
+public class CircleDirectX {
+    public void draw() { System.out.println("DirectX circle"); }
+}
+public class CircleSVG {
+    public void draw() { System.out.println("SVG circle"); }
+}
+public class SquareOpenGL {
+    public void draw() { System.out.println("OpenGL square"); }
+}
+public class SquareDirectX {
+    public void draw() { System.out.println("DirectX square"); }
+}
+public class SquareSVG {
+    public void draw() { System.out.println("SVG square"); }
+}
+// Adding TriangleOpenGL, TriangleDirectX, TriangleSVG...
+// Adding a new renderer (Vulkan)? 3 MORE classes!
+// Adding a new shape (Hexagon)? 3 MORE classes!
+```
+
+**Problems:**
+
+- **Class explosion (M x N)**: 3 shapes x 3 renderers = 9 classes; 10 x 10 = 100 classes — growth is multiplicative, not additive
+- **Violates Open/Closed Principle**: Adding one new renderer forces you to create a new subclass for EVERY existing shape
+- **Massive code duplication**: Each `CircleOpenGL`, `CircleDirectX`, etc. duplicates the circle-drawing logic with minor rendering variations
+- **Impossible to switch renderer at runtime**: The renderer is baked into the class hierarchy — you cannot swap OpenGL for SVG without creating a new object of a completely different type
+- **Pain point**: Your codebase grows out of control the moment a stakeholder says "we also need to support Vulkan rendering" — suddenly you must create N new classes, test them all, and maintain them forever
+
+---
+
 ## :white_check_mark: The Solution
 
 Bridge splits the monolithic hierarchy into **two independent hierarchies**:

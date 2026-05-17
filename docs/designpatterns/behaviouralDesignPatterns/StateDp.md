@@ -123,6 +123,41 @@ An object's behavior depends on its state, and it must change behavior at runtim
 
 **Example:** An order processing system where an order goes through PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED — each with different allowed operations.
 
+### Without This Pattern
+
+```java
+public class Order {
+    private String status = "PENDING";
+
+    public void nextStep() {
+        if (status.equals("PENDING")) {
+            status = "CONFIRMED";
+        } else if (status.equals("CONFIRMED")) {
+            status = "SHIPPED";
+        } else if (status.equals("SHIPPED")) {
+            status = "DELIVERED";
+        } else if (status.equals("DELIVERED")) {
+            System.out.println("Already delivered");
+        }
+    }
+
+    public void cancel() {
+        if (status.equals("PENDING") || status.equals("CONFIRMED")) {
+            status = "CANCELLED";
+        } else if (status.equals("SHIPPED")) {
+            throw new IllegalStateException("Cannot cancel shipped order");
+        }
+        // Every method has these same if/else chains for EVERY state
+    }
+}
+```
+
+- **Duplicated conditionals** — every method (`nextStep`, `cancel`, `refund`, `modify`) repeats the same state-checking if/else ladder
+- **Violates Open/Closed Principle** — adding a new state (e.g., "RETURNING") forces modifications to every single method in the class
+- **Error-prone transitions** — it is easy to forget a case in one method, allowing illegal transitions silently
+- **Unreadable at scale** — with 6+ states and 5+ methods, you get 30+ conditional branches in a single class
+- **Pain point:** A developer adds a "PARTIALLY_SHIPPED" state and must hunt through every method to add handling — missing one creates a production bug where orders get stuck
+
 ---
 
 ## ✅ The Solution

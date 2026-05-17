@@ -107,6 +107,46 @@ Consider a massive `Document` object that loads a high-resolution image from dis
 
 ---
 
+## Without This Pattern
+
+```java
+// BAD: All images loaded eagerly — even if user never scrolls to them
+public class DocumentViewer {
+
+    private List<HighResolutionImage> images;
+
+    public DocumentViewer(List<String> imageFiles) {
+        this.images = new ArrayList<>();
+        for (String file : imageFiles) {
+            // Each image takes 5 seconds to load and 10MB of RAM
+            images.add(new HighResolutionImage(file)); // ALL loaded upfront!
+        }
+        // 50 images = 250 seconds startup, 500MB RAM
+        // User may only view 2 of them
+    }
+
+    // No access control — anyone can delete
+    public void deleteImage(int index) {
+        images.remove(index); // No permission check!
+    }
+
+    // No caching — repeated calls hit disk every time
+    public byte[] getImageData(String filename) {
+        return loadFromDisk(filename); // 5 seconds EVERY call
+    }
+}
+```
+
+**Problems:**
+
+- **Wasted resources on eager loading**: All 50 high-resolution images are loaded at startup (250 seconds, 500MB RAM) even though the user may only view 2 — no lazy initialization
+- **No access control**: Sensitive operations like `delete` are exposed to all callers with no permission checks — any code path can destroy data
+- **No caching**: Repeated requests for the same image re-read from disk every time, wasting I/O and making the UI unresponsive
+- **Violates Single Responsibility**: The `DocumentViewer` is forced to handle loading optimization, access control, and caching itself — or simply not handle them at all
+- **Pain point**: Users complain that the application takes 4 minutes to open a document, uses 500MB of RAM for images they never look at, and an intern accidentally deletes production data because there are no access checks
+
+---
+
 ## :white_check_mark: The Solution
 
 The Proxy object sits between the client and the real object. It implements the same interface, so the client doesn't know it's talking to a proxy. Depending on the type:

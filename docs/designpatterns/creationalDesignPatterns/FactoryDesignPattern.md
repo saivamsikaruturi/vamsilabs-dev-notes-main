@@ -111,18 +111,40 @@ classDiagram
 
 Imagine you're building a notification system. Initially, you only support **Email** notifications:
 
+### Without This Pattern
+
 ```java
-// Tightly coupled — what happens when you need SMS, Push, Slack?
-Notification notification = new EmailNotification();
-notification.send(message);
+public class NotificationService {
+
+    public void sendNotification(String type, String message) {
+        if (type.equals("email")) {
+            EmailNotification email = new EmailNotification();
+            email.setSmtpServer("smtp.company.com");
+            email.send(message);
+        } else if (type.equals("sms")) {
+            SmsNotification sms = new SmsNotification();
+            sms.setGateway("twilio");
+            sms.send(message);
+        } else if (type.equals("push")) {
+            PushNotification push = new PushNotification();
+            push.setFirebaseKey("key-123");
+            push.send(message);
+        }
+        // Adding Slack? WhatsApp? Modify THIS method every time!
+    }
+}
+
+// In OrderService.java — same if-else duplicated!
+// In UserService.java — same if-else duplicated again!
 ```
 
-Problems with direct instantiation:
+**Problems:**
 
-- Adding a new notification type requires **modifying existing code** (violates Open/Closed Principle)
-- Client code is **tightly coupled** to concrete classes
-- Object creation logic is **scattered** across the codebase
-- **Testing becomes difficult** — can't easily substitute mock objects
+- **Violates Open/Closed Principle** — adding a new notification type (Slack, WhatsApp) forces you to modify every class that creates notifications
+- **Duplicated creation logic** — the same if-else chain appears in OrderService, UserService, PaymentService, etc.
+- **Tightly coupled** — client code directly references `EmailNotification`, `SmsNotification` concrete classes
+- **Testing nightmare** — cannot swap in a mock notification without changing the service code; unit tests send real emails
+- **Single Responsibility violated** — `NotificationService` both decides WHICH notification to create AND performs business logic
 
 ---
 

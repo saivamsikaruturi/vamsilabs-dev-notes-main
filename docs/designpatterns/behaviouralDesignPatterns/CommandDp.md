@@ -128,6 +128,35 @@ Additionally, you need:
 - **Macro commands** — composite commands that execute a sequence
 - **Queueing** — decouple when a request is made from when it's executed
 
+### Without This Pattern
+
+```java
+public class TextEditor {
+    private StringBuilder content = new StringBuilder();
+
+    public void insertText(int position, String text) {
+        content.insert(position, text);
+        // How do you undo this? You can't — state is already lost.
+    }
+
+    public void deleteText(int position, int length) {
+        content.delete(position, position + length);
+        // The deleted text is gone forever — no undo possible.
+    }
+
+    public void undo() {
+        // ??? No record of what was done, in what order, or what the previous state was.
+        throw new UnsupportedOperationException("Undo not possible");
+    }
+}
+```
+
+- **No undo/redo** — operations directly mutate state without saving history; reverting is impossible
+- **Cannot queue or schedule operations** — the action is executed immediately with no way to defer, serialize, or replay
+- **Tight coupling** — the invoker (UI button) must know the exact method and receiver; you cannot parameterize actions
+- **No macro/batch support** — you cannot group multiple operations into a single undoable unit
+- **Pain point:** Users expect Ctrl+Z everywhere, but without encapsulating operations as objects, implementing undo requires fragile state snapshots of the entire document after every keystroke
+
 ---
 
 ## ✅ The Solution

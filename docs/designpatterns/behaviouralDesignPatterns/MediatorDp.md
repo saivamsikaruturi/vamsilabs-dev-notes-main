@@ -111,6 +111,39 @@ When many objects need to communicate with each other:
 
 **Example:** A chat room with 50 users. Without a mediator, each user would need references to 49 other users. Adding user #51 would require modifying all 50 existing users.
 
+### Without This Pattern
+
+```java
+public class User {
+    private String name;
+    private List<User> contacts = new ArrayList<>();
+
+    public void addContact(User other) {
+        contacts.add(other);
+        other.contacts.add(this); // bidirectional coupling
+    }
+
+    public void sendMessage(String message) {
+        // Must know about ALL other users directly
+        for (User contact : contacts) {
+            contact.receive(name + ": " + message);
+        }
+    }
+
+    public void receive(String message) {
+        System.out.println(name + " got: " + message);
+    }
+}
+// Adding user #51 means calling addContact() on all 50 existing users.
+// Want to add "message filtering"? Modify EVERY User class.
+```
+
+- **N-squared coupling** — each object holds direct references to every other object it communicates with (mesh topology)
+- **Adding a new participant modifies existing code** — every existing user must register the new one, violating Open/Closed Principle
+- **Scattered interaction logic** — rules like "mute user X" or "broadcast only to premium users" must be duplicated in every participant
+- **Cannot reuse independently** — extracting a single `User` class is impossible because it depends on concrete references to other users
+- **Pain point:** A product manager asks for "message read receipts." Without a mediator, you must add read-receipt logic to every single `User` subclass, multiplying the complexity across 50+ classes
+
 ---
 
 ## ✅ The Solution

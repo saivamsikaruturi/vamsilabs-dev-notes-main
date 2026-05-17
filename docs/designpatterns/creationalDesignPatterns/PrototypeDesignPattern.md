@@ -89,33 +89,43 @@ classDiagram
 
 ## ❓ The Problem
 
-Consider these scenarios where creating objects from scratch is problematic:
+### Without This Pattern
 
 ```java
-// Scenario 1: Expensive database call to populate object
-User user = userRepository.findById(123);  // DB call, network I/O
-// Need 50 copies of this user template for load testing...
-// Do we hit the DB 50 times?
+public class SpreadsheetApp {
+    public void duplicateRow(String rowId) {
+        // Must re-fetch and re-configure from scratch every time
+        Row original = database.fetchRow(rowId);       // 200ms DB call
+        CellFormat format = styleService.resolve(rowId); // 100ms API call
+        List<Formula> formulas = parser.parse(original); // 50ms computation
 
-// Scenario 2: Complex configuration that took many steps
-GraphicsContext ctx = new GraphicsContext();
-ctx.setResolution(4096, 2160);
-ctx.loadShaders("pbr_vertex.glsl", "pbr_fragment.glsl");
-ctx.initializeBuffers(1024);
-ctx.calibrateColors();  // Takes 2 seconds!
-// Need another context with same config but different scene...
+        // Creating a "copy" means repeating ALL the expensive work
+        Row copy = database.fetchRow(rowId);             // 200ms AGAIN
+        CellFormat copyFmt = styleService.resolve(rowId);// 100ms AGAIN
+        List<Formula> copyFormulas = parser.parse(copy); // 50ms AGAIN
+        copy.setFormulas(copyFormulas);
+        copy.setFormat(copyFmt);
+    }
 
-// Scenario 3: Object class determined at runtime
-Shape shape = getShapeFromUserInput();  // Could be Circle, Rectangle, etc.
-// How do you create "another one of those" without knowing the concrete type?
+    public void createShapeFromToolbar(Shape selected) {
+        // Don't know concrete type at compile time!
+        if (selected instanceof Circle c) {
+            return new Circle(c.getRadius(), c.getColor(), c.getX(), c.getY());
+        } else if (selected instanceof Rectangle r) {
+            return new Rectangle(r.getWidth(), r.getHeight(), r.getColor());
+        }
+        // Every new shape type = another else-if branch...
+    }
+}
 ```
 
-Problems:
+**Problems:**
 
-- **Costly initialization** — objects loaded from DB, network, or files
-- **Complex setup** — many configuration steps to reproduce
-- **Unknown concrete type** — can't use `new` when you don't know the class at compile time
-- **Tight coupling** — client code depends on concrete classes to instantiate them
+- **Costly re-initialization** — duplicating an object means repeating expensive DB calls, API requests, and computations that were already done for the original
+- **Tight coupling to concrete types** — creating "another one like this" requires if-else chains checking `instanceof`, violating the Open/Closed Principle every time a new type is added
+- **Complex setup cannot be replayed** — if the object was configured through 10 interactive steps (user input, calibration), there is no way to replay that process programmatically
+- **Performance bottleneck** — in scenarios like game engines spawning 1000 enemies or load tests creating 50 user templates, re-creating from scratch makes the operation O(n * creation_cost) instead of O(n * copy_cost)
+- **No polymorphic duplication** — without a `clone()` contract, the client must know every concrete class to duplicate it, breaking abstraction
 
 ---
 

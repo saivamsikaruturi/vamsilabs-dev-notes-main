@@ -123,6 +123,49 @@ Without Composite, you'd need separate code paths for "single shape" and "group 
 
 ---
 
+## Without This Pattern
+
+```java
+// BAD: Client must distinguish between single shapes and groups everywhere
+public class GraphicsEditor {
+
+    public void moveShape(Shape shape, int dx, int dy) {
+        shape.setX(shape.getX() + dx);
+        shape.setY(shape.getY() + dy);
+    }
+
+    // Completely separate logic for groups — duplicated and fragile
+    public void moveGroup(List<Shape> group, int dx, int dy) {
+        for (Shape shape : group) {
+            shape.setX(shape.getX() + dx);
+            shape.setY(shape.getY() + dy);
+        }
+    }
+
+    // What about nested groups? Even more special-casing!
+    public void moveNestedGroup(List<Object> items, int dx, int dy) {
+        for (Object item : items) {
+            if (item instanceof Shape s) {
+                s.setX(s.getX() + dx);
+                s.setY(s.getY() + dy);
+            } else if (item instanceof List<?> subGroup) {
+                moveNestedGroup((List<Object>) subGroup, dx, dy); // unsafe cast
+            }
+        }
+    }
+}
+```
+
+**Problems:**
+
+- **Type-checking everywhere**: Client code is littered with `instanceof` checks and unsafe casts to distinguish leaves from groups
+- **Violates Open/Closed Principle**: Adding a new operation (resize, delete, serialize) requires duplicating the single-vs-group logic in every new method
+- **Fragile recursive handling**: Nested groups require manual recursive traversal with raw `List<Object>` — no type safety, easy to introduce bugs
+- **Cannot treat objects uniformly**: The fundamental operation "move this thing" has 3 different method signatures depending on structure depth
+- **Pain point**: Every time you add nesting depth or a new operation, you must write and maintain another recursive method with type-checking logic — the codebase becomes a maze of `if/else instanceof` blocks
+
+---
+
 ## :white_check_mark: The Solution
 
 The Composite pattern defines a **common interface** for both simple (leaf) and complex (composite) elements. The composite element stores children and delegates operations to them recursively. Clients interact with the interface without knowing if they're dealing with a leaf or an entire subtree.

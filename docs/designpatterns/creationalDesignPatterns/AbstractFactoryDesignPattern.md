@@ -153,24 +153,44 @@ classDiagram
 
 Imagine you're building a **cross-platform UI toolkit** that must support Windows, macOS, and Linux. Each platform has its own style of buttons, checkboxes, and text fields.
 
+### Without This Pattern
+
 ```java
-// Without Abstract Factory — platform checks scattered everywhere
-if (os.equals("windows")) {
-    button = new WindowsButton();
-    checkbox = new WindowsCheckbox();
-} else if (os.equals("macos")) {
-    button = new MacButton();
-    checkbox = new MacCheckbox();
+public class LoginPage {
+    public void render(String os) {
+        Button button;
+        Checkbox checkbox;
+        TextField textField;
+
+        if (os.equals("windows")) {
+            button = new WindowsButton();
+            checkbox = new WindowsCheckbox();
+            textField = new WindowsTextField();
+        } else if (os.equals("macos")) {
+            button = new MacButton();
+            checkbox = new MacCheckbox();
+            textField = new MacTextField();
+        } else {
+            button = new LinuxButton();
+            checkbox = new LinuxCheckbox();
+            textField = new LinuxTextField();
+        }
+        // Accidentally mix WindowsButton + MacCheckbox? Compiles fine. Looks broken at runtime.
+        button.render();
+        checkbox.render();
+        textField.render();
+    }
 }
-// What if you mix WindowsButton with MacCheckbox? Chaos!
+// Same if-else in SettingsPage, DashboardPage, SignupPage...
 ```
 
-Problems:
+**Problems:**
 
-- **Incompatible product combinations** — nothing prevents mixing products from different families
-- **Scattered creation logic** — platform checks duplicated across the codebase
-- **Violates Open/Closed Principle** — adding a new platform means modifying every `if-else` block
-- **Tight coupling** — client code knows about all concrete implementations
+- **Incompatible product combinations** — nothing prevents mixing `WindowsButton` with `MacCheckbox`; the compiler cannot catch this, and it produces visual chaos at runtime
+- **Scattered creation logic** — every page/component duplicates the same platform-switching if-else chain
+- **Violates Open/Closed Principle** — adding Linux support means hunting down and modifying every if-else block across the entire codebase
+- **Tight coupling** — client code imports and directly instantiates all concrete classes from every platform
+- **No family guarantee** — there is no structural enforcement that all components in a screen belong to the same platform theme
 
 ---
 

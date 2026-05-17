@@ -98,6 +98,39 @@ You need to implement undo, snapshots, or rollback, but:
 
 **Example:** A drawing application where users can undo multiple steps. Each shape has complex internal state (position, color, transformations, layers) that must be captured without exposing it.
 
+### Without This Pattern
+
+```java
+public class TextEditor {
+    private String content;
+    private int cursorPosition;
+    private String fontFamily;
+    private int fontSize;
+
+    // Expose ALL internals so external code can "save" state
+    public String getContent() { return content; }
+    public void setContent(String c) { this.content = c; }
+    public int getCursorPosition() { return cursorPosition; }
+    public void setCursorPosition(int p) { this.cursorPosition = p; }
+    public String getFontFamily() { return fontFamily; }
+    public void setFontFamily(String f) { this.fontFamily = f; }
+    public int getFontSize() { return fontSize; }
+    public void setFontSize(int s) { this.fontSize = s; }
+}
+
+// External "history manager" directly manipulates editor internals
+public class UndoManager {
+    private List<String> savedContents = new ArrayList<>();
+    // Must track EVERY field separately — fragile and incomplete
+}
+```
+
+- **Breaks encapsulation** — all fields must be public/have setters so external code can save and restore state
+- **Fragile to changes** — adding a new field (e.g., `selectionRange`) requires updating the undo manager and every place that saves state
+- **Incomplete snapshots** — external savers often forget a field, leading to corrupt restores (cursor resets, font lost)
+- **No separation of concerns** — the undo manager must intimately know the editor's internal structure
+- **Pain point:** A developer adds a `syntaxHighlighting` field to the editor but forgets to update the undo logic. Users undo an action and syntax colors disappear — a subtle, hard-to-reproduce bug
+
 ---
 
 ## ✅ The Solution

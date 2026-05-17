@@ -132,6 +132,36 @@ You have a stable set of element classes but need to add **new operations** freq
 
 **Example:** A document with paragraphs, images, and tables. You want to export to PDF, HTML, and plain text — each requiring different handling per element type. You don't want `toPDF()`, `toHTML()`, `toText()` on every element.
 
+### Without This Pattern
+
+```java
+public class Paragraph {
+    private String text;
+
+    public String toHtml() { return "<p>" + text + "</p>"; }
+    public String toMarkdown() { return text + "\n\n"; }
+    public int wordCount() { return text.split("\\s+").length; }
+    // New export format? Add a method HERE and in Image, Table...
+}
+
+public class Image {
+    private String url;
+
+    public String toHtml() { return "<img src='" + url + "'/>"; }
+    public String toMarkdown() { return "![](" + url + ")"; }
+    public int wordCount() { return 0; }
+    // Every new operation ALSO goes here — class keeps growing
+}
+
+// Adding PDF export means modifying Paragraph, Image, AND Table.
+```
+
+- **Violates Open/Closed Principle** — every new operation (PDF export, accessibility check, SEO analysis) requires editing ALL element classes
+- **Scattered operation logic** — HTML export logic is spread across `Paragraph.toHtml()`, `Image.toHtml()`, `Table.toHtml()` instead of one place
+- **Polluted interfaces** — element classes accumulate unrelated methods (`toHtml`, `toMarkdown`, `wordCount`, `toPdf`) that have nothing to do with representing a document element
+- **Combinatorial explosion** — 5 element types x 6 operations = 30 methods scattered across 5 files
+- **Pain point:** The team needs a "document statistics" feature. Without Visitor, every developer touches every element class file simultaneously, causing merge conflicts and bloating simple data classes with analysis logic
+
 ---
 
 ## ✅ The Solution

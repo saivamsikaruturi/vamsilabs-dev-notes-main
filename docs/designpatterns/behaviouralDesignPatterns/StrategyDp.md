@@ -102,6 +102,37 @@ You need different variants of an algorithm within an object, and you want to sw
 
 **Example:** A payment system that needs to support credit card, PayPal, cryptocurrency, and bank transfer — each with completely different processing logic.
 
+### Without This Pattern
+
+```java
+public class ShoppingCart {
+    public boolean checkout(String paymentType) {
+        BigDecimal total = calculateTotal();
+        if (paymentType.equals("CREDIT_CARD")) {
+            // 20 lines of credit card processing logic
+            System.out.println("Charging credit card...");
+            return processCreditCard(total);
+        } else if (paymentType.equals("PAYPAL")) {
+            // 20 lines of PayPal API logic
+            System.out.println("PayPal transfer...");
+            return processPayPal(total);
+        } else if (paymentType.equals("CRYPTO")) {
+            // 20 lines of crypto wallet logic
+            System.out.println("Crypto payment...");
+            return processCrypto(total);
+        }
+        // Adding Apple Pay? Modify this method AGAIN.
+        throw new IllegalArgumentException("Unknown payment: " + paymentType);
+    }
+}
+```
+
+- **Violates Open/Closed Principle** — adding a new payment method (e.g., Apple Pay) forces editing the `checkout()` method
+- **Massive conditional blocks** — the method grows to hundreds of lines with unrelated logic jumbled together
+- **Impossible to unit test in isolation** — you cannot test PayPal logic without instantiating the entire `ShoppingCart`
+- **Violates Single Responsibility** — `ShoppingCart` knows how to process credit cards, PayPal, AND crypto
+- **Pain point:** A bug fix in crypto payment logic requires touching the same file that handles credit cards, risking regressions across all payment types
+
 ---
 
 ## ✅ The Solution

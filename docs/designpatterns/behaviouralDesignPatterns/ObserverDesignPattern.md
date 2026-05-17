@@ -98,6 +98,32 @@ You have an object whose state changes matter to other objects, but:
 
 **Example:** A stock trading platform where price changes need to update charts, alerts, portfolio views, and third-party integrations — all independently.
 
+### Without This Pattern
+
+```java
+public class StockMarket {
+    private DashboardDisplay dashboard;
+    private PriceAlertSystem alerts;
+    private PortfolioView portfolio;
+    // Must add a field for EVERY new listener!
+
+    public void updatePrice(String symbol, double newPrice) {
+        prices.put(symbol, newPrice);
+        // Directly calling every dependent — tightly coupled
+        dashboard.refresh(symbol, newPrice);
+        alerts.checkThreshold(symbol, newPrice);
+        portfolio.recalculate(symbol, newPrice);
+        // Adding a new listener? Modify THIS class every time.
+    }
+}
+```
+
+- **Violates Open/Closed Principle** — adding a new subscriber (e.g., analytics service) forces modification of `StockMarket`
+- **Tight coupling** — `StockMarket` must know the concrete type and method signature of every dependent
+- **Cannot add/remove listeners at runtime** — subscribers are hardcoded at compile time
+- **Breaks Single Responsibility** — `StockMarket` now manages both stock data AND notification routing
+- **Pain point:** Every new feature that needs price updates requires a code change in the subject class, creating merge conflicts and regression risk
+
 ---
 
 ## ✅ The Solution

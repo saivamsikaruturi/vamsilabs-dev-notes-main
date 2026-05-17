@@ -72,6 +72,43 @@ In many applications, certain objects should exist only once:
 
 Without the Singleton pattern, any code can create new instances freely, leading to resource waste, inconsistent state, and hard-to-debug issues.
 
+### Without This Pattern
+
+```java
+// Anyone can create new instances — no control
+public class DatabaseConnectionPool {
+    private List<Connection> connections = new ArrayList<>();
+
+    public DatabaseConnectionPool(int size) {
+        for (int i = 0; i < size; i++) {
+            connections.add(createConnection()); // Expensive!
+        }
+    }
+
+    public Connection getConnection() {
+        return connections.remove(0);
+    }
+}
+
+// In ServiceA.java
+DatabaseConnectionPool poolA = new DatabaseConnectionPool(10);
+
+// In ServiceB.java — OOPS, another pool!
+DatabaseConnectionPool poolB = new DatabaseConnectionPool(10);
+
+// In ServiceC.java — yet another!
+DatabaseConnectionPool poolC = new DatabaseConnectionPool(10);
+// Now 30 connections open instead of 10. DB runs out of connections.
+```
+
+**Problems:**
+
+- **Resource exhaustion** — each `new` creates an independent pool, multiplying DB connections beyond limits
+- **Inconsistent state** — one pool may be drained while others sit idle; no shared view of available connections
+- **No single point of control** — impossible to enforce connection limits, timeouts, or monitoring across multiple pools
+- **Violates DRY** — initialization logic (pool size, config) is duplicated and can drift out of sync
+- **Hard to debug** — when the DB rejects connections, which of the N pools is the culprit?
+
 ---
 
 ## ✅ The Solution

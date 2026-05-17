@@ -127,10 +127,12 @@
       "marker path { fill: " + DARK_INK + " !important; stroke: " + DARK_INK + " !important; }",
       ".cluster rect { fill: " + DARK_CLUSTER + " !important; stroke: #D6D3D1 !important; }",
       ".cluster span, .cluster text { color: " + DARK_INK + " !important; fill: " + DARK_INK + " !important; }",
-      "text, .nodeLabel, .label, .labelText, .loopText,",
-      ".messageText, .actor { fill: " + DARK_INK + " !important; }",
-      ".nodeLabel, .label span, .edgeLabel span { color: " + DARK_INK + " !important; }",
-      "line { stroke: " + DARK_INK + " !important; }",
+      ".edgeLabel, .edgeLabel span, .labelText, .loopText,",
+      ".messageText, .actor, .classTitleText, .classText,",
+      ".relationshipLabel { fill: " + DARK_INK + " !important; color: " + DARK_INK + " !important; }",
+      "line, .relation { stroke: " + DARK_INK + " !important; }",
+      ".classGroup rect { stroke: #78716C !important; }",
+      ".classGroup line { stroke: #A8A29E !important; }",
       ".messageLine0, .messageLine1 { stroke: " + DARK_INK + " !important; stroke-width: " + STROKE_W + "px !important; }",
       ".actor-line { stroke: #78716C !important; }",
       ".note rect { fill: " + DARK_CLUSTER + " !important; stroke: #D6D3D1 !important; }",
@@ -273,9 +275,23 @@
     }
   }
 
+  function fixNodeColors(svg) {
+    svg.querySelectorAll(".node").forEach(function(node) {
+      var inlineColor = node.style.color;
+      if (!inlineColor) return;
+      node.querySelectorAll(".nodeLabel, .label span, .label div, foreignObject span, foreignObject div, foreignObject p").forEach(function(el) {
+        el.style.setProperty("color", inlineColor, "important");
+      });
+      node.querySelectorAll("text, tspan").forEach(function(el) {
+        el.style.setProperty("fill", inlineColor, "important");
+      });
+    });
+  }
+
   function fixAll() {
     document.querySelectorAll("pre.mermaid svg, .mermaid svg").forEach(function(svg) {
       injectDarkStyles(svg);
+      fixNodeColors(svg);
       fixEdgeLabels(svg);
     });
   }

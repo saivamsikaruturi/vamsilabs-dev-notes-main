@@ -97,6 +97,39 @@ You have multiple classes that follow a **similar algorithm** but differ in spec
 
 **Example:** Data mining from different file formats (CSV, PDF, DOCX) — the overall process (open, extract, parse, analyze, report) is the same but extraction differs.
 
+### Without This Pattern
+
+```java
+public class CsvDataProcessor {
+    public void process(String source) {
+        System.out.println("Opening: " + source);       // duplicated
+        String raw = extractCsvData();
+        List<Record> records = parseCsvData(raw);
+        System.out.println("Analyzing " + records.size()); // duplicated
+        generateCsvReport(records);
+        System.out.println("Cleanup complete");           // duplicated
+    }
+}
+
+public class ApiDataProcessor {
+    public void process(String source) {
+        System.out.println("Opening: " + source);       // SAME as above
+        String raw = fetchFromApi();
+        List<Record> records = parseJsonData(raw);
+        System.out.println("Analyzing " + records.size()); // SAME
+        generateApiReport(records);
+        System.out.println("Cleanup complete");           // SAME
+    }
+    // If the algorithm order changes, you must fix BOTH classes.
+}
+```
+
+- **Code duplication** — shared steps (open, analyze, cleanup) are copy-pasted across every variant; a bug fix must be applied N times
+- **No enforced order** — nothing prevents a subclass from calling steps in the wrong order (e.g., reporting before parsing)
+- **Violates DRY** — adding a new step (e.g., validation) requires editing every processor class identically
+- **Divergence risk** — over time, duplicated algorithms drift apart as developers modify one but forget the other
+- **Pain point:** A security team mandates adding an audit log step between parse and analyze. Without a template, you must find and modify every processor variant — and if you miss one, it ships without the audit
+
 ---
 
 ## ✅ The Solution

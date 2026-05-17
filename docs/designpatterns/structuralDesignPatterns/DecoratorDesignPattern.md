@@ -98,6 +98,45 @@ This leads to a **class explosion** — `2^n` combinations for `n` notification 
 
 ---
 
+## Without This Pattern
+
+```java
+// BAD: Subclass for every combination of notification channels
+public class EmailNotifier { /* sends email */ }
+public class SmsNotifier extends EmailNotifier { /* sends email + SMS */ }
+public class SlackNotifier extends EmailNotifier { /* sends email + Slack */ }
+public class SmsSlackNotifier extends EmailNotifier { /* sends email + SMS + Slack */ }
+public class SmsFacebookNotifier extends EmailNotifier { /* sends email + SMS + Facebook */ }
+public class SlackFacebookNotifier extends EmailNotifier { /* email + Slack + Facebook */ }
+public class SmsSlackFacebookNotifier extends EmailNotifier { /* all four */ }
+// 2^n classes for n notification channels!
+
+// Client cannot compose behaviors at runtime
+public class AlertService {
+    public void sendAlert(String message, boolean sms, boolean slack, boolean fb) {
+        // Ugly conditional logic
+        if (sms && slack && fb) {
+            new SmsSlackFacebookNotifier().send(message);
+        } else if (sms && slack) {
+            new SmsSlackNotifier().send(message);
+        } else if (sms) {
+            new SmsNotifier().send(message);
+        }
+        // ... endless if-else for every combination
+    }
+}
+```
+
+**Problems:**
+
+- **Class explosion (2^n)**: With 4 notification types, you need up to 16 subclasses to cover every combination — adding one more channel doubles the number
+- **Static, compile-time binding**: You cannot add or remove a notification channel at runtime based on user preferences — the combination is hardcoded in the class hierarchy
+- **Violates Single Responsibility**: Each combined subclass (e.g., `SmsSlackNotifier`) handles multiple unrelated concerns in one class
+- **Violates Open/Closed Principle**: Adding a new channel (e.g., WhatsApp) requires creating new subclasses for every existing combination
+- **Pain point**: A product manager says "users should pick which channels they want at runtime" — and your rigid inheritance hierarchy cannot support it without a complete rewrite
+
+---
+
 ## :white_check_mark: The Solution
 
 Instead of static subclassing, the Decorator pattern lets you **wrap** objects with new behaviors at runtime. Each decorator:

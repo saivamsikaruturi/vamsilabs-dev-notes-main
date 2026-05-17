@@ -149,6 +149,52 @@ Without Flyweight, each tree object stores **everything** — including the mass
 
 ---
 
+## Without This Pattern
+
+```java
+// BAD: Every tree stores its own copy of the massive texture data
+public class Tree {
+    private int x, y, age;
+    private String name;
+    private String color;
+    private byte[] texture; // 5MB per tree!
+
+    public Tree(int x, int y, int age, String name, String color, byte[] texture) {
+        this.x = x;
+        this.y = y;
+        this.age = age;
+        this.name = name;
+        this.color = color;
+        this.texture = texture.clone(); // Each tree gets its OWN copy
+    }
+}
+
+// Planting a forest
+public class Forest {
+    private List<Tree> trees = new ArrayList<>();
+
+    public void plantForest() {
+        byte[] oakTexture = loadTexture("oak.png"); // 5MB
+        for (int i = 0; i < 1_000_000; i++) {
+            // 1,000,000 trees x 5MB = 5 TERABYTES of RAM!
+            trees.add(new Tree(randX(), randY(), randAge(),
+                "Oak", "Green", oakTexture));
+        }
+        // OutOfMemoryError long before we finish
+    }
+}
+```
+
+**Problems:**
+
+- **Catastrophic memory waste**: 1 million trees each storing a 5MB texture = ~5 TB of RAM needed, when only 3 unique textures actually exist (Oak, Pine, Birch)
+- **OutOfMemoryError in production**: The application crashes because it allocates millions of duplicate objects that share identical intrinsic data
+- **Object creation overhead**: Allocating and garbage-collecting millions of heavyweight objects slows the JVM to a crawl with GC pauses
+- **No sharing awareness**: The code treats each tree as fully independent even though 333,000 Oak trees are byte-for-byte identical in name, color, and texture
+- **Pain point**: Your game runs fine in testing with 100 trees but crashes in production with realistic forest sizes — and "just buy more RAM" is not a viable solution for a 5TB working set
+
+---
+
 ## :white_check_mark: The Solution
 
 The Flyweight pattern separates the object's data into:
