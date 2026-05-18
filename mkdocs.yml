@@ -53,7 +53,6 @@ theme:
     - search.share
     - search.suggest
     - toc.follow
-    - header.autohide
 
 extra_css:
   - custom/custom.css

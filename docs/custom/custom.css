@@ -261,8 +261,6 @@ body,
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: -0.01em;
-  max-width: none;
-  overflow: visible;
 }
 
 .md-header__topic {
@@ -283,7 +281,7 @@ body,
 }
 
 .md-header__inner {
-  padding: 0.4rem 0;
+  padding: 0.5rem 0;
 }
 
 /* ==========================================================================
@@ -292,7 +290,7 @@ body,
 
 .md-tabs {
   background: #292524;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 2px solid rgba(255, 255, 255, 0.12);
   overflow: visible;
   position: relative;
 }
@@ -499,7 +497,7 @@ body,
    LINKS — brand color, animated underline
    ========================================================================== */
 
-.md-typeset a:not(.md-button):not(.md-nav__link):not(.vtn-card):not(.vtn-cta):not(.vtn-featured-card) {
+.md-typeset a:not(.md-button):not(.md-nav__link):not(.vtn-card):not(.vtn-cta):not(.vtn-featured-card):not(.vtn-interview-highlight-btn) {
   color: var(--vtn-brand);
 }
 
@@ -1649,10 +1647,11 @@ body,
   padding: 0.6rem 1.2rem;
   font-size: 0.8rem;
   font-weight: 700;
-  color: #fff;
-  background: var(--vtn-brand);
+  color: #fff !important;
+  background: var(--vtn-brand) !important;
+  background-image: none !important;
   border-radius: 20px;
-  text-decoration: none;
+  text-decoration: none !important;
   white-space: nowrap;
   box-shadow: 0 2px 8px rgba(180, 83, 9, 0.3);
   transition: all 0.2s ease;
@@ -1660,7 +1659,7 @@ body,
 .vtn-interview-highlight-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(180, 83, 9, 0.4);
-  color: #fff;
+  color: #fff !important;
 }
 [data-md-color-scheme="slate"] .vtn-interview-highlight-inner {
   background: linear-gradient(135deg, #44310d 0%, #3d2e0a 100%);
@@ -1979,7 +1978,7 @@ body,
    IMPROVED CONTENT LINKS — smooth underline animation
    ========================================================================== */
 
-.md-typeset a:not(.md-button):not(.md-nav__link):not(.vtn-card):not(.vtn-cta):not(.vtn-featured-card) {
+.md-typeset a:not(.md-button):not(.md-nav__link):not(.vtn-card):not(.vtn-cta):not(.vtn-featured-card):not(.vtn-interview-highlight-btn) {
   background-image: linear-gradient(var(--vtn-brand), var(--vtn-brand));
   background-size: 0% 2px;
   background-position: 0 100%;
@@ -1989,7 +1988,7 @@ body,
   text-decoration-color: transparent;
 }
 
-.md-typeset a:not(.md-button):not(.md-nav__link):not(.vtn-card):not(.vtn-cta):not(.vtn-featured-card):hover {
+.md-typeset a:not(.md-button):not(.md-nav__link):not(.vtn-card):not(.vtn-cta):not(.vtn-featured-card):not(.vtn-interview-highlight-btn):hover {
   background-size: 100% 2px;
   text-decoration: none;
   text-decoration-color: transparent;
