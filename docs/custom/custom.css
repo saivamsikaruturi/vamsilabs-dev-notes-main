@@ -1298,7 +1298,33 @@ body,
 
 .md-typeset .admonition.question,
 .md-typeset details.question {
-  border-left-color: var(--vtn-brand);
+  border-color: #c7d2fe !important;
+  background: #eef2ff !important;
+}
+
+.md-typeset .admonition.question > .admonition-title,
+.md-typeset details.question > summary {
+  background: #e0e7ff !important;
+  border-bottom: 1px solid #c7d2fe;
+  color: #3730a3 !important;
+}
+
+.md-typeset .admonition.question > .admonition-title::before,
+.md-typeset details.question > summary::before {
+  background-color: #6366f1 !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.question,
+[data-md-color-scheme="slate"] .md-typeset details.question {
+  border-color: #4338ca !important;
+  background: rgba(99, 102, 241, 0.08) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.question > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset details.question > summary {
+  background: rgba(99, 102, 241, 0.12) !important;
+  border-bottom-color: #4338ca;
+  color: #a5b4fc !important;
 }
 
 /* ==========================================================================

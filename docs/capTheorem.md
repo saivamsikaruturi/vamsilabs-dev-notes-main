@@ -7,7 +7,7 @@
 
 ## The 30-Second Explanation
 
-![](assets/images/system-design/cap-theorem.svg)
+<img src="../assets/images/system-design/cap-theorem.svg" alt="CAP Theorem" style="max-width: 400px; width: 100%; display: block; margin: 0 auto;" />
 
 **In a distributed system, when a network partition happens, you must choose:**
 

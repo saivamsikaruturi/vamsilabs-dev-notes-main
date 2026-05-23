@@ -142,7 +142,8 @@ nav:
   - Java:
       - Core Java:
           - Ecosystem & Setup: java/ecosystem.md
-          - Java Basics: java/JavaBasics.md
+          - "Java Basics — Part 1: Fundamentals": java/JavaBasics.md
+          - "Java Basics — Part 2: Methods & Memory": java/JavaBasics2.md
           - Static & Final Keywords: java/StaticAndFinal.md
           - OOP Concepts: java/oops.md
           - Overloading vs Overriding: java/OverloadingVsOverriding.md
