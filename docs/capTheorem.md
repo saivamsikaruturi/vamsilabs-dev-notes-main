@@ -144,3 +144,14 @@ When asked "How would you handle consistency in [System X]?"
 | AP examples? | Cassandra, DynamoDB, CouchDB, DNS |
 | What's PACELC? | Extends CAP: what do you trade-off when there's NO partition? |
 | Most common mistake? | Treating it as "pick 2 of 3" instead of "CP or AP during partition" |
+
+---
+
+## See Also
+
+- [Consistent Hashing](consistenthashing.md) — Distributing data across nodes evenly
+- [Distributed Caching](distributedCaching.md) — Caching strategies and cache coherence
+- [Distributed Locks](distributedlocks.md) — Coordination in distributed systems
+- [SQL vs NoSQL](sqlvsnosql.md) — Choosing the right database model
+- [Database Sharding](systemdesign/database-sharding.md) — Horizontal partitioning strategies
+- [Consensus Algorithms](systemdesign/consensus-algorithms.md) — Raft, Paxos, and leader election

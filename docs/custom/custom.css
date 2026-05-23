@@ -3101,3 +3101,13 @@ body,
   }
 }
 
+/* === Giscus Comments === */
+.giscus-wrapper {
+  max-width: 800px;
+  margin: 3rem auto 2rem;
+  padding: 0 1rem;
+}
+.giscus-wrapper .giscus {
+  margin-top: 1rem;
+}
+

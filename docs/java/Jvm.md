@@ -293,3 +293,14 @@ Part of the execution engine. See the dedicated [Garbage Collection](GarbageColl
 
 ??? question "5. Where are static variables stored in the JVM?"
     In the **Method Area** (Metaspace since Java 8). Static variables belong to the class, not to any instance, so they're stored in the shared class metadata area. They're initialized during the classloading **initialization** phase.
+
+---
+
+## See Also
+
+- [Garbage Collection](GarbageCollection.md) — GC algorithms and tuning strategies
+- [JVM Tuning](JVMTuning.md) — Flags, heap sizing, and performance optimization
+- [Memory Leaks](MemoryLeaks.md) — Detection, causes, and prevention
+- [Class Loaders](ClassLoaders.md) — Parent delegation and custom loading
+- [Java Memory Model](JavaMemoryModel.md) — Visibility, ordering, and happens-before
+- [Profiling Tools](ProfilingTools.md) — JFR, JMC, async-profiler, and VisualVM

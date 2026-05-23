@@ -356,3 +356,14 @@ while (it.hasNext()) {
     };
     ```
     For thread-safe LRU, wrap it in `Collections.synchronizedMap()` or use `ConcurrentHashMap` with a custom eviction strategy.
+
+---
+
+## See Also
+
+- [HashMap Internals](HashMapInternals.md) — Hashing, buckets, treeification, and resizing
+- [ConcurrentHashMap](ConcurrentHashMapInternals.md) — Thread-safe map with per-bucket locking
+- [Comparable vs Comparator](ComparableComparator.md) — Natural ordering vs custom sorting
+- [Fail-Fast vs Fail-Safe](FailFastFailSafe.md) — Iterator behavior under modification
+- [Stream API](../stream-api/streamapi.md) — Functional-style collection processing
+- [Collections Compared](DiffCollections.md) — When to use which collection

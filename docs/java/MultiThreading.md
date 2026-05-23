@@ -1522,10 +1522,12 @@ JFR captures: lock contention events, thread state transitions, blocking times, 
 
 ---
 
-## Related Topics
+## See Also
 
-- [Locks](Locks.md) — ReentrantLock, ReadWriteLock, StampedLock
-- [volatile & Atomics](VolatileAtomics.md) — Thread-safe variables without locks
-- [CompletableFuture](CompletableFuture.md) — Async programming in Java
-- [Concurrent Collections](ConcurrentCollections.md) — Thread-safe data structures
-- [Deadlocks](deadlocks.md) — Detection and prevention
+- [Virtual Threads (Java 21)](VirtualThreads.md) — Lightweight threads managed by the JVM
+- [CompletableFuture](CompletableFuture.md) — Async programming and composition
+- [ThreadLocal & Sync Aids](ThreadLocalAndSyncAids.md) — Per-thread state and synchronizers
+- [Deadlocks](deadlocks.md) — Detection and prevention strategies
+- [Volatile & Atomics](VolatileAtomics.md) — Thread-safe variables without locks
+- [Locks & Conditions](Locks.md) — ReentrantLock, ReadWriteLock, StampedLock
+- [Java Memory Model](JavaMemoryModel.md) — Visibility, ordering, and happens-before

@@ -178,3 +178,13 @@
 | Redis vs Memcached? | Redis = data structures + persistence. Memcached = simple, faster for strings |
 | Best eviction? | LRU (general purpose) |
 | Multi-tier? | L1 local (μs) → L2 distributed (ms) → L3 database |
+
+---
+
+## See Also
+
+- [Redis](redis.md) — Data structures, persistence, and clustering
+- [CAP Theorem](capTheorem.md) — Consistency vs availability trade-offs
+- [Consistent Hashing](consistenthashing.md) — Distributing cache keys across nodes
+- [Rate Limiting](ratelimiting.md) — Throttling with token bucket and sliding window
+- [Spring Data Redis](springboot/spring-data-redis.md) — Redis integration in Spring Boot

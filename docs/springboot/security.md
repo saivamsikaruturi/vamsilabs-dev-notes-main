@@ -820,3 +820,13 @@ curl http://localhost:8080/api/orders \
 
 ??? question "14. How do CORS preflight requests interact with Spring Security?"
     Browsers send an `OPTIONS` preflight request before cross-origin requests with custom headers. If Spring Security requires authentication for all requests, the preflight (which carries no credentials) gets a 401. Fix: ensure `.cors()` is configured in the `SecurityFilterChain` — Spring places the `CorsFilter` **before** the authentication filter, so preflights are handled without authentication.
+
+---
+
+## See Also
+
+- [Security Filter Chain Internals](security-filter-chain.md) — How filters are ordered and invoked
+- [Method Security & OAuth2](method-security-oauth2.md) — Fine-grained access control
+- [JWT](../security/JWT.md) — Token structure, signing, and validation
+- [OAuth 2.0](../security/Oauth.md) — Authorization flows and grant types
+- [Filters, Interceptors & AOP](filters-interceptors-aop.md) — Request processing pipeline layers

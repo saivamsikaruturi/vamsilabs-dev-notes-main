@@ -813,3 +813,12 @@ public class PostService {
 ```
 
 ---
+
+## See Also
+
+- [N+1 Problem & JPA Internals](n-plus-one-jpa.md) — Detecting and fixing lazy-loading traps
+- [Hibernate Internals](hibernate-internals.md) — Session, dirty checking, and flush modes
+- [Transactions](transactions.md) — Propagation, isolation, and rollback rules
+- [Pagination & Sorting](pagination-sorting.md) — Efficient paged queries at scale
+- [Multi-Datasource & Auditing](multi-datasource-auditing.md) — Multiple DBs and audit trails
+- [Database Migrations](database-migrations.md) — Flyway and Liquibase best practices

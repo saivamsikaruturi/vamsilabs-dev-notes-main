@@ -539,3 +539,13 @@ flowchart LR
     **Step 5 — Thread safety:** "HashMap is NOT thread-safe. Java 7 had infinite loops on concurrent resize. Java 8 fixed that but still has race conditions. Use ConcurrentHashMap — lock-free reads via volatile, per-bucket locking for writes."
 
     **Step 6 — Contract:** "equals/hashCode contract is critical. If you override equals, you MUST override hashCode. Mutable keys are memory leaks."
+
+---
+
+## See Also
+
+- [Collections Framework](Collections.md) — Overview of all Java collection types
+- [ConcurrentHashMap Internals](ConcurrentHashMapInternals.md) — Thread-safe map with lock striping
+- [equals & hashCode](EqualsHashCode.md) — Contract rules and common pitfalls
+- [LinkedHashMap & LRU](LinkedHashMapLRU.md) — Insertion-order map and LRU cache design
+- [Java Memory Model](JavaMemoryModel.md) — Visibility, ordering, and happens-before

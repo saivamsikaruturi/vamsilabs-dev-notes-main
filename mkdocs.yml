@@ -140,6 +140,7 @@ nav:
       - DSA: dsa.md
       - Behavioral (Amazon LPs): behavioral/behavioral.md
   - Java:
+      - "Interview Guide": java/java-interview-guide.md
       - Core Java:
           - Ecosystem & Setup: java/ecosystem.md
           - "Java Basics — Part 1: Fundamentals": java/JavaBasics.md
@@ -242,6 +243,7 @@ nav:
           - Maven: java/maven.md
           - Gradle: java/gradle.md
   - Spring:
+      - "Interview Guide": springboot/spring-boot-interview-guide.md
       - Core Fundamentals:
           - Introduction: springboot/introduction.md
           - Auto Configuration: springboot/AutoConfiguration.md
@@ -379,6 +381,7 @@ nav:
               - Visitor: designpatterns/behaviouralDesignPatterns/VisitorDp.md
               - Interpreter: designpatterns/behaviouralDesignPatterns/Interpreter.md
   - System Design:
+      - Interview Guide: systemdesign/system-design-interview-guide.md
       - Fundamentals:
           - CAP Theorem: capTheorem.md
           - Consistent Hashing: consistenthashing.md
