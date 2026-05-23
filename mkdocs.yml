@@ -1,5 +1,5 @@
-site_name: "Vamsi Tech Notes"
-site_description: "A comprehensive developer reference for Java, Spring Boot, System Design, Microservices, DevOps, and modern software engineering."
+site_name: "VamsiLabs Dev Notes"
+site_description: "FAANG-level Java, Spring Boot & System Design interview prep — 100+ deep-dive topics with Mermaid diagrams, production code examples, and interview questions."
 site_author: "Vamsi Karuturi"
 site_url: "https://vamsilabs-dev-notes.netlify.app"
 
