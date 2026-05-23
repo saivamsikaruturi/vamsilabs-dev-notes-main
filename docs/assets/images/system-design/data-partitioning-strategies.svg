@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 180">
+  <defs>
+    <linearGradient id="dpBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#f1f5f9"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="456" height="176" rx="10" fill="url(#dpBg)" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="230" y="20" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="700" fill="#1e293b">Partitioning Strategies</text>
+  <!-- Horizontal -->
+  <rect x="15" y="32" width="140" height="135" rx="8" fill="white" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="85" y="48" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#1e40af">Horizontal (by rows)</text>
+  <!-- Table visual -->
+  <rect x="30" y="55" width="110" height="14" rx="2" fill="#dbeafe"/>
+  <text x="85" y="65" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#1e40af">user_1, user_2, user_3</text>
+  <line x1="30" y1="73" x2="140" y2="73" stroke="#3b82f6" stroke-width="1" stroke-dasharray="3,2"/>
+  <rect x="30" y="77" width="110" height="14" rx="2" fill="#bfdbfe"/>
+  <text x="85" y="87" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#1e40af">user_4, user_5, user_6</text>
+  <line x1="30" y1="95" x2="140" y2="95" stroke="#3b82f6" stroke-width="1" stroke-dasharray="3,2"/>
+  <rect x="30" y="99" width="110" height="14" rx="2" fill="#93c5fd"/>
+  <text x="85" y="109" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">user_7, user_8, user_9</text>
+  <text x="85" y="128" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">Same schema,</text>
+  <text x="85" y="140" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">different rows</text>
+  <text x="85" y="158" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" font-weight="600" fill="#059669">Most common</text>
+  <!-- Vertical -->
+  <rect x="165" y="32" width="140" height="135" rx="8" fill="white" stroke="#10b981" stroke-width="1.5"/>
+  <text x="235" y="48" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#065f46">Vertical (by columns)</text>
+  <!-- Column visual -->
+  <rect x="175" y="55" width="35" height="55" rx="2" fill="#d1fae5"/>
+  <text x="192" y="67" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="#065f46">id</text>
+  <text x="192" y="77" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="#065f46">name</text>
+  <text x="192" y="87" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="#065f46">email</text>
+  <text x="192" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="#065f46">core</text>
+  <rect x="217" y="55" width="35" height="55" rx="2" fill="#6ee7b7"/>
+  <text x="234" y="67" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="#065f46">bio</text>
+  <text x="234" y="77" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="#065f46">avatar</text>
+  <text x="234" y="87" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="#065f46">prefs</text>
+  <text x="234" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="#065f46">profile</text>
+  <rect x="259" y="55" width="35" height="55" rx="2" fill="#34d399"/>
+  <text x="276" y="67" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="white">logs</text>
+  <text x="276" y="77" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="white">events</text>
+  <text x="276" y="87" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="white">metrics</text>
+  <text x="276" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5" fill="white">analytics</text>
+  <text x="235" y="128" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">Same rows,</text>
+  <text x="235" y="140" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">different columns</text>
+  <text x="235" y="158" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" font-weight="600" fill="#475569">Wide tables</text>
+  <!-- Functional -->
+  <rect x="315" y="32" width="135" height="135" rx="8" fill="white" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="382" y="48" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#5b21b6">Functional (by domain)</text>
+  <!-- Service boxes -->
+  <rect x="325" y="58" width="55" height="22" rx="4" fill="#ede9fe" stroke="#8b5cf6" stroke-width="0.5"/>
+  <text x="352" y="72" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#5b21b6">Users DB</text>
+  <rect x="385" y="58" width="55" height="22" rx="4" fill="#ede9fe" stroke="#8b5cf6" stroke-width="0.5"/>
+  <text x="412" y="72" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#5b21b6">Orders DB</text>
+  <rect x="325" y="86" width="55" height="22" rx="4" fill="#ede9fe" stroke="#8b5cf6" stroke-width="0.5"/>
+  <text x="352" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#5b21b6">Products DB</text>
+  <rect x="385" y="86" width="55" height="22" rx="4" fill="#ede9fe" stroke="#8b5cf6" stroke-width="0.5"/>
+  <text x="412" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#5b21b6">Analytics DB</text>
+  <text x="382" y="128" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">Each service owns</text>
+  <text x="382" y="140" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">its own data</text>
+  <text x="382" y="158" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" font-weight="600" fill="#475569">Microservices</text>
+</svg>

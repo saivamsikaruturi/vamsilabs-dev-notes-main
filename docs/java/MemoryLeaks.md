@@ -22,15 +22,15 @@ graph LR
         B4 --> B5[💥 Grows Until OOM]
     end
 
-    style A1 fill:#4CAF50,color:#fff
-    style A2 fill:#66BB6A,color:#fff
-    style A3 fill:#81C784,color:#fff
-    style A4 fill:#A5D6A7,color:#000
-    style B1 fill:#EF5350,color:#fff
-    style B2 fill:#E57373,color:#fff
-    style B3 fill:#FF8A65,color:#fff
-    style B4 fill:#FF7043,color:#fff
-    style B5 fill:#D32F2F,color:#fff
+    style A1 fill:#D1FAE5,color:#1E40AF
+    style A2 fill:#DBEAFE,color:#1E40AF
+    style A3 fill:#BFDBFE,color:#1E40AF
+    style A4 fill:#D1FAE5,color:#1E40AF
+    style B1 fill:#FEE2E2,color:#1E40AF
+    style B2 fill:#FCA5A5,color:#1E40AF
+    style B3 fill:#FCA5A5,color:#1E40AF
+    style B4 fill:#FCA5A5,color:#1E40AF
+    style B5 fill:#FEE2E2,color:#1E40AF
 ```
 
 Java has automatic GC, but GC can only collect objects with **zero reachable references**. If even one reference exists, the object stays alive.

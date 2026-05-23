@@ -81,6 +81,12 @@ flowchart LR
     Eden -->|"Minor GC<br/>survivors"| S0
     S0 -->|"Age threshold<br/>exceeded"| S1
     S1 -->|"Promotion<br/>(age > 15)"| Tenured
+
+    style Eden fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style Meta fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style S0 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style S1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style Tenured fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 | Region | Purpose | Default Size |
@@ -128,6 +134,11 @@ All GC algorithms share a fundamental three-phase approach:
 flowchart LR
     A{{"1. MARK<br/>Traverse from GC roots,<br/>mark reachable objects"}} --> B{{"2. SWEEP<br/>Reclaim memory of<br/>unmarked objects"}}
     B --> C(["3. COMPACT<br/>Defragment by moving<br/>live objects together"])
+
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style r fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style s fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 ```

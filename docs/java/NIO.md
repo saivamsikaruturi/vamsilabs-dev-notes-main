@@ -49,6 +49,13 @@ flowchart LR
         C1 -->|reads/writes| B1[/"ByteBuffer"/]
         C2 -->|reads/writes| B2[/"ByteBuffer"/]
     end
+
+    style B1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style C1 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style C2 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style C3 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style S fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
 ```
 
 ---
@@ -135,6 +142,12 @@ flowchart LR
     SEL -->|OP_READ| SC1(["Client 1"])
     SEL -->|OP_READ| SC2(["Client 2"])
     SEL -->|OP_WRITE| SC3(["Client 3"])
+
+    style SC1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style SC2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style SC3 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style SEL fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style SSC fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 | Operation | Constant | Meaning |
@@ -190,6 +203,17 @@ flowchart LR
         ET -->|ready?| NC2(["Client 2"])
         ET -->|ready?| NCN(["Client N"])
     end
+
+    style C1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style C2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style CN fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style ET fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style NC1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style NC2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style NCN fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style T1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style T2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style TN fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
 ```
 
 | Aspect | Blocking I/O | Non-blocking I/O |
@@ -257,6 +281,15 @@ flowchart LR
     W1 -->|I/O| CH2(["Channel 2"])
     W2 -->|I/O| CH3(["Channel 3"])
     CH1 --> P1(["Pipeline: Decode > Logic > Encode"])
+
+    style BOSS fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style CH1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style CH2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style CH3 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style SSC2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style W1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style W2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style e fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 **How Netty uses NIO:** Boss EventLoop accepts connections via Selector, Worker EventLoops each run a Selector monitoring many channels. Channel Pipeline chains handlers. Zero-copy via direct buffers and `transferTo()`.
@@ -406,6 +439,16 @@ flowchart LR
     N -->|"< 1000"| NL(["java.io thread-per-conn"])
     N -->|1K-10K| NM(["NIO Selector"])
     N -->|"> 10K"| NH(["Netty"])
+
+    style F fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style FL fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style FS fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style HC fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style N fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style NH fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style NL fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style NM fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style START fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ---

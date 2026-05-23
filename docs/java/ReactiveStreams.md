@@ -20,10 +20,10 @@ flowchart LR
     RESILIENT --> RESPONSIVE
     ELASTIC --> RESPONSIVE
 
-    style RESPONSIVE fill:#2e7d32,color:#fff
-    style MESSAGE fill:#1565c0,color:#fff
-    style RESILIENT fill:#e65100,color:#fff
-    style ELASTIC fill:#6a1b9a,color:#fff
+    style RESPONSIVE fill:#6EE7B7,color:#1E40AF
+    style MESSAGE fill:#DBEAFE,color:#1E40AF
+    style RESILIENT fill:#FCD34D,color:#1E40AF
+    style ELASTIC fill:#93C5FD,color:#1E40AF
 ```
 
 | Pillar | Meaning | How It Helps |
@@ -177,6 +177,12 @@ flowchart LR
         FP2{{"Fast Producer"}} -->|"request(10)"| SC2(["Slow Consumer"])
         SC2 -->|"processes 10, then<br/>request(10) again"| FP2
     end
+
+    style CRASH fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style FP1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style FP2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style SC1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style SC2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### Backpressure Strategies
@@ -220,6 +226,11 @@ flowchart LR
 
     MONO -->|"like"| OPT(["Optional / CompletableFuture"])
     FLUX -->|"like"| LIST(["Stream / Collection"])
+
+    style FLUX fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style LIST fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style MONO fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style OPT fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 | Type | Emits | Analogy |

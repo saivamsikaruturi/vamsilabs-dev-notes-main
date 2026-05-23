@@ -16,11 +16,11 @@ flowchart LR
     AuthZ -->|allowed| C["✅ Controller"]
     AuthZ -->|denied| R403["❌ 403 Forbidden"]
 
-    style F fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style AuthN fill:#E3F2FD,stroke:#1565C0,color:#000
-    style AuthZ fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style R401 fill:#FFCDD2,stroke:#C62828,color:#000
-    style R403 fill:#FFCDD2,stroke:#C62828,color:#000
+    style F fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style AuthN fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style AuthZ fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style R401 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style R403 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 ---
@@ -38,9 +38,9 @@ flowchart LR
     F3 --> F4{{"AuthorizationFilter"}}
     F4 --> C(["🎯 Your Controller"])
 
-    style Req fill:#FEF3C7,stroke:#D97706,color:#000
-    style F3 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style F4 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Req fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style F3 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style F4 fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 Key points:

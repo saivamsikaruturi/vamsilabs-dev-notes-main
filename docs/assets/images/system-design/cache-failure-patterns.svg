@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 150" font-family="DM Sans, sans-serif">
+  <rect width="460" height="150" fill="#FAFAF9" rx="10"/>
+  <text x="230" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Cache Failure Patterns &amp; Fixes</text>
+  <!-- Stampede -->
+  <rect x="8" y="30" width="145" height="110" fill="white" rx="7" stroke="#EF4444" stroke-width="1.2"/>
+  <text x="80" y="46" text-anchor="middle" font-size="8" font-weight="700" fill="#DC2626">🏃 Stampede</text>
+  <text x="80" y="62" text-anchor="middle" font-size="7" fill="#44403C">Hot key expires →</text>
+  <text x="80" y="74" text-anchor="middle" font-size="7" fill="#44403C">1000s hit DB at once</text>
+  <rect x="18" y="82" width="125" height="14" fill="#F0FDF4" rx="3"/><text x="80" y="92" text-anchor="middle" font-size="6" fill="#059669">Fix: Lock / stale-while-revalidate</text>
+  <rect x="18" y="100" width="125" height="14" fill="#F0FDF4" rx="3"/><text x="80" y="110" text-anchor="middle" font-size="6" fill="#059669">Fix: Early refresh before TTL</text>
+  <text x="80" y="130" text-anchor="middle" font-size="6" fill="#78716C">Facebook TAO uses leases</text>
+  <!-- Penetration -->
+  <rect x="160" y="30" width="140" height="110" fill="white" rx="7" stroke="#F59E0B" stroke-width="1.2"/>
+  <text x="230" y="46" text-anchor="middle" font-size="8" font-weight="700" fill="#92400E">👻 Penetration</text>
+  <text x="230" y="62" text-anchor="middle" font-size="7" fill="#44403C">Non-existent keys →</text>
+  <text x="230" y="74" text-anchor="middle" font-size="7" fill="#44403C">always miss, always hit DB</text>
+  <rect x="170" y="82" width="120" height="14" fill="#F0FDF4" rx="3"/><text x="230" y="92" text-anchor="middle" font-size="6" fill="#059669">Fix: Bloom filter at cache layer</text>
+  <rect x="170" y="100" width="120" height="14" fill="#F0FDF4" rx="3"/><text x="230" y="110" text-anchor="middle" font-size="6" fill="#059669">Fix: Cache null with short TTL</text>
+  <text x="230" y="130" text-anchor="middle" font-size="6" fill="#78716C">Common in search / user lookup</text>
+  <!-- Avalanche -->
+  <rect x="307" y="30" width="145" height="110" fill="white" rx="7" stroke="#3B82F6" stroke-width="1.2"/>
+  <text x="379" y="46" text-anchor="middle" font-size="8" font-weight="700" fill="#1D4ED8">❄️ Avalanche</text>
+  <text x="379" y="62" text-anchor="middle" font-size="7" fill="#44403C">Many keys expire at</text>
+  <text x="379" y="74" text-anchor="middle" font-size="7" fill="#44403C">same time → massive spike</text>
+  <rect x="317" y="82" width="125" height="14" fill="#F0FDF4" rx="3"/><text x="379" y="92" text-anchor="middle" font-size="6" fill="#059669">Fix: Random TTL jitter (+/- 30s)</text>
+  <rect x="317" y="100" width="125" height="14" fill="#F0FDF4" rx="3"/><text x="379" y="110" text-anchor="middle" font-size="6" fill="#059669">Fix: Stagger cache warming</text>
+  <text x="379" y="130" text-anchor="middle" font-size="6" fill="#78716C">After deploy / restart risk</text>
+</svg>

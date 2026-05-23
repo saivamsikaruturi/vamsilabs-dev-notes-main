@@ -28,11 +28,11 @@ flowchart LR
     Test --> T2(["@MockBean"])
     Test --> T3(["@WebMvcTest"])
 
-    style SB fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style Core fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style Web fill:#E3F2FD,stroke:#1565C0,color:#000
-    style Data fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style Test fill:#FFF3E0,stroke:#E65100,color:#000
+    style SB fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style Core fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style Web fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style Data fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style Test fill:#FFFBEB,stroke:#FCD34D,color:#1E40AF
 ```
 
 ---
@@ -72,11 +72,11 @@ flowchart LR
     C --> Ctrl{{"@Controller<br/>(Web layer)"}}
     Ctrl --> RC(["@RestController<br/>(@Controller + @ResponseBody)"])
 
-    style C fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
-    style S fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style R fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style Ctrl fill:#C8E6C9,stroke:#2E7D32,color:#000
-    style RC fill:#A5D6A7,stroke:#1B5E20,color:#000
+    style C fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#1E40AF
+    style S fill:#D1FAE5,stroke:#6EE7B7,color:#1E40AF
+    style R fill:#D1FAE5,stroke:#6EE7B7,color:#1E40AF
+    style Ctrl fill:#D1FAE5,stroke:#6EE7B7,color:#1E40AF
+    style RC fill:#D1FAE5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 #### Comparison: @Component vs @Service vs @Repository vs @Controller

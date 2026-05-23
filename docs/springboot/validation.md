@@ -13,8 +13,8 @@ flowchart LR
     V -->|"Valid"| S["🏗️ Service Layer"]
     V -->|"Invalid"| E["❌ 400 Bad Request<br/>+ field errors"]
 
-    style V fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style E fill:#FFCDD2,stroke:#C62828,color:#000
+    style V fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style E fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 ---

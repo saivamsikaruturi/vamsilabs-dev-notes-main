@@ -28,10 +28,10 @@ flowchart LR
     Shape -->|permits| Rectangle(["📐 Rectangle<br/><i>non-sealed</i>"])
     Shape -->|permits| Triangle(["🔺 Triangle<br/><i>final</i>"])
 
-    style Shape fill:#7C4DFF,color:#fff,stroke:#4A148C,stroke-width:2px
-    style Circle fill:#00BCD4,color:#fff,stroke:#006064,stroke-width:2px
-    style Rectangle fill:#FF9800,color:#fff,stroke:#E65100,stroke-width:2px
-    style Triangle fill:#4CAF50,color:#fff,stroke:#1B5E20,stroke-width:2px
+    style Shape fill:#DBEAFE,color:#1E40AF,stroke:#93C5FD,stroke-width:2px
+    style Circle fill:#DBEAFE,color:#1E40AF,stroke:#6EE7B7,stroke-width:2px
+    style Rectangle fill:#FEF3C7,color:#1E40AF,stroke:#FCD34D,stroke-width:2px
+    style Triangle fill:#D1FAE5,color:#1E40AF,stroke:#6EE7B7,stroke-width:2px
 ```
 
 ```java

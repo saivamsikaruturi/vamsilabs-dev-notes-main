@@ -17,11 +17,11 @@ flowchart LR
     L1[["Lock 1"]] -.->|"owned by"| TA
     L2[["Lock 2"]] -.->|"owned by"| TB
 
-    style TA fill:#ffcdd2,stroke:#c62828,stroke-width:3px
-    style TB fill:#bbdefb,stroke:#1565c0,stroke-width:3px
-    style L1 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
-    style L2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style DeadlockCycle fill:#fce4ec,stroke:#d32f2f,stroke-width:2px
+    style TA fill:#FEE2E2,stroke:#FCA5A5,stroke-width:3px
+    style TB fill:#DBEAFE,stroke:#DBEAFE,stroke-width:3px
+    style L1 fill:#FEF3C7,stroke:#92400E,stroke-width:2px
+    style L2 fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style DeadlockCycle fill:#FEF2F2,stroke:#FCA5A5,stroke-width:2px
 ```
 
 ```
@@ -121,14 +121,14 @@ flowchart LR
         S3 --> DETECT
     end
 
-    style START fill:#ffcdd2,stroke:#c62828,stroke-width:3px
-    style Q1 fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Q2 fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style S1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style S2 fill:#bbdefb,stroke:#1565c0,stroke-width:2px
-    style S3 fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
-    style S4 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
-    style DETECT fill:#ffe0b2,stroke:#e65100,stroke-width:2px
+    style START fill:#FEE2E2,stroke:#FCA5A5,stroke-width:3px
+    style Q1 fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style Q2 fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style S1 fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style S2 fill:#DBEAFE,stroke:#DBEAFE,stroke-width:2px
+    style S3 fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px
+    style S4 fill:#FEF3C7,stroke:#92400E,stroke-width:2px
+    style DETECT fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px
 ```
 
 ### 1. Lock Ordering (Break Circular Wait)

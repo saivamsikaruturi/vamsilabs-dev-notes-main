@@ -26,9 +26,9 @@ flowchart LR
     T1 -->|writes| MM
     MM -.->|NOT synced| T2
 
-    style T1 fill:#4CAF50,color:#fff
-    style T2 fill:#F44336,color:#fff
-    style MM fill:#FF9800,color:#fff
+    style T1 fill:#D1FAE5,color:#1E40AF
+    style T2 fill:#FEE2E2,color:#1E40AF
+    style MM fill:#FEF3C7,color:#1E40AF
 ```
 
 ```java
@@ -145,11 +145,11 @@ flowchart LR
     Check -->|"No"| Retry(["Do nothing<br/>FAIL — retry"])
     Retry --> Read
 
-    style Start fill:#7C4DFF,color:#fff
-    style Read fill:#448AFF,color:#fff
-    style Check fill:#FF9800,color:#fff
-    style Write fill:#4CAF50,color:#fff
-    style Retry fill:#F44336,color:#fff
+    style Start fill:#DBEAFE,color:#1E40AF
+    style Read fill:#BFDBFE,color:#1E40AF
+    style Check fill:#FEF3C7,color:#1E40AF
+    style Write fill:#D1FAE5,color:#1E40AF
+    style Retry fill:#FEE2E2,color:#1E40AF
 ```
 
 ```java

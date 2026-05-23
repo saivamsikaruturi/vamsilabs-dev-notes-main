@@ -135,10 +135,10 @@ flowchart LR
     Payment -->|permits| BT(["record BankTransfer"])
     Payment -->|permits| UPI(["record UPI"])
 
-    style Payment fill:#7C4DFF,color:#fff,stroke:#4A148C,stroke-width:2px
-    style CC fill:#00BCD4,color:#fff,stroke:#006064
-    style BT fill:#FF9800,color:#fff,stroke:#E65100
-    style UPI fill:#4CAF50,color:#fff,stroke:#1B5E20
+    style Payment fill:#DBEAFE,color:#1E40AF,stroke:#93C5FD,stroke-width:2px
+    style CC fill:#DBEAFE,color:#1E40AF,stroke:#6EE7B7
+    style BT fill:#FEF3C7,color:#1E40AF,stroke:#FCD34D
+    style UPI fill:#D1FAE5,color:#1E40AF,stroke:#6EE7B7
 ```
 
 **Subclass modifiers:**
@@ -201,9 +201,9 @@ flowchart LR
 
     Result -.->|"exhaustive"| Switch
 
-    style Result fill:#6A1B9A,color:#fff
-    style Success fill:#2E7D32,color:#fff
-    style Failure fill:#C62828,color:#fff
+    style Result fill:#93C5FD,color:#1E40AF
+    style Success fill:#6EE7B7,color:#1E40AF
+    style Failure fill:#FCA5A5,color:#1E40AF
 ```
 
 ---
@@ -326,11 +326,11 @@ flowchart LR
     B -->|"instanceof Line(Point s, Point e)"| D(["Destructure nested records"])
     B -->|"no match"| E(["default branch"])
 
-    style A fill:#CFD8DC,color:#000
-    style B fill:#FFF3E0,color:#000
-    style C fill:#E8F5E9,color:#000
-    style D fill:#E3F2FD,color:#000
-    style E fill:#EEEEEE,color:#000
+    style A fill:#DBEAFE,color:#1E40AF
+    style B fill:#FFFBEB,color:#1E40AF
+    style C fill:#ECFDF5,color:#1E40AF
+    style D fill:#EFF6FF,color:#1E40AF
+    style E fill:#EFF6FF,color:#1E40AF
 ```
 
 ---
@@ -410,12 +410,12 @@ flowchart LR
         VT5(("VThread-1M")) -.->|"mounted"| C2[["Carrier-2"]]
     end
 
-    style OS1 fill:#C62828,color:#fff
-    style OS2 fill:#C62828,color:#fff
-    style OS3 fill:#C62828,color:#fff
-    style C1 fill:#2E7D32,color:#fff
-    style C2 fill:#2E7D32,color:#fff
-    style Park fill:#FFA000,color:#000
+    style OS1 fill:#FCA5A5,color:#1E40AF
+    style OS2 fill:#FCA5A5,color:#1E40AF
+    style OS3 fill:#FCA5A5,color:#1E40AF
+    style C1 fill:#6EE7B7,color:#1E40AF
+    style C2 fill:#6EE7B7,color:#1E40AF
+    style Park fill:#FEF3C7,color:#1E40AF
 ```
 
 **Platform threads** are mapped 1:1 to OS threads. A server with 200 threads hitting a 50ms database call can only handle ~4000 req/s. Virtual threads **unmount from the carrier thread when blocked**, allowing millions of concurrent tasks on a handful of OS threads.
@@ -500,9 +500,9 @@ flowchart LR
     LinkedHashMap(["LinkedHashMap"]) --> SM
     SortedMap(["SortedMap / TreeMap"]) --> SM
 
-    style SC fill:#1565C0,color:#fff
-    style SM fill:#6A1B9A,color:#fff
-    style SS fill:#2E7D32,color:#fff
+    style SC fill:#DBEAFE,color:#1E40AF
+    style SM fill:#93C5FD,color:#1E40AF
+    style SS fill:#6EE7B7,color:#1E40AF
 ```
 
 ### Key Methods

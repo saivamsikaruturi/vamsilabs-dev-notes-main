@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" font-family="DM Sans, sans-serif">
+  <rect width="360" height="260" fill="#FAFAF9" rx="12"/>
+  <text x="180" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">CAP: Pick One During Partition</text>
+  <polygon points="180,50 50,210 310,210" fill="none" stroke="#D6D3D1" stroke-width="2"/>
+  <!-- C -->
+  <circle cx="180" cy="50" r="28" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1.5"/>
+  <text x="180" y="48" text-anchor="middle" font-size="10" font-weight="700" fill="white">C</text>
+  <text x="180" y="60" text-anchor="middle" font-size="7" fill="#BFDBFE">Consistency</text>
+  <!-- A -->
+  <circle cx="50" cy="210" r="28" fill="#10B981" stroke="#059669" stroke-width="1.5"/>
+  <text x="50" y="208" text-anchor="middle" font-size="10" font-weight="700" fill="white">A</text>
+  <text x="50" y="220" text-anchor="middle" font-size="7" fill="#D1FAE5">Availability</text>
+  <!-- P -->
+  <circle cx="310" cy="210" r="28" fill="#F59E0B" stroke="#D97706" stroke-width="1.5"/>
+  <text x="310" y="208" text-anchor="middle" font-size="10" font-weight="700" fill="white">P</text>
+  <text x="310" y="220" text-anchor="middle" font-size="7" fill="#FEF3C7">Partition Tol.</text>
+  <!-- CP -->
+  <rect x="210" y="105" width="75" height="32" fill="#EFF6FF" rx="6" stroke="#93C5FD"/>
+  <text x="247" y="118" text-anchor="middle" font-size="9" font-weight="700" fill="#1D4ED8">CP</text>
+  <text x="247" y="130" text-anchor="middle" font-size="7" fill="#3B82F6">ZooKeeper, Spanner</text>
+  <!-- AP -->
+  <rect x="75" y="105" width="75" height="32" fill="#F0FDF4" rx="6" stroke="#86EFAC"/>
+  <text x="112" y="118" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">AP</text>
+  <text x="112" y="130" text-anchor="middle" font-size="7" fill="#10B981">Cassandra, Dynamo</text>
+  <!-- Note -->
+  <rect x="90" y="240" width="180" height="16" fill="#FEF3C7" rx="4"/>
+  <text x="180" y="252" text-anchor="middle" font-size="8" fill="#92400E" font-weight="600">P is inevitable — choose C or A</text>
+</svg>

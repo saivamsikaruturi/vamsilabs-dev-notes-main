@@ -58,16 +58,16 @@ flowchart LR
     C -->|"returns"| VOID(["void (side effect)"])
     S -->|"returns"| T(["T (new value)"])
 
-    style P fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style C fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
-    style S fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style BOOL fill:#e1f5fe,stroke:#0288d1
-    style R fill:#f3e5f5,stroke:#7b1fa2
-    style VOID fill:#fff3e0,stroke:#ef6c00
-    style T fill:#e8f5e9,stroke:#388e3c
-    style IN fill:#fce4ec,stroke:#c62828,stroke-width:2px
-    style NOTHING fill:#f5f5f5,stroke:#616161
+    style P fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px
+    style F fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px
+    style C fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style S fill:#ECFDF5,stroke:#93C5FD,stroke-width:2px
+    style BOOL fill:#EFF6FF,stroke:#93C5FD
+    style R fill:#EFF6FF,stroke:#93C5FD
+    style VOID fill:#FFFBEB,stroke:#FCD34D
+    style T fill:#ECFDF5,stroke:#93C5FD
+    style IN fill:#FEF2F2,stroke:#FCA5A5,stroke-width:2px
+    style NOTHING fill:#EFF6FF,stroke:#93C5FD
 ```
 
 ### Built-in Functional Interfaces
@@ -240,17 +240,17 @@ graph LR
     COL --> R
     RED --> R
 
-    style S1 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-    style F fill:#fff9c4,stroke:#f9a825,stroke-width:2px
-    style M fill:#fff9c4,stroke:#f9a825,stroke-width:2px
-    style FM fill:#fff9c4,stroke:#f9a825,stroke-width:2px
-    style D fill:#fff9c4,stroke:#f9a825,stroke-width:2px
-    style SO fill:#fff9c4,stroke:#f9a825,stroke-width:2px
-    style COL fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style RED fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style FE fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style CNT fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style R fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
+    style S1 fill:#EFF6FF,stroke:#DBEAFE,stroke-width:2px
+    style F fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px
+    style M fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px
+    style FM fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px
+    style D fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px
+    style SO fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px
+    style COL fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style RED fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style FE fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style CNT fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style R fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px
 ```
 
 ```
@@ -363,19 +363,19 @@ flowchart LR
         ORELSETHROW --> EXCEPTION(["Exception Thrown"])
     end
 
-    style CHECK fill:#fff3e0,stroke:#e65100,stroke-width:3px
-    style PRESENT fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style EMPTY fill:#ffcdd2,stroke:#c62828,stroke-width:2px
-    style MAP fill:#e8f5e9,stroke:#388e3c
-    style FLATMAP fill:#e8f5e9,stroke:#388e3c
-    style GET fill:#e8f5e9,stroke:#388e3c
-    style IFPRESENT fill:#e8f5e9,stroke:#388e3c
-    style ORELSE fill:#fce4ec,stroke:#ad1457
-    style ORELSEGET fill:#fce4ec,stroke:#ad1457
-    style ORELSETHROW fill:#fce4ec,stroke:#ad1457
-    style RESULT fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
-    style EXCEPTION fill:#f44336,stroke:#b71c1c,color:#fff
-    style START fill:#ede7f6,stroke:#4527a0,stroke-width:2px
+    style CHECK fill:#FFFBEB,stroke:#FCD34D,stroke-width:3px
+    style PRESENT fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style EMPTY fill:#FEE2E2,stroke:#FCA5A5,stroke-width:2px
+    style MAP fill:#ECFDF5,stroke:#93C5FD
+    style FLATMAP fill:#ECFDF5,stroke:#93C5FD
+    style GET fill:#ECFDF5,stroke:#93C5FD
+    style IFPRESENT fill:#ECFDF5,stroke:#93C5FD
+    style ORELSE fill:#FEF2F2,stroke:#FCA5A5
+    style ORELSEGET fill:#FEF2F2,stroke:#FCA5A5
+    style ORELSETHROW fill:#FEF2F2,stroke:#FCA5A5
+    style RESULT fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px
+    style EXCEPTION fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style START fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px
 ```
 
 ### Creating Optional

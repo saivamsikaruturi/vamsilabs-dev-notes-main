@@ -56,17 +56,17 @@ flowchart LR
         N3{{"Thread-3: bucket-3 → ⛔ BLOCKED same bucket"}} --> NL1
     end
 
-    style OLD fill:#ffeaa7,stroke:#d4a84b,color:#333
-    style NEW fill:#dfe6e9,stroke:#636e72,color:#333
-    style OL fill:#d63031,stroke:#a02525,color:#fff
-    style NL1 fill:#00b894,stroke:#008c6e,color:#fff
-    style NL2 fill:#00b894,stroke:#008c6e,color:#fff
-    style O1 fill:#fab1a0,stroke:#e17055,color:#333
-    style O2 fill:#fab1a0,stroke:#e17055,color:#333
-    style O3 fill:#fab1a0,stroke:#e17055,color:#333
-    style N1 fill:#81ecec,stroke:#00cec9,color:#333
-    style N2 fill:#81ecec,stroke:#00cec9,color:#333
-    style N3 fill:#fab1a0,stroke:#e17055,color:#333
+    style OLD fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style NEW fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style OL fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style NL1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style NL2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style O1 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style O2 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style O3 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style N1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style N2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style N3 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 - **Java 7**: Segment-based locking (16 segments by default)
@@ -140,9 +140,9 @@ flowchart LR
     P[/"🏭 Producer"/] -->|"put()"| Q{{"📦 BlockingQueue<br/>⏸️ blocks if full"}}
     Q -->|"take()"| C(["🛒 Consumer<br/>⏸️ blocks if empty"])
 
-    style P fill:#6c5ce7,stroke:#4a3db8,color:#fff
-    style Q fill:#fdcb6e,stroke:#d4a84b,color:#333
-    style C fill:#00b894,stroke:#008c6e,color:#fff
+    style P fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style Q fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style C fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### Implementations

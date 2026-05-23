@@ -8,10 +8,10 @@ flowchart LR
     B --> C["Auto-configures<br/>beans for you"]
     C --> D["Application<br/>just works!"]
 
-    style A fill:#DBEAFE,stroke:#2563EB
-    style B fill:#FEF3C7,stroke:#D97706
-    style C fill:#D1FAE5,stroke:#059669
-    style D fill:#ECFDF5,stroke:#059669
+    style A fill:#DBEAFE,stroke:#93C5FD
+    style B fill:#FEF3C7,stroke:#FCD34D
+    style C fill:#D1FAE5,stroke:#93C5FD
+    style D fill:#ECFDF5,stroke:#93C5FD
 ```
 
 ---
@@ -53,14 +53,14 @@ flowchart LR
     F --> H(("Application Context Ready"))
     G --> H
 
-    style A fill:#DBEAFE,stroke:#2563EB
-    style B fill:#DBEAFE,stroke:#2563EB
-    style C fill:#FEF3C7,stroke:#D97706
-    style D fill:#FEF3C7,stroke:#D97706
-    style E fill:#FDE68A,stroke:#D97706
-    style F fill:#D1FAE5,stroke:#059669
-    style G fill:#FEE2E2,stroke:#DC2626
-    style H fill:#ECFDF5,stroke:#059669
+    style A fill:#DBEAFE,stroke:#93C5FD
+    style B fill:#DBEAFE,stroke:#93C5FD
+    style C fill:#FEF3C7,stroke:#FCD34D
+    style D fill:#FEF3C7,stroke:#FCD34D
+    style E fill:#FEF3C7,stroke:#FCD34D
+    style F fill:#D1FAE5,stroke:#93C5FD
+    style G fill:#FEE2E2,stroke:#FCA5A5
+    style H fill:#ECFDF5,stroke:#93C5FD
 ```
 
 ### Step-by-Step
@@ -126,12 +126,12 @@ flowchart LR
     H -->|Yes| I(["Create embedded<br/>in-memory DataSource"])
     H -->|No| J(["FAIL - Cannot<br/>auto-configure"])
 
-    style A fill:#DBEAFE,stroke:#2563EB
-    style E fill:#D1FAE5,stroke:#059669
-    style G fill:#D1FAE5,stroke:#059669
-    style I fill:#D1FAE5,stroke:#059669
-    style C fill:#FEE2E2,stroke:#DC2626
-    style J fill:#FEE2E2,stroke:#DC2626
+    style A fill:#DBEAFE,stroke:#93C5FD
+    style E fill:#D1FAE5,stroke:#93C5FD
+    style G fill:#D1FAE5,stroke:#93C5FD
+    style I fill:#D1FAE5,stroke:#93C5FD
+    style C fill:#FEE2E2,stroke:#FCA5A5
+    style J fill:#FEE2E2,stroke:#FCA5A5
 ```
 
 Simplified source:

@@ -16,9 +16,9 @@ flowchart LR
     Act --> I(["/info<br/>Build details?"])
     Act --> L(["/loggers<br/>Change log levels?"])
 
-    style Act fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style H fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style M fill:#E3F2FD,stroke:#1565C0,color:#000
+    style Act fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style H fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style M fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
 ```
 
 ---
@@ -221,9 +221,9 @@ flowchart LR
     R --> DB["db"]
     R --> Redis["redis"]
 
-    style K8s fill:#326CE5,stroke:#fff,color:#fff
-    style L fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style R fill:#FFF3E0,stroke:#E65100,color:#000
+    style K8s fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style L fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style R fill:#FFFBEB,stroke:#FCD34D,color:#1E40AF
 ```
 
 Deployment YAML:
@@ -368,9 +368,9 @@ flowchart LR
     Prom -->|"query"| Grafana["Grafana Dashboards"]
     Grafana --> Alert["Alert Manager"]
 
-    style App fill:#6DB33F,stroke:#fff,color:#fff
-    style Prom fill:#E6522C,stroke:#fff,color:#fff
-    style Grafana fill:#F46800,stroke:#fff,color:#fff
+    style App fill:#D1FAE5,stroke:#93C5FD,color:#1E40AF
+    style Prom fill:#FEE2E2,stroke:#93C5FD,color:#1E40AF
+    style Grafana fill:#FEF3C7,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### Prometheus Scrape Config

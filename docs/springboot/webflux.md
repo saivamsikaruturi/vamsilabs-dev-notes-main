@@ -75,8 +75,8 @@ flowchart LR
         EL --> E5["Handle Request E"]
     end
 
-    style MVC fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style WF fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
+    style MVC fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style WF fill:#D1FAE5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 ### How Netty's Event Loop Works Internally
@@ -125,8 +125,8 @@ flowchart LR
         F1["——( AAPL:150 )—( GOOGL:2800 )—( TSLA:900 )——|"]
     end
 
-    style Mono fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#000
-    style Flux fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#000
+    style Mono fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style Flux fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
 ```
 
 Both are **lazy**. Nothing executes until someone subscribes. This is fundamentally different from `CompletableFuture` which starts immediately.
@@ -247,9 +247,9 @@ flowchart LR
     P["Fast Producer<br/>(1000 items/sec)"] -->|"request(n)"| B["Backpressure<br/>Strategy"]
     B -->|"Controlled rate"| S["Slow Consumer<br/>(100 items/sec)"]
 
-    style P fill:#FFCDD2,stroke:#C62828,color:#000
-    style B fill:#FEF3C7,stroke:#D97706,color:#000
-    style S fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style P fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style B fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style S fill:#D1FAE5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 Without backpressure, a fast producer overwhelms a slow consumer. Result: `OutOfMemoryError` or dropped data.
@@ -302,10 +302,10 @@ flowchart LR
     Q4 -->|"Yes"| WF(["Spring WebFlux"])
     Q4 -->|"No"| MVC3(["Consider Virtual Threads first"])
 
-    style MVC fill:#E3F2FD,stroke:#1565C0,color:#000
-    style MVC2 fill:#FEF3C7,stroke:#D97706,color:#000
-    style MVC3 fill:#FEF3C7,stroke:#D97706,color:#000
-    style WF fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style MVC fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style MVC2 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style MVC3 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style WF fill:#D1FAE5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 | Criteria | Spring MVC | Spring WebFlux |

@@ -290,6 +290,13 @@ flowchart LR
         T3{{"Thread 3<br/>acquire() → permits=0"}} --> S
         T4[/"Thread 4<br/>acquire() → BLOCKED<br/>(no permits left)"/] -.-> S
     end
+
+    style 3 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style S fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style T1 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style T2 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style T3 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style T4 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
 ```
 
 ### Basic Usage — Connection Pool Limiter
@@ -470,6 +477,15 @@ flowchart LR
     CAS -->|No: permits == 0| PARK{{"Add to CLH queue<br/>LockSupport.park()"}}
     PARK --> WAKEUP[/"Another thread releases<br/>LockSupport.unpark()"/]
     WAKEUP --> CAS
+
+    style 0 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style ACQ fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style CAS fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style PARK fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style S fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style SUCCESS fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style WAKEUP fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style k fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 - AQS maintains a **CLH queue** (FIFO linked list of waiting threads)
@@ -712,6 +728,13 @@ flowchart LR
     RB --> C1(["Consumer 1<br/>(event handler)"])
     RB --> C2(["Consumer 2<br/>(event handler)"])
     RB --> C3(["Consumer 3<br/>(journaler)"])
+
+    style B fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style P1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style P2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style RB fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style r fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style y fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
 ```
 
 **Key principles**:

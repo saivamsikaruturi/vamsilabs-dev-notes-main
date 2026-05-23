@@ -24,19 +24,19 @@ flowchart LR
         DP2 --> DA2[/"📍 Address: Bangalore<br/>DIFFERENT object"/]
     end
 
-    style SHALLOW fill:#ffeaa7,stroke:#d4a84b,color:#333
-    style DEEP fill:#dfe6e9,stroke:#636e72,color:#333
-    style SO fill:#74b9ff,stroke:#0984e3,color:#333
-    style SC fill:#a29bfe,stroke:#6c5ce7,color:#333
-    style SP fill:#fab1a0,stroke:#e17055,color:#333
-    style SP2 fill:#fab1a0,stroke:#e17055,color:#333
-    style SA fill:#d63031,stroke:#a02525,color:#fff
-    style DO fill:#74b9ff,stroke:#0984e3,color:#333
-    style DC fill:#a29bfe,stroke:#6c5ce7,color:#333
-    style DP fill:#55efc4,stroke:#00b894,color:#333
-    style DP2 fill:#55efc4,stroke:#00b894,color:#333
-    style DA fill:#00b894,stroke:#008c6e,color:#fff
-    style DA2 fill:#00b894,stroke:#008c6e,color:#fff
+    style SHALLOW fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style DEEP fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style SO fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style SC fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style SP fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style SP2 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style SA fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style DO fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style DC fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style DP fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style DP2 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style DA fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style DA2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 | Aspect | Shallow Copy | Deep Copy |

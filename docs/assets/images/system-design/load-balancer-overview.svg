@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 200" font-family="DM Sans, sans-serif">
+  <rect width="440" height="200" fill="#FAFAF9" rx="12"/>
+  <text x="220" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Load Balancer — Traffic Distribution</text>
+  <!-- Clients -->
+  <rect x="15" y="45" width="55" height="28" fill="#FEF3C7" rx="5" stroke="#F59E0B"/><text x="42" y="63" text-anchor="middle" font-size="8" fill="#92400E">User 1</text>
+  <rect x="15" y="82" width="55" height="28" fill="#FEF3C7" rx="5" stroke="#F59E0B"/><text x="42" y="100" text-anchor="middle" font-size="8" fill="#92400E">User 2</text>
+  <rect x="15" y="119" width="55" height="28" fill="#FEF3C7" rx="5" stroke="#F59E0B"/><text x="42" y="137" text-anchor="middle" font-size="8" fill="#92400E">User 3</text>
+  <!-- Arrows to LB -->
+  <line x1="72" y1="60" x2="148" y2="93" stroke="#78716C" stroke-width="1"/><line x1="72" y1="96" x2="148" y2="96" stroke="#78716C" stroke-width="1"/><line x1="72" y1="133" x2="148" y2="100" stroke="#78716C" stroke-width="1"/>
+  <!-- LB -->
+  <rect x="150" y="72" width="100" height="48" fill="#3B82F6" rx="8" stroke="#1D4ED8" stroke-width="1.5"/>
+  <text x="200" y="94" text-anchor="middle" font-size="10" font-weight="700" fill="white">Load Balancer</text>
+  <text x="200" y="108" text-anchor="middle" font-size="8" fill="#BFDBFE">algorithm</text>
+  <!-- Arrows to servers -->
+  <line x1="252" y1="85" x2="305" y2="60" stroke="#10B981" stroke-width="1.5" marker-end="url(#g1)"/>
+  <line x1="252" y1="96" x2="305" y2="96" stroke="#10B981" stroke-width="1.5" marker-end="url(#g1)"/>
+  <line x1="252" y1="107" x2="305" y2="133" stroke="#10B981" stroke-width="1.5" marker-end="url(#g1)"/>
+  <!-- Servers -->
+  <rect x="308" y="45" width="80" height="30" fill="#D1FAE5" rx="6" stroke="#34D399"/><text x="348" y="64" text-anchor="middle" font-size="9" font-weight="500" fill="#065F46">Server 1</text>
+  <rect x="308" y="82" width="80" height="30" fill="#D1FAE5" rx="6" stroke="#34D399"/><text x="348" y="101" text-anchor="middle" font-size="9" font-weight="500" fill="#065F46">Server 2</text>
+  <rect x="308" y="119" width="80" height="30" fill="#D1FAE5" rx="6" stroke="#34D399"/><text x="348" y="138" text-anchor="middle" font-size="9" font-weight="500" fill="#065F46">Server 3</text>
+  <defs><marker id="g1" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><polygon points="0 0,6 2,0 4" fill="#10B981"/></marker></defs>
+  <!-- Note -->
+  <rect x="100" y="170" width="240" height="20" fill="#EFF6FF" rx="4" stroke="#BFDBFE"/>
+  <text x="220" y="183" text-anchor="middle" font-size="9" fill="#1E40AF">Even distribution → no single server overwhelmed</text>
+</svg>

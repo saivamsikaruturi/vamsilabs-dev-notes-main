@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" font-family="DM Sans, sans-serif">
+  <rect width="420" height="340" fill="#FAFAF9" rx="12"/>
+  <text x="210" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Consistent Hashing Ring</text>
+  <circle cx="210" cy="175" r="110" fill="none" stroke="#D6D3D1" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <path d="M 275 78 Q 288 72, 290 82" fill="none" stroke="#78716C" stroke-width="1.5" marker-end="url(#ah)"/>
+  <text x="298" y="78" font-size="9" fill="#78716C">clockwise</text>
+  <defs><marker id="ah" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#78716C"/></marker></defs>
+  <!-- Servers -->
+  <circle cx="210" cy="65" r="18" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1.5"/><text x="210" y="69" text-anchor="middle" font-size="9" font-weight="600" fill="white">S-A</text>
+  <circle cx="310" cy="135" r="18" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1.5"/><text x="310" y="139" text-anchor="middle" font-size="9" font-weight="600" fill="white">S-B</text>
+  <circle cx="290" cy="260" r="18" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1.5"/><text x="290" y="264" text-anchor="middle" font-size="9" font-weight="600" fill="white">S-C</text>
+  <circle cx="130" cy="250" r="18" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1.5"/><text x="130" y="254" text-anchor="middle" font-size="9" font-weight="600" fill="white">S-D</text>
+  <!-- Keys -->
+  <circle cx="270" cy="82" r="9" fill="#F59E0B" stroke="#D97706" stroke-width="1.5"/><text x="270" y="85" text-anchor="middle" font-size="7" font-weight="600" fill="white">K1</text>
+  <circle cx="325" cy="200" r="9" fill="#F59E0B" stroke="#D97706" stroke-width="1.5"/><text x="325" y="203" text-anchor="middle" font-size="7" font-weight="600" fill="white">K2</text>
+  <circle cx="210" cy="288" r="9" fill="#F59E0B" stroke="#D97706" stroke-width="1.5"/><text x="210" y="291" text-anchor="middle" font-size="7" font-weight="600" fill="white">K3</text>
+  <circle cx="115" cy="155" r="9" fill="#F59E0B" stroke="#D97706" stroke-width="1.5"/><text x="115" y="158" text-anchor="middle" font-size="7" font-weight="600" fill="white">K4</text>
+  <!-- Assignment lines -->
+  <line x1="275" y1="88" x2="298" y2="122" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="320" y1="206" x2="296" y2="246" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="200" y1="286" x2="143" y2="260" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="120" y1="148" x2="198" y2="76" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3,2"/>
+  <!-- Legend -->
+  <rect x="50" y="308" width="320" height="24" fill="#F5F5F4" rx="6"/>
+  <circle cx="70" cy="320" r="6" fill="#3B82F6"/><text x="82" y="323" font-size="9" fill="#44403C">Server</text>
+  <circle cx="140" cy="320" r="6" fill="#F59E0B"/><text x="152" y="323" font-size="9" fill="#44403C">Key</text>
+  <text x="210" y="323" font-size="9" fill="#44403C">Keys route clockwise to nearest server</text>
+</svg>

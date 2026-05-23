@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 190">
+  <defs>
+    <linearGradient id="rtBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#f1f5f9"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="456" height="186" rx="10" fill="url(#rtBg)" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="230" y="20" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="700" fill="#1e293b">Real-Time Communication Spectrum</text>
+  <!-- Scale bar -->
+  <line x1="30" y1="45" x2="430" y2="45" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="30" y="40" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#94a3b8">High overhead</text>
+  <text x="430" y="40" text-anchor="end" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#94a3b8">Low overhead</text>
+  <!-- Short Polling -->
+  <circle cx="70" cy="45" r="5" fill="#ef4444"/>
+  <rect x="30" y="60" width="80" height="65" rx="6" fill="white" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="70" y="75" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" font-weight="600" fill="#dc2626">Short Poll</text>
+  <text x="70" y="88" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Request every Ns</text>
+  <text x="70" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">95% empty</text>
+  <text x="70" y="112" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Client → Server</text>
+  <text x="70" y="122" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#ef4444">New conn each time</text>
+  <!-- Long Polling -->
+  <circle cx="180" cy="45" r="5" fill="#f59e0b"/>
+  <rect x="140" y="60" width="80" height="65" rx="6" fill="white" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="180" y="75" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" font-weight="600" fill="#92400e">Long Poll</text>
+  <text x="180" y="88" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Hold until data</text>
+  <text x="180" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Reconnect after</text>
+  <text x="180" y="112" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Client → Server</text>
+  <text x="180" y="122" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#f59e0b">New conn per msg</text>
+  <!-- SSE -->
+  <circle cx="300" cy="45" r="5" fill="#10b981"/>
+  <rect x="260" y="60" width="80" height="65" rx="6" fill="white" stroke="#10b981" stroke-width="1.5"/>
+  <text x="300" y="75" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" font-weight="600" fill="#065f46">SSE</text>
+  <text x="300" y="88" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Persistent HTTP</text>
+  <text x="300" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Auto-reconnect</text>
+  <text x="300" y="112" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Server → Client</text>
+  <text x="300" y="122" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#10b981">One-way stream</text>
+  <!-- WebSocket -->
+  <circle cx="400" cy="45" r="5" fill="#3b82f6"/>
+  <rect x="360" y="60" width="90" height="65" rx="6" fill="white" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="405" y="75" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" font-weight="600" fill="#1e40af">WebSocket</text>
+  <text x="405" y="88" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Persistent TCP</text>
+  <text x="405" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">2 bytes/frame</text>
+  <text x="405" y="112" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#475569">Bidirectional</text>
+  <text x="405" y="122" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#3b82f6">Full duplex</text>
+  <!-- Use cases -->
+  <rect x="30" y="140" width="400" height="40" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="70" y="155" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">Weather app</text>
+  <text x="70" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">Simple dash</text>
+  <text x="180" y="155" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#92400e">Notifications</text>
+  <text x="180" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#92400e">Fallback</text>
+  <text x="300" y="155" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#065f46">Live scores</text>
+  <text x="300" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#065f46">Stock ticker</text>
+  <text x="405" y="155" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#1e40af">Chat, Gaming</text>
+  <text x="405" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#1e40af">Collaboration</text>
+</svg>

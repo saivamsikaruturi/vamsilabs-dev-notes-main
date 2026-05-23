@@ -16,15 +16,15 @@ flowchart LR
     SB3 --> PD["Problem Details\nRFC 7807"]
     SB3 --> SEC["Security 6\nLambda DSL"]
 
-    style SB3 fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style J17 fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style JK fill:#E3F2FD,stroke:#1565C0,color:#000
-    style N fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style O fill:#FFF3E0,stroke:#E65100,color:#000
-    style VT fill:#FCE4EC,stroke:#C62828,color:#000
-    style HE fill:#E0F2F1,stroke:#00695C,color:#000
-    style PD fill:#F1F8E9,stroke:#33691E,color:#000
-    style SEC fill:#FFF8E1,stroke:#F57F17,color:#000
+    style SB3 fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style J17 fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style JK fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style N fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style O fill:#FFFBEB,stroke:#FCD34D,color:#1E40AF
+    style VT fill:#FEF2F2,stroke:#FCA5A5,color:#1E40AF
+    style HE fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style PD fill:#EFF6FF,stroke:#6EE7B7,color:#1E40AF
+    style SEC fill:#FEF2F2,stroke:#92400E,color:#1E40AF
 ```
 
 ---
@@ -179,8 +179,8 @@ flowchart LR
         N3 --> N4(["Static Binary\n~50ms startup"])
     end
 
-    style J4 fill:#FFF3E0,stroke:#E65100,color:#000
-    style N4 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style J4 fill:#FFFBEB,stroke:#FCD34D,color:#1E40AF
+    style N4 fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 ### How Spring AOT Works
@@ -266,9 +266,9 @@ flowchart LR
     ZIPKIN --> GRAF
     LOKI --> GRAF
 
-    style App fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style OBS fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style GRAF fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#000
+    style App fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style OBS fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style GRAF fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
 ```
 
 ### Dependencies
@@ -561,8 +561,8 @@ flowchart LR
         VT --> VR3(["Request 10000\nstill fine"])
     end
 
-    style REQ3 fill:#FEE2E2,stroke:#DC2626,color:#000
-    style VR3 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style REQ3 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style VR3 fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 ### How It Works
@@ -608,9 +608,9 @@ flowchart LR
     F --> G{{"7. Update third-party libs"}}
     G --> H(["8. Test everything"])
 
-    style A fill:#E3F2FD,stroke:#1565C0,color:#000
-    style E fill:#FEF3C7,stroke:#D97706,color:#000
-    style H fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style A fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style E fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style H fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 ### Detailed Steps

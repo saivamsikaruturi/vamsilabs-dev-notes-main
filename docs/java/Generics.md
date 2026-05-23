@@ -146,19 +146,19 @@ flowchart LR
     UB --- EXT
     LB --- SUP
 
-    style W fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    style UB fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
-    style LB fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
-    style EXT fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
-    style SUP fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
-    style UNB fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    style OBJ fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-    style NUM fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-    style INT fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-    style DBL fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-    style legend fill:#F9FBE7,stroke:#827717,stroke-width:2px
-    style example fill:#FCE4EC,stroke:#880E4F,stroke-width:2px
-    style bounds fill:#E0F7FA,stroke:#006064,stroke-width:2px
+    style W fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#065F46
+    style UB fill:#EFF6FF,stroke:#DBEAFE,stroke-width:2px,color:#1E40AF
+    style LB fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px,color:#92400E
+    style EXT fill:#EFF6FF,stroke:#DBEAFE,stroke-width:2px,color:#1E40AF
+    style SUP fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px,color:#92400E
+    style UNB fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#065F46
+    style OBJ fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
+    style NUM fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
+    style INT fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
+    style DBL fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
+    style legend fill:#EFF6FF,stroke:#FCD34D,stroke-width:2px
+    style example fill:#FEF2F2,stroke:#991B1B,stroke-width:2px
+    style bounds fill:#EFF6FF,stroke:#6EE7B7,stroke-width:2px
 ```
 
 ### Upper bound (`extends`) — "T must be a subtype of X"
@@ -281,22 +281,22 @@ flowchart LR
         M1 --- M2
     end
 
-    style PRODUCER fill:#C8E6C9,stroke:#2E7D32,stroke-width:3px,color:#1B5E20
-    style CONSUMER fill:#BBDEFB,stroke:#1565C0,stroke-width:3px,color:#0D47A1
-    style BOTH fill:#FFF9C4,stroke:#F9A825,stroke-width:3px,color:#F57F17
-    style DATA_OUT fill:#A5D6A7,stroke:#388E3C,stroke-width:2px,color:#1B5E20
-    style DATA_IN fill:#90CAF9,stroke:#1976D2,stroke-width:2px,color:#0D47A1
-    style MNEMONIC fill:#F8BBD0,stroke:#C2185B,stroke-width:3px,color:#880E4F
-    style M1 fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    style M2 fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#0D47A1
-    style P1 fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20
-    style P2 fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20
-    style P3 fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20
-    style C1 fill:#E3F2FD,stroke:#2196F3,color:#0D47A1
-    style C2 fill:#E3F2FD,stroke:#2196F3,color:#0D47A1
-    style C3 fill:#E3F2FD,stroke:#2196F3,color:#0D47A1
-    style B1 fill:#FFFDE7,stroke:#FBC02D,color:#F57F17
-    style B2 fill:#FFFDE7,stroke:#FBC02D,color:#F57F17
+    style PRODUCER fill:#D1FAE5,stroke:#6EE7B7,stroke-width:3px,color:#065F46
+    style CONSUMER fill:#DBEAFE,stroke:#DBEAFE,stroke-width:3px,color:#1E40AF
+    style BOTH fill:#FEF3C7,stroke:#FCD34D,stroke-width:3px,color:#92400E
+    style DATA_OUT fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px,color:#065F46
+    style DATA_IN fill:#DBEAFE,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
+    style MNEMONIC fill:#FEE2E2,stroke:#FCA5A5,stroke-width:3px,color:#991B1B
+    style M1 fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px,color:#065F46
+    style M2 fill:#DBEAFE,stroke:#DBEAFE,stroke-width:2px,color:#1E40AF
+    style P1 fill:#ECFDF5,stroke:#D1FAE5,color:#065F46
+    style P2 fill:#ECFDF5,stroke:#D1FAE5,color:#065F46
+    style P3 fill:#ECFDF5,stroke:#D1FAE5,color:#065F46
+    style C1 fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style C2 fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style C3 fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style B1 fill:#FFFBEB,stroke:#FCD34D,color:#92400E
+    style B2 fill:#FFFBEB,stroke:#FCD34D,color:#92400E
 ```
 
 | Direction | Use | Example |
@@ -355,24 +355,24 @@ flowchart LR
         X4["Overload by generic type"]
     end
 
-    style SOURCE fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
-    style COMPILER fill:#FFF3E0,stroke:#E65100,stroke-width:2px
-    style BYTECODE fill:#FFEBEE,stroke:#C62828,stroke-width:2px
-    style CANT fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px
-    style S1 fill:#C8E6C9,stroke:#388E3C,color:#1B5E20
-    style S2 fill:#C8E6C9,stroke:#388E3C,color:#1B5E20
-    style S3 fill:#C8E6C9,stroke:#388E3C,color:#1B5E20
-    style C1 fill:#FFE0B2,stroke:#F57C00,color:#E65100
-    style C2 fill:#FFE0B2,stroke:#F57C00,color:#E65100
-    style C3 fill:#FFE0B2,stroke:#F57C00,color:#E65100
-    style B1 fill:#FFCDD2,stroke:#E53935,color:#B71C1C
-    style B2 fill:#FFCDD2,stroke:#E53935,color:#B71C1C
-    style B3 fill:#FFCDD2,stroke:#E53935,color:#B71C1C
-    style B4 fill:#FFCDD2,stroke:#E53935,color:#B71C1C
-    style X1 fill:#E1BEE7,stroke:#8E24AA,color:#4A148C
-    style X2 fill:#E1BEE7,stroke:#8E24AA,color:#4A148C
-    style X3 fill:#E1BEE7,stroke:#8E24AA,color:#4A148C
-    style X4 fill:#E1BEE7,stroke:#8E24AA,color:#4A148C
+    style SOURCE fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px
+    style COMPILER fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style BYTECODE fill:#EFF6FF,stroke:#FCA5A5,stroke-width:2px
+    style CANT fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px
+    style S1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style S2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style S3 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style C1 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style C2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style C3 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style B1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style B2 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style B3 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style B4 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style X1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style X2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style X3 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style X4 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ```java
@@ -443,17 +443,17 @@ flowchart LR
     Q4 -->|"No, any type"| A5
     Q4 -->|"Yes, within a family"| A1
 
-    style START fill:#7E57C2,stroke:#4527A0,stroke-width:3px,color:#FFFFFF
-    style Q1 fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
-    style Q2 fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
-    style Q3 fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
-    style Q4 fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
-    style A1 fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
-    style A2 fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    style A3 fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#0D47A1
-    style A4 fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
-    style A5 fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-    style A6 fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
+    style START fill:#DBEAFE,stroke:#93C5FD,stroke-width:3px,color:#1E40AF
+    style Q1 fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#92400E
+    style Q2 fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#92400E
+    style Q3 fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#92400E
+    style Q4 fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#92400E
+    style A1 fill:#DBEAFE,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
+    style A2 fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px,color:#065F46
+    style A3 fill:#DBEAFE,stroke:#DBEAFE,stroke-width:2px,color:#1E40AF
+    style A4 fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#92400E
+    style A5 fill:#DBEAFE,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
+    style A6 fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#92400E
 ```
 
 ---

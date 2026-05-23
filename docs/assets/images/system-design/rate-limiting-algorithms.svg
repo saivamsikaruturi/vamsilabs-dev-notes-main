@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 240" font-family="DM Sans, sans-serif">
+  <rect width="480" height="240" fill="#FAFAF9" rx="12"/>
+  <text x="240" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Rate Limiting Algorithms</text>
+  <!-- Token Bucket -->
+  <rect x="10" y="35" width="225" height="90" fill="white" rx="8" stroke="#E7E5E4"/>
+  <text x="122" y="52" text-anchor="middle" font-size="10" font-weight="700" fill="#1C1917">Token Bucket</text>
+  <!-- Bucket -->
+  <path d="M 25 65 L 25 108 L 70 108 L 70 65" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="35" cy="98" r="5" fill="#3B82F6" opacity="0.7"/><circle cx="48" cy="98" r="5" fill="#3B82F6" opacity="0.7"/><circle cx="61" cy="98" r="5" fill="#3B82F6" opacity="0.7"/>
+  <circle cx="41" cy="85" r="5" fill="#3B82F6" opacity="0.5"/><circle cx="54" cy="85" r="5" fill="#3B82F6" opacity="0.3"/>
+  <text x="48" y="60" text-anchor="middle" font-size="7" fill="#3B82F6">↓ refill</text>
+  <text x="155" y="70" text-anchor="middle" font-size="8" fill="#44403C">Allows <tspan font-weight="700">bursts</tspan></text>
+  <text x="155" y="85" text-anchor="middle" font-size="8" fill="#059669">✓ AWS, Stripe</text>
+  <text x="155" y="100" text-anchor="middle" font-size="7" fill="#78716C">Best for APIs</text>
+  <!-- Leaky Bucket -->
+  <rect x="245" y="35" width="225" height="90" fill="white" rx="8" stroke="#E7E5E4"/>
+  <text x="357" y="52" text-anchor="middle" font-size="10" font-weight="700" fill="#1C1917">Leaky Bucket</text>
+  <path d="M 260 65 L 260 100 L 305 100 L 305 65" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round"/>
+  <rect x="262" y="72" width="41" height="26" fill="#8B5CF6" opacity="0.15" rx="2"/>
+  <line x1="282" y1="100" x2="282" y2="115" stroke="#8B5CF6" stroke-width="1.5"/><circle cx="282" cy="117" r="2" fill="#8B5CF6"/>
+  <text x="282" y="62" text-anchor="middle" font-size="7" fill="#8B5CF6">in ↓</text>
+  <text x="390" y="70" text-anchor="middle" font-size="8" fill="#44403C"><tspan font-weight="700">Smooth</tspan> output</text>
+  <text x="390" y="85" text-anchor="middle" font-size="8" fill="#8B5CF6">✓ Shopify, QoS</text>
+  <text x="390" y="100" text-anchor="middle" font-size="7" fill="#78716C">Constant throughput</text>
+  <!-- Fixed Window -->
+  <rect x="10" y="135" width="225" height="90" fill="white" rx="8" stroke="#E7E5E4"/>
+  <text x="122" y="152" text-anchor="middle" font-size="10" font-weight="700" fill="#1C1917">Fixed Window</text>
+  <rect x="30" y="162" width="20" height="35" fill="#F59E0B" opacity="0.7" rx="2"/>
+  <rect x="55" y="170" width="20" height="27" fill="#F59E0B" opacity="0.7" rx="2"/>
+  <rect x="80" y="158" width="20" height="39" fill="#EF4444" opacity="0.7" rx="2"/>
+  <line x1="52" y1="155" x2="52" y2="200" stroke="#78716C" stroke-width="0.7" stroke-dasharray="2,1"/>
+  <line x1="77" y1="155" x2="77" y2="200" stroke="#78716C" stroke-width="0.7" stroke-dasharray="2,1"/>
+  <text x="155" y="170" text-anchor="middle" font-size="8" fill="#44403C"><tspan font-weight="700">Simplest</tspan></text>
+  <text x="155" y="185" text-anchor="middle" font-size="8" fill="#EF4444">⚠ Boundary burst</text>
+  <text x="155" y="200" text-anchor="middle" font-size="7" fill="#78716C">Simple internal limits</text>
+  <!-- Sliding Window -->
+  <rect x="245" y="135" width="225" height="90" fill="white" rx="8" stroke="#E7E5E4"/>
+  <text x="357" y="152" text-anchor="middle" font-size="10" font-weight="700" fill="#1C1917">Sliding Window</text>
+  <rect x="265" y="165" width="70" height="28" fill="none" stroke="#10B981" stroke-width="2" rx="3"/>
+  <rect x="255" y="168" width="18" height="22" fill="#10B981" opacity="0.2" rx="2"/>
+  <rect x="275" y="163" width="18" height="28" fill="#10B981" opacity="0.3" rx="2"/>
+  <rect x="295" y="166" width="18" height="24" fill="#10B981" opacity="0.3" rx="2"/>
+  <rect x="315" y="172" width="18" height="18" fill="#10B981" opacity="0.2" rx="2"/>
+  <text x="300" y="160" text-anchor="middle" font-size="7" fill="#10B981">← slides →</text>
+  <text x="390" y="170" text-anchor="middle" font-size="8" fill="#44403C"><tspan font-weight="700">No burst</tspan> issue</text>
+  <text x="390" y="185" text-anchor="middle" font-size="8" fill="#10B981">✓ Cloudflare</text>
+  <text x="390" y="200" text-anchor="middle" font-size="7" fill="#78716C">Most production systems</text>
+</svg>

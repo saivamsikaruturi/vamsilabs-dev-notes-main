@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" font-family="DM Sans, sans-serif">
+  <rect width="480" height="260" fill="#FAFAF9" rx="10"/>
+  <text x="240" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Redis Data Structures</text>
+  <!-- Row 1 -->
+  <rect x="10" y="32" width="145" height="62" fill="white" rx="6" stroke="#E7E5E4"/>
+  <rect x="10" y="32" width="145" height="17" fill="#EF4444" rx="6 6 0 0"/><text x="82" y="44" text-anchor="middle" font-size="8" font-weight="700" fill="white">STRING</text>
+  <text x="82" y="62" text-anchor="middle" font-size="7" fill="#44403C">"key" → "value"</text>
+  <text x="82" y="76" text-anchor="middle" font-size="7" fill="#78716C">Cache, sessions, counters</text>
+
+  <rect x="165" y="32" width="145" height="62" fill="white" rx="6" stroke="#E7E5E4"/>
+  <rect x="165" y="32" width="145" height="17" fill="#F59E0B" rx="6 6 0 0"/><text x="237" y="44" text-anchor="middle" font-size="8" font-weight="700" fill="white">HASH</text>
+  <text x="237" y="62" text-anchor="middle" font-size="7" fill="#44403C">"user" → {name, age}</text>
+  <text x="237" y="76" text-anchor="middle" font-size="7" fill="#78716C">Profiles, product details</text>
+
+  <rect x="320" y="32" width="145" height="62" fill="white" rx="6" stroke="#E7E5E4"/>
+  <rect x="320" y="32" width="145" height="17" fill="#3B82F6" rx="6 6 0 0"/><text x="392" y="44" text-anchor="middle" font-size="8" font-weight="700" fill="white">LIST</text>
+  <text x="392" y="62" text-anchor="middle" font-size="7" fill="#44403C">[item1, item2, ...]</text>
+  <text x="392" y="76" text-anchor="middle" font-size="7" fill="#78716C">Queues, feeds, recent</text>
+
+  <!-- Row 2 -->
+  <rect x="10" y="102" width="145" height="62" fill="white" rx="6" stroke="#E7E5E4"/>
+  <rect x="10" y="102" width="145" height="17" fill="#10B981" rx="6 6 0 0"/><text x="82" y="114" text-anchor="middle" font-size="8" font-weight="700" fill="white">SET</text>
+  <text x="82" y="132" text-anchor="middle" font-size="7" fill="#44403C">{A, B, C} unique</text>
+  <text x="82" y="146" text-anchor="middle" font-size="7" fill="#78716C">Tags, mutual friends</text>
+
+  <rect x="165" y="102" width="145" height="62" fill="white" rx="6" stroke="#E7E5E4"/>
+  <rect x="165" y="102" width="145" height="17" fill="#8B5CF6" rx="6 6 0 0"/><text x="237" y="114" text-anchor="middle" font-size="8" font-weight="700" fill="white">SORTED SET</text>
+  <text x="237" y="132" text-anchor="middle" font-size="7" fill="#44403C">{A:10, B:25} scored</text>
+  <text x="237" y="146" text-anchor="middle" font-size="7" fill="#78716C">Leaderboards, ranking</text>
+
+  <rect x="320" y="102" width="145" height="62" fill="white" rx="6" stroke="#E7E5E4"/>
+  <rect x="320" y="102" width="145" height="17" fill="#EC4899" rx="6 6 0 0"/><text x="392" y="114" text-anchor="middle" font-size="8" font-weight="700" fill="white">STREAM</text>
+  <text x="392" y="132" text-anchor="middle" font-size="7" fill="#44403C">Append-only log</text>
+  <text x="392" y="146" text-anchor="middle" font-size="7" fill="#78716C">Events, Kafka-lite</text>
+
+  <!-- Row 3 -->
+  <rect x="10" y="172" width="225" height="55" fill="white" rx="6" stroke="#E7E5E4"/>
+  <rect x="10" y="172" width="225" height="17" fill="#06B6D4" rx="6 6 0 0"/><text x="122" y="184" text-anchor="middle" font-size="8" font-weight="700" fill="white">BITMAP &amp; HYPERLOGLOG</text>
+  <text x="122" y="202" text-anchor="middle" font-size="7" fill="#44403C">Bitmap: daily active users, feature flags</text>
+  <text x="122" y="215" text-anchor="middle" font-size="7" fill="#44403C">HLL: unique counts (12KB for billions!)</text>
+
+  <rect x="245" y="172" width="220" height="55" fill="white" rx="6" stroke="#E7E5E4"/>
+  <rect x="245" y="172" width="220" height="17" fill="#78716C" rx="6 6 0 0"/><text x="355" y="184" text-anchor="middle" font-size="8" font-weight="700" fill="white">PUB/SUB</text>
+  <text x="355" y="202" text-anchor="middle" font-size="7" fill="#44403C">PUBLISH/SUBSCRIBE channels</text>
+  <text x="355" y="215" text-anchor="middle" font-size="7" fill="#44403C">Real-time notifications, chat</text>
+
+  <!-- Footer -->
+  <text x="240" y="248" text-anchor="middle" font-size="8" fill="#059669" font-weight="600">Not just key-value — a full data structure server</text>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 130" font-family="DM Sans, sans-serif">
+  <rect width="460" height="130" fill="#FAFAF9" rx="10"/>
+  <text x="230" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Why Redis is Fast (100K+ ops/sec)</text>
+  <!-- 4 cards -->
+  <rect x="8" y="28" width="105" height="92" fill="white" rx="7" stroke="#EF4444" stroke-width="1.2"/>
+  <text x="60" y="48" text-anchor="middle" font-size="14">💾</text>
+  <text x="60" y="63" text-anchor="middle" font-size="8" font-weight="700" fill="#DC2626">In-Memory</text>
+  <text x="60" y="76" text-anchor="middle" font-size="7" fill="#44403C">RAM: ~100ns</text>
+  <text x="60" y="88" text-anchor="middle" font-size="7" fill="#44403C">Disk: ~10ms</text>
+  <text x="60" y="104" text-anchor="middle" font-size="8" font-weight="700" fill="#DC2626">100,000x</text>
+
+  <rect x="120" y="28" width="105" height="92" fill="white" rx="7" stroke="#F59E0B" stroke-width="1.2"/>
+  <text x="172" y="48" text-anchor="middle" font-size="14">🧵</text>
+  <text x="172" y="63" text-anchor="middle" font-size="8" font-weight="700" fill="#92400E">Single Thread</text>
+  <text x="172" y="76" text-anchor="middle" font-size="7" fill="#44403C">No locks</text>
+  <text x="172" y="88" text-anchor="middle" font-size="7" fill="#44403C">No contention</text>
+  <text x="172" y="104" text-anchor="middle" font-size="8" font-weight="700" fill="#92400E">Zero waits</text>
+
+  <rect x="232" y="28" width="105" height="92" fill="white" rx="7" stroke="#3B82F6" stroke-width="1.2"/>
+  <text x="284" y="48" text-anchor="middle" font-size="14">🔀</text>
+  <text x="284" y="63" text-anchor="middle" font-size="8" font-weight="700" fill="#1D4ED8">I/O Multiplex</text>
+  <text x="284" y="76" text-anchor="middle" font-size="7" fill="#44403C">epoll/kqueue</text>
+  <text x="284" y="88" text-anchor="middle" font-size="7" fill="#44403C">10K+ connections</text>
+  <text x="284" y="104" text-anchor="middle" font-size="8" font-weight="700" fill="#1D4ED8">1 thread</text>
+
+  <rect x="344" y="28" width="105" height="92" fill="white" rx="7" stroke="#10B981" stroke-width="1.2"/>
+  <text x="396" y="48" text-anchor="middle" font-size="14">🏗️</text>
+  <text x="396" y="63" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Optimized DS</text>
+  <text x="396" y="76" text-anchor="middle" font-size="7" fill="#44403C">Ziplist, skiplist</text>
+  <text x="396" y="88" text-anchor="middle" font-size="7" fill="#44403C">SDS, intset</text>
+  <text x="396" y="104" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Not textbook</text>
+</svg>

@@ -160,8 +160,8 @@ flowchart LR
     TxAdvice -->|"4. Commit/Rollback"| Proxy
     Proxy -->|"result"| Caller
 
-    style Proxy fill:#FEF3C7,stroke:#D97706,color:#000
-    style TxAdvice fill:#DBEAFE,stroke:#2563EB,color:#000
+    style Proxy fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style TxAdvice fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ```java
@@ -207,7 +207,7 @@ flowchart LR
     E --> F{{"5. Translate SQLException -> DataAccessException"}}
     F --> G(["6. Close statement & connection"])
 
-    style E fill:#D1FAE5,stroke:#059669,color:#000
+    style E fill:#D1FAE5,stroke:#93C5FD,color:#1E40AF
 ```
 
 ```java
@@ -359,7 +359,7 @@ flowchart LR
     EventMulticaster --> InventoryListener["InventoryReserveListener"]
     EventMulticaster --> AnalyticsListener["AnalyticsTrackingListener"]
 
-    style EventMulticaster fill:#EDE9FE,stroke:#7C3AED,color:#000
+    style EventMulticaster fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
 ```
 
 ```java
@@ -535,6 +535,16 @@ flowchart LR
     C --> D[".filter(...)"]
     D --> E[".build()"]
     E --> F["WebClient instance"]
+
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style C fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style D fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style E fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style d fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style e fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style l fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style r fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ```java
@@ -728,6 +738,14 @@ flowchart LR
 
     F1 -.->|"reject"| R1["401 Unauthorized"]
     F2 -.->|"reject"| R2["429 Too Many Requests"]
+
+    style Controller fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style F1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style F2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style F3 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style Request fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style e fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style r fill:#FEF3C7,stroke:#FCD34D,color:#92400E
 ```
 
 ```java

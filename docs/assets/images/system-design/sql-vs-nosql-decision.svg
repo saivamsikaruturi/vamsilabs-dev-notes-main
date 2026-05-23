@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 200" font-family="DM Sans, sans-serif">
+  <rect width="460" height="200" fill="#FAFAF9" rx="10"/>
+  <text x="230" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">SQL vs NoSQL — Decision Flowchart</text>
+  <!-- Start -->
+  <rect x="170" y="28" width="120" height="22" fill="#8B5CF6" rx="11"/><text x="230" y="42" text-anchor="middle" font-size="8" font-weight="600" fill="white">What does your data need?</text>
+  <!-- Branch left: relationships -->
+  <line x1="200" y1="52" x2="100" y2="72" stroke="#3B82F6" stroke-width="1.2"/>
+  <rect x="40" y="72" width="120" height="20" fill="#EFF6FF" rx="4" stroke="#93C5FD"/><text x="100" y="85" text-anchor="middle" font-size="7" fill="#1D4ED8">Joins / Relationships?</text>
+  <line x1="100" y1="94" x2="100" y2="112" stroke="#3B82F6" stroke-width="1"/>
+  <rect x="50" y="112" width="100" height="20" fill="#DBEAFE" rx="4" stroke="#60A5FA"/><text x="100" y="125" text-anchor="middle" font-size="7" font-weight="600" fill="#1D4ED8">→ SQL ✓</text>
+  <text x="100" y="142" text-anchor="middle" font-size="6" fill="#78716C">PostgreSQL, MySQL</text>
+  <!-- Branch middle: ACID -->
+  <line x1="230" y1="52" x2="230" y2="72" stroke="#10B981" stroke-width="1.2"/>
+  <rect x="170" y="72" width="120" height="20" fill="#F0FDF4" rx="4" stroke="#86EFAC"/><text x="230" y="85" text-anchor="middle" font-size="7" fill="#059669">ACID Transactions?</text>
+  <line x1="230" y1="94" x2="230" y2="112" stroke="#10B981" stroke-width="1"/>
+  <rect x="180" y="112" width="100" height="20" fill="#D1FAE5" rx="4" stroke="#34D399"/><text x="230" y="125" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">→ SQL ✓</text>
+  <text x="230" y="142" text-anchor="middle" font-size="6" fill="#78716C">Spanner, Aurora</text>
+  <!-- Branch right: scale -->
+  <line x1="260" y1="52" x2="360" y2="72" stroke="#F59E0B" stroke-width="1.2"/>
+  <rect x="300" y="72" width="120" height="20" fill="#FEF3C7" rx="4" stroke="#FCD34D"/><text x="360" y="85" text-anchor="middle" font-size="7" fill="#92400E">High write throughput?</text>
+  <line x1="360" y1="94" x2="360" y2="112" stroke="#F59E0B" stroke-width="1"/>
+  <rect x="310" y="112" width="100" height="20" fill="#FEF3C7" rx="4" stroke="#F59E0B"/><text x="360" y="125" text-anchor="middle" font-size="7" font-weight="600" fill="#92400E">→ NoSQL ✓</text>
+  <text x="360" y="142" text-anchor="middle" font-size="6" fill="#78716C">DynamoDB, Cassandra</text>
+  <!-- Bottom note -->
+  <rect x="100" y="158" width="260" height="30" fill="white" rx="6" stroke="#E7E5E4"/>
+  <text x="230" y="172" text-anchor="middle" font-size="8" fill="#1C1917" font-weight="600">Real answer at FAANG: use BOTH</text>
+  <text x="230" y="184" text-anchor="middle" font-size="7" fill="#78716C">SQL for core transactions + NoSQL for high-throughput paths</text>
+</svg>

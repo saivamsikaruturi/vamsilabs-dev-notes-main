@@ -9,81 +9,99 @@ The Collections Framework is a unified architecture for storing and manipulating
 ```mermaid
 flowchart LR
     %% Root
-    Iterable(("<b>Iterable</b>")):::root --> Collection(("<b>Collection</b>")):::root
+    Iterable(("<b>Iterable</b>")) --> Collection(("<b>Collection</b>"))
 
     %% Branches from Collection
-    Collection --> List{{"<b>List</b>"}}:::listStyle
-    Collection --> Set{{"<b>Set</b>"}}:::setStyle
-    Collection --> Queue{{"<b>Queue</b>"}}:::queueStyle
+    Collection --> List{{"<b>List</b>"}}
+    Collection --> Set{{"<b>Set</b>"}}
+    Collection --> Queue{{"<b>Queue</b>"}}
 
     %% List implementations
-    List --> ArrayList(["ArrayList"]):::listImpl
-    List --> LinkedList(["LinkedList"]):::listImpl
-    List --> Vector(["Vector"]):::listImpl
+    List --> ArrayList(["ArrayList"])
+    List --> LinkedList(["LinkedList"])
+    List --> Vector(["Vector"])
 
     %% Set implementations
-    Set --> HashSet(["HashSet"]):::setImpl
-    Set --> LinkedHashSet(["LinkedHashSet"]):::setImpl
-    Set --> TreeSet(["TreeSet"]):::setImpl
+    Set --> HashSet(["HashSet"])
+    Set --> LinkedHashSet(["LinkedHashSet"])
+    Set --> TreeSet(["TreeSet"])
 
     %% Queue implementations
-    Queue --> PriorityQueue(["PriorityQueue"]):::queueImpl
-    Queue --> ArrayDeque(["ArrayDeque"]):::queueImpl
+    Queue --> PriorityQueue(["PriorityQueue"])
+    Queue --> ArrayDeque(["ArrayDeque"])
 
     %% Map hierarchy (separate)
-    MapRoot{{"<b>Map</b><br/><i>(separate hierarchy)</i>"}}:::mapStyle --> HashMap(["HashMap"]):::mapImpl
-    MapRoot --> LinkedHashMap(["LinkedHashMap"]):::mapImpl
-    MapRoot --> TreeMap(["TreeMap"]):::mapImpl
-    MapRoot --> ConcurrentHashMap(["ConcurrentHashMap"]):::mapImpl
+    MapRoot{{"<b>Map</b><br/><i>(separate hierarchy)</i>"}} --> HashMap(["HashMap"])
+    MapRoot --> LinkedHashMap(["LinkedHashMap"])
+    MapRoot --> TreeMap(["TreeMap"])
+    MapRoot --> ConcurrentHashMap(["ConcurrentHashMap"])
 
-    %% Styles
-    classDef root fill:#f9f9f9,stroke:#333,stroke-width:2px,color:#333
-    classDef listStyle fill:#1e90ff,stroke:#104e8b,stroke-width:2px,color:#fff,font-weight:bold
-    classDef listImpl fill:#87cefa,stroke:#1e90ff,stroke-width:1px,color:#000
-    classDef setStyle fill:#2ecc71,stroke:#1a8c4e,stroke-width:2px,color:#fff,font-weight:bold
-    classDef setImpl fill:#a9dfbf,stroke:#2ecc71,stroke-width:1px,color:#000
-    classDef queueStyle fill:#e67e22,stroke:#a04000,stroke-width:2px,color:#fff,font-weight:bold
-    classDef queueImpl fill:#f5cba7,stroke:#e67e22,stroke-width:1px,color:#000
-    classDef mapStyle fill:#9b59b6,stroke:#6c3483,stroke-width:2px,color:#fff,font-weight:bold
-    classDef mapImpl fill:#d2b4de,stroke:#9b59b6,stroke-width:1px,color:#000
+    style Iterable fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style Collection fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style List fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style Set fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style Queue fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style ArrayList fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style LinkedList fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style Vector fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style HashSet fill:#ECFDF5,stroke:#6EE7B7,color:#065F46
+    style LinkedHashSet fill:#ECFDF5,stroke:#6EE7B7,color:#065F46
+    style TreeSet fill:#ECFDF5,stroke:#6EE7B7,color:#065F46
+    style PriorityQueue fill:#FFFBEB,stroke:#FCD34D,color:#92400E
+    style ArrayDeque fill:#FFFBEB,stroke:#FCD34D,color:#92400E
+    style MapRoot fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style HashMap fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style LinkedHashMap fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style TreeMap fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style ConcurrentHashMap fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### When to Use Which Collection (Decision Tree)
 
 ```mermaid
 flowchart LR
-    Start(("What do you need?")):::decision
+    Start(("What do you need?"))
 
-    Start -->|"Key-Value pairs?"| MapQ{"Need ordering<br/>of keys?"}:::decision
-    Start -->|"Ordered elements<br/>with duplicates?"| ListQ{"Need fast<br/>random access?"}:::decision
-    Start -->|"Unique elements<br/>only?"| SetQ{"Need sorted<br/>order?"}:::decision
-    Start -->|"FIFO / Priority<br/>processing?"| QueueQ{"Need priority<br/>ordering?"}:::decision
+    Start -->|"Key-Value pairs?"| MapQ{"Need ordering<br/>of keys?"}
+    Start -->|"Ordered elements<br/>with duplicates?"| ListQ{"Need fast<br/>random access?"}
+    Start -->|"Unique elements<br/>only?"| SetQ{"Need sorted<br/>order?"}
+    Start -->|"FIFO / Priority<br/>processing?"| QueueQ{"Need priority<br/>ordering?"}
 
     %% Map branch
-    MapQ -->|"No order needed"| HashMap2(["<b>HashMap</b><br/>O(1) get/put"]):::mapImpl
-    MapQ -->|"Insertion order"| LinkedHashMap2(["<b>LinkedHashMap</b><br/>Maintains insert order"]):::mapImpl
-    MapQ -->|"Sorted keys"| TreeMap2(["<b>TreeMap</b><br/>O(log n) sorted"]):::mapImpl
-    MapQ -->|"Thread-safe"| ConcurrentHashMap2(["<b>ConcurrentHashMap</b><br/>Lock striping"]):::mapImpl
+    MapQ -->|"No order needed"| HashMap2(["<b>HashMap</b><br/>O(1) get/put"])
+    MapQ -->|"Insertion order"| LinkedHashMap2(["<b>LinkedHashMap</b><br/>Maintains insert order"])
+    MapQ -->|"Sorted keys"| TreeMap2(["<b>TreeMap</b><br/>O(log n) sorted"])
+    MapQ -->|"Thread-safe"| ConcurrentHashMap2(["<b>ConcurrentHashMap</b><br/>Lock striping"])
 
     %% List branch
-    ListQ -->|"Yes — random access"| ArrayList2(["<b>ArrayList</b><br/>O(1) get by index"]):::listImpl
-    ListQ -->|"No — frequent insert/delete"| LinkedList2(["<b>LinkedList</b><br/>O(1) add/remove at ends"]):::listImpl
+    ListQ -->|"Yes — random access"| ArrayList2(["<b>ArrayList</b><br/>O(1) get by index"])
+    ListQ -->|"No — frequent insert/delete"| LinkedList2(["<b>LinkedList</b><br/>O(1) add/remove at ends"])
 
     %% Set branch
-    SetQ -->|"No — just unique"| HashSet2(["<b>HashSet</b><br/>O(1) add/contains"]):::setImpl
-    SetQ -->|"Yes — sorted"| TreeSet2(["<b>TreeSet</b><br/>O(log n) sorted"]):::setImpl
-    SetQ -->|"Insertion order"| LinkedHashSet2(["<b>LinkedHashSet</b><br/>Maintains insert order"]):::setImpl
+    SetQ -->|"No — just unique"| HashSet2(["<b>HashSet</b><br/>O(1) add/contains"])
+    SetQ -->|"Yes — sorted"| TreeSet2(["<b>TreeSet</b><br/>O(log n) sorted"])
+    SetQ -->|"Insertion order"| LinkedHashSet2(["<b>LinkedHashSet</b><br/>Maintains insert order"])
 
     %% Queue branch
-    QueueQ -->|"Yes — priority"| PriorityQueue2(["<b>PriorityQueue</b><br/>Min-heap based"]):::queueImpl
-    QueueQ -->|"No — FIFO/LIFO"| ArrayDeque2(["<b>ArrayDeque</b><br/>Fast double-ended"]):::queueImpl
+    QueueQ -->|"Yes — priority"| PriorityQueue2(["<b>PriorityQueue</b><br/>Min-heap based"])
+    QueueQ -->|"No — FIFO/LIFO"| ArrayDeque2(["<b>ArrayDeque</b><br/>Fast double-ended"])
 
-    %% Styles
-    classDef decision fill:#ffeaa7,stroke:#fdcb6e,stroke-width:2px,color:#2d3436,font-weight:bold
-    classDef listImpl fill:#74b9ff,stroke:#0984e3,stroke-width:2px,color:#000
-    classDef setImpl fill:#55efc4,stroke:#00b894,stroke-width:2px,color:#000
-    classDef queueImpl fill:#fab1a0,stroke:#e17055,stroke-width:2px,color:#000
-    classDef mapImpl fill:#a29bfe,stroke:#6c5ce7,stroke-width:2px,color:#000
+    style Start fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style MapQ fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style ListQ fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style SetQ fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style QueueQ fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style HashMap2 fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style LinkedHashMap2 fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style TreeMap2 fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style ConcurrentHashMap2 fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style ArrayList2 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style LinkedList2 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style HashSet2 fill:#ECFDF5,stroke:#6EE7B7,color:#065F46
+    style TreeSet2 fill:#ECFDF5,stroke:#6EE7B7,color:#065F46
+    style LinkedHashSet2 fill:#ECFDF5,stroke:#6EE7B7,color:#065F46
+    style PriorityQueue2 fill:#FFFBEB,stroke:#FCD34D,color:#92400E
+    style ArrayDeque2 fill:#FFFBEB,stroke:#FCD34D,color:#92400E
 ```
 
 ---

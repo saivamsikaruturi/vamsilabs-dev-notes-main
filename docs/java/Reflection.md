@@ -66,13 +66,13 @@ classDiagram
     Class --> Constructor : getDeclaredConstructors()
     Class --> Annotation : getAnnotations()
 
-    style Class fill:#4A90D9,color:#fff
-    style Field fill:#7B68EE,color:#fff
-    style Method fill:#E85D75,color:#fff
-    style Constructor fill:#F5A623,color:#fff
-    style Member fill:#50C878,color:#fff
-    style AccessibleObject fill:#9B59B6,color:#fff
-    style Annotation fill:#1ABC9C,color:#fff
+    style Class fill:#BFDBFE,color:#1E40AF
+    style Field fill:#BFDBFE,color:#1E40AF
+    style Method fill:#FCA5A5,color:#1E40AF
+    style Constructor fill:#FCD34D,color:#1E40AF
+    style Member fill:#DBEAFE,color:#1E40AF
+    style AccessibleObject fill:#DBEAFE,color:#1E40AF
+    style Annotation fill:#DBEAFE,color:#1E40AF
 ```
 
 ---
@@ -119,18 +119,18 @@ sequenceDiagram
 flowchart LR
     subgraph normal["Direct Access (Compile-Time)"]
         direction LR
-        N1[/"Write: obj.doSomething()"/]:::blueNode --> N2{{"Compiler verifies<br/>type & method"}}:::blueNode --> N3(["JIT inlines<br/>method call"]):::blueNode --> N4(("FAST")):::greenNode
+        N1[/"Write: obj.doSomething()"/] --> N2{{"Compiler verifies<br/>type & method"}} --> N3(["JIT inlines<br/>method call"]) --> N4(("FAST"))
     end
 
     subgraph reflect["Reflection Access (Runtime)"]
         direction LR
-        R1[/"Write: method.invoke(obj, args)"/]:::orangeNode --> R2{{"Load class<br/>by name"}}:::orangeNode --> R3[["Lookup method<br/>in metadata"]]:::orangeNode --> R4{{"Check access +<br/>box args"}}:::orangeNode --> R5(["Native dispatch"]):::orangeNode --> R6(("SLOWER<br/>but FLEXIBLE")):::yellowNode
+        R1[/"Write: method.invoke(obj, args)"/] --> R2{{"Load class<br/>by name"}} --> R3[["Lookup method<br/>in metadata"]] --> R4{{"Check access +<br/>box args"}} --> R5(["Native dispatch"]) --> R6(("SLOWER<br/>but FLEXIBLE"))
     end
 
-    classDef blueNode fill:#3498DB,color:#fff,stroke:#2980B9
-    classDef greenNode fill:#27AE60,color:#fff,stroke:#1E8449,stroke-width:3px
-    classDef orangeNode fill:#E67E22,color:#fff,stroke:#D35400
-    classDef yellowNode fill:#F39C12,color:#fff,stroke:#E67E22,stroke-width:3px
+    style E fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style N1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style R1 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style T fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 ---
@@ -139,35 +139,42 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    R(("Reflection<br/>API")):::centerNode
+    R(("Reflection<br/>API"))
 
-    R --> SP{{"Spring IoC"}}:::springNode
-    R --> JU{{"JUnit"}}:::junitNode
-    R --> JK{{"Jackson"}}:::jacksonNode
-    R --> HB{{"Hibernate"}}:::hibernateNode
+    R --> SP{{"Spring IoC"}}
+    R --> JU{{"JUnit"}}
+    R --> JK{{"Jackson"}}
+    R --> HB{{"Hibernate"}}
 
-    SP --> SP1(["Scan @Component"]):::detailNode
-    SP --> SP2(["Inject @Autowired"]):::detailNode
-    SP --> SP3(["Constructor.newInstance()"]):::detailNode
+    SP --> SP1(["Scan @Component"])
+    SP --> SP2(["Inject @Autowired"])
+    SP --> SP3(["Constructor.newInstance()"])
 
-    JU --> JU1(["Discover @Test"]):::detailNode
-    JU --> JU2(["Instantiate classes"]):::detailNode
-    JU --> JU3(["Invoke dynamically"]):::detailNode
+    JU --> JU1(["Discover @Test"])
+    JU --> JU2(["Instantiate classes"])
+    JU --> JU3(["Invoke dynamically"])
 
-    JK --> JK1(["Read field names"]):::detailNode
-    JK --> JK2(["Call getters/setters"]):::detailNode
-    JK --> JK3(["Construct from JSON"]):::detailNode
+    JK --> JK1(["Read field names"])
+    JK --> JK2(["Call getters/setters"])
+    JK --> JK3(["Construct from JSON"])
 
-    HB --> HB1(["Map @Entity fields"]):::detailNode
-    HB --> HB2(["Populate from ResultSet"]):::detailNode
-    HB --> HB3(["Lazy-load proxies"]):::detailNode
+    HB --> HB1(["Map @Entity fields"])
+    HB --> HB2(["Populate from ResultSet"])
+    HB --> HB3(["Lazy-load proxies"])
 
-    classDef centerNode fill:#8E44AD,color:#fff,stroke:#6C3483,stroke-width:4px
-    classDef springNode fill:#27AE60,color:#fff,stroke:#1E8449,stroke-width:2px
-    classDef junitNode fill:#2980B9,color:#fff,stroke:#1F618D,stroke-width:2px
-    classDef jacksonNode fill:#D35400,color:#fff,stroke:#A04000,stroke-width:2px
-    classDef hibernateNode fill:#C0392B,color:#fff,stroke:#922B21,stroke-width:2px
-    classDef detailNode fill:#F8F9FA,color:#2C3E50,stroke:#BDC3C7
+    style C fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style HB fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style JK fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style JU fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style N fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style R fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style SP fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style d fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style e fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style n fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style s fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style t fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style y fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ---

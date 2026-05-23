@@ -18,27 +18,27 @@ flowchart LR
         end
     end
 
-    style PUBLIC fill:#E8F5E9,stroke:#2E7D32,stroke-width:3px,color:#1B5E20
-    style PROTECTED fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
-    style DEFAULT fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
-    style PRIVATE fill:#FCE4EC,stroke:#C62828,stroke-width:2px,color:#B71C1C
-    style P fill:#F5F5F5,stroke:#616161,color:#212121
+    style PUBLIC fill:#ECFDF5,stroke:#6EE7B7,stroke-width:3px,color:#065F46
+    style PROTECTED fill:#EFF6FF,stroke:#DBEAFE,stroke-width:2px,color:#1E40AF
+    style DEFAULT fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px,color:#92400E
+    style PRIVATE fill:#FEF2F2,stroke:#FCA5A5,stroke-width:2px,color:#991B1B
+    style P fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
 ```
 
 ```mermaid
 flowchart LR
     subgraph scope["🎯 Quick Reference"]
         direction LR
-        PUB{{"🟢 public"}}:::green --> |"Any class, any package"| ALL(["✅ Everyone"])
-        PROT{{"🔵 protected"}}:::blue --> |"Same package OR subclass"| SUB(["✅ Package + Children"])
-        DEF{{"🟠 default"}}:::orange --> |"Same package only"| PKG(["✅ Package Only"])
-        PRIV{{"🔴 private"}}:::red --> |"Same class only"| CLS(["✅ Class Only"])
+        PUB{{"🟢 public"}} --> |"Any class, any package"| ALL(["✅ Everyone"])
+        PROT{{"🔵 protected"}} --> |"Same package OR subclass"| SUB(["✅ Package + Children"])
+        DEF{{"🟠 default"}} --> |"Same package only"| PKG(["✅ Package Only"])
+        PRIV{{"🔴 private"}} --> |"Same class only"| CLS(["✅ Class Only"])
     end
 
-    classDef green fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
-    classDef blue fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
-    classDef orange fill:#FFE0B2,stroke:#E65100,color:#BF360C
-    classDef red fill:#FFCDD2,stroke:#C62828,color:#B71C1C
+    style PUB fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style PROT fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style DEF fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style PRIV fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 ---
@@ -148,16 +148,16 @@ public class Outer {
 
 ```mermaid
 flowchart LR
-    START(("🏁 Start Here")):::start --> PRIV{{"🔒 private"}}:::red
-    PRIV -->|"Need package access?"| DEF{{"📦 default"}}:::orange
-    DEF -->|"Need subclass access?"| PROT{{"🛡️ protected"}}:::blue
-    PROT -->|"Need global access?"| PUB(["🌍 public"]):::green
+    START(("🏁 Start Here")) --> PRIV{{"🔒 private"}}
+    PRIV -->|"Need package access?"| DEF{{"📦 default"}}
+    DEF -->|"Need subclass access?"| PROT{{"🛡️ protected"}}
+    PROT -->|"Need global access?"| PUB(["🌍 public"])
 
-    classDef start fill:#F3E5F5,stroke:#7B1FA2,color:#4A148C
-    classDef red fill:#FFCDD2,stroke:#C62828,color:#B71C1C
-    classDef orange fill:#FFE0B2,stroke:#E65100,color:#BF360C
-    classDef blue fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
-    classDef green fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+    style START fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style PRIV fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style DEF fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style PROT fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style PUB fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
 ```
 
 This is called the **principle of least privilege**. Always start with `private` and only increase visibility when you have a concrete reason.

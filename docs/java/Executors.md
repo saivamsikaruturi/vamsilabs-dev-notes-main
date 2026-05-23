@@ -41,6 +41,27 @@ flowchart LR
         Q --> W3(["Worker 3"])
         Q --> W4(["Worker 4"])
     end
+
+    style 0 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style 1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style 2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style 3 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style 4 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style Q fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style R1 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style R2 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style R3 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style R4 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style R5 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style RR1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style RR2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style RR3 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style RR4 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style RR5 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style T5 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style d fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style e fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style r fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 **Thread pools solve this by:**
@@ -142,6 +163,16 @@ flowchart LR
     D -->|No| F{"Active threads < maxPoolSize?"}
     F -->|Yes| G(["Create new non-core thread & run task"])
     F -->|No| H(["Reject task via RejectedExecutionHandler"])
+
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style C fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style D fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style E fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style F fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style G fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style H fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style e fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 !!! warning "Critical Insight"
@@ -273,6 +304,12 @@ flowchart LR
         end
         Worker3 -.->|steals from tail| Worker1
     end
+
+    style T1A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style T1B fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style T1C fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style T2A fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style T3 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### RecursiveTask vs RecursiveAction
@@ -407,6 +444,14 @@ flowchart LR
         VT5(("Virtual Thread 5")) -.->|parked| HEAP
         HEAP -.->|I/O complete, remount| C2
     end
+
+    style 1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style VT1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style VT2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style VT3 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style VT4 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style VT5 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style d fill:#FEF3C7,stroke:#FCD34D,color:#92400E
 ```
 
 ### What Changes with Virtual Threads

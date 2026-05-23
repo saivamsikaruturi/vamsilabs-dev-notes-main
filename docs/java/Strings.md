@@ -9,10 +9,10 @@ Strings are the most used data type in Java. Understanding how they work interna
 ```mermaid
 flowchart LR
     subgraph HEAP["Java Heap Memory"]
-        style HEAP fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+        style HEAP fill:#EFF6FF,stroke:#DBEAFE,stroke-width:2px
 
         subgraph POOL["String Pool"]
-            style POOL fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+            style POOL fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
             HELLO["&quot;Hello&quot;"]
             WORLD["&quot;World&quot;"]
             ABC["&quot;ABC&quot;"]
@@ -30,17 +30,17 @@ flowchart LR
     EQ2["s1 == s3  : FALSE<br/>different objects"]
     EQ3["s1.equals(s3) : TRUE<br/>same content"]
 
-    style s1 fill:#fff9c4,stroke:#f9a825
-    style s2 fill:#fff9c4,stroke:#f9a825
-    style s3 fill:#ffccbc,stroke:#e64a19
-    style OBJ1 fill:#ffccbc,stroke:#e64a19
-    style OBJ2 fill:#ffccbc,stroke:#e64a19
-    style HELLO fill:#a5d6a7,stroke:#2e7d32
-    style WORLD fill:#a5d6a7,stroke:#2e7d32
-    style ABC fill:#a5d6a7,stroke:#2e7d32
-    style EQ1 fill:#e8f5e9,stroke:#2e7d32
-    style EQ2 fill:#ffebee,stroke:#c62828
-    style EQ3 fill:#e8f5e9,stroke:#2e7d32
+    style s1 fill:#FEF3C7,stroke:#FCD34D
+    style s2 fill:#FEF3C7,stroke:#FCD34D
+    style s3 fill:#FEF3C7,stroke:#FCA5A5
+    style OBJ1 fill:#FEF3C7,stroke:#FCA5A5
+    style OBJ2 fill:#FEF3C7,stroke:#FCA5A5
+    style HELLO fill:#DBEAFE,stroke:#6EE7B7
+    style WORLD fill:#DBEAFE,stroke:#6EE7B7
+    style ABC fill:#DBEAFE,stroke:#6EE7B7
+    style EQ1 fill:#ECFDF5,stroke:#6EE7B7
+    style EQ2 fill:#EFF6FF,stroke:#FCA5A5
+    style EQ3 fill:#ECFDF5,stroke:#6EE7B7
 ```
 
 ## String vs StringBuilder vs StringBuffer — Decision Flowchart
@@ -59,15 +59,15 @@ flowchart LR
     SB --> TIP2[/"Tip: Use for loops, concatenation<br/>O(n) vs O(n squared) with String +"/]
     SBF --> TIP3[/"Tip: Consider StringBuilder +<br/>external sync for better control"/]
 
-    style START fill:#4a148c,stroke:#4a148c,color:#ffffff
-    style Q1 fill:#fff9c4,stroke:#f9a825
-    style Q2 fill:#fff9c4,stroke:#f9a825
-    style STR fill:#e3f2fd,stroke:#1565c0
-    style SB fill:#e8f5e9,stroke:#2e7d32
-    style SBF fill:#fff3e0,stroke:#e65100
-    style TIP1 fill:#bbdefb,stroke:#1976d2
-    style TIP2 fill:#c8e6c9,stroke:#388e3c
-    style TIP3 fill:#ffe0b2,stroke:#f57c00
+    style START fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style Q1 fill:#FEF3C7,stroke:#FCD34D
+    style Q2 fill:#FEF3C7,stroke:#FCD34D
+    style STR fill:#EFF6FF,stroke:#DBEAFE
+    style SB fill:#ECFDF5,stroke:#6EE7B7
+    style SBF fill:#FFFBEB,stroke:#FCD34D
+    style TIP1 fill:#DBEAFE,stroke:#93C5FD
+    style TIP2 fill:#D1FAE5,stroke:#93C5FD
+    style TIP3 fill:#FEF3C7,stroke:#FCD34D
 ```
 
 ---

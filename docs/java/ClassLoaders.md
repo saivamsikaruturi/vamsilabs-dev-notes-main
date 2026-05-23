@@ -19,10 +19,10 @@ flowchart LR
     PLAT --> APP
     APP --> CUSTOM
 
-    style BOOT fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    style PLAT fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style APP fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style CUSTOM fill:#fce4ec,stroke:#c62828,stroke-width:2px
+    style BOOT fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px
+    style PLAT fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px
+    style APP fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style CUSTOM fill:#FEF2F2,stroke:#FCA5A5,stroke-width:2px
 ```
 
 | ClassLoader | Parent | What It Loads | Location (Java 8) | Location (Java 9+) |
@@ -138,9 +138,9 @@ flowchart LR
 
     L1 --> L2 --> V --> P --> R --> I
 
-    style Loading fill:#e8f5e9,stroke:#2e7d32
-    style Linking fill:#e1f5fe,stroke:#0288d1
-    style Init fill:#fff3e0,stroke:#f57c00
+    style Loading fill:#ECFDF5,stroke:#6EE7B7
+    style Linking fill:#EFF6FF,stroke:#93C5FD
+    style Init fill:#FFFBEB,stroke:#FCD34D
 ```
 
 ### Phase 1: Loading
@@ -300,8 +300,8 @@ flowchart LR
     BOOT -->|"parent of"| APP
     APP -.->|"Context ClassLoader<br/>breaks upward-only rule"| BOOT
 
-    style BOOT fill:#e8f5e9,stroke:#2e7d32
-    style APP fill:#fff3e0,stroke:#f57c00
+    style BOOT fill:#ECFDF5,stroke:#6EE7B7
+    style APP fill:#FFFBEB,stroke:#FCD34D
 ```
 
 ```java

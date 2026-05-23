@@ -42,6 +42,16 @@ flowchart LR
     BF -->|"extends"| BO
     P -->|"Bi version"| BP(["BiPredicate&lt;T,U&gt;<br/>(T, U) → boolean"])
     C -->|"Bi version"| BC(["BiConsumer&lt;T,U&gt;<br/>(T, U) → void"])
+
+    style BC fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style BF fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style BO fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style BP fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style C fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style F fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style P fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style S fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style UO fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### Comparison Table
@@ -157,8 +167,8 @@ flowchart LR
     A(("Input: 5")) --> B{{"doubleIt<br/>5 × 2 = 10"}}
     B --> C{{"addTen<br/>10 + 10 = 20"}}
     C --> D(["Output: 20"])
-    style A fill:#e1f5fe
-    style D fill:#c8e6c9
+    style A fill:#EFF6FF
+    style D fill:#D1FAE5
 ```
 
 ### Predicate Chaining
@@ -259,8 +269,8 @@ graph LR
     end
     S --> F
     FL --> T
-    style S fill:#e1f5fe
-    style T fill:#c8e6c9
+    style S fill:#EFF6FF
+    style T fill:#D1FAE5
 ```
 
 **Key traits:** lazy evaluation, single-use, non-mutating, optionally parallel.
@@ -360,8 +370,8 @@ flowchart LR
     SP --> T1[/"Thread 1"/] & T2[/"Thread 2"/] & T3[/"Thread 3"/] & T4[/"Thread 4"/]
     T1 & T2 & T3 & T4 --> CM[["Combine Results"]]
     CM --> R(("Final Result"))
-    style S fill:#e1f5fe
-    style R fill:#c8e6c9
+    style S fill:#EFF6FF
+    style R fill:#D1FAE5
 ```
 
 ### When to Use vs Avoid

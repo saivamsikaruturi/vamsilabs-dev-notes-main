@@ -15,8 +15,8 @@ flowchart LR
     JPA --> H["🐘 Hibernate"]
     H --> DB["🗄️ Database"]
 
-    style R fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style JPA fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
+    style R fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style JPA fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#1E40AF
 ```
 
 ---
@@ -32,8 +32,8 @@ flowchart LR
     PSR --> LCR{{"ListCrudRepository&lt;T, ID&gt;<br/>Returns List instead of Iterable"}}
     LCR --> JR(["JpaRepository&lt;T, ID&gt;<br/>flush, saveAllAndFlush, deleteInBatch,<br/>getById, findAll(Example)"])
 
-    style R fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#000
-    style JR fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
+    style R fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
+    style JR fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#1E40AF
 ```
 
 | Interface | Key Methods | Use When |
@@ -428,8 +428,8 @@ flowchart LR
     R --> Q4[/"Query 4: SELECT * FROM authors WHERE id=3"/]
     R --> QN(["... 97 more queries!"])
 
-    style Q1 fill:#FFCDD2,stroke:#C62828,color:#000
-    style QN fill:#FFCDD2,stroke:#C62828,color:#000
+    style Q1 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style QN fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 **1 query for posts + N queries for each post's author = N+1 problem.**

@@ -14,6 +14,12 @@ flowchart LR
     L2 --> L3{{"Access Control<br/><i>SecurityManager (deprecated JDK 17+)</i>"}}
     L3 --> L4{{"Cryptography — JCA / JCE<br/><i>Hashing, encryption, signatures</i>"}}
     L4 --> L5(["Secure Communication — JSSE<br/><i>TLS/SSL, HTTPS</i>"])
+
+    style L1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style L2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style L3 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style L4 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style i fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 | Layer | Package | Purpose |

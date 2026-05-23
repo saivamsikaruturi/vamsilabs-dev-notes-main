@@ -10,19 +10,26 @@ Use this flowchart to decide between Comparable and Comparator in any situation:
 
 ```mermaid
 flowchart LR
-    A(("Need to sort objects?")):::question --> B{"Do you own/control\nthe class source code?"}
+    A(("Need to sort objects?")) --> B{"Do you own/control\nthe class source code?"}
     B -->|Yes| C{"Need multiple\nsort orders?"}
-    B -->|No| D(["Use Comparator\n(external strategy)"]):::comparator
-    C -->|"No, just one\nnatural order"| E(["Use Comparable\n(implement in class)"]):::comparable
-    C -->|"Yes, multiple\nways to sort"| F(["Use BOTH!\nComparable for default +\nComparators for alternatives"]):::both
+    B -->|No| D(["Use Comparator\n(external strategy)"])
+    C -->|"No, just one\nnatural order"| E(["Use Comparable\n(implement in class)"])
+    C -->|"Yes, multiple\nways to sort"| F(["Use BOTH!\nComparable for default +\nComparators for alternatives"])
     D --> G{"Is it a one-time sort?"}
-    G -->|Yes| H[/"Lambda / anonymous\nComparator"/]:::comparator
-    G -->|No, reusable| I[["Named Comparator class\nor static field"]]:::comparator
+    G -->|Yes| H[/"Lambda / anonymous\nComparator"/]
+    G -->|No, reusable| I[["Named Comparator class\nor static field"]]
 
-    classDef question fill:#fff3cd,stroke:#ffc107,stroke-width:2px,color:#333
-    classDef comparable fill:#d4edda,stroke:#28a745,stroke-width:2px,color:#155724
-    classDef comparator fill:#cce5ff,stroke:#007bff,stroke-width:2px,color:#004085
-    classDef both fill:#e2d9f3,stroke:#6f42c1,stroke-width:2px,color:#3d1f7a
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style C fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style D fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style E fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style F fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style G fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style H fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style I fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style e fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style t fill:#FEF3C7,stroke:#FCD34D,color:#92400E
 ```
 
 ---
@@ -67,11 +74,11 @@ classDiagram
     Employee ..> SalaryComparator : sorted by
     Employee ..> NameComparator : sorted by
 
-    style Comparable fill:#d4edda,stroke:#28a745,color:#155724
-    style Comparator fill:#cce5ff,stroke:#007bff,color:#004085
-    style Employee fill:#fff3cd,stroke:#ffc107,color:#333
-    style SalaryComparator fill:#cce5ff,stroke:#007bff,color:#004085
-    style NameComparator fill:#cce5ff,stroke:#007bff,color:#004085
+    style Comparable fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style Comparator fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style Employee fill:#FEF2F2,stroke:#FCD34D,color:#1E40AF
+    style SalaryComparator fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style NameComparator fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ---
@@ -112,27 +119,29 @@ A fun way to remember the difference forever:
 flowchart LR
     subgraph comparable_world ["Comparable = I Know My Own Rank"]
         direction LR
-        S1(["Student A\n'I know I'm #2\nbecause my GPA is 3.8'"]):::student
-        S2(["Student B\n'I know I'm #1\nbecause my GPA is 3.9'"]):::student
-        S3(["Student C\n'I know I'm #3\nbecause my GPA is 3.5'"]):::student
+        S1(["Student A\n'I know I'm #2\nbecause my GPA is 3.8'"])
+        S2(["Student B\n'I know I'm #1\nbecause my GPA is 3.9'"])
+        S3(["Student C\n'I know I'm #3\nbecause my GPA is 3.5'"])
         S1 ~~~ S2 ~~~ S3
     end
 
     subgraph comparator_world ["Comparator = A Judge Decides"]
         direction LR
-        J1{{"Judge: Height\n'A is taller than B'"}}:::judge
-        J2{{"Judge: Speed\n'B is faster than A'"}}:::judge
-        J3{{"Judge: Creativity\n'C beats everyone!'"}}:::judge
+        J1{{"Judge: Height\n'A is taller than B'"}}
+        J2{{"Judge: Speed\n'B is faster than A'"}}
+        J3{{"Judge: Creativity\n'C beats everyone!'"}}
         J1 ~~~ J2 ~~~ J3
     end
 
-    comparable_world -.-|"Self-aware objects\nOne fixed ranking"| NOTE1["Natural Order\njava.lang.Comparable"]:::note_green
-    comparator_world -.-|"External judges\nMultiple rankings possible"| NOTE2["Custom Orders\njava.util.Comparator"]:::note_blue
+    comparable_world -.-|"Self-aware objects\nOne fixed ranking"| NOTE1["Natural Order\njava.lang.Comparable"]
+    comparator_world -.-|"External judges\nMultiple rankings possible"| NOTE2["Custom Orders\njava.util.Comparator"]
 
-    classDef student fill:#d4edda,stroke:#28a745,stroke-width:2px,color:#155724
-    classDef judge fill:#cce5ff,stroke:#007bff,stroke-width:2px,color:#004085
-    classDef note_green fill:#e8f5e9,stroke:#4caf50,stroke-width:1px,color:#2e7d32
-    classDef note_blue fill:#e3f2fd,stroke:#2196f3,stroke-width:1px,color:#1565c0
+    style J1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style J2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style J3 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style S1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style S2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style S3 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
 ```
 
 > **Memory trick for interviews:**

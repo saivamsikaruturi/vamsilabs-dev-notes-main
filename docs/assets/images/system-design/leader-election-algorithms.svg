@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 180">
+  <defs>
+    <linearGradient id="leBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#f1f5f9"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="456" height="176" rx="10" fill="url(#leBg)" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="230" y="20" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="700" fill="#1e293b">Leader Election — Raft Consensus</text>
+  <!-- Follower -->
+  <rect x="20" y="40" width="100" height="55" rx="8" fill="white" stroke="#94a3b8" stroke-width="1.5"/>
+  <circle cx="70" cy="60" r="10" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5"/>
+  <text x="70" y="64" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#475569">F</text>
+  <text x="70" y="82" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="600" fill="#475569">Follower</text>
+  <text x="70" y="92" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#94a3b8">Waits for leader</text>
+  <!-- Candidate -->
+  <rect x="170" y="40" width="120" height="55" rx="8" fill="white" stroke="#f59e0b" stroke-width="1.5"/>
+  <circle cx="230" cy="60" r="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="230" y="64" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#92400e">C</text>
+  <text x="230" y="82" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="600" fill="#92400e">Candidate</text>
+  <text x="230" y="92" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#b45309">Requests votes</text>
+  <!-- Leader -->
+  <rect x="340" y="40" width="100" height="55" rx="8" fill="white" stroke="#10b981" stroke-width="1.5"/>
+  <circle cx="390" cy="60" r="10" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="390" y="64" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#065f46">L</text>
+  <text x="390" y="82" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="600" fill="#065f46">Leader</text>
+  <text x="390" y="92" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#059669">Majority elected</text>
+  <!-- Arrows -->
+  <path d="M120 67 L170 67" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowLe)"/>
+  <text x="145" y="62" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#64748b">timeout</text>
+  <path d="M290 67 L340 67" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowLe)"/>
+  <text x="315" y="62" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#64748b">majority</text>
+  <!-- Steps -->
+  <rect x="20" y="110" width="420" height="55" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="30" y="126" font-family="Inter,system-ui,sans-serif" font-size="8" font-weight="600" fill="#1e293b">Election Flow:</text>
+  <text x="30" y="142" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">1. Follower timeout (no leader heartbeat) → becomes Candidate</text>
+  <text x="30" y="154" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">2. Candidate increments term, votes for self, requests votes from all → Majority (N/2+1) → Leader</text>
+  <text x="30" y="166" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">3. Leader sends heartbeats to maintain authority. Followers reset timeout on each heartbeat.</text>
+  <defs>
+    <marker id="arrowLe" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

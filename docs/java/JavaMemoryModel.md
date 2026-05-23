@@ -41,14 +41,14 @@ flowchart LR
     L1_3 --> L2
     L2 --> MAIN
 
-    style T1 fill:#1565C0,color:#fff
-    style T2 fill:#1565C0,color:#fff
-    style T3 fill:#1565C0,color:#fff
-    style L1_1 fill:#42A5F5,color:#fff
-    style L1_2 fill:#42A5F5,color:#fff
-    style L1_3 fill:#42A5F5,color:#fff
-    style L2 fill:#FF9800,color:#fff
-    style MAIN fill:#4CAF50,color:#fff
+    style T1 fill:#DBEAFE,color:#1E40AF
+    style T2 fill:#DBEAFE,color:#1E40AF
+    style T3 fill:#DBEAFE,color:#1E40AF
+    style L1_1 fill:#BFDBFE,color:#1E40AF
+    style L1_2 fill:#BFDBFE,color:#1E40AF
+    style L1_3 fill:#BFDBFE,color:#1E40AF
+    style L2 fill:#FEF3C7,color:#1E40AF
+    style MAIN fill:#D1FAE5,color:#1E40AF
 ```
 
 Each thread may hold **local copies** of variables in CPU caches or registers. Without explicit synchronization, there is **no guarantee** that changes made by one thread will ever become visible to another.
@@ -169,10 +169,10 @@ graph LR
         B1["ready = true"] --> B2["x = 42"]
     end
 
-    style A1 fill:#4CAF50,color:#fff
-    style A2 fill:#4CAF50,color:#fff
-    style B1 fill:#F44336,color:#fff
-    style B2 fill:#F44336,color:#fff
+    style A1 fill:#D1FAE5,color:#1E40AF
+    style A2 fill:#D1FAE5,color:#1E40AF
+    style B1 fill:#FEE2E2,color:#1E40AF
+    style B2 fill:#FEE2E2,color:#1E40AF
 ```
 
 ---
@@ -203,10 +203,10 @@ flowchart LR
 
     VW2 -.->|"happens-before"| VR1
 
-    style VW2 fill:#FF9800,color:#fff
-    style VR1 fill:#FF9800,color:#fff
-    style VW1 fill:#42A5F5,color:#fff
-    style VR2 fill:#42A5F5,color:#fff
+    style VW2 fill:#FEF3C7,color:#1E40AF
+    style VR1 fill:#FEF3C7,color:#1E40AF
+    style VW1 fill:#BFDBFE,color:#1E40AF
+    style VR2 fill:#BFDBFE,color:#1E40AF
 ```
 
 ### When volatile is Enough
@@ -355,11 +355,11 @@ flowchart LR
         B1(["Store x = 1"]) --> FENCE{{"--- StoreStore Fence ---"}} --> B2(["Store y = 2"])
     end
 
-    style FENCE fill:#F44336,color:#fff,stroke-width:3px
-    style B1 fill:#4CAF50,color:#fff
-    style B2 fill:#4CAF50,color:#fff
-    style NB1 fill:#9E9E9E,color:#fff
-    style NB2 fill:#9E9E9E,color:#fff
+    style FENCE fill:#FEE2E2,color:#1E40AF,stroke-width:3px
+    style B1 fill:#D1FAE5,color:#1E40AF
+    style B2 fill:#D1FAE5,color:#1E40AF
+    style NB1 fill:#BFDBFE,color:#1E40AF
+    style NB2 fill:#BFDBFE,color:#1E40AF
 ```
 
 **In Java, you never insert barriers directly.** They are emitted by the JVM when you use:
@@ -395,10 +395,10 @@ flowchart LR
     Q3 -->|Yes| VOLATILE{{"Use volatile"}}
     Q3 -->|No| NONE[/"No synchronization needed"/]
 
-    style SYNC fill:#F44336,color:#fff
-    style ATOMIC fill:#FF9800,color:#fff
-    style VOLATILE fill:#4CAF50,color:#fff
-    style NONE fill:#9E9E9E,color:#fff
+    style SYNC fill:#FEE2E2,color:#1E40AF
+    style ATOMIC fill:#FEF3C7,color:#1E40AF
+    style VOLATILE fill:#D1FAE5,color:#1E40AF
+    style NONE fill:#BFDBFE,color:#1E40AF
 ```
 
 ---

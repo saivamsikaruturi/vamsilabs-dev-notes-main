@@ -57,6 +57,16 @@ flowchart LR
     LT --> LDT
     LDT --> ZDT
     ZDT --> I
+
+    style D fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style I fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style LD fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style LDT fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style LT fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style ODT fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style P fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style T fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style ZDT fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ---

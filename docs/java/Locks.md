@@ -456,17 +456,17 @@ flowchart LR
         RB3[/"Reader 3"/] -.->|"BLOCKED"| DATA2
     end
 
-    style R1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style R2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style R3 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style R4 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style R5 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style DATA1 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-    style W1 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
-    style DATA2 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
-    style RB1 fill:#f5f5f5,stroke:#9e9e9e,stroke-width:1px,stroke-dasharray: 5 5
-    style RB2 fill:#f5f5f5,stroke:#9e9e9e,stroke-width:1px,stroke-dasharray: 5 5
-    style RB3 fill:#f5f5f5,stroke:#9e9e9e,stroke-width:1px,stroke-dasharray: 5 5
+    style R1 fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style R2 fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style R3 fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style R4 fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style R5 fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style DATA1 fill:#EFF6FF,stroke:#DBEAFE,stroke-width:2px
+    style W1 fill:#FEE2E2,stroke:#FCA5A5,stroke-width:2px
+    style DATA2 fill:#FEE2E2,stroke:#FCA5A5,stroke-width:2px
+    style RB1 fill:#EFF6FF,stroke:#93C5FD,stroke-width:1px,stroke-dasharray: 5 5
+    style RB2 fill:#EFF6FF,stroke:#93C5FD,stroke-width:1px,stroke-dasharray: 5 5
+    style RB3 fill:#EFF6FF,stroke:#93C5FD,stroke-width:1px,stroke-dasharray: 5 5
 ```
 
 ### The Performance Difference is Massive
@@ -800,19 +800,19 @@ flowchart LR
         Q5 -->|"NO"| CONCURRENT(["Use Concurrent<br/>Collections"])
     end
 
-    style START fill:#ede7f6,stroke:#4527a0,stroke-width:3px
-    style Q1 fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Q2 fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Q3 fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Q4 fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Q5 fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style SYNC fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style REENTRANT fill:#bbdefb,stroke:#1565c0,stroke-width:2px
-    style RWL fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
-    style STAMPED fill:#fff9c4,stroke:#f57f17,stroke-width:2px
-    style CONDITION fill:#b2dfdb,stroke:#00695c,stroke-width:2px
-    style ATOMIC fill:#dcedc8,stroke:#558b2f,stroke-width:2px
-    style CONCURRENT fill:#ffecb3,stroke:#ff6f00,stroke-width:2px
+    style START fill:#EFF6FF,stroke:#93C5FD,stroke-width:3px
+    style Q1 fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style Q2 fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style Q3 fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style Q4 fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style Q5 fill:#FFFBEB,stroke:#FCD34D,stroke-width:2px
+    style SYNC fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style REENTRANT fill:#DBEAFE,stroke:#DBEAFE,stroke-width:2px
+    style RWL fill:#EFF6FF,stroke:#93C5FD,stroke-width:2px
+    style STAMPED fill:#FEF3C7,stroke:#92400E,stroke-width:2px
+    style CONDITION fill:#DBEAFE,stroke:#6EE7B7,stroke-width:2px
+    style ATOMIC fill:#D1FAE5,stroke:#6EE7B7,stroke-width:2px
+    style CONCURRENT fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px
 ```
 
 ```

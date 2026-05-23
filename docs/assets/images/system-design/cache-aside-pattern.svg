@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 180" font-family="DM Sans, sans-serif">
+  <rect width="420" height="180" fill="#FAFAF9" rx="10"/>
+  <text x="210" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Cache-Aside Pattern (Most Common)</text>
+  <!-- App -->
+  <rect x="155" y="35" width="70" height="30" fill="#8B5CF6" rx="6"/><text x="190" y="54" text-anchor="middle" font-size="9" font-weight="600" fill="white">App Server</text>
+  <!-- Cache -->
+  <rect x="30" y="100" width="80" height="35" fill="#FEF3C7" rx="6" stroke="#F59E0B" stroke-width="1.5"/><text x="70" y="115" text-anchor="middle" font-size="9" font-weight="600" fill="#92400E">Redis Cache</text><text x="70" y="128" text-anchor="middle" font-size="7" fill="#78350F">⚡ 0.5ms</text>
+  <!-- DB -->
+  <rect x="280" y="100" width="80" height="35" fill="#FEE2E2" rx="6" stroke="#F87171" stroke-width="1.5"/><text x="320" y="115" text-anchor="middle" font-size="9" font-weight="600" fill="#DC2626">Database</text><text x="320" y="128" text-anchor="middle" font-size="7" fill="#7F1D1D">🐢 50ms</text>
+  <!-- Step 1: Check cache -->
+  <line x1="170" y1="67" x2="95" y2="98" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#ca1)"/>
+  <text x="115" y="78" font-size="7" fill="#3B82F6" font-weight="600">① Check</text>
+  <!-- Step 2: Cache miss → DB -->
+  <line x1="210" y1="67" x2="300" y2="98" stroke="#EF4444" stroke-width="1.5" marker-end="url(#ca2)"/>
+  <text x="270" y="78" font-size="7" fill="#EF4444" font-weight="600">② Miss → DB</text>
+  <!-- Step 3: Write back to cache -->
+  <line x1="278" y1="130" x2="112" y2="125" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#ca3)"/>
+  <text x="195" y="145" text-anchor="middle" font-size="7" fill="#10B981" font-weight="600">③ Populate cache</text>
+  <!-- Flow summary -->
+  <rect x="60" y="155" width="300" height="18" fill="white" rx="4" stroke="#E7E5E4"/>
+  <text x="210" y="167" text-anchor="middle" font-size="7" fill="#44403C">Read: cache first → miss → DB → write cache → return | Write: DB → invalidate cache</text>
+  <defs>
+    <marker id="ca1" markerWidth="5" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0,5 2,0 4" fill="#3B82F6"/></marker>
+    <marker id="ca2" markerWidth="5" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0,5 2,0 4" fill="#EF4444"/></marker>
+    <marker id="ca3" markerWidth="5" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0,5 2,0 4" fill="#10B981"/></marker>
+  </defs>
+</svg>

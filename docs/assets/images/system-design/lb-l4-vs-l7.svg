@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 170" font-family="DM Sans, sans-serif">
+  <rect width="420" height="170" fill="#FAFAF9" rx="10"/>
+  <text x="210" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">L4 (Transport) vs L7 (Application)</text>
+  <!-- L4 -->
+  <rect x="10" y="32" width="195" height="130" fill="white" rx="8" stroke="#3B82F6" stroke-width="1.5"/>
+  <rect x="10" y="32" width="195" height="22" fill="#3B82F6" rx="8 8 0 0"/><text x="107" y="47" text-anchor="middle" font-size="9" font-weight="700" fill="white">L4 — Transport</text>
+  <text x="107" y="72" text-anchor="middle" font-size="8" fill="#1C1917" font-weight="600">Sees: IP + Port only</text>
+  <text x="107" y="88" text-anchor="middle" font-size="8" fill="#44403C">Routes whole TCP connection</text>
+  <text x="107" y="104" text-anchor="middle" font-size="8" fill="#44403C">⚡ Ultra-fast (no inspection)</text>
+  <text x="107" y="122" text-anchor="middle" font-size="8" fill="#3B82F6">NLB, Maglev, HAProxy TCP</text>
+  <text x="107" y="138" text-anchor="middle" font-size="7" fill="#78716C">Gaming, video, internal</text>
+  <!-- L7 -->
+  <rect x="215" y="32" width="195" height="130" fill="white" rx="8" stroke="#10B981" stroke-width="1.5"/>
+  <rect x="215" y="32" width="195" height="22" fill="#10B981" rx="8 8 0 0"/><text x="312" y="47" text-anchor="middle" font-size="9" font-weight="700" fill="white">L7 — Application</text>
+  <text x="312" y="72" text-anchor="middle" font-size="8" fill="#1C1917" font-weight="600">Sees: URL, headers, cookies</text>
+  <text x="312" y="88" text-anchor="middle" font-size="8" fill="#44403C">Routes by content/path</text>
+  <text x="312" y="104" text-anchor="middle" font-size="8" fill="#44403C">🧠 Smart (content-aware)</text>
+  <text x="312" y="122" text-anchor="middle" font-size="8" fill="#10B981">ALB, Nginx, Envoy, Zuul</text>
+  <text x="312" y="138" text-anchor="middle" font-size="7" fill="#78716C">APIs, A/B, auth routing</text>
+</svg>

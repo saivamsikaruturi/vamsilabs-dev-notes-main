@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 180">
+  <defs>
+    <linearGradient id="proxyBg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dbeafe"/>
+      <stop offset="100%" style="stop-color:#eff6ff"/>
+    </linearGradient>
+    <linearGradient id="proxyBg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d1fae5"/>
+      <stop offset="100%" style="stop-color:#ecfdf5"/>
+    </linearGradient>
+  </defs>
+  <!-- Forward Proxy -->
+  <rect x="5" y="5" width="220" height="170" rx="10" fill="url(#proxyBg1)" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="115" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="700" fill="#1e40af">Forward Proxy</text>
+  <!-- Client -->
+  <rect x="20" y="55" width="45" height="30" rx="5" fill="#3b82f6"/>
+  <text x="42" y="74" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Client</text>
+  <!-- Proxy -->
+  <rect x="85" y="50" width="55" height="40" rx="5" fill="#f59e0b"/>
+  <text x="112" y="68" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Forward</text>
+  <text x="112" y="80" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Proxy</text>
+  <!-- Internet -->
+  <rect x="160" y="55" width="50" height="30" rx="5" fill="#475569"/>
+  <text x="185" y="74" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Internet</text>
+  <!-- Arrows -->
+  <path d="M65 70 L85 70" stroke="#1e40af" stroke-width="1.5" marker-end="url(#arrowProxy)"/>
+  <path d="M140 70 L160 70" stroke="#1e40af" stroke-width="1.5" marker-end="url(#arrowProxy)"/>
+  <!-- Description -->
+  <text x="115" y="110" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#1e40af">Acts on behalf of CLIENT</text>
+  <text x="115" y="125" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">• Hide client IP</text>
+  <text x="115" y="138" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">• Content filtering</text>
+  <text x="115" y="151" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">• Bypass restrictions</text>
+  <text x="115" y="164" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#64748b">Ex: VPN, Corporate proxy</text>
+  <!-- Reverse Proxy -->
+  <rect x="235" y="5" width="220" height="170" rx="10" fill="url(#proxyBg2)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="345" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="700" fill="#065f46">Reverse Proxy</text>
+  <!-- Internet -->
+  <rect x="250" y="55" width="50" height="30" rx="5" fill="#475569"/>
+  <text x="275" y="74" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Internet</text>
+  <!-- Proxy -->
+  <rect x="320" y="50" width="55" height="40" rx="5" fill="#10b981"/>
+  <text x="347" y="68" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Reverse</text>
+  <text x="347" y="80" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Proxy</text>
+  <!-- Servers -->
+  <rect x="395" y="42" width="45" height="18" rx="4" fill="#065f46"/>
+  <text x="417" y="54" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">Server 1</text>
+  <rect x="395" y="64" width="45" height="18" rx="4" fill="#065f46"/>
+  <text x="417" y="76" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">Server 2</text>
+  <rect x="395" y="86" width="45" height="18" rx="4" fill="#065f46"/>
+  <text x="417" y="98" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">Server 3</text>
+  <!-- Arrows -->
+  <path d="M300 70 L320 70" stroke="#065f46" stroke-width="1.5" marker-end="url(#arrowProxy)"/>
+  <path d="M375 60 L395 53" stroke="#065f46" stroke-width="1" marker-end="url(#arrowProxy)"/>
+  <path d="M375 70 L395 73" stroke="#065f46" stroke-width="1" marker-end="url(#arrowProxy)"/>
+  <path d="M375 80 L395 93" stroke="#065f46" stroke-width="1" marker-end="url(#arrowProxy)"/>
+  <!-- Description -->
+  <text x="345" y="120" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#065f46">Acts on behalf of SERVER</text>
+  <text x="345" y="135" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">• Load balancing</text>
+  <text x="345" y="148" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">• SSL termination</text>
+  <text x="345" y="161" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">• Caching, security</text>
+  <text x="345" y="174" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#64748b">Ex: Nginx, Cloudflare</text>
+  <defs>
+    <marker id="arrowProxy" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+</svg>

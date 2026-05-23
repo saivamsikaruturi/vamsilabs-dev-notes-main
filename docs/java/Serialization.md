@@ -19,12 +19,12 @@ flowchart LR
         E --> F(("Java Object<br/><i>restored</i>"))
     end
 
-    style A fill:#4CAF50,color:#fff
-    style B fill:#FF9800,color:#fff
-    style C fill:#2196F3,color:#fff
-    style D fill:#2196F3,color:#fff
-    style E fill:#FF9800,color:#fff
-    style F fill:#4CAF50,color:#fff
+    style A fill:#D1FAE5,color:#1E40AF
+    style B fill:#FEF3C7,color:#1E40AF
+    style C fill:#BFDBFE,color:#1E40AF
+    style D fill:#BFDBFE,color:#1E40AF
+    style E fill:#FEF3C7,color:#1E40AF
+    style F fill:#D1FAE5,color:#1E40AF
 ```
 
 ---
@@ -203,8 +203,8 @@ flowchart LR
     Child(["Child<br/><i>Serializable</i><br/>Fields ARE serialized"])
     Parent -->|extends| Child
 
-    style Parent fill:#FF5252,color:#fff,stroke:#B71C1C,stroke-width:2px
-    style Child fill:#4CAF50,color:#fff,stroke:#1B5E20,stroke-width:2px
+    style Parent fill:#FEE2E2,color:#1E40AF,stroke:#FCA5A5,stroke-width:2px
+    style Child fill:#D1FAE5,color:#1E40AF,stroke:#6EE7B7,stroke-width:2px
 ```
 
 ```java

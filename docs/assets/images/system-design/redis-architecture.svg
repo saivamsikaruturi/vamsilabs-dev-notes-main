@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 190" font-family="DM Sans, sans-serif">
+  <rect width="480" height="190" fill="#FAFAF9" rx="10"/>
+  <text x="240" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Redis Scaling: Replication → Sentinel → Cluster</text>
+  <!-- Replication -->
+  <rect x="8" y="32" width="145" height="148" fill="white" rx="8" stroke="#E7E5E4"/>
+  <text x="80" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#1C1917">Replication</text>
+  <rect x="40" y="55" width="60" height="22" fill="#3B82F6" rx="4"/><text x="70" y="69" text-anchor="middle" font-size="7" font-weight="600" fill="white">Primary</text>
+  <line x1="55" y1="79" x2="40" y2="95" stroke="#78716C" stroke-width="1"/><line x1="85" y1="79" x2="100" y2="95" stroke="#78716C" stroke-width="1"/>
+  <rect x="20" y="97" width="50" height="18" fill="#93C5FD" rx="3"/><text x="45" y="109" text-anchor="middle" font-size="6" fill="#1E40AF">Replica 1</text>
+  <rect x="78" y="97" width="50" height="18" fill="#93C5FD" rx="3"/><text x="103" y="109" text-anchor="middle" font-size="6" fill="#1E40AF">Replica 2</text>
+  <text x="80" y="132" text-anchor="middle" font-size="7" fill="#44403C">Writes → Primary</text>
+  <text x="80" y="144" text-anchor="middle" font-size="7" fill="#44403C">Reads → Replicas</text>
+  <rect x="22" y="152" width="105" height="16" fill="#EFF6FF" rx="3"/><text x="74" y="163" text-anchor="middle" font-size="7" fill="#1D4ED8" font-weight="600">Read-heavy loads</text>
+  <!-- Sentinel -->
+  <rect x="163" y="32" width="145" height="148" fill="white" rx="8" stroke="#E7E5E4"/>
+  <text x="235" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#1C1917">Sentinel (HA)</text>
+  <rect x="200" y="55" width="60" height="22" fill="#3B82F6" rx="4"/><text x="230" y="69" text-anchor="middle" font-size="7" font-weight="600" fill="white">Primary</text>
+  <circle cx="195" cy="92" r="8" fill="#F59E0B"/><text x="195" y="95" text-anchor="middle" font-size="6" fill="white" font-weight="600">S</text>
+  <circle cx="225" cy="92" r="8" fill="#F59E0B"/><text x="225" y="95" text-anchor="middle" font-size="6" fill="white" font-weight="600">S</text>
+  <circle cx="255" cy="92" r="8" fill="#F59E0B"/><text x="255" y="95" text-anchor="middle" font-size="6" fill="white" font-weight="600">S</text>
+  <text x="225" y="112" text-anchor="middle" font-size="6" fill="#92400E">↑ watch primary</text>
+  <rect x="200" y="118" width="60" height="18" fill="#93C5FD" rx="3"/><text x="230" y="130" text-anchor="middle" font-size="6" fill="#1E40AF">Replica</text>
+  <text x="235" y="148" text-anchor="middle" font-size="7" fill="#44403C">Dies → auto-failover</text>
+  <rect x="177" y="155" width="105" height="16" fill="#FEF3C7" rx="3"/><text x="229" y="166" text-anchor="middle" font-size="7" fill="#92400E" font-weight="600">High availability</text>
+  <!-- Cluster -->
+  <rect x="318" y="32" width="150" height="148" fill="white" rx="8" stroke="#E7E5E4"/>
+  <text x="393" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#1C1917">Cluster (Shard)</text>
+  <rect x="330" y="55" width="55" height="28" fill="#10B981" rx="4" stroke="#059669"/><text x="357" y="68" text-anchor="middle" font-size="6" font-weight="600" fill="white">Shard 1</text><text x="357" y="78" text-anchor="middle" font-size="5" fill="#D1FAE5">0-5460</text>
+  <rect x="392" y="55" width="55" height="28" fill="#8B5CF6" rx="4" stroke="#7C3AED"/><text x="419" y="68" text-anchor="middle" font-size="6" font-weight="600" fill="white">Shard 2</text><text x="419" y="78" text-anchor="middle" font-size="5" fill="#EDE9FE">5461-10922</text>
+  <rect x="360" y="90" width="55" height="28" fill="#EC4899" rx="4" stroke="#DB2777"/><text x="387" y="103" text-anchor="middle" font-size="6" font-weight="600" fill="white">Shard 3</text><text x="387" y="113" text-anchor="middle" font-size="5" fill="#FCE7F3">10923-16383</text>
+  <text x="393" y="132" text-anchor="middle" font-size="7" fill="#44403C">16384 hash slots</text>
+  <text x="393" y="145" text-anchor="middle" font-size="7" fill="#44403C">CRC16(key) % 16384</text>
+  <rect x="332" y="155" width="110" height="16" fill="#F0FDF4" rx="3"/><text x="387" y="166" text-anchor="middle" font-size="7" fill="#065F46" font-weight="600">Data &gt; single node</text>
+</svg>

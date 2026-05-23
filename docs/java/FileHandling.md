@@ -31,21 +31,21 @@ flowchart LR
     FR --> BR(["BufferedReader"])
     FW --> BW(["BufferedWriter"])
 
-    style IO fill:#7C4DFF,color:#fff,stroke-width:2px
-    style BS fill:#FF5722,color:#fff
-    style CS fill:#2196F3,color:#fff
-    style IS fill:#FF8A65,color:#fff
-    style OS fill:#FF8A65,color:#fff
-    style R fill:#64B5F6,color:#fff
-    style W fill:#64B5F6,color:#fff
-    style FIS fill:#FFAB91,color:#000
-    style FOS fill:#FFAB91,color:#000
-    style BIS fill:#FFCCBC,color:#000
-    style BOS fill:#FFCCBC,color:#000
-    style FR fill:#90CAF9,color:#000
-    style FW fill:#90CAF9,color:#000
-    style BR fill:#BBDEFB,color:#000
-    style BW fill:#BBDEFB,color:#000
+    style IO fill:#DBEAFE,color:#1E40AF,stroke-width:2px
+    style BS fill:#FEF3C7,color:#1E40AF
+    style CS fill:#BFDBFE,color:#1E40AF
+    style IS fill:#FCA5A5,color:#1E40AF
+    style OS fill:#FCA5A5,color:#1E40AF
+    style R fill:#BFDBFE,color:#1E40AF
+    style W fill:#BFDBFE,color:#1E40AF
+    style FIS fill:#FEE2E2,color:#1E40AF
+    style FOS fill:#FEE2E2,color:#1E40AF
+    style BIS fill:#FEF3C7,color:#1E40AF
+    style BOS fill:#FEF3C7,color:#1E40AF
+    style FR fill:#DBEAFE,color:#1E40AF
+    style FW fill:#DBEAFE,color:#1E40AF
+    style BR fill:#DBEAFE,color:#1E40AF
+    style BW fill:#DBEAFE,color:#1E40AF
 ```
 
 ### When to use which?
@@ -393,12 +393,12 @@ flowchart LR
     Reader --> BR(["BufferedReader"])
     Reader --> SR(["StringReader"])
 
-    style O1 fill:#78909C,color:#fff
-    style Reader fill:#1565C0,color:#fff
-    style ISR fill:#42A5F5,color:#fff
-    style FR fill:#90CAF9,color:#000
-    style BR fill:#42A5F5,color:#fff
-    style SR fill:#42A5F5,color:#fff
+    style O1 fill:#DBEAFE,color:#1E40AF
+    style Reader fill:#DBEAFE,color:#1E40AF
+    style ISR fill:#BFDBFE,color:#1E40AF
+    style FR fill:#DBEAFE,color:#1E40AF
+    style BR fill:#BFDBFE,color:#1E40AF
+    style SR fill:#BFDBFE,color:#1E40AF
 ```
 
 ### Writer side (character output)
@@ -411,12 +411,12 @@ flowchart LR
     Writer --> BW(["BufferedWriter"])
     Writer --> SW(["StringWriter"])
 
-    style O2 fill:#78909C,color:#fff
-    style Writer fill:#C62828,color:#fff
-    style OSW fill:#EF5350,color:#fff
-    style FW fill:#EF9A9A,color:#000
-    style BW fill:#EF5350,color:#fff
-    style SW fill:#EF5350,color:#fff
+    style O2 fill:#DBEAFE,color:#1E40AF
+    style Writer fill:#FCA5A5,color:#1E40AF
+    style OSW fill:#FEE2E2,color:#1E40AF
+    style FW fill:#FEE2E2,color:#1E40AF
+    style BW fill:#FEE2E2,color:#1E40AF
+    style SW fill:#FEE2E2,color:#1E40AF
 ```
 
 ### InputStream side (byte input)
@@ -429,12 +429,12 @@ flowchart LR
     InStr --> BAIS(["ByteArrayInputStream"])
     InStr --> OIS(["ObjectInputStream"])
 
-    style O3 fill:#78909C,color:#fff
-    style InStr fill:#2E7D32,color:#fff
-    style FIS2 fill:#66BB6A,color:#fff
-    style BIS2 fill:#66BB6A,color:#fff
-    style BAIS fill:#66BB6A,color:#fff
-    style OIS fill:#66BB6A,color:#fff
+    style O3 fill:#DBEAFE,color:#1E40AF
+    style InStr fill:#6EE7B7,color:#1E40AF
+    style FIS2 fill:#DBEAFE,color:#1E40AF
+    style BIS2 fill:#DBEAFE,color:#1E40AF
+    style BAIS fill:#DBEAFE,color:#1E40AF
+    style OIS fill:#DBEAFE,color:#1E40AF
 ```
 
 ### OutputStream side (byte output)
@@ -447,12 +447,12 @@ flowchart LR
     OutStr --> BAOS(["ByteArrayOutputStream"])
     OutStr --> OOS(["ObjectOutputStream"])
 
-    style O4 fill:#78909C,color:#fff
-    style OutStr fill:#E65100,color:#fff
-    style FOS2 fill:#FF9800,color:#fff
-    style BOS2 fill:#FF9800,color:#fff
-    style BAOS fill:#FF9800,color:#fff
-    style OOS fill:#FF9800,color:#fff
+    style O4 fill:#DBEAFE,color:#1E40AF
+    style OutStr fill:#FCD34D,color:#1E40AF
+    style FOS2 fill:#FEF3C7,color:#1E40AF
+    style BOS2 fill:#FEF3C7,color:#1E40AF
+    style BAOS fill:#FEF3C7,color:#1E40AF
+    style OOS fill:#FEF3C7,color:#1E40AF
 ```
 
 ---

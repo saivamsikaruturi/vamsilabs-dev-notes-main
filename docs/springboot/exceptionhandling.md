@@ -15,9 +15,9 @@ flowchart LR
     E --> CA{{"🏥 @ControllerAdvice<br/>Global Exception Handler"}}
     CA --> Res(["📋 Consistent Error Response<br/>{status, message, timestamp}"])
 
-    style CA fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style Res fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style E fill:#FFCDD2,stroke:#C62828,color:#000
+    style CA fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style Res fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style E fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 ---
@@ -80,9 +80,9 @@ flowchart LR
     NotFound --> UNF(["UserNotFoundException"])
     NotFound --> PNF(["ProductNotFoundException"])
 
-    style RE fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style BizEx fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style NotFound fill:#E3F2FD,stroke:#1565C0,color:#000
+    style RE fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style BizEx fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style NotFound fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
 ```
 
 !!! tip "Design Tip"

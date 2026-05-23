@@ -8,10 +8,10 @@ flowchart LR
     A --> C{{"Setter Injection<br/>⚠️ Optional deps"}}
     A --> D(["Field Injection<br/>❌ Avoid in production"])
 
-    style A fill:#DBEAFE,stroke:#2563EB
-    style B fill:#D1FAE5,stroke:#059669
-    style C fill:#FEF3C7,stroke:#D97706
-    style D fill:#FEE2E2,stroke:#DC2626
+    style A fill:#DBEAFE,stroke:#93C5FD
+    style B fill:#D1FAE5,stroke:#93C5FD
+    style C fill:#FEF3C7,stroke:#FCD34D
+    style D fill:#FEE2E2,stroke:#FCA5A5
 ```
 
 ---
@@ -280,8 +280,8 @@ flowchart LR
     A["ServiceA"] -->|depends on| B["ServiceB"]
     B -->|depends on| A
 
-    style A fill:#FEE2E2,stroke:#DC2626
-    style B fill:#FEE2E2,stroke:#DC2626
+    style A fill:#FEE2E2,stroke:#FCA5A5
+    style B fill:#FEE2E2,stroke:#FCA5A5
 ```
 
 ### Constructor Injection → Fails

@@ -11,8 +11,8 @@ flowchart LR
         C["Spring Container"] -->|injects| D["Your Code"]
     end
 
-    style Traditional fill:#FEE2E2,stroke:#DC2626
-    style IoC fill:#D1FAE5,stroke:#059669
+    style Traditional fill:#FEE2E2,stroke:#FCA5A5
+    style IoC fill:#D1FAE5,stroke:#93C5FD
 ```
 
 ---
@@ -80,11 +80,11 @@ flowchart LR
     B --> D(["ClassPathXmlApplicationContext"])
     B --> E(["WebApplicationContext"])
 
-    style A fill:#FEF3C7,stroke:#D97706
-    style B fill:#DBEAFE,stroke:#2563EB
-    style C fill:#D1FAE5,stroke:#059669
-    style D fill:#D1FAE5,stroke:#059669
-    style E fill:#D1FAE5,stroke:#059669
+    style A fill:#FEF3C7,stroke:#FCD34D
+    style B fill:#DBEAFE,stroke:#93C5FD
+    style C fill:#D1FAE5,stroke:#93C5FD
+    style D fill:#D1FAE5,stroke:#93C5FD
+    style E fill:#D1FAE5,stroke:#93C5FD
 ```
 
 | Feature | BeanFactory | ApplicationContext |
@@ -118,14 +118,14 @@ flowchart LR
     H --> I["@PreDestroy"]
     I --> J["destroy()"]
 
-    style A fill:#DBEAFE,stroke:#2563EB,color:#000
-    style B fill:#DBEAFE,stroke:#2563EB,color:#000
-    style D fill:#FEF3C7,stroke:#D97706,color:#000
-    style E fill:#D1FAE5,stroke:#059669,color:#000
-    style G fill:#FEF3C7,stroke:#D97706,color:#000
-    style H fill:#ECFDF5,stroke:#059669,stroke-width:2px,color:#000
-    style I fill:#FEE2E2,stroke:#DC2626,color:#000
-    style J fill:#FEE2E2,stroke:#DC2626,color:#000
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style D fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style E fill:#D1FAE5,stroke:#93C5FD,color:#1E40AF
+    style G fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style H fill:#ECFDF5,stroke:#93C5FD,stroke-width:2px,color:#1E40AF
+    style I fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style J fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 ### Step-by-Step
@@ -391,9 +391,9 @@ flowchart LR
     C --> D["postProcessAfter<br/>Initialization"]
     D --> E["Bean Ready"]
 
-    style B fill:#FEF3C7,stroke:#D97706
-    style D fill:#FEF3C7,stroke:#D97706
-    style E fill:#D1FAE5,stroke:#059669
+    style B fill:#FEF3C7,stroke:#FCD34D
+    style D fill:#FEF3C7,stroke:#FCD34D
+    style E fill:#D1FAE5,stroke:#93C5FD
 ```
 
 ```java

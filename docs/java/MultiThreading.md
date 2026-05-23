@@ -28,6 +28,15 @@ flowchart LR
         B_T1 --> B_HEAP
         B_T2 --> B_HEAP
     end
+
+    style A_HEAP fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style A_T1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style A_T2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style A_T3 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style B_HEAP fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B_T1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style B_T2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style P fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 | Aspect | Process | Thread |
@@ -247,7 +256,7 @@ flowchart LR
     C1 --> RAM(["Main Memory (RAM)"])
     C2 --> RAM
 
-    style RAM fill:#FEF3C7,stroke:#D97706,color:#92400E
+    style RAM fill:#FEF3C7,stroke:#FCD34D,color:#92400E
 ```
 
 Each CPU core has its own cache. Without explicit synchronization, Thread 1's writes may never be visible to Thread 2 — they stay in CPU 1's cache. The JMM specifies **happens-before** rules that guarantee visibility.
@@ -379,6 +388,14 @@ flowchart LR
     T3 -->|BLOCKED| QUEUE
     OWNER -->|exits block| RELEASE(["Lock Released"])
     RELEASE -->|one thread unblocked| QUEUE
+
+    style OWNER fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style QUEUE fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style RELEASE fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style SYNC fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style T1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style T2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style T3 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
 ```
 
 - Every Java object has an **intrinsic lock** (monitor)
@@ -394,6 +411,10 @@ The JVM applies progressive lock optimization:
 flowchart LR
     B(["Biased Locking<br/>(single thread, no CAS)"]) -->|contention detected| T{{"Thin Lock<br/>(CAS on mark word)"}}
     T -->|spinning fails| F{{"Fat Lock<br/>(OS mutex, park thread)"}}
+
+    style B fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style F fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style T fill:#FEF3C7,stroke:#FCD34D,color:#92400E
 ```
 
 | Level | Mechanism | When | Cost |
@@ -624,6 +645,12 @@ flowchart LR
     COMPUTE --> CAS{"CAS(expected=5, new=6)"}
     CAS -->|Success: was 5, now 6| DONE(["Operation complete"])
     CAS -->|Failure: value changed| READ
+
+    style 6 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style CAS fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style COMPUTE fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style DONE fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style READ fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### AtomicInteger Internals
@@ -702,6 +729,15 @@ flowchart LR
     CLIENT1(("Client")) -->|submit task| TASKS
     CLIENT2(("Client")) -->|submit task| TASKS
     CLIENT3(("Client")) -->|submit task| TASKS
+
+    style 1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style 2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style 3 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style CLIENT1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style CLIENT2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style CLIENT3 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style N fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style TASKS fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 ### Types of Thread Pools
@@ -918,6 +954,12 @@ flowchart LR
     CHM --> SN[["Segment N<br/>(own lock)"]]
     S0 --> B0(["Bucket 0 → Node → Node"])
     S1 --> B1(["Bucket 1 → Node → Node"])
+
+    style CHM fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style S0 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style S1 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style e fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style k fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 **Java 8+**: No longer uses segments. Uses per-bucket CAS + `synchronized` on the head node of each bucket. Reads are lock-free (volatile reads of nodes).
@@ -1077,6 +1119,13 @@ flowchart LR
     VT1 -->|"mounted on"| CT1
     VT3 -->|"waiting for"| CT2
     VT2 -->|"unmounted<br/>(parked)"| HEAP[/"Heap<br/>(continuation stored)"/]
+
+    style CT1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style CT2 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style HEAP fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style VT1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style VT2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style VT3 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
 ```
 
 When a virtual thread blocks on I/O:

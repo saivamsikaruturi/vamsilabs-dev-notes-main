@@ -14,6 +14,14 @@ graph LR
     API --> DM[DriverManager /<br/>DataSource]
     DM --> DRIVER[JDBC Driver]
     DRIVER --> DB[(Database)]
+
+    style API fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style APP fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style DM fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style DRIVER fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style e fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style l fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style r fill:#FEF3C7,stroke:#FCD34D,color:#92400E
 ```
 
 ### Key Interfaces (all in `java.sql`)
@@ -284,6 +292,16 @@ graph LR
     C1 --> DB[(Database)]
     C2 --> DB
     C3 --> DB
+
+    style B fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style C1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style C2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style C3 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style POOL fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style T1 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style T2 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style T3 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style e fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### HikariCP — The Gold Standard

@@ -6,6 +6,11 @@
 flowchart LR
     A["You write<br/>business logic"] --> B["Spring Boot handles<br/>everything else"]
     B --> C["Running<br/>application"]
+
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style e fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style n fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 !!! abstract "In Simple Words"
@@ -32,12 +37,12 @@ flowchart LR
     D --> E{{"Deploy to external server"}}
     E --> F(["Pray it works 🙏"])
 
-    style A fill:#ECFDF5,stroke:#059669
-    style B fill:#FEF3C7,stroke:#D97706
-    style C fill:#FEF3C7,stroke:#D97706
-    style D fill:#FEE2E2,stroke:#DC2626
-    style E fill:#FEE2E2,stroke:#DC2626
-    style F fill:#FEE2E2,stroke:#DC2626
+    style A fill:#ECFDF5,stroke:#93C5FD
+    style B fill:#FEF3C7,stroke:#FCD34D
+    style C fill:#FEF3C7,stroke:#FCD34D
+    style D fill:#FEE2E2,stroke:#FCA5A5
+    style E fill:#FEE2E2,stroke:#FCA5A5
+    style F fill:#FEE2E2,stroke:#FCA5A5
 ```
 
 Each of these steps introduces its own set of problems:
@@ -53,8 +58,8 @@ Each of these steps introduces its own set of problems:
 flowchart LR
     A["Write your code"] --> B["Run it ✅"]
 
-    style A fill:#ECFDF5,stroke:#059669
-    style B fill:#ECFDF5,stroke:#059669
+    style A fill:#ECFDF5,stroke:#93C5FD
+    style B fill:#ECFDF5,stroke:#93C5FD
 ```
 
 You add one dependency (`spring-boot-starter-web`), write your controller, and run `java -jar app.jar`. Spring Boot figures out that you want a web application, embeds Tomcat, configures a connection pool, sets up JSON serialization, and starts everything on port 8080.
@@ -92,12 +97,12 @@ flowchart LR
     SB --> P4[["④ <b>Spring IoC</b><br/>Objects managed<br/>by the framework"]]
     SB --> P5[["⑤ <b>Actuator</b><br/>Monitor your app<br/>in production"]]
 
-    style SB fill:#FEF3C7,stroke:#D97706,stroke-width:2px
-    style P1 fill:#ECFDF5,stroke:#059669
-    style P2 fill:#ECFDF5,stroke:#059669
-    style P3 fill:#ECFDF5,stroke:#059669
-    style P4 fill:#EDE9FE,stroke:#7C3AED
-    style P5 fill:#EDE9FE,stroke:#7C3AED
+    style SB fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px
+    style P1 fill:#ECFDF5,stroke:#93C5FD
+    style P2 fill:#ECFDF5,stroke:#93C5FD
+    style P3 fill:#ECFDF5,stroke:#93C5FD
+    style P4 fill:#EFF6FF,stroke:#93C5FD
+    style P5 fill:#EFF6FF,stroke:#93C5FD
 ```
 
 ---
@@ -208,8 +213,8 @@ flowchart LR
         B1[/"Your Code + Tomcat (JAR)"/] --> B2(["java -jar app.jar"])
     end
 
-    style Traditional fill:#FEE2E2,stroke:#DC2626
-    style SpringBoot fill:#ECFDF5,stroke:#059669
+    style Traditional fill:#FEE2E2,stroke:#FCA5A5
+    style SpringBoot fill:#ECFDF5,stroke:#93C5FD
 ```
 
 Just run: `java -jar myapp.jar` — done.
@@ -405,12 +410,12 @@ flowchart LR
     C --> DS
     DS --> Client
 
-    style Client fill:#DBEAFE,stroke:#2563EB
-    style DS fill:#FEF3C7,stroke:#D97706
-    style C fill:#ECFDF5,stroke:#059669
-    style S fill:#ECFDF5,stroke:#059669
-    style R fill:#ECFDF5,stroke:#059669
-    style DB fill:#F3E8FF,stroke:#9333EA
+    style Client fill:#DBEAFE,stroke:#93C5FD
+    style DS fill:#FEF3C7,stroke:#FCD34D
+    style C fill:#ECFDF5,stroke:#93C5FD
+    style S fill:#ECFDF5,stroke:#93C5FD
+    style R fill:#ECFDF5,stroke:#93C5FD
+    style DB fill:#EFF6FF,stroke:#93C5FD
 ```
 
 Every HTTP request in a Spring Boot application follows this path:

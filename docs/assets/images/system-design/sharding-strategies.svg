@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 200">
+  <defs>
+    <linearGradient id="shardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#f1f5f9"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="456" height="196" rx="10" fill="url(#shardBg)" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="230" y="22" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700" fill="#1e293b">Sharding Strategies</text>
+  <!-- Hash Based -->
+  <rect x="15" y="35" width="105" height="155" rx="8" fill="white" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="67" y="52" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#1e40af">Hash-Based</text>
+  <text x="67" y="70" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">hash(key) % N</text>
+  <rect x="25" y="80" width="85" height="16" rx="3" fill="#dbeafe"/>
+  <text x="67" y="91" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#1e40af">user_123 → S2</text>
+  <rect x="25" y="100" width="85" height="16" rx="3" fill="#dbeafe"/>
+  <text x="67" y="111" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#1e40af">user_456 → S0</text>
+  <rect x="25" y="120" width="85" height="16" rx="3" fill="#dbeafe"/>
+  <text x="67" y="131" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#1e40af">user_789 → S1</text>
+  <text x="67" y="155" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#059669">✓ Even distribution</text>
+  <text x="67" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">✗ Range queries hard</text>
+  <text x="67" y="181" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">✗ Resharding painful</text>
+  <!-- Range Based -->
+  <rect x="130" y="35" width="105" height="155" rx="8" fill="white" stroke="#10b981" stroke-width="1.5"/>
+  <text x="182" y="52" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#065f46">Range-Based</text>
+  <text x="182" y="70" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">by value range</text>
+  <rect x="140" y="80" width="85" height="16" rx="3" fill="#d1fae5"/>
+  <text x="182" y="91" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#065f46">A-M → Shard 1</text>
+  <rect x="140" y="100" width="85" height="16" rx="3" fill="#d1fae5"/>
+  <text x="182" y="111" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#065f46">N-Z → Shard 2</text>
+  <rect x="140" y="120" width="85" height="16" rx="3" fill="#d1fae5"/>
+  <text x="182" y="131" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#065f46">Jan-Jun → S1</text>
+  <text x="182" y="155" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#059669">✓ Range queries fast</text>
+  <text x="182" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">✗ Hotspot risk</text>
+  <text x="182" y="181" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">✗ Uneven distribution</text>
+  <!-- Directory Based -->
+  <rect x="245" y="35" width="105" height="155" rx="8" fill="white" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="297" y="52" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#92400e">Directory-Based</text>
+  <text x="297" y="70" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">lookup table</text>
+  <rect x="255" y="80" width="85" height="16" rx="3" fill="#fef3c7"/>
+  <text x="297" y="91" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#92400e">key → lookup → shard</text>
+  <rect x="265" y="102" width="65" height="30" rx="3" fill="#fde68a" stroke="#f59e0b" stroke-width="0.5"/>
+  <text x="297" y="115" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#78350f">Lookup Table</text>
+  <text x="297" y="126" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#78350f">(any mapping)</text>
+  <text x="297" y="155" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#059669">✓ Flexible mapping</text>
+  <text x="297" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">✗ Table = SPOF</text>
+  <text x="297" y="181" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">✗ Extra hop</text>
+  <!-- Geo Based -->
+  <rect x="360" y="35" width="90" height="155" rx="8" fill="white" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="405" y="52" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#5b21b6">Geo-Based</text>
+  <text x="405" y="70" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">by region</text>
+  <rect x="368" y="80" width="76" height="16" rx="3" fill="#ede9fe"/>
+  <text x="405" y="91" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#5b21b6">US → Shard US</text>
+  <rect x="368" y="100" width="76" height="16" rx="3" fill="#ede9fe"/>
+  <text x="405" y="111" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#5b21b6">EU → Shard EU</text>
+  <rect x="368" y="120" width="76" height="16" rx="3" fill="#ede9fe"/>
+  <text x="405" y="131" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#5b21b6">APAC → Shard AP</text>
+  <text x="405" y="155" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#059669">✓ Data locality</text>
+  <text x="405" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#059669">✓ Compliance</text>
+  <text x="405" y="181" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">✗ Uneven load</text>
+</svg>

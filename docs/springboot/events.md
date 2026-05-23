@@ -14,7 +14,7 @@ flowchart LR
     E --> L2["📥 Listener 2<br/>(InventoryService)"]
     E --> L3["📥 Listener 3<br/>(AuditService)"]
 
-    style E fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
+    style E fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
 ```
 
 ---
@@ -248,8 +248,8 @@ flowchart LR
         A1 --> A4{{"Listener 2 (thread-2)"}}
     end
 
-    style Sync fill:#E3F2FD,stroke:#1565C0,color:#000
-    style Async fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Sync fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style Async fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 ### Async Events: @Async + @EventListener

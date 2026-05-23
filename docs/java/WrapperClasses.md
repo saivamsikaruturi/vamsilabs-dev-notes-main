@@ -63,18 +63,27 @@ System.out.println(c.equals(d)); // true  (always use .equals for objects)
 
 ### Why this happens
 
-```
-    Integer.valueOf(127)
-    ┌─────────────────────────────────────┐
-    │        Integer Cache [-128..127]     │
-    │  ... │ 126 │ 127 │                  │  ◄── a and b point here (same object)
-    └─────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph CACHED["valueOf(127) — Cache Hit"]
+        direction LR
+        A["a"] --> POOL["Integer Cache\n[-128..127]"]
+        B["b"] --> POOL
+    end
 
-    Integer.valueOf(128)
-    ┌──────────┐    ┌──────────┐
-    │ Integer  │    │ Integer  │
-    │ val=128  │    │ val=128  │  ◄── c and d are different objects
-    └──────────┘    └──────────┘
+    subgraph NEW["valueOf(128) — New Objects"]
+        direction LR
+        C["c"] --> OBJ1["Integer\nval=128"]
+        D["d"] --> OBJ2["Integer\nval=128"]
+    end
+
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style POOL fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style C fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style D fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style OBJ1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style OBJ2 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
 `Integer.valueOf()` returns the cached object for -128 to 127. For values outside this range, it creates a **new object every time**.

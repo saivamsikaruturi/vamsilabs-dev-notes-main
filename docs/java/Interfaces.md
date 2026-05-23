@@ -99,16 +99,16 @@ graph LR
         I4["✅ You want loose coupling - program to an interface"]
     end
 
-    style AC fill:#6c5ce7,stroke:#4a3db8,color:#fff
-    style IF fill:#00b894,stroke:#008c6e,color:#fff
-    style A1 fill:#a29bfe,stroke:#6c5ce7,color:#333
-    style A2 fill:#a29bfe,stroke:#6c5ce7,color:#333
-    style A3 fill:#a29bfe,stroke:#6c5ce7,color:#333
-    style A4 fill:#a29bfe,stroke:#6c5ce7,color:#333
-    style I1 fill:#55efc4,stroke:#00b894,color:#333
-    style I2 fill:#55efc4,stroke:#00b894,color:#333
-    style I3 fill:#55efc4,stroke:#00b894,color:#333
-    style I4 fill:#55efc4,stroke:#00b894,color:#333
+    style AC fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style IF fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style A1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style A2 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style A3 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style A4 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style I1 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style I2 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style I3 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style I4 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### Real-world examples
@@ -130,9 +130,9 @@ graph LR
 graph LR
     J7["☕ Java 7<br/>Only abstract methods"] --> J8["🚀 Java 8<br/>+ default methods<br/>+ static methods"] --> J9["🔒 Java 9<br/>+ private methods<br/>helper methods for defaults"]
 
-    style J7 fill:#636e72,stroke:#2d3436,color:#fff
-    style J8 fill:#0984e3,stroke:#0652a3,color:#fff
-    style J9 fill:#6c5ce7,stroke:#4a3db8,color:#fff
+    style J7 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style J8 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style J9 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### Why default methods were added

@@ -16,8 +16,8 @@ flowchart LR
     DB --> Store{{"📥 Store in cache"}}
     Store --> Return(["Return to client"])
 
-    style Fast fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style DB fill:#FEF3C7,stroke:#D97706,color:#000
+    style Fast fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style DB fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
 ```
 
 ---
@@ -401,8 +401,8 @@ flowchart LR
         WD --> WC(["Invalidate/Update cache"])
     end
 
-    style RR fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style WC fill:#FEF3C7,stroke:#D97706,color:#000
+    style RR fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style WC fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
 ```
 
 **Pros:** Only caches what's actually requested. Simple.  

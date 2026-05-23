@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 180">
+  <defs>
+    <linearGradient id="mqBg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dbeafe"/>
+      <stop offset="100%" style="stop-color:#eff6ff"/>
+    </linearGradient>
+    <linearGradient id="mqBg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d1fae5"/>
+      <stop offset="100%" style="stop-color:#ecfdf5"/>
+    </linearGradient>
+  </defs>
+  <!-- Point to Point -->
+  <rect x="5" y="5" width="220" height="170" rx="10" fill="url(#mqBg1)" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="115" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700" fill="#1e40af">Point-to-Point</text>
+  <rect x="20" y="40" width="50" height="24" rx="4" fill="#3b82f6"/>
+  <text x="45" y="56" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="white">Producer</text>
+  <rect x="85" y="40" width="60" height="24" rx="4" fill="#f59e0b"/>
+  <text x="115" y="56" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="white">Queue</text>
+  <rect x="160" y="40" width="55" height="24" rx="4" fill="#10b981"/>
+  <text x="187" y="56" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="white">Consumer</text>
+  <path d="M70 52 L85 52" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowMq)"/>
+  <path d="M145 52 L160 52" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowMq)"/>
+  <text x="115" y="82" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#475569">1 message → 1 consumer</text>
+  <text x="115" y="96" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#475569">Consumed = deleted</text>
+  <text x="115" y="120" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#64748b">Use: Job queues, task distribution</text>
+  <!-- Pub/Sub -->
+  <rect x="235" y="5" width="220" height="170" rx="10" fill="url(#mqBg2)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="345" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700" fill="#065f46">Publish/Subscribe</text>
+  <rect x="250" y="55" width="50" height="24" rx="4" fill="#3b82f6"/>
+  <text x="275" y="71" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="white">Producer</text>
+  <rect x="315" y="55" width="50" height="24" rx="4" fill="#f59e0b"/>
+  <text x="340" y="71" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="white">Topic</text>
+  <rect x="385" y="35" width="55" height="20" rx="4" fill="#10b981"/>
+  <text x="412" y="49" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Sub A</text>
+  <rect x="385" y="60" width="55" height="20" rx="4" fill="#10b981"/>
+  <text x="412" y="74" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Sub B</text>
+  <rect x="385" y="85" width="55" height="20" rx="4" fill="#10b981"/>
+  <text x="412" y="99" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Sub C</text>
+  <path d="M300 67 L315 67" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowMq)"/>
+  <path d="M365 62 L385 45" stroke="#64748b" stroke-width="1" marker-end="url(#arrowMq)"/>
+  <path d="M365 67 L385 70" stroke="#64748b" stroke-width="1" marker-end="url(#arrowMq)"/>
+  <path d="M365 72 L385 95" stroke="#64748b" stroke-width="1" marker-end="url(#arrowMq)"/>
+  <text x="345" y="125" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#475569">1 message → all subscribers</text>
+  <text x="345" y="139" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#475569">Each gets a copy</text>
+  <text x="345" y="160" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#64748b">Use: Events, notifications, fan-out</text>
+  <defs>
+    <marker id="arrowMq" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

@@ -30,23 +30,23 @@ flowchart LR
     CE --> CNFE(["ClassNotFoundException"])
     CE --> IE(["InterruptedException"])
 
-    style T fill:#4a148c,stroke:#4a148c,color:#ffffff
-    style E fill:#b71c1c,stroke:#b71c1c,color:#ffffff
-    style OOM fill:#e53935,stroke:#c62828,color:#ffffff
-    style SOE fill:#e53935,stroke:#c62828,color:#ffffff
-    style VE fill:#e53935,stroke:#c62828,color:#ffffff
-    style EX fill:#1565c0,stroke:#0d47a1,color:#ffffff
-    style RE fill:#e65100,stroke:#bf360c,color:#ffffff
-    style NPE fill:#ff9800,stroke:#e65100,color:#ffffff
-    style AIOB fill:#ff9800,stroke:#e65100,color:#ffffff
-    style CCE fill:#ff9800,stroke:#e65100,color:#ffffff
-    style IAE fill:#ff9800,stroke:#e65100,color:#ffffff
-    style AE fill:#ff9800,stroke:#e65100,color:#ffffff
-    style CE fill:#1976d2,stroke:#0d47a1,color:#ffffff
-    style IOE fill:#42a5f5,stroke:#1565c0,color:#ffffff
-    style SQLE fill:#42a5f5,stroke:#1565c0,color:#ffffff
-    style CNFE fill:#42a5f5,stroke:#1565c0,color:#ffffff
-    style IE fill:#42a5f5,stroke:#1565c0,color:#ffffff
+    style T fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style E fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style OOM fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style SOE fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style VE fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style EX fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style RE fill:#FCD34D,stroke:#FCA5A5,color:#1E40AF
+    style NPE fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style AIOB fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style CCE fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style IAE fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style AE fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style CE fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style IOE fill:#BFDBFE,stroke:#DBEAFE,color:#1E40AF
+    style SQLE fill:#BFDBFE,stroke:#DBEAFE,color:#1E40AF
+    style CNFE fill:#BFDBFE,stroke:#DBEAFE,color:#1E40AF
+    style IE fill:#BFDBFE,stroke:#DBEAFE,color:#1E40AF
 ```
 
 ## Exception Flow — try/catch/finally Execution
@@ -67,17 +67,17 @@ flowchart LR
 
     NOTE1[/"NOTE: If finally has a return,<br/>it OVERRIDES the try/catch return!<br/>Never return from finally."/]
 
-    style START fill:#4caf50,stroke:#2e7d32,color:#ffffff
-    style CODE fill:#e3f2fd,stroke:#1565c0
-    style MATCH fill:#fff9c4,stroke:#f9a825
-    style CATCH fill:#fff3e0,stroke:#e65100
-    style FINALLY1 fill:#e8f5e9,stroke:#2e7d32
-    style FINALLY2 fill:#e8f5e9,stroke:#2e7d32
-    style FINALLY3 fill:#e8f5e9,stroke:#2e7d32
-    style PROPAGATE fill:#ef5350,stroke:#c62828,color:#ffffff
-    style RETURN1 fill:#66bb6a,stroke:#2e7d32,color:#ffffff
-    style RETURN2 fill:#66bb6a,stroke:#2e7d32,color:#ffffff
-    style NOTE1 fill:#ffecb3,stroke:#ff8f00
+    style START fill:#DBEAFE,stroke:#6EE7B7,color:#1E40AF
+    style CODE fill:#EFF6FF,stroke:#DBEAFE
+    style MATCH fill:#FEF3C7,stroke:#FCD34D
+    style CATCH fill:#FFFBEB,stroke:#FCD34D
+    style FINALLY1 fill:#ECFDF5,stroke:#6EE7B7
+    style FINALLY2 fill:#ECFDF5,stroke:#6EE7B7
+    style FINALLY3 fill:#ECFDF5,stroke:#6EE7B7
+    style PROPAGATE fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style RETURN1 fill:#DBEAFE,stroke:#6EE7B7,color:#1E40AF
+    style RETURN2 fill:#DBEAFE,stroke:#6EE7B7,color:#1E40AF
+    style NOTE1 fill:#FEF3C7,stroke:#FCD34D
 ```
 
 ---

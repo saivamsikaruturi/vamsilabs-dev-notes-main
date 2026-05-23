@@ -143,31 +143,55 @@ nav:
       - Core Java:
           - Ecosystem & Setup: java/ecosystem.md
           - Java Basics: java/JavaBasics.md
+          - Static & Final Keywords: java/StaticAndFinal.md
           - OOP Concepts: java/oops.md
+          - Overloading vs Overriding: java/OverloadingVsOverriding.md
+          - Pass-by-Value: java/PassByValue.md
           - Access Modifiers: java/AccessModifiers.md
           - Constructors: java/Constructors.md
           - this & super: java/thisandSuper.md
           - Strings: java/Strings.md
+          - String Pool & Internals: java/StringPoolInternals.md
+          - String Methods & Manipulation: java/StringMethods.md
           - Wrapper Classes: java/WrapperClasses.md
           - Enums: java/Enums.md
           - Interfaces & Abstract Classes: java/Interfaces.md
           - Inner Classes: java/InnerClasses.md
+          - Casting & instanceof: java/CastingAndInstanceof.md
           - equals & hashCode: java/EqualsHashCode.md
+          - Object Class Methods: java/ObjectClassMethods.md
           - Immutable Classes: java/ImmutableClasses.md
           - Design Principles (SOLID): java/DesignPrinciples.md
+          - Effective Java Patterns: java/EffectiveJavaPatterns.md
+          - Packages & Imports: java/PackagesAndImports.md
+          - Marker Interfaces vs Annotations: java/MarkerInterfaces.md
+          - Varargs & Heap Pollution: java/VarargsAndHeapPollution.md
+          - BigDecimal & Precision: java/BigDecimalPrecision.md
           - Regular Expressions: java/Regex.md
+          - try-with-resources & AutoCloseable: java/TryWithResources.md
       - Advanced Java:
           - Exception Handling: java/ExceptionHandling.md
           - Collections Framework: java/Collections.md
+          - HashMap Internals: java/HashMapInternals.md
           - Comparable vs Comparator: java/ComparableComparator.md
           - Collections Compared: java/DiffCollections.md
+          - PriorityQueue & Heap: java/PriorityQueueAndHeap.md
+          - LinkedHashMap & LRU Cache: java/LinkedHashMapLRU.md
+          - Iterator & Iterable: java/IteratorAndIterable.md
+          - Fail-Fast vs Fail-Safe Iterators: java/FailFastFailSafe.md
+          - EnumSet & EnumMap: java/EnumSetAndEnumMap.md
           - Multithreading: java/MultiThreading.md
+          - Daemon Threads & Lifecycle: java/DaemonThreadsAndLifecycle.md
           - Thread Pools & Executors: java/Executors.md
           - Locks: java/Locks.md
           - volatile & Atomics: java/VolatileAtomics.md
           - Deadlocks: java/deadlocks.md
           - Concurrent Collections: java/ConcurrentCollections.md
+          - ConcurrentHashMap Internals: java/ConcurrentHashMapInternals.md
           - Concurrency Patterns: java/ConcurrencyPatterns.md
+          - Fork/Join Framework: java/ForkJoinFramework.md
+          - ThreadLocal & Sync Aids: java/ThreadLocalAndSyncAids.md
+          - BlockingQueue & Producer-Consumer: java/BlockingQueueProducerConsumer.md
           - JDBC: java/JDBC.md
           - Serialization: java/Serialization.md
           - Cloning: java/Cloning.md
@@ -175,12 +199,17 @@ nav:
           - I/O & NIO: java/NIO.md
           - Networking: java/Networking.md
           - Generics: java/Generics.md
+          - Covariance & PECS: java/CovarianceAndPECS.md
+          - Type Erasure & Generics Pitfalls: java/TypeErasure.md
           - Annotations: java/Annotations.md
           - Reflection: java/Reflection.md
           - Dynamic Proxy: java/DynamicProxy.md
+          - ServiceLoader & SPI: java/ServiceLoaderSPI.md
       - Functional & Reactive:
           - Functional Programming: java/FunctionalProgramming.md
+          - Optional Deep Dive: java/OptionalDeepDive.md
           - Stream API: stream-api/streamapi.md
+          - Collectors & Parallel Streams: java/CollectorsAndParallelStreams.md
           - CompletableFuture: java/CompletableFuture.md
           - Reactive Streams: java/ReactiveStreams.md
       - JVM Internals:
@@ -190,14 +219,25 @@ nav:
           - Garbage Collection: java/GarbageCollection.md
           - JVM Tuning & Monitoring: java/JVMTuning.md
           - Memory Leaks & Profiling: java/MemoryLeaks.md
+          - Profiling Tools (JFR, async-profiler): java/ProfilingTools.md
+          - Java Agents & Instrumentation: java/JavaAgents.md
+          - Reference Types (Weak/Soft/Phantom): java/ReferenceTypes.md
       - Version Features:
           - Java 8: java/Java8.md
           - Date & Time API: java/DateTime.md
           - Java 11: java/java11.md
           - Java 17: java/Java17.md
+          - Java 21+ (LTS): java/Java21.md
+          - Pattern Matching (16-21+): java/PatternMatching.md
+          - Virtual Threads & Structured Concurrency: java/VirtualThreads.md
+          - Scoped Values & Structured Concurrency: java/ScopedValuesStructuredConcurrency.md
           - Modern Java (17-21): java/ModernJava.md
+          - Stream Gatherers (22+): java/StreamGatherers.md
+          - Records & Sealed Classes: java/RecordsAndSealedClasses.md
+          - Module System (JPMS): java/ModuleSystem.md
       - Security & Build:
           - Java Security: java/Security.md
+          - Logging (SLF4J, Logback, Log4j2): java/Logging.md
           - Maven: java/maven.md
           - Gradle: java/gradle.md
   - Spring:
@@ -208,27 +248,64 @@ nav:
           - IoC & DI: springboot/SpringIOC.md
           - Types of DI: springboot/TypesOfDi.md
           - Bean Lifecycle & Scopes: springboot/bean-lifecycle.md
+          - Circular Dependencies: springboot/circular-dependencies.md
+          - Custom Starters & Bean Processors: springboot/custom-starter-bean-processors.md
           - AOP (Aspect-Oriented): springboot/aop.md
+          - SpEL (Expression Language): springboot/spel.md
           - Design Patterns in Spring: springboot/design-patterns.md
       - Data & Persistence:
           - Spring Data JPA: springboot/spring-data-jpa.md
+          - Specifications & Dynamic Queries: springboot/specifications-dynamic-queries.md
+          - N+1 Problem & JPA Internals: springboot/n-plus-one-jpa.md
+          - Hibernate & JPA Internals: springboot/hibernate-internals.md
           - Transactions: springboot/transactions.md
+          - Multiple DataSources & JPA Auditing: springboot/multi-datasource-auditing.md
           - Database Migrations: springboot/database-migrations.md
+          - Pagination & Sorting: springboot/pagination-sorting.md
           - Caching: springboot/caching.md
+          - Spring Data Redis: springboot/spring-data-redis.md
       - Web & API:
+          - MVC Request Lifecycle: springboot/mvc-request-lifecycle.md
+          - Filters vs Interceptors vs AOP: springboot/filters-interceptors-aop.md
           - REST API Practices: springboot/restapibestpractices.md
+          - CORS & Content Negotiation: springboot/cors-content-negotiation.md
+          - Entity-to-DTO Mapping (MapStruct): springboot/dto-mapping.md
+          - HTTP Clients (RestTemplate vs WebClient vs RestClient): springboot/http-clients.md
           - Exception Handling: springboot/exceptionhandling.md
           - Validation & Data Binding: springboot/validation.md
           - WebFlux & Reactive: springboot/webflux.md
+          - GraphQL with Spring: springboot/spring-graphql.md
+          - WebSocket & Real-Time: springboot/spring-websocket.md
+          - File Upload & Download: springboot/file-upload-download.md
       - Security & Auth:
           - Spring Security: springboot/security.md
+          - Security Filter Chain Internals: springboot/security-filter-chain.md
+          - Method Security & OAuth2: springboot/method-security-oauth2.md
       - Advanced Features:
           - Profiles & Configuration: springboot/profiles.md
+          - "@ConfigurationProperties": springboot/configuration-properties.md
           - Events & Listeners: springboot/events.md
           - Async & Scheduling: springboot/async.md
           - Actuator & Monitoring: springboot/actuator.md
+          - Observability (Logs, Metrics, Tracing): springboot/observability.md
           - Testing: springboot/testing.md
+          - Slice Testing & MockMvc: springboot/slice-testing.md
           - Spring Boot 3: springboot/SpringBoot3.md
+      - Deep Dives:
+          - Internals & How It Works: springboot/internals.md
+          - Common Pitfalls & Debugging: springboot/pitfalls.md
+          - Production Performance Tuning: springboot/production-tuning.md
+      - Spring Cloud & Ecosystem:
+          - Spring Cloud (Gateway, Feign, Config): springboot/spring-cloud.md
+          - Spring Batch: springboot/spring-batch.md
+          - Spring Kafka Integration: springboot/spring-kafka.md
+          - Spring AMQP & RabbitMQ: springboot/spring-rabbitmq.md
+          - Spring AI & LLM Integration: springboot/spring-ai.md
+          - Spring Modulith (Modular Monolith): springboot/spring-modulith.md
+          - Docker & Kubernetes: springboot/docker-kubernetes.md
+          - Testcontainers: springboot/testcontainers.md
+          - GraalVM Native & Spring AOT: springboot/graalvm-native.md
+          - OpenAPI & Swagger (springdoc): springboot/openapi-swagger.md
   - Microservices:
       - Foundations:
           - Fundamentals: microservices/microservices.md
@@ -259,6 +336,11 @@ nav:
           - Logging & Monitoring: microservices/logging-monitoring.md
           - Observability: microservices/Observability.md
           - Containerization: microservices/containerization.md
+      - Advanced Patterns:
+          - Advanced Patterns: microservices/advanced-patterns.md
+          - Real-World Case Studies: microservices/case-studies.md
+      - Production:
+          - Production Operations: microservices/production-operations.md
       - Quality & Security:
           - Testing Microservices: microservices/testing-microservices.md
           - Security: microservices/security-microservices.md
@@ -295,18 +377,51 @@ nav:
               - Memento: designpatterns/behaviouralDesignPatterns/MementoDp.md
               - Visitor: designpatterns/behaviouralDesignPatterns/VisitorDp.md
               - Interpreter: designpatterns/behaviouralDesignPatterns/Interpreter.md
-  - Design:
-      - HTTPS & TLS: https.md
-      - CAP Theorem: capTheorem.md
-      - Consistent Hashing: consistenthashing.md
-      - Distributed Locks: distributedlocks.md
-      - Rate Limiting: ratelimiting.md
-      - Load Balancing: loadbalancer.md
-      - Distributed Caching: distributedCaching.md
-      - Redis: redis.md
-      - SQL vs NoSQL: sqlvsnosql.md
-      - API Design: apidesign/apidesign.md
-      - GraphQL: graphql/graphql.md
+  - System Design:
+      - Fundamentals:
+          - CAP Theorem: capTheorem.md
+          - Consistent Hashing: consistenthashing.md
+          - Data Partitioning: systemdesign/data-partitioning.md
+          - Replication: systemdesign/replication.md
+          - Bloom Filters: systemdesign/bloom-filters.md
+          - Estimation Cheat Sheet: systemdesign/estimation-cheatsheet.md
+      - Networking & Communication:
+          - HTTPS & TLS: https.md
+          - Load Balancing: loadbalancer.md
+          - CDN: systemdesign/cdn.md
+          - Proxies: systemdesign/proxies.md
+          - Long Polling, WebSockets & SSE: systemdesign/websockets-sse.md
+          - Service Discovery: systemdesign/service-discovery.md
+      - Data & Storage:
+          - SQL vs NoSQL: sqlvsnosql.md
+          - Database Sharding: systemdesign/database-sharding.md
+          - Distributed Caching: distributedCaching.md
+          - Redis: redis.md
+      - Distributed Systems:
+          - Distributed Locks: distributedlocks.md
+          - Leader Election: systemdesign/leader-election.md
+          - Consensus Algorithms (Raft & Paxos): systemdesign/consensus-algorithms.md
+          - Unique ID Generation (Snowflake): systemdesign/unique-id-generation.md
+          - Heartbeat & Gossip Protocol: systemdesign/heartbeat-gossip.md
+          - Message Queues: systemdesign/message-queues.md
+          - Distributed Transactions: systemdesign/distributed-transactions.md
+          - Circuit Breakers & Bulkheads: systemdesign/circuit-breakers.md
+      - API Design:
+          - REST API Design: apidesign/apidesign.md
+          - GraphQL: graphql/graphql.md
+          - Rate Limiting: ratelimiting.md
+      - Case Studies:
+          - systemdesign/case-studies/index.md
+          - URL Shortener: systemdesign/case-studies/url-shortener.md
+          - Chat System: systemdesign/case-studies/chat-system.md
+          - Notification System: systemdesign/case-studies/notification-system.md
+          - News Feed: systemdesign/case-studies/news-feed.md
+          - Ride Sharing: systemdesign/case-studies/ride-sharing.md
+          - Video Streaming: systemdesign/case-studies/video-streaming.md
+          - Ticket Booking: systemdesign/case-studies/ticket-booking.md
+          - Rate Limiter: systemdesign/case-studies/rate-limiter.md
+          - Payment System: systemdesign/case-studies/payment-system.md
+          - Search Autocomplete: systemdesign/case-studies/search-autocomplete.md
   - Data:
       - SQL Fundamentals: databases/sql.md
       - PostgreSQL: postgresql/postgresql.md

@@ -1,558 +1,184 @@
 # Rate Limiting
 
-!!! tip "Why This Appears in System Design Interviews"
-    Rate limiting is a **top-5 system design topic** at FAANG companies. Interviewers use it to test your understanding of distributed systems, concurrency, trade-offs between accuracy and performance, and your ability to design scalable infrastructure components. Expect it as a standalone question or as part of designing an API gateway, chat system, or payment service.
+!!! danger "Real Incident: Twitter, 2022"
+    Elon's first week: bots scraped Twitter at 10x normal rate. No effective rate limiting on the read path. Result: **$100K+/day in excess infra costs**, emergency "you are rate limited" pages for real users. Rate limiting isn't optional — it's survival.
 
 ---
 
-## Why Rate Limiting?
+## The 30-Second Explanation
 
-Rate limiting controls the number of requests a client can make to a service within a given time window.
+**Rate limiting = controlling how many requests a user/service can make in a given time window.**
 
-| Concern | Explanation |
-|---------|-------------|
-| **DDoS Protection** | Prevents malicious actors from overwhelming your service with traffic |
-| **Fair Usage** | Ensures no single user monopolizes shared resources |
-| **Cost Control** | Prevents runaway costs in auto-scaling or pay-per-use environments |
-| **Service Stability** | Protects downstream services from cascading failures |
-| **Compliance** | Enforces contractual API usage limits for tiered pricing |
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+<div style="background: linear-gradient(135deg, #fef3c7, #fffbeb); border: 2px solid #f59e0b; border-radius: 12px; padding: 1.5rem; text-align: center;">
+<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🛡️</div>
+<h4 style="margin: 0 0 0.5rem; color: #92400e;">Why Rate Limit?</h4>
+<p style="margin: 0; font-size: 0.9rem; color: #78350f;">Prevent abuse, protect downstream services, ensure fair usage, control costs</p>
+</div>
+<div style="background: linear-gradient(135deg, #fee2e2, #fef2f2); border: 2px solid #f87171; border-radius: 12px; padding: 1.5rem; text-align: center;">
+<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💥</div>
+<h4 style="margin: 0 0 0.5rem; color: #dc2626;">Without It?</h4>
+<p style="margin: 0; font-size: 0.9rem; color: #7f1d1d;">One bad actor takes down your entire service. DDoS, scraping bots, buggy client retries.</p>
+</div>
+</div>
 
----
-
-## Rate Limiting Algorithms
-
-### 1. Token Bucket
-
-Allows bursty traffic while enforcing an average rate. Tokens are added at a fixed rate; each request consumes one token.
-
-```mermaid
-flowchart LR
-    style A fill:#4CAF50,color:#fff
-    style B fill:#2196F3,color:#fff
-    style C fill:#FF9800,color:#fff
-    style D fill:#f44336,color:#fff
-
-    A(["Token Refiller<br/>adds tokens at fixed rate"]) --> B[["Token Bucket<br/>capacity = max tokens"]]
-    B --> C{"Tokens Available?"}
-    C -->|Yes| E(["Request Allowed"])
-    C -->|No| D{{"429 Rejected"}}
-```
-
-```java
-public class TokenBucket {
-    private final int maxTokens;
-    private final long refillIntervalNanos;
-    private double availableTokens;
-    private long lastRefillTimestamp;
-
-    public TokenBucket(int maxTokens, int refillPerSecond) {
-        this.maxTokens = maxTokens;
-        this.availableTokens = maxTokens;
-        this.refillIntervalNanos = 1_000_000_000L / refillPerSecond;
-        this.lastRefillTimestamp = System.nanoTime();
-    }
-
-    public synchronized boolean tryConsume() {
-        refill();
-        if (availableTokens >= 1) {
-            availableTokens -= 1;
-            return true;
-        }
-        return false;
-    }
-
-    private void refill() {
-        long now = System.nanoTime();
-        double tokensToAdd = (double)(now - lastRefillTimestamp) / refillIntervalNanos;
-        availableTokens = Math.min(maxTokens, availableTokens + tokensToAdd);
-        lastRefillTimestamp = now;
-    }
-}
-```
+> **The key insight:** Rate limiting is NOT just about security. It's about **service stability** and **fair resource allocation** across tenants.
 
 ---
 
-### 2. Leaky Bucket
+## The Nightclub Analogy
 
-Processes requests at a constant rate. Excess requests queue up or are dropped if the queue is full.
+You're a bouncer at a club with a 200-person capacity.
 
-```mermaid
-flowchart LR
-    style A fill:#9C27B0,color:#fff
-    style B fill:#2196F3,color:#fff
-    style C fill:#4CAF50,color:#fff
-    style D fill:#f44336,color:#fff
-    style E fill:#FF9800,color:#fff
-
-    A(("Incoming Requests")) --> B{"Queue Full?"}
-    B -->|No| E[["FIFO Queue<br/>size = N"]]
-    B -->|Yes| D{{"Request Dropped"}}
-    E --> C(["Processor<br/>drains at fixed rate"])
-```
-
-```java
-public class LeakyBucket {
-    private final int capacity;
-    private final long leakIntervalMs;
-    private final Queue<Runnable> queue = new LinkedList<>();
-    private long lastLeakTimestamp;
-
-    public LeakyBucket(int capacity, int leaksPerSecond) {
-        this.capacity = capacity;
-        this.leakIntervalMs = 1000L / leaksPerSecond;
-        this.lastLeakTimestamp = System.currentTimeMillis();
-    }
-
-    public synchronized boolean tryEnqueue(Runnable request) {
-        leak();
-        if (queue.size() < capacity) {
-            queue.offer(request);
-            return true;
-        }
-        return false;
-    }
-
-    private void leak() {
-        long now = System.currentTimeMillis();
-        int leaks = (int)((now - lastLeakTimestamp) / leakIntervalMs);
-        for (int i = 0; i < leaks && !queue.isEmpty(); i++) {
-            queue.poll().run();
-        }
-        if (leaks > 0) lastLeakTimestamp = now;
-    }
-}
-```
+| Strategy | What the bouncer does | Real-world equivalent |
+|:---:|---|---|
+| **Fixed Window** | "200 people per hour. At :00, counter resets." | GitHub: 5000 req/hr |
+| **Sliding Window** | "200 people in ANY rolling 60-min window." | Stripe API |
+| **Token Bucket** | "Here's 200 tokens. You get 5 back per minute. Spend them however." | AWS API Gateway |
+| **Leaky Bucket** | "Queue at the door. Let 3 in per minute, no matter what." | Network traffic shaping |
 
 ---
 
-### 3. Fixed Window Counter
+## Algorithms at a Glance
 
-Divides time into fixed windows and counts requests per window. Simple but allows up to 2x the rate at window boundaries.
+![](assets/images/system-design/rate-limiting-algorithms.svg)
 
-```mermaid
-flowchart LR
-    style A fill:#009688,color:#fff
-    style B fill:#2196F3,color:#fff
-    style C fill:#4CAF50,color:#fff
-    style D fill:#f44336,color:#fff
+## Algorithms — What FAANG Actually Asks
 
-    A(("Request Arrives")) --> B{"counter < limit?"}
-    B -->|Yes| C(["Allow & Increment"])
-    B -->|No| D{{"Reject"}}
-```
+### Fixed Window Counter
 
-```java
-public class FixedWindowCounter {
-    private final int limit;
-    private final long windowSizeMs;
-    private long windowStart;
-    private int counter;
+| Aspect | Detail |
+|---|---|
+| **How** | Count requests in fixed time windows (e.g., 12:00-12:01) |
+| **Pro** | Dead simple. One counter per window. |
+| **Con** | Burst at boundary — 100 reqs at 12:00:59 + 100 at 12:01:00 = 200 in 2 seconds |
+| **Used by** | Basic API rate limiters, simple internal services |
 
-    public FixedWindowCounter(int limit, long windowSizeMs) {
-        this.limit = limit;
-        this.windowSizeMs = windowSizeMs;
-        this.windowStart = System.currentTimeMillis();
-    }
+### Sliding Window Log
 
-    public synchronized boolean tryAcquire() {
-        long now = System.currentTimeMillis();
-        if (now - windowStart >= windowSizeMs) {
-            windowStart = now;
-            counter = 0;
-        }
-        if (counter < limit) { counter++; return true; }
-        return false;
-    }
-}
-```
+| Aspect | Detail |
+|---|---|
+| **How** | Store timestamp of every request. Count within window. |
+| **Pro** | Perfectly accurate. No boundary burst. |
+| **Con** | Memory-expensive. Storing every timestamp doesn't scale. |
+| **Used by** | Low-volume, high-accuracy needs (fraud detection) |
 
----
+### Sliding Window Counter
 
-### 4. Sliding Window Log
+| Aspect | Detail |
+|---|---|
+| **How** | Weighted average of current + previous window counts |
+| **Pro** | Accurate enough, memory-efficient (just 2 counters) |
+| **Con** | Approximation — not exact |
+| **Used by** | Cloudflare, most production systems |
 
-Maintains a log of timestamps for each request. Filters out expired entries. Most accurate but memory-intensive.
+### Token Bucket
 
-```mermaid
-flowchart LR
-    style A fill:#E91E63,color:#fff
-    style B fill:#3F51B5,color:#fff
-    style C fill:#4CAF50,color:#fff
-    style D fill:#f44336,color:#fff
-    style E fill:#FF9800,color:#fff
+| Aspect | Detail |
+|---|---|
+| **How** | Bucket holds tokens. Each request costs 1. Tokens refill at fixed rate. |
+| **Pro** | Allows bursts (up to bucket size). Smooth average rate. |
+| **Con** | Slightly more complex state (tokens + last_refill_time) |
+| **Used by** | AWS, Stripe, most FAANG internal services |
 
-    A(("Request at time T")) --> E[/"Remove entries older<br/>than T - window"/]
-    E --> B{"log.size < limit?"}
-    B -->|Yes| C(["Allow & Add T to log"])
-    B -->|No| D{{"Reject"}}
-```
+### Leaky Bucket
 
-```java
-public class SlidingWindowLog {
-    private final int limit;
-    private final long windowSizeMs;
-    private final TreeMap<Long, Integer> log = new TreeMap<>();
-
-    public SlidingWindowLog(int limit, long windowSizeMs) {
-        this.limit = limit;
-        this.windowSizeMs = windowSizeMs;
-    }
-
-    public synchronized boolean tryAcquire() {
-        long now = System.currentTimeMillis();
-        log.headMap(now - windowSizeMs).clear();
-        int count = log.values().stream().mapToInt(Integer::intValue).sum();
-        if (count < limit) { log.merge(now, 1, Integer::sum); return true; }
-        return false;
-    }
-}
-```
+| Aspect | Detail |
+|---|---|
+| **How** | Requests enter a queue. Processed at fixed rate. Queue full = reject. |
+| **Pro** | Perfectly smooth output rate. |
+| **Con** | No bursts allowed. Queue adds latency. |
+| **Used by** | Network traffic shaping, Shopify |
 
 ---
 
-### 5. Sliding Window Counter
+## Where to Rate Limit
 
-Hybrid of Fixed Window and Sliding Log. Uses weighted counts from current and previous windows for accuracy with low memory.
-
-```mermaid
-flowchart LR
-    style A fill:#673AB7,color:#fff
-    style B fill:#00BCD4,color:#fff
-    style C fill:#4CAF50,color:#fff
-    style D fill:#f44336,color:#fff
-
-    A[["Previous Window<br/>count = Cp"]] --> B{{"Weighted Count<br/>Cp * overlap% + Cc"}}
-    B --> C{"weighted < limit?"}
-    C -->|Yes| D2(["Allow"])
-    C -->|No| D(["Reject"])
-
-    style D2 fill:#4CAF50,color:#fff
-```
-
-**Formula:** `effective_count = prev_count * ((window_size - elapsed) / window_size) + current_count`
-
-```java
-public class SlidingWindowCounter {
-    private final int limit;
-    private final long windowSizeMs;
-    private int previousCount, currentCount;
-    private long currentWindowStart;
-
-    public SlidingWindowCounter(int limit, long windowSizeMs) {
-        this.limit = limit;
-        this.windowSizeMs = windowSizeMs;
-        this.currentWindowStart = System.currentTimeMillis();
-    }
-
-    public synchronized boolean tryAcquire() {
-        long now = System.currentTimeMillis();
-        long elapsed = now - currentWindowStart;
-        if (elapsed >= windowSizeMs) {
-            previousCount = currentCount;
-            currentCount = 0;
-            currentWindowStart = now;
-            elapsed = 0;
-        }
-        double effective = previousCount * (1.0 - (double) elapsed / windowSizeMs) + currentCount;
-        if (effective < limit) { currentCount++; return true; }
-        return false;
-    }
-}
-```
+<div style="overflow-x: auto; margin: 1.5rem 0;">
+<table style="width: 100%; border-collapse: collapse;">
+<thead>
+<tr style="background: linear-gradient(135deg, #f8fafc, #f1f5f9);">
+<th style="padding: 0.8rem; border-bottom: 2px solid #e2e8f0; text-align: left;">Layer</th>
+<th style="padding: 0.8rem; border-bottom: 2px solid #e2e8f0; text-align: left;">What</th>
+<th style="padding: 0.8rem; border-bottom: 2px solid #e2e8f0; text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;"><strong>Client-side</strong></td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Debounce, local throttle</td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Search autocomplete — wait 300ms before hitting API</td></tr>
+<tr><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;"><strong>Load Balancer / CDN</strong></td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">IP-based, geo-based</td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Cloudflare blocking IPs with 1000+ req/min</td></tr>
+<tr><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;"><strong>API Gateway</strong></td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Per-user, per-API-key</td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Kong/Apigee enforcing 1000 req/min per key</td></tr>
+<tr><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;"><strong>Application</strong></td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Business logic limits</td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Max 5 password attempts, max 3 OTP sends</td></tr>
+<tr><td style="padding: 0.7rem;"><strong>Database</strong></td><td style="padding: 0.7rem;">Connection pooling, query limits</td><td style="padding: 0.7rem;">Max 100 concurrent connections per service</td></tr>
+</tbody>
+</table>
+</div>
 
 ---
 
-## Algorithm Comparison
+## Distributed Rate Limiting — The Hard Part
 
-| Algorithm | Pros | Cons | Best Use Case |
-|-----------|------|------|---------------|
-| **Token Bucket** | Allows bursts, memory efficient | Distributed sync complex | API rate limiting with burst tolerance |
-| **Leaky Bucket** | Smooth output, predictable load | No burst handling, queue delay | Streaming, traffic shaping |
-| **Fixed Window** | Extremely simple, low memory | Boundary spike (2x burst) | Low-precision internal limiting |
-| **Sliding Window Log** | Most accurate, no boundary issues | High memory per user | Security-critical endpoints |
-| **Sliding Window Counter** | Good accuracy, low memory | Approximate | General-purpose API limiting |
+**Single server?** Easy. In-memory counter.
 
----
+**100 servers behind a load balancer?** Now you need shared state.
 
-## Distributed Rate Limiting
+| Approach | Trade-off |
+|---|---|
+| **Centralized (Redis)** | Accurate but adds latency (1 network hop per request). Single point of failure. |
+| **Local + Sync** | Each server counts locally, syncs periodically. Fast but can overshoot by N × local_limit. |
+| **Sticky Sessions** | Route same user to same server. Simple but kills load balancing. |
+| **Cell-based** | Partition users across cells. Each cell has its own limiter. Used at Uber scale. |
 
-### Redis-Based Implementation
-
-```mermaid
-flowchart LR
-    style A fill:#FF5722,color:#fff
-    style B fill:#FF5722,color:#fff
-    style C fill:#2196F3,color:#fff
-    style D fill:#4CAF50,color:#fff
-
-    A(["App Server 1"]) --> C{{"Redis Cluster<br/>Centralized Counter"}}
-    B(["App Server 2"]) --> C
-    C --> D[["Atomic Check & Increment"]]
-```
-
-**Lua Script for Atomic Token Bucket:**
-
-```lua
-local key = KEYS[1]
-local max_tokens = tonumber(ARGV[1])
-local refill_rate = tonumber(ARGV[2])
-local now = tonumber(ARGV[3])
-
-local data = redis.call('HMGET', key, 'tokens', 'last_refill')
-local tokens = tonumber(data[1]) or max_tokens
-local last_refill = tonumber(data[2]) or now
-
-local elapsed = now - last_refill
-tokens = math.min(max_tokens, tokens + elapsed * refill_rate)
-
-local allowed = 0
-if tokens >= 1 then
-    tokens = tokens - 1
-    allowed = 1
-end
-
-redis.call('HMSET', key, 'tokens', tokens, 'last_refill', now)
-redis.call('EXPIRE', key, math.ceil(max_tokens / refill_rate) * 2)
-return allowed
-```
-
-### Race Conditions and Solutions
-
-| Problem | Solution |
-|---------|----------|
-| **Read-then-write race** | Lua scripts execute atomically in Redis |
-| **Clock drift across nodes** | Use Redis server time instead of client time |
-| **Redis failover** | Accept slight over-counting or use Redis Cluster |
-| **Network partition** | Fall back to local rate limiting with relaxed limits |
+!!! tip "Interview Gold"
+    "I'd use Redis with token bucket. Each request does an atomic EVAL script — check tokens, decrement, return allow/deny. Redis handles 100K+ ops/sec single-threaded, so it won't be the bottleneck. For fault tolerance, I'd fail-open briefly if Redis is down — better to let extra traffic through than reject everyone."
 
 ---
 
-## Rate Limiting at Different Layers
+## HTTP Response: What to Return
 
-### API Gateway (Kong, AWS API Gateway)
-
-```mermaid
-flowchart LR
-    style A fill:#FF9800,color:#fff
-    style B fill:#2196F3,color:#fff
-    style C fill:#4CAF50,color:#fff
-    style D fill:#9C27B0,color:#fff
-
-    A(("Client")) --> B{{"API Gateway<br/>Kong / AWS API GW"}}
-    B -->|Allowed| C[["Backend Services"]]
-    B -->|Rejected| D[/"429 Response"/]
-```
-
-```yaml
-# Kong rate-limiting plugin
-plugins:
-  - name: rate-limiting
-    config:
-      minute: 100
-      hour: 1000
-      policy: redis
-      redis_host: redis-cluster.internal
-      limit_by: consumer
-```
-
-### Application Level (Spring Boot Interceptor)
-
-```java
-@Component
-public class RateLimitInterceptor implements HandlerInterceptor {
-    private final RateLimiterService rateLimiterService;
-
-    @Override
-    public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response, Object handler) {
-        String clientId = extractClientId(request);
-        RateLimitResult result = rateLimiterService.checkLimit(clientId);
-
-        response.setHeader("X-RateLimit-Limit", String.valueOf(result.limit()));
-        response.setHeader("X-RateLimit-Remaining", String.valueOf(result.remaining()));
-
-        if (!result.allowed()) {
-            response.setHeader("Retry-After", String.valueOf(result.retryAfterSeconds()));
-            response.setStatus(429);
-            return false;
-        }
-        return true;
-    }
-
-    private String extractClientId(HttpServletRequest request) {
-        String apiKey = request.getHeader("X-API-Key");
-        if (apiKey != null) return "key:" + apiKey;
-        if (request.getUserPrincipal() != null) return "user:" + request.getUserPrincipal().getName();
-        return "ip:" + request.getRemoteAddr();
-    }
-}
-```
-
-### Infrastructure Level (NGINX, Envoy)
-
-```nginx
-http {
-    limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;
-    server {
-        location /api/ {
-            limit_req zone=api_limit burst=20 nodelay;
-            limit_req_status 429;
-            proxy_pass http://backend;
-        }
-    }
-}
-```
+| Scenario | Response |
+|---|---|
+| Allowed | `200 OK` with rate limit headers |
+| Rate limited | `429 Too Many Requests` |
+| Headers to include | `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` |
+| Retry guidance | `Retry-After: 30` (seconds until reset) |
 
 ---
 
-## HTTP Rate Limit Headers
+## Real Systems
 
-| Header | Purpose | Example |
-|--------|---------|---------|
-| `X-RateLimit-Limit` | Max requests allowed in window | `100` |
-| `X-RateLimit-Remaining` | Requests remaining | `57` |
-| `X-RateLimit-Reset` | Unix timestamp when window resets | `1672531200` |
-| `Retry-After` | Seconds until client should retry | `30` |
-
-```http
-HTTP/1.1 429 Too Many Requests
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 0
-Retry-After: 60
-Content-Type: application/json
-
-{"error": "Rate limit exceeded", "message": "Try again in 60 seconds"}
-```
+| Company | Strategy | Details |
+|---|---|---|
+| **GitHub** | 5000 req/hr per token | Fixed window, returns headers |
+| **Stripe** | Token bucket | 100 req/sec burst, 25/sec sustained |
+| **Twitter/X** | Sliding window | 300 tweets/3hr, 900 reads/15min |
+| **Google Maps** | Per-day + per-second | 28,500/day AND 50/sec |
+| **Cloudflare** | Multi-layer | IP → ASN → Account → Rule-based |
 
 ---
 
-## Design Considerations
+## The 3 Mistakes That Get You Rejected
 
-### Choosing a Rate Limiting Key
-
-| Strategy | Key Format | When to Use |
-|----------|-----------|-------------|
-| **By IP** | `rl:ip:192.168.1.1` | Unauthenticated endpoints, login pages |
-| **By User ID** | `rl:user:12345` | Authenticated APIs, per-user fairness |
-| **By API Key** | `rl:key:abc123` | B2B APIs with tiered pricing |
-| **By Endpoint** | `rl:ep:/api/search` | Protect expensive operations |
-| **Composite** | `rl:user:123:/api/pay` | Fine-grained per-user-per-endpoint |
-
-### Tiered Rate Limits
-
-```mermaid
-flowchart LR
-    style A fill:#607D8B,color:#fff
-    style B fill:#4CAF50,color:#fff
-    style C fill:#2196F3,color:#fff
-    style D fill:#FF9800,color:#fff
-
-    A(("Incoming Request")) --> B{"Free Tier?"}
-    B -->|Yes| F(["100 req/hour"])
-    B -->|No| C{"Pro Tier?"}
-    C -->|Yes| G(["1000 req/hour"])
-    C -->|No| D{"Enterprise?"}
-    D -->|Yes| H(["10000 req/hour"])
-
-    style F fill:#4CAF50,color:#fff
-    style G fill:#2196F3,color:#fff
-    style H fill:#FF9800,color:#fff
-```
-
-- **Graceful Degradation:** Return cached data instead of hard rejecting
-- **Rate Limit Bypass:** Whitelist internal services and health checks
-- **Monitoring:** Track rate limit hits as a signal for abuse or capacity issues
-- **Client-Side Throttling:** SDKs should limit locally to avoid wasted requests
+!!! danger "Don't Say These"
+    1. **"Just reject with 403"** — Rate limiting returns `429`, not `403`. You MUST include `Retry-After` header. Basic HTTP knowledge.
+    2. **"Use a local counter on each server"** — With 50 servers, that's 50x your intended limit. You need centralized or synchronized counting.
+    3. **"Rate limit everyone the same"** — Differentiate between free/paid tiers, internal/external traffic, read/write operations.
 
 ---
 
-## Spring Boot Implementation with Redis
+## Interview Answer Template
 
-**RateLimiterService.java:**
-
-```java
-@Service
-public class RateLimiterService {
-    private final StringRedisTemplate redisTemplate;
-    private final DefaultRedisScript<Long> rateLimitScript;
-
-    private static final String LUA_SCRIPT = """
-        local key = KEYS[1]
-        local limit = tonumber(ARGV[1])
-        local window = tonumber(ARGV[2])
-        local current = redis.call('INCR', key)
-        if current == 1 then redis.call('EXPIRE', key, window) end
-        if current > limit then return 0 end
-        return limit - current
-        """;
-
-    public RateLimiterService(StringRedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
-        this.rateLimitScript = new DefaultRedisScript<>(LUA_SCRIPT, Long.class);
-    }
-
-    public RateLimitResult checkLimit(String clientId) {
-        int limit = getLimitForClient(clientId);
-        Long remaining = redisTemplate.execute(rateLimitScript,
-                List.of("rate_limit:" + clientId),
-                String.valueOf(limit), "60");
-        boolean allowed = remaining != null && remaining >= 0;
-        return new RateLimitResult(allowed, limit, allowed ? remaining.intValue() : 0, allowed ? 0 : 60);
-    }
-
-    private int getLimitForClient(String clientId) {
-        if (clientId.startsWith("key:enterprise")) return 10000;
-        if (clientId.startsWith("key:pro")) return 1000;
-        return 100;
-    }
-}
-```
-
-**RateLimitResult.java:**
-
-```java
-public record RateLimitResult(boolean allowed, int limit, int remaining, int retryAfterSeconds) {}
-```
-
-**WebConfig.java:**
-
-```java
-@Configuration
-public class WebConfig implements WebMvcConfigurer {
-    private final RateLimitInterceptor rateLimitInterceptor;
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(rateLimitInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/health");
-    }
-}
-```
+> "For [system], I'd implement rate limiting at [layer] using [algorithm] because [reason]. For distributed enforcement, I'd use [Redis/local+sync] with [token bucket/sliding window]. Key decisions: fail-open vs fail-closed on limiter failure, per-user vs per-IP vs per-API-key granularity, and returning proper `429` with `Retry-After` headers for good client behavior."
 
 ---
 
-## Interview Questions
+## Quick Recall Card
 
-??? question "Design a rate limiter for a system handling 1 million requests per second. Which algorithm would you choose and why?"
-    Use a **Sliding Window Counter** with Redis Cluster. It provides O(1) memory per user, avoids the boundary burst problem of Fixed Window, and Redis Cluster supports horizontal sharding by key. Use Lua scripts for atomicity. For 1M RPS, partition rate limit keys across 10+ Redis nodes using consistent hashing.
-
-??? question "How do you handle race conditions in a distributed rate limiter?"
-    Three approaches: (1) **Redis Lua scripts** execute atomically on the server, eliminating read-modify-write races. (2) **Redis WATCH/MULTI/EXEC** provides optimistic locking with retry on conflict. (3) **Local rate limiting with sync** where each node enforces `limit/N` locally and periodically reconciles. Lua scripts are the industry standard.
-
-??? question "What is the boundary burst problem in Fixed Window Counter, and how do you solve it?"
-    If the limit is 100 req/min and a user sends 100 requests at 11:00:59 and another 100 at 11:01:00, they send 200 requests in 2 seconds. Solutions: (1) **Sliding Window Counter** weights the previous window's count. (2) **Sliding Window Log** for exact tracking. (3) Combine Fixed Window with a shorter sub-window.
-
-??? question "Where should you place the rate limiter in a microservices architecture?"
-    Layer it: (1) **API Gateway** blocks abuse before requests reach services. (2) **Service mesh/sidecar** (Envoy, Istio) enforces per-service limits for internal traffic. (3) **Application level** handles business rules (e.g., 3 password attempts/hour). The gateway handles volumetric attacks; the application handles business logic limits.
-
-??? question "How would you implement rate limiting across multiple data centers?"
-    Options: (1) **Global Redis with cross-DC replication** using CRDTs; slight over-counting during replication lag. (2) **Local limiting per DC** where each DC gets `total_limit / num_DCs`; simple but wastes capacity if traffic is uneven. (3) **Eventual consistency with gossip** where nodes share counters periodically. Most systems choose option 1 with ~5% over-counting tolerance.
-
-??? question "A client claims they are within quota but getting rate limited. How do you debug?"
-    Steps: (1) Check if rate limit key is by IP — shared NAT combines multiple users. (2) Verify clock sync across nodes. (3) Check Sliding Window approximation. (4) Look for retry storms amplifying requests. (5) Inspect Redis key TTLs — missing EXPIRE accumulates across windows. (6) Check multiple API keys aggregated under one user ID.
-
-??? question "How do you design rate limiting for tiered pricing (free, pro, enterprise)?"
-    Store tier-to-limit mappings in a config service. On each request: extract API key, look up tier (cache with TTL), apply limit. Use composite Redis key `rl:{tier}:{userId}:{endpoint}`. Support dynamic limit updates without redeployment by externalizing configuration.
-
-??? question "What happens to in-flight requests when rate limits change dynamically?"
-    In-flight requests that already passed are unaffected. For new limits: (1) **Immediate** — update config in Redis; next Lua evaluation uses new values. (2) **Graceful** — keep the higher of old/new limits for one window duration. (3) **TTL reset** — when increasing limits, reset counter to give immediate benefit. Never require restarts for limit changes.
+| Question | Answer |
+|---|---|
+| Best algorithm for bursts? | Token Bucket (allows burst up to bucket size) |
+| Best for smooth rate? | Leaky Bucket (fixed output rate) |
+| Best accuracy/memory trade-off? | Sliding Window Counter |
+| Where to store state (distributed)? | Redis (atomic operations, fast, shared) |
+| What HTTP code? | 429 Too Many Requests |
+| Fail-open or fail-closed? | Usually fail-open (let traffic through if limiter is down) |
+| Per what? | Depends: per-user, per-IP, per-API-key, per-endpoint |

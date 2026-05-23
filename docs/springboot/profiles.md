@@ -16,11 +16,11 @@ flowchart LR
     App -->|"profile=staging"| Stg(["🎭 Staging<br/>Real DB, limited data"])
     App -->|"profile=prod"| Prod(["🏭 Production<br/>Full DB, caching, monitoring"])
 
-    style App fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#000
-    style Dev fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style Test fill:#E3F2FD,stroke:#1565C0,color:#000
-    style Stg fill:#F3E5F5,stroke:#6A1B9A,color:#000
-    style Prod fill:#FFCDD2,stroke:#C62828,color:#000
+    style App fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px,color:#1E40AF
+    style Dev fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style Test fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style Stg fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style Prod fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 ---
@@ -356,9 +356,9 @@ flowchart LR
         PG["PostgreSQL<br/>Full cluster"]
     end
 
-    style H2 fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style TC fill:#E3F2FD,stroke:#1565C0,color:#000
-    style PG fill:#FFCDD2,stroke:#C62828,color:#000
+    style H2 fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style TC fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style PG fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 Each profile provides the same `DataSource` bean type. The container picks exactly one based on active profile.

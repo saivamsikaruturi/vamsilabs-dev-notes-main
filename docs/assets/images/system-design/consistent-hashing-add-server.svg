@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 200" font-family="DM Sans, sans-serif">
+  <rect width="460" height="200" fill="#FAFAF9" rx="12"/>
+  <text x="230" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Adding Server → Only Nearby Keys Move</text>
+  <!-- BEFORE -->
+  <text x="105" y="42" text-anchor="middle" font-size="10" font-weight="600" fill="#78716C">BEFORE</text>
+  <circle cx="105" cy="115" r="55" fill="none" stroke="#D6D3D1" stroke-width="2" stroke-dasharray="4,2"/>
+  <circle cx="105" cy="60" r="10" fill="#3B82F6"/><text x="105" y="63" text-anchor="middle" font-size="7" font-weight="600" fill="white">A</text>
+  <circle cx="160" cy="115" r="10" fill="#3B82F6"/><text x="160" y="118" text-anchor="middle" font-size="7" font-weight="600" fill="white">B</text>
+  <circle cx="105" cy="170" r="10" fill="#3B82F6"/><text x="105" y="173" text-anchor="middle" font-size="7" font-weight="600" fill="white">C</text>
+  <circle cx="140" cy="75" r="6" fill="#F59E0B"/><text x="140" y="78" text-anchor="middle" font-size="6" fill="white" font-weight="600">1</text>
+  <circle cx="150" cy="92" r="6" fill="#F59E0B"/><text x="150" y="95" text-anchor="middle" font-size="6" fill="white" font-weight="600">2</text>
+  <!-- Arrow -->
+  <text x="230" y="112" text-anchor="middle" font-size="20" fill="#059669">→</text>
+  <text x="230" y="130" text-anchor="middle" font-size="9" fill="#059669" font-weight="600">Add E</text>
+  <!-- AFTER -->
+  <text x="355" y="42" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">AFTER</text>
+  <circle cx="355" cy="115" r="55" fill="none" stroke="#D6D3D1" stroke-width="2" stroke-dasharray="4,2"/>
+  <circle cx="355" cy="60" r="10" fill="#3B82F6"/><text x="355" y="63" text-anchor="middle" font-size="7" font-weight="600" fill="white">A</text>
+  <circle cx="410" cy="115" r="10" fill="#3B82F6"/><text x="410" y="118" text-anchor="middle" font-size="7" font-weight="600" fill="white">B</text>
+  <circle cx="355" cy="170" r="10" fill="#3B82F6"/><text x="355" y="173" text-anchor="middle" font-size="7" font-weight="600" fill="white">C</text>
+  <circle cx="393" cy="75" r="10" fill="#10B981" stroke="#059669" stroke-width="1.5"/><text x="393" y="78" text-anchor="middle" font-size="7" font-weight="700" fill="white">E</text>
+  <!-- Key 1 moved to E -->
+  <circle cx="385" cy="62" r="6" fill="#EF4444"/><text x="385" y="65" text-anchor="middle" font-size="6" fill="white" font-weight="600">1</text>
+  <!-- Key 2 stays at B -->
+  <circle cx="405" cy="95" r="6" fill="#F59E0B"/><text x="405" y="98" text-anchor="middle" font-size="6" fill="white" font-weight="600">2</text>
+  <!-- Legend -->
+  <rect x="280" y="178" width="160" height="18" fill="#FEF2F2" rx="3" stroke="#FECACA"/>
+  <circle cx="292" cy="187" r="4" fill="#EF4444"/><text x="302" y="190" font-size="8" fill="#991B1B">Key moved (only 1!)</text>
+</svg>

@@ -18,8 +18,8 @@ flowchart LR
         N0["prev|A|next"] <--> N1["prev|B|next"] <--> N2["prev|C|next"]
     end
 
-    style AL fill:#E3F2FD,stroke:#1565C0,color:#000
-    style LL fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style AL fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style LL fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 | Operation | ArrayList | LinkedList |
@@ -57,10 +57,10 @@ flowchart LR
     Q -->|"Sorted keys?"| TM(["TreeMap"])
     Q -->|"Insertion order?"| LHM(["LinkedHashMap"])
 
-    style HM fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style CHM fill:#E3F2FD,stroke:#1565C0,color:#000
-    style TM fill:#FEF3C7,stroke:#D97706,color:#000
-    style LHM fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    style HM fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style CHM fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style TM fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style LHM fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
 ```
 
 ### How ConcurrentHashMap Achieves Concurrency (Java 8+)

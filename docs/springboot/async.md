@@ -19,9 +19,9 @@ flowchart LR
         A2 -.->|background| A4["Send Email<br/>(3 seconds)"]
     end
 
-    style S2 fill:#FFCDD2,stroke:#C62828,color:#000
-    style A3 fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style A4 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style S2 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style A3 fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style A4 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
 ```
 
 ---

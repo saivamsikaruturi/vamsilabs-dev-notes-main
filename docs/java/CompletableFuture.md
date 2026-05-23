@@ -59,10 +59,10 @@ graph LR
     B --> C["🔄 thenApply<br/><i>transform</i>"]
     C --> D["✅ thenAccept<br/><i>consume</i>"]
 
-    style A fill:#4CAF50,color:#fff,stroke-width:2px
-    style B fill:#FF9800,color:#fff,stroke-width:2px
-    style C fill:#FF9800,color:#fff,stroke-width:2px
-    style D fill:#2196F3,color:#fff,stroke-width:2px
+    style A fill:#D1FAE5,color:#1E40AF,stroke-width:2px
+    style B fill:#FEF3C7,color:#1E40AF,stroke-width:2px
+    style C fill:#FEF3C7,color:#1E40AF,stroke-width:2px
+    style D fill:#BFDBFE,color:#1E40AF,stroke-width:2px
 ```
 
 ### Transform result — `thenApply` (like `map`)

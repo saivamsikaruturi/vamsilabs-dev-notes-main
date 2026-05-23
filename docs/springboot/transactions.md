@@ -16,9 +16,9 @@ flowchart LR
     S2 -->|"✅ Both succeed"| Commit["COMMIT"]
     S1 -->|"❌ Any failure"| Rollback["ROLLBACK<br/>(undo everything)"]
 
-    style TX fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
-    style Commit fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style Rollback fill:#FFCDD2,stroke:#C62828,color:#000
+    style TX fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#1E40AF
+    style Commit fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style Rollback fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 ---
@@ -108,9 +108,9 @@ flowchart LR
     M2 -->|"NESTED"| NS(["Savepoint in TX1<br/>(partial rollback)"])
     M2 -->|"NOT_SUPPORTED"| NO(["Suspends TX1<br/>Runs without TX"])
 
-    style TX1 fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#000
-    style J fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style N fill:#FEF3C7,stroke:#D97706,color:#000
+    style TX1 fill:#EFF6FF,stroke:#DBEAFE,stroke-width:2px,color:#1E40AF
+    style J fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style N fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
 ```
 
 | Propagation | Behavior | Use Case |
@@ -255,9 +255,9 @@ flowchart LR
         PR["Phantom Read<br/>New rows appear"]
     end
 
-    style DR fill:#FFCDD2,stroke:#C62828,color:#000
-    style NR fill:#FFF3E0,stroke:#E65100,color:#000
-    style PR fill:#FEF3C7,stroke:#D97706,color:#000
+    style DR fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style NR fill:#FFFBEB,stroke:#FCD34D,color:#1E40AF
+    style PR fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
 ```
 
 ### Dirty Read

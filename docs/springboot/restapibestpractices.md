@@ -12,6 +12,17 @@ flowchart LR
     Service --> Repo["Repository"]
     Repo --> DB[(Database)]
     Controller -->|"JSON Response"| Client
+
+    style Auth fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style Client fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style Controller fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style Gateway fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style RateLimit fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style Repo fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style Service fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style e fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style r fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style y fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
 ```
 
 ---
@@ -27,6 +38,12 @@ flowchart LR
     L2{{"Level 2: HTTP verbs + status codes (most APIs today)"}}
     L3(["Level 3: HATEOAS — hypermedia controls in responses"])
     L0 --> L1 --> L2 --> L3
+
+    style 3 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style L0 fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style L1 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style L2 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style L3 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 | Level | What You Get | Example |

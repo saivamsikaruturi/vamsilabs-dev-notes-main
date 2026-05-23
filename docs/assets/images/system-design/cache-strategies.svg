@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 190" font-family="DM Sans, sans-serif">
+  <rect width="460" height="190" fill="#FAFAF9" rx="10"/>
+  <text x="230" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Caching Write Strategies</text>
+  <!-- Write-Through -->
+  <rect x="8" y="30" width="140" height="100" fill="white" rx="7" stroke="#3B82F6" stroke-width="1.2"/>
+  <text x="78" y="46" text-anchor="middle" font-size="8" font-weight="700" fill="#1D4ED8">Write-Through</text>
+  <rect x="18" y="53" width="45" height="18" fill="#DBEAFE" rx="3"/><text x="40" y="65" text-anchor="middle" font-size="6" fill="#1D4ED8">App</text>
+  <line x1="65" y1="62" x2="78" y2="62" stroke="#3B82F6" stroke-width="1"/>
+  <rect x="80" y="53" width="55" height="18" fill="#FEF3C7" rx="3"/><text x="107" y="65" text-anchor="middle" font-size="6" fill="#92400E">Cache</text>
+  <line x1="107" y1="73" x2="107" y2="85" stroke="#3B82F6" stroke-width="1"/>
+  <rect x="80" y="87" width="55" height="18" fill="#FEE2E2" rx="3"/><text x="107" y="99" text-anchor="middle" font-size="6" fill="#DC2626">DB</text>
+  <text x="78" y="118" text-anchor="middle" font-size="6" fill="#44403C">Write both sync</text>
+  <text x="78" y="128" text-anchor="middle" font-size="6" fill="#059669">✓ Consistent</text>
+  <!-- Write-Behind -->
+  <rect x="158" y="30" width="140" height="100" fill="white" rx="7" stroke="#F59E0B" stroke-width="1.2"/>
+  <text x="228" y="46" text-anchor="middle" font-size="8" font-weight="700" fill="#92400E">Write-Behind</text>
+  <rect x="168" y="53" width="45" height="18" fill="#DBEAFE" rx="3"/><text x="190" y="65" text-anchor="middle" font-size="6" fill="#1D4ED8">App</text>
+  <line x1="215" y1="62" x2="228" y2="62" stroke="#F59E0B" stroke-width="1"/>
+  <rect x="230" y="53" width="55" height="18" fill="#FEF3C7" rx="3"/><text x="257" y="65" text-anchor="middle" font-size="6" fill="#92400E">Cache</text>
+  <line x1="257" y1="73" x2="257" y2="85" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3,2"/>
+  <rect x="230" y="87" width="55" height="18" fill="#FEE2E2" rx="3"/><text x="257" y="99" text-anchor="middle" font-size="6" fill="#DC2626">DB</text>
+  <text x="257" y="78" font-size="5" fill="#F59E0B">async</text>
+  <text x="228" y="118" text-anchor="middle" font-size="6" fill="#44403C">Write cache, flush later</text>
+  <text x="228" y="128" text-anchor="middle" font-size="6" fill="#DC2626">⚠ Risk: data loss on crash</text>
+  <!-- Write-Around -->
+  <rect x="308" y="30" width="140" height="100" fill="white" rx="7" stroke="#10B981" stroke-width="1.2"/>
+  <text x="378" y="46" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Write-Around</text>
+  <rect x="318" y="53" width="45" height="18" fill="#DBEAFE" rx="3"/><text x="340" y="65" text-anchor="middle" font-size="6" fill="#1D4ED8">App</text>
+  <line x1="365" y1="62" x2="380" y2="85" stroke="#10B981" stroke-width="1"/>
+  <rect x="380" y="53" width="55" height="18" fill="#D4D4D4" rx="3" stroke="#A8A29E"/><text x="407" y="65" text-anchor="middle" font-size="6" fill="#78716C">Cache ✗</text>
+  <rect x="380" y="87" width="55" height="18" fill="#D1FAE5" rx="3" stroke="#34D399"/><text x="407" y="99" text-anchor="middle" font-size="6" fill="#059669">DB ✓</text>
+  <text x="378" y="118" text-anchor="middle" font-size="6" fill="#44403C">Write DB only, skip cache</text>
+  <text x="378" y="128" text-anchor="middle" font-size="6" fill="#059669">✓ No cache pollution</text>
+  <!-- Best combo -->
+  <rect x="80" y="140" width="300" height="22" fill="white" rx="5" stroke="#8B5CF6"/>
+  <text x="230" y="154" text-anchor="middle" font-size="8" fill="#5B21B6" font-weight="600">FAANG default: Cache-Aside (read) + Write-Around (write) + TTL</text>
+  <!-- Footer -->
+  <text x="230" y="180" text-anchor="middle" font-size="7" fill="#78716C">On write → update DB → DELETE cache key → next read repopulates</text>
+</svg>

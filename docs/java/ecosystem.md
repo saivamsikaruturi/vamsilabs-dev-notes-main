@@ -28,6 +28,10 @@ flowchart LR
     JDK -.- DevTools(["javac, jdb, jlink, jpackage"])
     JRE -.- Libs(["Standard Libraries (rt.jar, java.*)"])
     JVM -.- Exec(["Class Loader + Bytecode Interpreter + JIT Compiler"])
+
+    style JDK fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style JRE fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style JVM fill:#FEF3C7,stroke:#FCD34D,color:#92400E
 ```
 
 - **JVM** — Executes bytecode, handles memory management and GC. Platform-specific.
@@ -47,6 +51,12 @@ flowchart LR
     C -->|Interpreter| D(["Execution"])
     C -->|JIT Compiler| E(["Native Machine Code"])
     E --> D
+
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
+    style C fill:#FEF3C7,stroke:#FCD34D,color:#92400E
+    style D fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+    style E fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 The JIT (Just-In-Time) compiler identifies hot paths at runtime and compiles them to native code, giving Java performance close to C/C++ for long-running applications.

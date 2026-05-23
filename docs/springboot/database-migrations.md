@@ -19,11 +19,11 @@ flowchart LR
 
     V4 --> Current
 
-    style V1 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style V2 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style V3 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style V4 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style Current fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style V1 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style V2 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style V3 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style V4 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style Current fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 ---
@@ -369,9 +369,9 @@ flowchart LR
 
     Phase1 --> Phase2 --> Phase3
 
-    style Phase1 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style Phase2 fill:#FEF3C7,stroke:#D97706,color:#000
-    style Phase3 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style Phase1 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style Phase2 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style Phase3 fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 ### Example: Renaming a Column Safely
@@ -556,9 +556,9 @@ flowchart LR
 
     Applied --> Edit --> Fail
 
-    style Applied fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style Edit fill:#FEF3C7,stroke:#D97706,color:#000
-    style Fail fill:#FFCDD2,stroke:#C62828,color:#000
+    style Applied fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style Edit fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style Fail fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 !!! danger "Golden Rule"
@@ -648,8 +648,8 @@ flowchart LR
     W --> M2{{"Check: already applied"}}
     M2 --> Done(["Continue startup"])
 
-    style W fill:#FEF3C7,stroke:#D97706,color:#000
-    style R1 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style W fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style R1 fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 !!! info "How tools handle concurrency"

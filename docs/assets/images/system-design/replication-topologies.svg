@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 190">
+  <defs>
+    <linearGradient id="replBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#f1f5f9"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="456" height="186" rx="10" fill="url(#replBg)" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="230" y="20" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="700" fill="#1e293b">Replication Topologies</text>
+  <!-- Single Leader -->
+  <rect x="10" y="30" width="140" height="150" rx="8" fill="white" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="80" y="47" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#1e40af">Single-Leader</text>
+  <circle cx="80" cy="70" r="14" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="80" y="74" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Leader</text>
+  <circle cx="45" cy="115" r="11" fill="#dbeafe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="45" y="119" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#1e40af">R1</text>
+  <circle cx="80" cy="115" r="11" fill="#dbeafe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="80" y="119" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#1e40af">R2</text>
+  <circle cx="115" cy="115" r="11" fill="#dbeafe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="115" y="119" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="#1e40af">R3</text>
+  <path d="M72 83 L50 105" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowRepl)"/>
+  <path d="M80 84 L80 104" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowRepl)"/>
+  <path d="M88 83 L110 105" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowRepl)"/>
+  <text x="80" y="140" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">Writes → Leader only</text>
+  <text x="80" y="152" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">Reads → Any replica</text>
+  <text x="80" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#64748b">PostgreSQL, MySQL</text>
+  <!-- Multi-Leader -->
+  <rect x="160" y="30" width="140" height="150" rx="8" fill="white" stroke="#10b981" stroke-width="1.5"/>
+  <text x="230" y="47" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#065f46">Multi-Leader</text>
+  <circle cx="200" cy="75" r="13" fill="#10b981" stroke="#059669" stroke-width="1.5"/>
+  <text x="200" y="79" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">L1</text>
+  <circle cx="260" cy="75" r="13" fill="#10b981" stroke="#059669" stroke-width="1.5"/>
+  <text x="260" y="79" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">L2</text>
+  <circle cx="230" cy="110" r="13" fill="#10b981" stroke="#059669" stroke-width="1.5"/>
+  <text x="230" y="114" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">L3</text>
+  <!-- Bidirectional arrows -->
+  <path d="M213 75 L247 75" stroke="#059669" stroke-width="1" marker-end="url(#arrowRepl2)"/>
+  <path d="M247 75 L213 75" stroke="#059669" stroke-width="1" marker-end="url(#arrowRepl2)"/>
+  <path d="M207 87 L223 100" stroke="#059669" stroke-width="1"/>
+  <path d="M253 87 L237 100" stroke="#059669" stroke-width="1"/>
+  <text x="230" y="137" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">All accept writes</text>
+  <text x="230" y="149" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#dc2626">Conflict resolution!</text>
+  <text x="230" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#64748b">CouchDB, multi-DC</text>
+  <!-- Leaderless -->
+  <rect x="310" y="30" width="140" height="150" rx="8" fill="white" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="380" y="47" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#5b21b6">Leaderless</text>
+  <circle cx="350" cy="75" r="13" fill="#8b5cf6" stroke="#6d28d9" stroke-width="1.5"/>
+  <text x="350" y="79" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">N1</text>
+  <circle cx="410" cy="75" r="13" fill="#8b5cf6" stroke="#6d28d9" stroke-width="1.5"/>
+  <text x="410" y="79" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">N2</text>
+  <circle cx="380" cy="110" r="13" fill="#8b5cf6" stroke="#6d28d9" stroke-width="1.5"/>
+  <text x="380" y="114" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6" fill="white">N3</text>
+  <text x="380" y="68" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="16" fill="#c4b5fd">⟲</text>
+  <text x="380" y="137" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">Quorum: W+R > N</text>
+  <text x="380" y="149" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#475569">Any node reads/writes</text>
+  <text x="380" y="168" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#64748b">DynamoDB, Cassandra</text>
+  <defs>
+    <marker id="arrowRepl" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <path d="M0,0 L5,2.5 L0,5 Z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowRepl2" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+      <path d="M0,0 L5,2.5 L0,5 Z" fill="#059669"/>
+    </marker>
+  </defs>
+</svg>

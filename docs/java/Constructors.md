@@ -12,10 +12,10 @@ flowchart LR
     A --> C(["📬 Parameterized<br/>with args"])
     A --> D(["📋 Copy Constructor<br/>clone an object"])
 
-    style A fill:#4a90d9,stroke:#2c5f8a,color:#fff
-    style B fill:#00b894,stroke:#008c6e,color:#fff
-    style C fill:#6c5ce7,stroke:#4a3db8,color:#fff
-    style D fill:#e17055,stroke:#b85643,color:#fff
+    style A fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style C fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style D fill:#FCA5A5,stroke:#FCA5A5,color:#1E40AF
 ```
 
 ---
@@ -137,10 +137,10 @@ flowchart LR
     B -->|"this(name, email, USER)"| C{{"🔗 User - Vamsi, no-reply@default.com, USER"}}
     C --> D(["✅ Fields assigned"])
 
-    style A fill:#0984e3,stroke:#0652a3,color:#fff
-    style B fill:#6c5ce7,stroke:#4a3db8,color:#fff
-    style C fill:#e17055,stroke:#b85643,color:#fff
-    style D fill:#00b894,stroke:#008c6e,color:#fff
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style C fill:#FCA5A5,stroke:#FCA5A5,color:#1E40AF
+    style D fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
 ```
 
 ---

@@ -17,10 +17,10 @@ flowchart LR
     A(["✅ equals returns true"]) -->|MUST| B(["🔑 hashCode MUST be same"])
     C{{"🔑 hashCode is same"}} -->|MAY or MAY NOT| D{{"❓ equals MAY or MAY NOT be true"}}
 
-    style A fill:#00b894,stroke:#008c6e,color:#fff
-    style B fill:#00b894,stroke:#008c6e,color:#fff
-    style C fill:#fdcb6e,stroke:#d4a84b,color:#333
-    style D fill:#fdcb6e,stroke:#d4a84b,color:#333
+    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style B fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style C fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style D fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
 ```
 
 ---
@@ -115,18 +115,18 @@ flowchart LR
         G3 -->|No| G5(["🔁 Next entry in chain"])
     end
 
-    style PUT fill:#dfe6e9,stroke:#636e72,color:#333
-    style GET fill:#dfe6e9,stroke:#636e72,color:#333
-    style P1 fill:#0984e3,stroke:#0652a3,color:#fff
-    style P2 fill:#6c5ce7,stroke:#4a3db8,color:#fff
-    style P3 fill:#fdcb6e,stroke:#d4a84b,color:#333
-    style P4 fill:#00b894,stroke:#008c6e,color:#fff
-    style P5 fill:#e17055,stroke:#b85643,color:#fff
-    style G1 fill:#0984e3,stroke:#0652a3,color:#fff
-    style G2 fill:#6c5ce7,stroke:#4a3db8,color:#fff
-    style G3 fill:#fdcb6e,stroke:#d4a84b,color:#333
-    style G4 fill:#00b894,stroke:#008c6e,color:#fff
-    style G5 fill:#e17055,stroke:#b85643,color:#fff
+    style PUT fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style GET fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
+    style P1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style P2 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style P3 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style P4 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style P5 fill:#FCA5A5,stroke:#FCA5A5,color:#1E40AF
+    style G1 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style G2 fill:#BFDBFE,stroke:#93C5FD,color:#1E40AF
+    style G3 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style G4 fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style G5 fill:#FCA5A5,stroke:#FCA5A5,color:#1E40AF
 ```
 
 If `hashCode()` is wrong, the key lands in the **wrong bucket** and `get()` will never find it — even though `equals()` would return true.

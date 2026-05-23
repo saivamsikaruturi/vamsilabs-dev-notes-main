@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220">
+  <defs>
+    <linearGradient id="kafkaBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#f1f5f9"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="476" height="216" rx="10" fill="url(#kafkaBg)" stroke="#e2e8f0" stroke-width="1"/>
+  <!-- Producers -->
+  <text x="40" y="20" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="600" fill="#475569">Producers</text>
+  <rect x="15" y="30" width="55" height="22" rx="4" fill="#3b82f6"/>
+  <text x="42" y="44" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Service A</text>
+  <rect x="15" y="58" width="55" height="22" rx="4" fill="#3b82f6"/>
+  <text x="42" y="72" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Service B</text>
+  <!-- Topic with Partitions -->
+  <rect x="100" y="15" width="230" height="130" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="215" y="32" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="700" fill="#1e293b">Topic: "orders"</text>
+  <!-- Partition 0 -->
+  <rect x="115" y="42" width="200" height="22" rx="4" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="125" y="56" font-family="Inter,system-ui,sans-serif" font-size="7" font-weight="600" fill="#1e40af">P0</text>
+  <rect x="140" y="46" width="14" height="14" rx="2" fill="#60a5fa"/><rect x="157" y="46" width="14" height="14" rx="2" fill="#60a5fa"/><rect x="174" y="46" width="14" height="14" rx="2" fill="#60a5fa"/><rect x="191" y="46" width="14" height="14" rx="2" fill="#60a5fa"/><rect x="208" y="46" width="14" height="14" rx="2" fill="#93c5fd"/>
+  <!-- Partition 1 -->
+  <rect x="115" y="70" width="200" height="22" rx="4" fill="#d1fae5" stroke="#6ee7b7" stroke-width="0.5"/>
+  <text x="125" y="84" font-family="Inter,system-ui,sans-serif" font-size="7" font-weight="600" fill="#065f46">P1</text>
+  <rect x="140" y="74" width="14" height="14" rx="2" fill="#34d399"/><rect x="157" y="74" width="14" height="14" rx="2" fill="#34d399"/><rect x="174" y="74" width="14" height="14" rx="2" fill="#34d399"/><rect x="191" y="74" width="14" height="14" rx="2" fill="#6ee7b7"/>
+  <!-- Partition 2 -->
+  <rect x="115" y="98" width="200" height="22" rx="4" fill="#fef3c7" stroke="#fcd34d" stroke-width="0.5"/>
+  <text x="125" y="112" font-family="Inter,system-ui,sans-serif" font-size="7" font-weight="600" fill="#92400e">P2</text>
+  <rect x="140" y="102" width="14" height="14" rx="2" fill="#f59e0b"/><rect x="157" y="102" width="14" height="14" rx="2" fill="#f59e0b"/><rect x="174" y="102" width="14" height="14" rx="2" fill="#fcd34d"/>
+  <text x="280" y="56" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#64748b">offset→</text>
+  <!-- Arrows from producers -->
+  <path d="M70 41 L100 53" stroke="#64748b" stroke-width="1" marker-end="url(#arrowKafka)"/>
+  <path d="M70 69 L100 81" stroke="#64748b" stroke-width="1" marker-end="url(#arrowKafka)"/>
+  <!-- Consumer Group -->
+  <text x="380" y="20" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="600" fill="#475569">Consumer Group</text>
+  <rect x="360" y="35" width="70" height="22" rx="4" fill="#8b5cf6"/>
+  <text x="395" y="49" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Consumer 1</text>
+  <rect x="360" y="63" width="70" height="22" rx="4" fill="#8b5cf6"/>
+  <text x="395" y="77" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Consumer 2</text>
+  <rect x="360" y="91" width="70" height="22" rx="4" fill="#8b5cf6"/>
+  <text x="395" y="105" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Consumer 3</text>
+  <!-- Arrows to consumers -->
+  <path d="M330 53 L360 46" stroke="#64748b" stroke-width="1" marker-end="url(#arrowKafka)"/>
+  <path d="M330 81 L360 74" stroke="#64748b" stroke-width="1" marker-end="url(#arrowKafka)"/>
+  <path d="M330 109 L360 102" stroke="#64748b" stroke-width="1" marker-end="url(#arrowKafka)"/>
+  <!-- Broker replication -->
+  <rect x="100" y="155" width="330" height="50" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="265" y="172" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="600" fill="#475569">Broker Cluster (Replication Factor = 3)</text>
+  <rect x="120" y="180" width="60" height="18" rx="4" fill="#475569"/>
+  <text x="150" y="192" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Broker 1</text>
+  <rect x="195" y="180" width="60" height="18" rx="4" fill="#475569"/>
+  <text x="225" y="192" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Broker 2</text>
+  <rect x="270" y="180" width="60" height="18" rx="4" fill="#475569"/>
+  <text x="300" y="192" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" fill="white">Broker 3</text>
+  <path d="M180 189 L195 189" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+  <path d="M255 189 L270 189" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="365" y="192" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#64748b">Each partition replicated</text>
+  <defs>
+    <marker id="arrowKafka" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

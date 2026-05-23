@@ -17,9 +17,9 @@ flowchart LR
         UNIT(["Unit Tests<br/>Many, fast, cheap"]) --> INT{{"Integration Tests<br/>Medium count, moderate speed"}} --> E2E(("E2E Tests<br/>Few, slow, expensive"))
     end
 
-    style E2E fill:#FFCDD2,stroke:#C62828,color:#000
-    style INT fill:#FEF3C7,stroke:#D97706,color:#000
-    style UNIT fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style E2E fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style INT fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style UNIT fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 ---
@@ -780,8 +780,8 @@ flowchart LR
     Confidence --> Web
     Confidence --> Unit
 
-    style Unit fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style TC fill:#FFCDD2,stroke:#C62828,color:#000
+    style Unit fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style TC fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 ---

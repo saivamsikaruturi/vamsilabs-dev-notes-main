@@ -279,8 +279,8 @@ flowchart LR
     B --> C[["ProxySubclass extends UserServiceImpl"]]
     C --> D(["Overrides methods to call MethodInterceptor"])
 
-    style A fill:#E3F2FD,stroke:#1565C0,color:#000
-    style C fill:#FFF3E0,stroke:#E65100,color:#000
+    style A fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style C fill:#FFFBEB,stroke:#FCD34D,color:#1E40AF
 ```
 
 ### CGLIB Example
@@ -359,8 +359,8 @@ flowchart LR
     C -->|Yes| E(["CGLIB Proxy"])
     B -->|No| E
 
-    style D fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style E fill:#FFF3E0,stroke:#E65100,color:#000
+    style D fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style E fill:#FFFBEB,stroke:#FCD34D,color:#1E40AF
 ```
 
 | Scenario | Proxy Type | Reason |

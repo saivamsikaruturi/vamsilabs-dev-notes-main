@@ -12,12 +12,12 @@ flowchart LR
     B2 --> R["Ready"]
     R --> PD["@PreDestroy"]
 
-    style I fill:#E3F2FD,stroke:#1565C0,color:#000
-    style PC fill:#D1FAE5,stroke:#059669,color:#000
-    style B1 fill:#FEF3C7,stroke:#D97706,color:#000
-    style B2 fill:#FEF3C7,stroke:#D97706,color:#000
-    style R fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
-    style PD fill:#FFCDD2,stroke:#C62828,color:#000
+    style I fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style PC fill:#D1FAE5,stroke:#93C5FD,color:#1E40AF
+    style B1 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style B2 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style R fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#1E40AF
+    style PD fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
 ```
 
 ---
@@ -176,10 +176,10 @@ flowchart LR
         F[/"Controller F"/] --> P3(["Cart Instance 3"])
     end
 
-    style S fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000
-    style P1 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style P2 fill:#E3F2FD,stroke:#1565C0,color:#000
-    style P3 fill:#E3F2FD,stroke:#1565C0,color:#000
+    style S fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#1E40AF
+    style P1 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style P2 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style P3 fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
 ```
 
 ### Singleton

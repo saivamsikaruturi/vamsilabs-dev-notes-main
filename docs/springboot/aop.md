@@ -20,11 +20,11 @@ flowchart LR
     A1 --> P
     P --> C
 
-    style P fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#000
-    style S fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style A1 fill:#FEF3C7,stroke:#D97706,color:#000
-    style A2 fill:#FEF3C7,stroke:#D97706,color:#000
-    style A3 fill:#FEF3C7,stroke:#D97706,color:#000
+    style P fill:#EFF6FF,stroke:#DBEAFE,stroke-width:2px,color:#1E40AF
+    style S fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style A1 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style A2 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style A3 fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
 ```
 
 ---
@@ -88,11 +88,11 @@ flowchart LR
     Advice --> JoinPoint
     Weaving -.->|"Links aspects to targets"| JoinPoint
 
-    style Aspect fill:#E3F2FD,stroke:#1565C0,color:#000
-    style Advice fill:#E8F5E9,stroke:#2E7D32,color:#000
-    style Pointcut fill:#FEF3C7,stroke:#D97706,color:#000
-    style JoinPoint fill:#FCE4EC,stroke:#C62828,color:#000
-    style Weaving fill:#F3E5F5,stroke:#7B1FA2,color:#000
+    style Aspect fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style Advice fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style Pointcut fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style JoinPoint fill:#FEF2F2,stroke:#FCA5A5,color:#1E40AF
+    style Weaving fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
 ```
 
 | Term | Definition | Example |
@@ -542,8 +542,8 @@ flowchart LR
         P2 --> T4["sendNotification()<br/>AOP APPLIED"]
     end
 
-    style T2 fill:#FFCDD2,stroke:#C62828,color:#000
-    style T4 fill:#E8F5E9,stroke:#2E7D32,color:#000
+    style T2 fill:#FEE2E2,stroke:#FCA5A5,color:#1E40AF
+    style T4 fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
 ```
 
 ### Three Fixes
@@ -867,8 +867,8 @@ flowchart LR
         AC[/"Caller"/] --> AT(["Woven Target<br/>(Aspect bytecode injected)"])
     end
 
-    style SP fill:#E3F2FD,stroke:#1565C0,color:#000
-    style AT fill:#F3E5F5,stroke:#7B1FA2,color:#000
+    style SP fill:#EFF6FF,stroke:#DBEAFE,color:#1E40AF
+    style AT fill:#EFF6FF,stroke:#93C5FD,color:#1E40AF
 ```
 
 | Feature | Spring AOP | AspectJ |

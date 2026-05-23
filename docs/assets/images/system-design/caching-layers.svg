@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 190" font-family="DM Sans, sans-serif">
+  <rect width="440" height="190" fill="#FAFAF9" rx="10"/>
+  <text x="220" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1917" font-family="Space Grotesk, sans-serif">Multi-Tier Caching (Netflix/Uber)</text>
+  <!-- L1 -->
+  <rect x="15" y="40" width="110" height="75" fill="#DBEAFE" rx="8" stroke="#60A5FA" stroke-width="1.5"/>
+  <text x="70" y="58" text-anchor="middle" font-size="9" font-weight="700" fill="#1D4ED8">L1: Local</text>
+  <text x="70" y="73" text-anchor="middle" font-size="14">🏎️</text>
+  <text x="70" y="90" text-anchor="middle" font-size="8" fill="#1E40AF">~1 μs</text>
+  <text x="70" y="103" text-anchor="middle" font-size="7" fill="#3B82F6">Caffeine • 30s TTL</text>
+  <!-- Arrow -->
+  <text x="140" y="78" text-anchor="middle" font-size="8" fill="#EF4444" font-weight="600">MISS→</text>
+  <!-- L2 -->
+  <rect x="160" y="40" width="110" height="75" fill="#FEF3C7" rx="8" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="215" y="58" text-anchor="middle" font-size="9" font-weight="700" fill="#92400E">L2: Redis</text>
+  <text x="215" y="73" text-anchor="middle" font-size="14">⚡</text>
+  <text x="215" y="90" text-anchor="middle" font-size="8" fill="#B45309">~0.5 ms</text>
+  <text x="215" y="103" text-anchor="middle" font-size="7" fill="#D97706">Redis • 5min TTL</text>
+  <!-- Arrow -->
+  <text x="285" y="78" text-anchor="middle" font-size="8" fill="#EF4444" font-weight="600">MISS→</text>
+  <!-- L3 -->
+  <rect x="305" y="40" width="110" height="75" fill="#FEE2E2" rx="8" stroke="#F87171" stroke-width="1.5"/>
+  <text x="360" y="58" text-anchor="middle" font-size="9" font-weight="700" fill="#DC2626">L3: Database</text>
+  <text x="360" y="73" text-anchor="middle" font-size="14">🐢</text>
+  <text x="360" y="90" text-anchor="middle" font-size="8" fill="#B91C1C">5-50 ms</text>
+  <text x="360" y="103" text-anchor="middle" font-size="7" fill="#EF4444">PostgreSQL</text>
+  <!-- Speed bar -->
+  <rect x="15" y="125" width="400" height="28" fill="white" rx="6" stroke="#E7E5E4"/>
+  <text x="220" y="138" text-anchor="middle" font-size="8" font-weight="600" fill="#1C1917">Speed comparison:</text>
+  <rect x="30" y="143" width="5" height="6" fill="#3B82F6" rx="1"/><text x="40" y="149" font-size="7" fill="#44403C">L1</text>
+  <rect x="70" y="143" width="25" height="6" fill="#F59E0B" rx="1"/><text x="100" y="149" font-size="7" fill="#44403C">L2</text>
+  <rect x="130" y="143" width="150" height="6" fill="#EF4444" rx="1"/><text x="285" y="149" font-size="7" fill="#44403C">DB</text>
+  <!-- Hit rates -->
+  <rect x="60" y="162" width="320" height="20" fill="#F0FDF4" rx="4" stroke="#BBF7D0"/>
+  <text x="220" y="175" text-anchor="middle" font-size="8" fill="#166534">Hit rates: L1 ~60% → L2 ~35% → only ~5% reach DB</text>
+</svg>

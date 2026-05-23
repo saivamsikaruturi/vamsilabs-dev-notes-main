@@ -1,445 +1,146 @@
 # CAP Theorem
 
-!!! tip "Interview Essential"
-    The CAP theorem is asked in **literally every system design interview** at FAANG companies. You must be able to explain it clearly, give real-world examples, and discuss trade-offs. Interviewers often follow up with PACELC and consistency models.
+!!! danger "Real Incident: GitHub, October 2018"
+    A 43-second network partition split GitHub's MySQL cluster. Both sides promoted a primary. Two databases accepted writes simultaneously. Result: **24 hours of degraded service**, millions of developers affected. This is CAP theorem hitting production.
 
 ---
 
-## What is the CAP Theorem?
+## The 30-Second Explanation
 
-The **CAP theorem** (also known as Brewer's theorem, proposed by Eric Brewer in 2000) states that a distributed data store can provide at most **two out of three** guarantees simultaneously:
+![](assets/images/system-design/cap-theorem.svg)
 
-| Property | Definition |
-|----------|-----------|
-| **Consistency (C)** | Every read receives the most recent write or an error. All nodes see the same data at the same time. |
-| **Availability (A)** | Every request receives a non-error response, without guaranteeing it contains the most recent write. |
-| **Partition Tolerance (P)** | The system continues to operate despite arbitrary message loss or failure of part of the network. |
+**In a distributed system, when a network partition happens, you must choose:**
 
-```mermaid
-graph LR
-    CAP{{"<b>CAP Theorem</b>"}}
-    C(["<b>Consistency</b><br/>Every read gets latest write"])
-    A(["<b>Availability</b><br/>Every request gets a response"])
-    P(["<b>Partition Tolerance</b><br/>System works despite network splits"])
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+<div style="background: linear-gradient(135deg, #fee2e2, #fef2f2); border: 2px solid #f87171; border-radius: 12px; padding: 1.5rem; text-align: center;">
+<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔒</div>
+<h4 style="margin: 0 0 0.5rem; color: #dc2626;">Consistency (CP)</h4>
+<p style="margin: 0; font-size: 0.9rem; color: #7f1d1d;">"I'd rather show an error than wrong data"</p>
+<p style="margin: 0.5rem 0 0; font-size: 0.8rem; color: #991b1b;"><strong>Banks, inventory, bookings</strong></p>
+</div>
+<div style="background: linear-gradient(135deg, #dbeafe, #eff6ff); border: 2px solid #60a5fa; border-radius: 12px; padding: 1.5rem; text-align: center;">
+<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🌐</div>
+<h4 style="margin: 0 0 0.5rem; color: #2563eb;">Availability (AP)</h4>
+<p style="margin: 0; font-size: 0.9rem; color: #1e3a5f;">"I'd rather show stale data than nothing"</p>
+<p style="margin: 0.5rem 0 0; font-size: 0.8rem; color: #1e40af;"><strong>Social feeds, DNS, shopping carts</strong></p>
+</div>
+</div>
 
-    CAP --> C
-    CAP --> A
-    CAP --> P
-
-    CP[["CP Systems<br/>HBase, ZooKeeper, etcd"]]
-    AP[["AP Systems<br/>Cassandra, DynamoDB"]]
-    CA[["CA Systems<br/>Single-node RDBMS only"]]
-
-    C --- CP
-    P --- CP
-    A --- AP
-    P --- AP
-    C --- CA
-    A --- CA
-
-    style C fill:#ff6b6b,stroke:#c0392b,color:#fff
-    style A fill:#48dbfb,stroke:#0abde3,color:#000
-    style P fill:#feca57,stroke:#f39c12,color:#000
-    style CP fill:#dfe6e9,stroke:#636e72
-    style AP fill:#dfe6e9,stroke:#636e72
-    style CA fill:#dfe6e9,stroke:#636e72
-    style CAP fill:#6c5ce7,stroke:#341f97,color:#fff
-```
+> **The key insight:** You're not choosing between C, A, and P. Partitions are inevitable. You're choosing between **C and A when a partition happens.**
 
 ---
 
-## Why You Can Only Choose 2 out of 3
+## The Pizza Shop Analogy
 
-In any distributed system, **network partitions are inevitable**. Cables get cut, switches fail, and data centers lose connectivity. Since P is non-negotiable, the real choice is between **C and A** during a partition.
+You own 3 pizza shops in SF, NYC, and Chicago. All must serve the same menu.
 
-### Network Partition Scenario Walkthrough
+**The phone lines between shops go down** (partition). A customer in Chicago asks for a pizza you just added in SF 5 minutes ago.
 
-```mermaid
-sequenceDiagram
-    participant Client
-    participant Node_A as Node A (Primary)
-    participant Node_B as Node B (Replica)
+| You choose... | What happens | Real-world equivalent |
+|:---:|---|---|
+| **Consistency** | "Sorry, system is down. Come back later." | Banking app during outage |
+| **Availability** | "Here's our menu!" (missing the new pizza) | Netflix showing stale recommendations |
 
-    Note over Node_A, Node_B: Normal operation - nodes in sync
-    Client->>Node_A: WRITE x = 42
-    Node_A->>Node_B: Replicate x = 42
-    Node_B-->>Node_A: ACK
-
-    Note over Node_A, Node_B: ⚡ NETWORK PARTITION OCCURS ⚡
-    rect rgb(255, 200, 200)
-        Client->>Node_A: WRITE x = 99
-        Node_A--xNode_B: Replicate FAILS (partition)
-        Note over Node_A: x = 99
-        Note over Node_B: x = 42 (stale!)
-    end
-
-    Note over Node_A, Node_B: Now a client reads from Node B...
-    alt Choose Consistency (CP)
-        Client->>Node_B: READ x
-        Node_B-->>Client: ERROR - Cannot guarantee consistency
-        Note over Client: System sacrifices availability
-    else Choose Availability (AP)
-        Client->>Node_B: READ x
-        Node_B-->>Client: x = 42 (stale data)
-        Note over Client: System sacrifices consistency
-    end
-```
-
-**Key insight:** During a partition, if Node B receives a read request:
-
-- **CP choice:** Refuse the request (sacrifice availability) to prevent returning stale data
-- **AP choice:** Return stale data (sacrifice consistency) to remain available
+That's it. That's the entire theorem.
 
 ---
 
-## CP Systems — Consistency + Partition Tolerance
+## What FAANG Interviewers Actually Ask
 
-CP systems **prioritize consistency** over availability. During a network partition, they will refuse requests rather than serve stale data.
+### "Given this system, would you choose CP or AP?"
 
-### Characteristics
+**Framework to answer:**
 
-- Requests may timeout or return errors during partitions
-- Strong consistency guarantees when operational
-- Use leader-based replication with quorum writes
-
-### Examples
-
-| System | How It Achieves CP |
-|--------|-------------------|
-| **HBase** | Uses ZooKeeper for leader election; region servers stop serving if they cannot reach the master |
-| **MongoDB** (majority write concern) | Writes must be acknowledged by a majority of replicas; reads from primary only |
-| **ZooKeeper** | Uses ZAB protocol; requires majority quorum to serve reads/writes |
-| **etcd** | Raft consensus; leader must communicate with majority to commit |
-| **Redis Cluster** (with WAIT) | Can be configured to refuse writes if insufficient replicas acknowledge |
-| **Google Spanner** | TrueTime + Paxos gives external consistency with global distribution |
-
-```mermaid
-graph LR
-    Client([Client]) --> Leader[Leader Node]
-    Leader -->|"Replicate"| F1[Follower 1]
-    Leader -->|"Replicate"| F2[Follower 2]
-    Leader -->|"Replicate"| F3[Follower 3]
-
-    F1 -->|"ACK"| Leader
-    F2 -->|"ACK"| Leader
-    F3 -.->|"PARTITION - No ACK"| Leader
-
-    Leader -->|"Commit after majority ACK"| Client
-
-    style Leader fill:#00b894,stroke:#00695c,color:#fff
-    style F1 fill:#81ecec,stroke:#006266
-    style F2 fill:#81ecec,stroke:#006266
-    style F3 fill:#fab1a0,stroke:#d63031
-    style Client fill:#dfe6e9,stroke:#636e72
-```
+| If the data is... | Choose | Because | Example |
+|---|:---:|---|---|
+| Financial / transactional | **CP** | Wrong balance = lawsuit | Stripe, banks |
+| User-generated content | **AP** | Stale likes > error page | Instagram, Twitter |
+| Inventory / booking | **CP** | Overselling = real money lost | Uber seats, airline tickets |
+| Session / preference | **AP** | Show old settings > force re-login | Netflix, Spotify |
+| Leader election / config | **CP** | Split-brain = catastrophe | ZooKeeper, etcd |
 
 ---
 
-## AP Systems — Availability + Partition Tolerance
+## Real Systems Mapped
 
-AP systems **prioritize availability** over consistency. Every node always accepts reads and writes, even during partitions, potentially serving stale data.
-
-### Characteristics
-
-- Always respond to requests, even with potentially outdated data
-- Use conflict resolution strategies (last-write-wins, vector clocks, CRDTs)
-- Eventually converge to a consistent state once the partition heals
-
-### Examples
-
-| System | How It Achieves AP |
-|--------|-------------------|
-| **Cassandra** | Tunable consistency; default is eventual consistency with gossip protocol |
-| **DynamoDB** | Multi-AZ replication; eventually consistent reads by default |
-| **CouchDB** | Multi-version concurrency control; conflict resolution on read |
-| **Riak** | Vector clocks for conflict detection; sibling resolution |
-| **DNS** | Serves cached records even when authoritative servers are unreachable |
-| **Amazon S3** | Prioritizes availability; eventual consistency for overwrite PUTs (now strong) |
-
-```mermaid
-graph LR
-    C1([Client 1]) --> N1(["Node 1<br/>x = 99"])
-    C2([Client 2]) --> N2(["Node 2<br/>x = 42"])
-    C3([Client 3]) --> N3(["Node 3<br/>x = 99"])
-
-    N1 -.->|"Partition"| N2
-    N1 <-->|"Sync OK"| N3
-    N2 -.->|"Partition"| N3
-
-    N1 -->|"After heal: resolve conflict"| Merged{{"Merged State"}}
-    N2 -->|"After heal: resolve conflict"| Merged
-
-    style N1 fill:#74b9ff,stroke:#0984e3,color:#000
-    style N2 fill:#fd79a8,stroke:#d63031,color:#000
-    style N3 fill:#74b9ff,stroke:#0984e3,color:#000
-    style Merged fill:#55efc4,stroke:#00b894,color:#000
-    style C1 fill:#dfe6e9,stroke:#636e72
-    style C2 fill:#dfe6e9,stroke:#636e72
-    style C3 fill:#dfe6e9,stroke:#636e72
-```
+<div style="overflow-x: auto; margin: 1.5rem 0;">
+<table style="width: 100%; border-collapse: collapse;">
+<thead>
+<tr style="background: linear-gradient(135deg, #f8fafc, #f1f5f9);">
+<th style="padding: 0.8rem; border-bottom: 2px solid #e2e8f0; text-align: left;">System</th>
+<th style="padding: 0.8rem; border-bottom: 2px solid #e2e8f0; text-align: center;">Choice</th>
+<th style="padding: 0.8rem; border-bottom: 2px solid #e2e8f0; text-align: left;">What happens during partition</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;"><strong>ZooKeeper</strong></td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9; text-align: center;">🔒 CP</td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Minority side stops accepting writes. Waits for quorum.</td></tr>
+<tr><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;"><strong>etcd</strong></td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9; text-align: center;">🔒 CP</td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Raft consensus — no leader = no writes.</td></tr>
+<tr><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;"><strong>Google Spanner</strong></td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9; text-align: center;">🔒 CP</td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">TrueTime + Paxos. Blocks rather than diverge.</td></tr>
+<tr><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;"><strong>Cassandra</strong></td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9; text-align: center;">🌐 AP</td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Every node accepts writes. Resolves conflicts later (last-write-wins).</td></tr>
+<tr><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;"><strong>DynamoDB</strong></td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9; text-align: center;">🌐 AP</td><td style="padding: 0.7rem; border-bottom: 1px solid #f1f5f9;">Eventually consistent by default. Strong consistency optional (costs 2x).</td></tr>
+<tr><td style="padding: 0.7rem;"><strong>MongoDB</strong></td><td style="padding: 0.7rem; text-align: center;">🔒 CP</td><td style="padding: 0.7rem;">Primary goes down → election (10-30s downtime). Reads can be stale on secondaries.</td></tr>
+</tbody>
+</table>
+</div>
 
 ---
 
-## CA Systems — Why They Don't Really Exist
+## PACELC — The Follow-Up They Always Ask
 
-A **CA system** provides consistency and availability but cannot tolerate network partitions. In theory, this means:
+> "OK, so you know CAP. What about when there's NO partition?"
 
-- Every read gets the latest write (Consistency)
-- Every request gets a response (Availability)
-- But the system **fails entirely** if any network issue occurs
+**PACELC** extends CAP: if **P**artition → choose **A** or **C**. **E**lse (normal operation) → choose **L**atency or **C**onsistency.
 
-!!! warning "CA Is a Myth in Distributed Systems"
-    In any real distributed system, **network partitions will happen**. A system that cannot handle partitions is effectively a single-node system. Traditional single-node relational databases (PostgreSQL on one server, MySQL on one machine) are technically CA — but they are **not distributed**.
+| System | During Partition | Normal Operation |
+|---|:---:|:---:|
+| Cassandra | **A** (stay available) | **L** (fast, eventually consistent) |
+| DynamoDB | **A** | **L** (default) or **C** (strong reads cost 2x) |
+| ZooKeeper | **C** (refuse writes) | **C** (always consistent, higher latency) |
+| Spanner | **C** | **C** (TrueTime makes it fast despite consistency) |
+| MongoDB | **C** | **L** (reads from secondaries are faster but stale) |
 
-**Why you should mention this in interviews:**
-
-- Shows you understand that P is not optional in distributed systems
-- Demonstrates awareness that "choosing CA" means giving up distribution entirely
-- Some interviewers will try to trap you by asking "what about a CA distributed system?"
-
----
-
-## PACELC Theorem — Extending CAP
-
-The **PACELC theorem** (proposed by Daniel Abadi, 2012) extends CAP by addressing what happens when there is **no partition**:
-
-> **P**artition → choose **A**vailability or **C**onsistency  
-> **E**lse (no partition) → choose **L**atency or **C**onsistency
-
-```mermaid
-flowchart LR
-    Start{"Is there a<br/>network partition?"}
-    Start -->|"YES"| Partition[["Choose: Availability vs Consistency<br/>(Same as CAP)"]]
-    Start -->|"NO"| Normal[["Choose: Latency vs Consistency<br/>(New insight from PACELC)"]]
-
-    Partition --> PA(["PA: Prioritize Availability<br/>Cassandra, DynamoDB"])
-    Partition --> PC(["PC: Prioritize Consistency<br/>HBase, ZooKeeper"])
-
-    Normal --> EL(["EL: Prioritize Latency<br/>Cassandra, DynamoDB"])
-    Normal --> EC(["EC: Prioritize Consistency<br/>Spanner, VoltDB"])
-
-    style Start fill:#6c5ce7,stroke:#341f97,color:#fff
-    style Partition fill:#fdcb6e,stroke:#f39c12,color:#000
-    style Normal fill:#81ecec,stroke:#00cec9,color:#000
-    style PA fill:#fab1a0,stroke:#e17055
-    style PC fill:#74b9ff,stroke:#0984e3
-    style EL fill:#fab1a0,stroke:#e17055
-    style EC fill:#74b9ff,stroke:#0984e3
-```
-
-### PACELC Classifications
-
-| System | If Partition (PA/PC) | Else (EL/EC) | Full Classification |
-|--------|---------------------|--------------|-------------------|
-| Cassandra | PA | EL | PA/EL |
-| DynamoDB | PA | EL | PA/EL |
-| CouchDB | PA | EL | PA/EL |
-| MongoDB | PC | EC | PC/EC |
-| HBase | PC | EC | PC/EC |
-| ZooKeeper | PC | EC | PC/EC |
-| Google Spanner | PC | EC | PC/EC |
-| PNUTS (Yahoo) | PC | EL | PC/EL |
-| Cosmos DB | PA | EL/EC (tunable) | PA/EL or PA/EC |
-
-**Key takeaway:** Even when there's no failure, you still face a trade-off between low latency and strong consistency due to replication overhead.
+!!! tip "Interview Gold"
+    When an interviewer asks "What's the trade-off of using DynamoDB?" — answer with PACELC: "It's PA/EL by default. Available during partitions, low-latency in normal operation, but eventually consistent. You can opt into strong consistency per-read at 2x cost."
 
 ---
 
-## Consistency Models Spectrum
+## Consistency Models (From Strict to Relaxed)
 
-Consistency models range from **strongest** (expensive, slow) to **weakest** (cheap, fast):
-
-```mermaid
-graph LR
-    Strong["Strong<br/>Consistency"] --> Lin["Lineariz-<br/>ability"] --> Seq["Sequential<br/>Consistency"] --> Causal["Causal<br/>Consistency"] --> RYW["Read-Your-<br/>Writes"] --> Eventual["Eventual<br/>Consistency"]
-
-    style Strong fill:#d63031,stroke:#c0392b,color:#fff
-    style Lin fill:#e17055,stroke:#d63031,color:#fff
-    style Seq fill:#f39c12,stroke:#e67e22,color:#fff
-    style Causal fill:#fdcb6e,stroke:#f39c12,color:#000
-    style RYW fill:#55efc4,stroke:#00b894,color:#000
-    style Eventual fill:#00b894,stroke:#006266,color:#fff
-```
-
-### Strong Consistency
-
-Every read returns the value of the most recent write. Equivalent to having a single copy of the data.
-
-- **Cost:** High latency, lower throughput
-- **Real-world example:** Google Spanner — uses TrueTime (GPS + atomic clocks) to provide external consistency across global data centers
-
-### Linearizability
-
-The strongest single-object consistency. Operations appear to take effect at a single instant between invocation and completion. All operations are totally ordered.
-
-- **Cost:** Requires coordination (consensus protocols)
-- **Real-world example:** etcd — all operations go through the Raft leader, providing linearizable reads/writes for Kubernetes configuration
-
-### Sequential Consistency
-
-All operations appear to execute in some sequential order, and each process's operations appear in the order specified by its program.
-
-- **Cost:** Less expensive than linearizability; no real-time ordering guarantee
-- **Real-world example:** ZooKeeper — provides sequential consistency for writes (all writes go through the leader in order) with the option for linearizable reads via `sync`
-
-### Causal Consistency
-
-Operations that are causally related are seen by all nodes in the same order. Concurrent operations may be seen in different orders by different nodes.
-
-- **Cost:** Moderate; needs causal dependency tracking (vector clocks)
-- **Real-world example:** MongoDB (causal sessions) — causal consistency sessions ensure that reads reflect prior writes in the same session, even across replica set members
-
-### Read-Your-Writes Consistency
-
-A process always sees its own writes. After a write, subsequent reads by the same client will reflect that write.
-
-- **Cost:** Low; requires sticky sessions or session tokens
-- **Real-world example:** DynamoDB (consistent reads in same session) — after a write, using the session token ensures the user sees their own update immediately
-
-### Eventual Consistency
-
-If no new updates are made, all replicas will eventually converge to the same value. No ordering guarantees.
-
-- **Cost:** Lowest latency, highest availability
-- **Real-world example:** DNS — after updating a DNS record, it propagates across the globe over minutes/hours; Amazon S3 — objects eventually become consistent across all regions
+| Model | Promise | Real-World Feel |
+|---|---|---|
+| **Linearizability** | Every read sees the absolute latest write | Your bank balance — always correct |
+| **Sequential** | All nodes agree on ordering, maybe slightly behind | A shared Google Doc |
+| **Causal** | If A caused B, everyone sees A before B | Chat messages in order |
+| **Eventual** | Everyone will *eventually* agree | Instagram like count (might be off by a few) |
 
 ---
 
-## Real-World Trade-offs
+## The 3 Interview Mistakes That Get You Rejected
 
-### Banking Systems — Strong Consistency Needed
-
-```mermaid
-graph LR
-    User([User]) -->|"Transfer $500"| Bank[Bank Service]
-    Bank -->|"Debit Account A"| DB1[(Account A<br/>Balance: $1000 → $500)]
-    Bank -->|"Credit Account B"| DB2[(Account B<br/>Balance: $200 → $700)]
-
-    style Bank fill:#d63031,stroke:#c0392b,color:#fff
-    style DB1 fill:#74b9ff,stroke:#0984e3
-    style DB2 fill:#74b9ff,stroke:#0984e3
-    style User fill:#dfe6e9,stroke:#636e72
-```
-
-- **Requirement:** Cannot show incorrect balances or allow double-spending
-- **Choice:** CP with strong consistency (e.g., Google Spanner, CockroachDB)
-- **Trade-off:** Accept higher latency and potential unavailability during partitions
-- **Pattern:** Two-phase commit, saga pattern with compensating transactions
-
-### Social Media Feeds — Eventual Consistency OK
-
-- **Requirement:** Show posts/likes/comments to millions of concurrent users
-- **Choice:** AP with eventual consistency (e.g., Cassandra for timeline storage)
-- **Trade-off:** A user might see an old like count for a few seconds — acceptable
-- **Pattern:** Fan-out on write with async propagation
-
-### Shopping Cart — Availability Over Consistency
-
-- **Requirement:** Never lose items a customer added to cart, even during outages
-- **Choice:** AP with conflict resolution (e.g., DynamoDB with last-write-wins or CRDTs)
-- **Trade-off:** Two browser tabs might show slightly different cart states temporarily
-- **Pattern:** Amazon's original Dynamo paper — "always writable" design philosophy
+!!! danger "Don't Say These"
+    1. **"Just pick CP for everything"** — Shows you don't understand the trade-off. No interviewer wants a system that goes down during every network blip.
+    2. **"CA is a valid option"** — In any real distributed system, partitions WILL happen. CA only exists on a single machine (not distributed).
+    3. **"Eventual consistency means data loss"** — No. It means temporary staleness. All writes are eventually propagated. No data is lost.
 
 ---
 
-## Comparison Table
+## Your Interview Answer Template
 
-| System | CP/AP | Consistency Model | Primary Use Case |
-|--------|-------|-------------------|-----------------|
-| **Google Spanner** | CP | Strong (External) | Global financial transactions |
-| **etcd** | CP | Linearizable | Kubernetes config, distributed locks |
-| **ZooKeeper** | CP | Sequential | Leader election, distributed coordination |
-| **HBase** | CP | Strong | Real-time random read/write on big data |
-| **MongoDB** | CP | Causal (tunable) | General-purpose document store |
-| **CockroachDB** | CP | Serializable | Geo-distributed SQL |
-| **Cassandra** | AP | Eventual (tunable) | High-write throughput, time-series |
-| **DynamoDB** | AP | Eventual (default) | Serverless apps, shopping carts |
-| **CouchDB** | AP | Eventual | Offline-first mobile apps |
-| **Riak** | AP | Eventual | Session storage, user preferences |
-| **Redis Cluster** | CP/AP (config) | Eventual to Strong | Caching, real-time analytics |
-| **Cosmos DB** | Tunable | 5 consistency levels | Multi-model global apps |
+When asked "How would you handle consistency in [System X]?"
+
+> "For [specific use case], I'd choose [CP/AP] because [reason tied to business impact]. During normal operation, I'd optimize for [latency/consistency]. Specifically, I'd use [real system] which gives me [specific guarantee]. For the parts that need [opposite choice], I'd use a separate store — for example [second system] for [that specific data]."
+
+**Example:** "For the payment service, I'd choose CP using PostgreSQL with synchronous replication — a wrong balance is worse than brief unavailability. But for the activity feed, I'd use Cassandra (AP) because showing a slightly stale feed is fine, and we need sub-10ms reads globally."
 
 ---
 
-## Interview Questions
+## Quick Recall Card
 
-??? question "A network partition occurs in your distributed database. Reads to one partition are returning stale data. What happened and how would you handle it?"
-    This is a classic AP behavior. During a partition, the system prioritized availability over consistency. The node serving reads cannot reach the primary/leader to get the latest data but still responds.
-    
-    **To handle it:**
-    
-    - If consistency is critical (e.g., banking), switch to CP behavior: reject reads that cannot be verified as current
-    - If availability is critical (e.g., social media), accept stale reads and reconcile after partition heals
-    - Implement read-repair or anti-entropy mechanisms for eventual convergence
-    - Use version vectors or timestamps to detect and resolve conflicts post-partition
-
-??? question "Why can't we build a distributed system that is both fully consistent and fully available?"
-    Because network partitions are inevitable in distributed systems (hardware fails, cables get cut, packets get lost). During a partition, a node receiving a request must either:
-    
-    1. Wait for the partition to heal to ensure consistency (sacrificing availability), or
-    2. Respond immediately with potentially stale data (sacrificing consistency)
-    
-    This was formally proven by Gilbert and Lynch in 2002. The FLP impossibility result further shows that consensus is impossible in asynchronous systems with even one faulty process.
-
-??? question "You're designing a system for a global e-commerce platform. How do you decide between CP and AP for different components?"
-    Different components have different requirements:
-    
-    - **Inventory/Payment:** CP — cannot oversell items or double-charge. Use strong consistency with distributed transactions.
-    - **Product Catalog:** AP — slightly stale prices for a few seconds is acceptable. Use eventual consistency with CDN caching.
-    - **Shopping Cart:** AP — Amazon's Dynamo paper showed that "always writable" carts increase revenue. Merge conflicts on checkout.
-    - **User Sessions:** AP — availability is critical; session data can be reconstructed.
-    - **Order History:** CP — users expect to see their orders immediately after placement. Use read-your-writes consistency.
-
-??? question "Explain the PACELC theorem and why it matters beyond CAP."
-    PACELC extends CAP by noting that even when there is NO partition (the normal case), you still face a trade-off between latency and consistency. Replicating data synchronously gives consistency but adds latency; replicating asynchronously gives low latency but risks inconsistency.
-    
-    Example: Cassandra is PA/EL — during partitions it chooses availability, and during normal operation it chooses low latency (async replication). MongoDB is PC/EC — during partitions it chooses consistency, and normally it still prioritizes consistency over latency (synchronous majority writes).
-    
-    This matters because systems spend 99.9%+ of their time NOT in a partition state, so the EL/EC trade-off affects everyday performance more than the PA/PC choice.
-
-??? question "What is the difference between linearizability and sequential consistency?"
-    **Linearizability** requires that operations appear to take effect at a single point in real time between their invocation and response. It respects real-time ordering.
-    
-    **Sequential consistency** only requires that all processes see operations in the same order, and that order is consistent with each process's program order. It does NOT require real-time ordering.
-    
-    **Example:** If Process A writes x=1 at time T=1, and Process B reads x at time T=2:
-    
-    - Linearizability: Process B MUST see x=1 (real-time ordering respected)
-    - Sequential consistency: Process B MAY see x=0 if the system reorders the operations (as long as all processes agree on the order)
-    
-    Linearizability is more expensive because it requires clock synchronization or coordination.
-
-??? question "How does Cassandra achieve tunable consistency?"
-    Cassandra allows you to set consistency levels per-query using replication factor (N), write consistency (W), and read consistency (R):
-    
-    - **R + W > N** → Strong consistency (e.g., QUORUM reads + QUORUM writes with RF=3: 2+2 > 3)
-    - **R + W <= N** → Eventual consistency (e.g., ONE read + ONE write: 1+1 < 3)
-    
-    Common configurations:
-    
-    - `ONE/ONE`: Fastest, least consistent (AP behavior)
-    - `QUORUM/QUORUM`: Good balance of consistency and performance
-    - `ALL/ALL`: Strongest consistency but lowest availability (single node failure blocks operations)
-    
-    This tunability means Cassandra can act as CP or AP depending on the query.
-
-??? question "Your system uses eventual consistency. A user writes a post but doesn't see it when they refresh. How do you fix this without switching to strong consistency?"
-    Implement **read-your-writes consistency** without requiring global strong consistency:
-    
-    1. **Sticky sessions:** Route the user's reads to the same node that accepted their write
-    2. **Session tokens:** Include a logical timestamp/version in the client session; the read node waits until it has at least that version
-    3. **Read from leader:** For the writing user only, read from the leader node; other users can read from replicas
-    4. **Client-side cache:** Merge the local write into the response until the server catches up
-    
-    This gives the user a consistent experience while maintaining eventual consistency for the overall system — a practical middle ground used by Facebook, Twitter, and LinkedIn.
-
-??? question "How does Google Spanner achieve strong consistency across global data centers without sacrificing too much latency?"
-    Google Spanner uses **TrueTime** — a globally synchronized clock using GPS receivers and atomic clocks in every data center. This enables:
-    
-    1. **External consistency:** Transactions are assigned timestamps that respect real-time ordering
-    2. **Lock-free reads:** Read-only transactions can read at a timestamp without acquiring locks
-    3. **Wait-out uncertainty:** After a commit, Spanner waits out the clock uncertainty interval (typically <7ms) before reporting success
-    
-    The Paxos consensus protocol handles replication across zones. TrueTime's tight uncertainty bounds mean the wait time is minimal, giving both consistency and acceptable latency.
-    
-    **Trade-off:** Requires specialized hardware (GPS/atomic clocks) that most organizations cannot replicate — which is why CockroachDB uses hybrid logical clocks as an approximation.
+| Question | Answer |
+|---|---|
+| What is CAP? | During a partition, choose Consistency or Availability |
+| Why not both? | Partitions are inevitable in distributed systems |
+| CP examples? | ZooKeeper, etcd, Spanner, HBase, MongoDB |
+| AP examples? | Cassandra, DynamoDB, CouchDB, DNS |
+| What's PACELC? | Extends CAP: what do you trade-off when there's NO partition? |
+| Most common mistake? | Treating it as "pick 2 of 3" instead of "CP or AP during partition" |
