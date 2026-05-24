@@ -185,11 +185,15 @@ body,
 
 .md-sidebar {
   background: var(--vtn-bg);
-  width: 14.5rem;
 }
 
-.md-sidebar--primary {
-  width: 14.5rem;
+@media screen and (min-width: 76.25em) {
+  .md-sidebar {
+    width: 14.5rem;
+  }
+  .md-sidebar--primary {
+    width: 14.5rem;
+  }
 }
 
 :focus-visible {
@@ -926,8 +930,25 @@ body,
   .md-typeset { font-size: 0.95rem; }
   .md-typeset h1 { font-size: 1.5rem; }
   .md-typeset h2 { font-size: 1.2rem; }
-  .vtn-hero { padding: 2rem 1.2rem; margin-left: -0.5rem; margin-right: -0.5rem; border-radius: var(--vtn-radius); }
-  .vtn-hero h1 { font-size: 1.7rem !important; }
+  .md-content {
+    padding: 0 0.5rem;
+  }
+  .vtn-hero {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    padding: 2.5rem 1.5rem 2rem;
+    border-radius: var(--vtn-radius);
+  }
+  .vtn-hero h1 {
+    font-size: 1.6rem !important;
+    line-height: 1.15 !important;
+  }
+  .vtn-hero .vtn-subtitle {
+    font-size: 0.9rem;
+  }
+  .vtn-hero .vtn-stats {
+    gap: 1.5rem;
+  }
 }
 
 /* ==========================================================================
@@ -1606,35 +1627,34 @@ body,
 }
 
 /* ==========================================================================
-   MERMAID DIAGRAMS — polished
+   MERMAID DIAGRAMS — Professional Documentation Quality
+   Inspired by: Stripe, Cloudflare, Vercel docs
    ========================================================================== */
 
+/* --- Container: centered, padded, subtle background --- */
+pre.mermaid,
 .mermaid {
-  margin: 1.5em 0;
-  padding: 1em 0.75em;
-  background: var(--vtn-surface);
-  border: 1px solid var(--vtn-border);
-  border-radius: var(--vtn-radius);
-  text-align: center;
+  margin: 2rem auto;
+  padding: 1.75rem 1.5rem;
+  background: #FAFBFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
   overflow-x: auto;
-  box-shadow: var(--vtn-shadow-sm);
-}
-.mermaid svg {
-  max-width: 100%;
-  height: auto;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease;
 }
 
+pre.mermaid:hover,
 .mermaid:hover {
-  box-shadow: var(--vtn-shadow-md);
-  transition: box-shadow var(--vtn-transition);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-/* Dark mode diagrams: warm cream canvas with professional contrast */
+/* Dark mode container — warm cream canvas for readability */
+[data-md-color-scheme="slate"] pre.mermaid,
 [data-md-color-scheme="slate"] .mermaid {
   background: #F5F3F0;
-  border: 1px solid #57534E;
-  border-radius: var(--vtn-radius);
-  padding: 1em 0.75em;
+  border-color: #57534E;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
   --md-default-fg-color: #1C1917;
   --md-default-fg-color--light: #44403C;
@@ -1648,7 +1668,110 @@ body,
   --md-mermaid-node-fg-color: #1C1917;
 }
 
-/* Dark mode: force dark text on cream canvas for elements WITHOUT inline color */
+[data-md-color-scheme="slate"] pre.mermaid:hover,
+[data-md-color-scheme="slate"] .mermaid:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* --- SVG sizing — prevent too-small or too-large diagrams --- */
+pre.mermaid svg,
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+  min-height: 100px;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* --- Node text: consistent, readable typography --- */
+.mermaid .nodeLabel,
+.mermaid .label {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+}
+
+.mermaid .edgeLabel {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+}
+
+/* --- Node shapes: rounded, consistent padding --- */
+.mermaid .node rect,
+.mermaid .node polygon,
+.mermaid .node circle {
+  rx: 8px;
+  ry: 8px;
+}
+
+/* Extra internal padding for node text alignment */
+.mermaid .node .label {
+  padding: 4px 8px !important;
+}
+
+/* --- Edge/arrow styling: clean 2px lines --- */
+.mermaid .edgePath .path,
+.mermaid .flowchart-link {
+  stroke-width: 2px !important;
+}
+
+/* Arrow markers */
+.mermaid marker path {
+  stroke-width: 1px;
+}
+
+/* --- Subgraph/cluster styling: subtle, organized --- */
+.mermaid .cluster rect {
+  rx: 12px !important;
+  ry: 12px !important;
+  stroke-width: 1.5px !important;
+  fill: rgba(226, 232, 240, 0.3) !important;
+  stroke: #CBD5E1 !important;
+}
+
+.mermaid .cluster span,
+.mermaid .cluster text {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  fill: #475569 !important;
+  color: #475569 !important;
+}
+
+/* --- Sequence diagram: professional actor/message styling --- */
+.mermaid .actor {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+}
+
+.mermaid .messageText {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+.mermaid .loopText {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+.mermaid .noteText {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+}
+
+/* Sequence diagram lines — crisper */
+.mermaid .messageLine0,
+.mermaid .messageLine1 {
+  stroke-width: 1.5px !important;
+}
+
+/* --- Dark mode text overrides — force dark text on cream --- */
 [data-md-color-scheme="slate"] .mermaid .edgeLabel,
 [data-md-color-scheme="slate"] .mermaid .edgeLabel span,
 [data-md-color-scheme="slate"] .mermaid .relationshipLabel,
@@ -1662,41 +1785,75 @@ body,
   fill: #1C1917 !important;
   color: #1C1917 !important;
 }
+
 [data-md-color-scheme="slate"] .mermaid .relation,
 [data-md-color-scheme="slate"] .mermaid .edgePath .path,
 [data-md-color-scheme="slate"] .mermaid .flowchart-link,
 [data-md-color-scheme="slate"] .mermaid line {
   stroke: #1C1917 !important;
 }
+
 [data-md-color-scheme="slate"] .mermaid marker path {
   fill: #1C1917 !important;
   stroke: #1C1917 !important;
 }
+
 [data-md-color-scheme="slate"] .mermaid .classGroup rect {
   stroke: #78716C !important;
 }
+
 [data-md-color-scheme="slate"] .mermaid .classGroup line {
   stroke: #A8A29E !important;
 }
+
 [data-md-color-scheme="slate"] .mermaid .cluster rect {
   fill: #ECEAE6 !important;
   stroke: #D6D3D1 !important;
 }
 
-/* Node text color is propagated from inline styles by JS (fixNodeColors).
-   classLabel text inherits from mermaid's own styling. */
+[data-md-color-scheme="slate"] .mermaid .cluster span,
+[data-md-color-scheme="slate"] .mermaid .cluster text {
+  fill: #44403C !important;
+  color: #44403C !important;
+}
+
+/* --- Class diagram text inheritance --- */
 .mermaid .classLabel text,
 .mermaid .classLabel tspan {
   fill: inherit !important;
 }
 
-/* Edge label rects — styled as visible cream boxes by JS */
+/* --- Edge label backgrounds — visible, subtle --- */
 .mermaid .edgeLabel rect {
   opacity: 1 !important;
+  rx: 4px;
+  ry: 4px;
 }
+
 .mermaid .edgeLabel rect[data-vtn-bg] {
   opacity: 1 !important;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.06));
+}
+
+/* --- Responsive: ensure diagrams don't overflow on mobile --- */
+@media screen and (max-width: 768px) {
+  pre.mermaid,
+  .mermaid {
+    padding: 1rem 0.75rem;
+    margin: 1.5rem -0.5rem;
+    border-radius: 8px;
+  }
+}
+
+/* --- Print: clean black and white --- */
+@media print {
+  pre.mermaid,
+  .mermaid {
+    border: 1px solid #ccc;
+    box-shadow: none;
+    background: white;
+    page-break-inside: avoid;
+  }
 }
 
 /* ==========================================================================

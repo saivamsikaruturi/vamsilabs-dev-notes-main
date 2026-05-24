@@ -1,6 +1,6 @@
 import re
 
-INIT_CFG = "%%{init: {'flowchart': {'nodeSpacing': 18, 'rankSpacing': 35, 'padding': 8}, 'class': {'padding': 8}}}%%"
+INIT_CFG = "%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '13px', 'fontFamily': 'Inter, -apple-system, sans-serif'}, 'flowchart': {'nodeSpacing': 30, 'rankSpacing': 50, 'padding': 12, 'curve': 'basis'}, 'sequence': {'actorMargin': 60, 'messageMargin': 40}, 'class': {'padding': 12}}}%%"
 
 def on_page_markdown(markdown, **kwargs):
     def inject(m):

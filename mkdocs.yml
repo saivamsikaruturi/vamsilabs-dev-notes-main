@@ -254,6 +254,7 @@ nav:
           - Circular Dependencies: springboot/circular-dependencies.md
           - Custom Starters & Bean Processors: springboot/custom-starter-bean-processors.md
           - AOP (Aspect-Oriented): springboot/aop.md
+          - AOP Deep Dive (Pointcuts & Proxies): springboot/spring-aop-deep-dive.md
           - SpEL (Expression Language): springboot/spel.md
           - Design Patterns in Spring: springboot/design-patterns.md
       - Data & Persistence:
@@ -261,6 +262,7 @@ nav:
           - Specifications & Dynamic Queries: springboot/specifications-dynamic-queries.md
           - N+1 Problem & JPA Internals: springboot/n-plus-one-jpa.md
           - Hibernate & JPA Internals: springboot/hibernate-internals.md
+          - Hibernate Deep Dive (Sessions & Caching): springboot/hibernate-standalone.md
           - Transactions: springboot/transactions.md
           - Multiple DataSources & JPA Auditing: springboot/multi-datasource-auditing.md
           - Database Migrations: springboot/database-migrations.md
@@ -280,6 +282,7 @@ nav:
           - GraphQL with Spring: springboot/spring-graphql.md
           - WebSocket & Real-Time: springboot/spring-websocket.md
           - File Upload & Download: springboot/file-upload-download.md
+          - Spring HATEOAS: springboot/spring-hateoas.md
       - Security & Auth:
           - Spring Security: springboot/security.md
           - Security Filter Chain Internals: springboot/security-filter-chain.md
@@ -380,6 +383,7 @@ nav:
               - Memento: designpatterns/behaviouralDesignPatterns/MementoDp.md
               - Visitor: designpatterns/behaviouralDesignPatterns/VisitorDp.md
               - Interpreter: designpatterns/behaviouralDesignPatterns/Interpreter.md
+          - J2EE Patterns: designpatterns/j2ee-patterns.md
   - System Design:
       - Interview Guide: systemdesign/system-design-interview-guide.md
       - Fundamentals:
@@ -429,6 +433,7 @@ nav:
   - Data:
       - SQL Fundamentals: databases/sql.md
       - PostgreSQL: postgresql/postgresql.md
+      - MongoDB: databases/mongodb.md
       - Neo4j: databases/neo4j.md
       - Kafka: kafka-messaging/kafka.md
       - Security:
