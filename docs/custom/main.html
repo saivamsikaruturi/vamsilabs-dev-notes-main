@@ -178,6 +178,26 @@ function gateSignIn() {
   });
 })();
 </script>
+<!-- Reading Progress Bar -->
+<div class="vtn-reading-progress" id="reading-progress"></div>
+<script>
+(function() {
+  var bar = document.getElementById('reading-progress');
+  if (!bar) return;
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        bar.style.width = pct + '%';
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+</script>
 {{ super() }}
 <script>
 (function() {

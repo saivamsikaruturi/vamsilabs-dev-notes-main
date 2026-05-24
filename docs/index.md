@@ -214,7 +214,7 @@ Admin Dashboard
 
 <div class="vtn-grid" markdown>
 
-<a class="vtn-card" href="https/">
+<a class="vtn-card" href="systemdesign/system-design-interview-guide/">
   <span class="vtn-card-icon">:material-sitemap:</span>
   <span class="vtn-card-body"><span class="vtn-card-title">System Design Fundamentals</span><span class="vtn-card-desc">HTTPS, CAP Theorem, Rate Limiting, Caching</span></span>
 </a>
