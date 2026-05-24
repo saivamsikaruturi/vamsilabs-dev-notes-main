@@ -1,39 +1,14 @@
-# Complete Java Interview Guide — From Basics to FAANG Level
+# Java Interview Guide — FAANG & Top-Tier
 
-> **The definitive guide to Java interview preparation.** This page links every topic you need to master, organized by category and difficulty level. Each section includes key concepts, common questions, and links to deep-dive notes.
+> Every Java interview at a top company follows the same arc: they start with fundamentals to see if you *actually* understand the language, escalate into concurrency and JVM internals to test depth, then finish with design to gauge production instinct. This guide mirrors that arc.
 
-Whether you are preparing for Google, Amazon, Meta, Apple, Netflix, or any top-tier company, this guide covers the full spectrum of Java interview topics — from language fundamentals through JVM internals to modern Java 21 features.
-
----
-
-## How to Use This Guide
-
-This guide is structured as a **progressive learning path**:
-
-1. **Core Java Fundamentals** — the foundation every interview starts with
-2. **Strings & Wrapper Classes** — deceptively deep topic area
-3. **Collections Framework** — the most frequently tested area
-4. **Concurrency & Multithreading** — separates senior candidates from juniors
-5. **JVM & Memory** — demonstrates systems-level understanding
-6. **Java 8+ Features** — shows you stay current
-7. **Design & Architecture** — proves you write production-grade code
-8. **I/O & Networking** — rounds out your systems knowledge
-
-Each section is tagged by difficulty:
-
-- **L1** — Entry-level / phone screen questions
-- **L2** — Mid-level / onsite technical rounds
-- **L3** — Senior / staff-level deep dives
-
-Start with your weakest area, or follow the 6-week roadmap at the bottom for a structured approach.
+**Difficulty tags:** L1 (phone screen) · L2 (onsite) · L3 (senior/staff deep-dive)
 
 ---
 
 ## 1. Core Java Fundamentals
 
-### Key Topics
-
-Core Java forms the bedrock of every interview. Expect questions on the type system, memory semantics, object lifecycle, and OOP principles. Interviewers use these to gauge whether you truly understand the language or just use it mechanically. These questions appear in almost every phone screen.
+The type system, memory semantics, object lifecycle, OOP. Interviewers use these to gauge whether you actually understand the language or just use it mechanically — they show up in nearly every phone screen.
 
 ### Must-Know Questions
 
@@ -65,9 +40,7 @@ Core Java forms the bedrock of every interview. Expect questions on the type sys
 
 ## 2. Strings & Wrapper Classes
 
-### Key Topics
-
-Strings account for a disproportionate number of interview questions because they intersect immutability, memory management, the String pool, and API fluency. Wrapper classes test your understanding of autoboxing pitfalls, caching ranges, and equality semantics. These are L1 topics but the depth of follow-up questions can reach L2.
+Strings come up disproportionately because they intersect immutability, memory management, the String pool, and API fluency. Wrapper classes test autoboxing pitfalls, caching ranges, and equality semantics. L1 entry point, but follow-ups reach L2 fast.
 
 ### Must-Know Questions
 
@@ -90,9 +63,7 @@ Strings account for a disproportionate number of interview questions because the
 
 ## 3. Collections Framework
 
-### Key Topics
-
-The Collections Framework is the single most tested area in Java interviews. You need to understand not just what each collection does, but how it works internally — hash tables, red-black trees, linked lists, and array resizing. FAANG interviews will ask you to choose the right collection for a given scenario and explain the time complexity trade-offs. Be ready to discuss thread-safe alternatives and iterator semantics.
+The most-tested area in Java interviews. They don't just ask *what* each collection does — they want the internals: hash tables, red-black trees, array resizing, iterator fail-fast behavior. Know when to pick what and why.
 
 ### Must-Know Questions
 
@@ -121,9 +92,7 @@ The Collections Framework is the single most tested area in Java interviews. You
 
 ## 4. Concurrency & Multithreading
 
-### Key Topics
-
-Concurrency separates senior engineers from everyone else. At FAANG companies, you will be asked to reason about thread safety, visibility, ordering, and liveness. Beyond theory, expect questions about practical patterns — thread pools, async pipelines with CompletableFuture, and Java 21's virtual threads. Understanding the Java Memory Model's happens-before relationships is essential for L3 discussions.
+This is what separates senior from mid. Thread safety, visibility, ordering, liveness — plus practical patterns like thread pools, CompletableFuture pipelines, and Java 21 virtual threads. The Java Memory Model's happens-before rules are L3 territory.
 
 ### Must-Know Questions
 
@@ -154,9 +123,7 @@ Concurrency separates senior engineers from everyone else. At FAANG companies, y
 
 ## 5. JVM & Memory
 
-### Key Topics
-
-JVM knowledge demonstrates that you understand what happens beneath your code. Interviewers at FAANG companies probe this area to assess debugging ability, performance tuning skills, and systems thinking. You should be able to explain the class loading process, runtime memory areas (heap, metaspace, stack, code cache), garbage collection algorithms, and how to diagnose memory leaks and performance bottlenecks in production.
+What happens beneath your code. Class loading, runtime memory areas (heap, metaspace, stack, code cache), GC algorithms, and production diagnostics — memory leaks, CPU profiling, thread dumps. This is where you prove you can debug systems, not just write them.
 
 ### Must-Know Questions
 
@@ -183,9 +150,7 @@ JVM knowledge demonstrates that you understand what happens beneath your code. I
 
 ## 6. Java 8+ Features
 
-### Key Topics
-
-Modern Java features are heavily tested because they reveal whether a candidate writes idiomatic, current code or is stuck in Java 6-era patterns. Lambdas, streams, Optional, records, sealed classes, and pattern matching are all fair game. For senior roles, expect questions about stream internals (spliterators, stream characteristics) and when NOT to use streams (side effects, complex stateful operations, debugging difficulty).
+Lambdas, streams, Optional, records, sealed classes, pattern matching. If you're still writing Java 6-era code, this is where it shows. Senior-level: stream internals (spliterators, characteristics) and when *not* to use streams.
 
 ### Must-Know Questions
 
@@ -216,9 +181,7 @@ Modern Java features are heavily tested because they reveal whether a candidate 
 
 ## 7. Design & Architecture
 
-### Key Topics
-
-Design questions test whether you can write maintainable, extensible code. SOLID principles, generics, and common patterns from Effective Java are the bread and butter of system design rounds that focus on OOD (object-oriented design). For senior roles, expect to design class hierarchies on a whiteboard, discuss trade-offs between inheritance and composition, and explain how frameworks use reflection and proxies under the hood.
+SOLID, generics, Effective Java patterns — the OOD portion of your loop. Senior roles: whiteboard a class hierarchy, defend composition over inheritance, explain how frameworks leverage reflection and proxies.
 
 ### Must-Know Questions
 
@@ -244,9 +207,7 @@ Design questions test whether you can write maintainable, extensible code. SOLID
 
 ## 8. I/O & Networking
 
-### Key Topics
-
-I/O questions appear less frequently in FAANG interviews but demonstrate breadth. Understanding the difference between blocking I/O, NIO (non-blocking I/O), and NIO.2 is useful for system design discussions. Serialization pitfalls (security, versioning) remain relevant for any distributed system role.
+Less frequent in interviews but proves breadth. Blocking I/O vs NIO vs NIO.2 comes up in system design discussions. Serialization pitfalls (security, versioning) matter for any distributed system role.
 
 ### Must-Know Questions
 

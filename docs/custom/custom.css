@@ -433,13 +433,13 @@ body,
 
 .md-nav__link {
   font-family: var(--vtn-font-body);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 400;
   color: var(--vtn-text-secondary);
-  padding: 0.22rem 0.5rem;
+  padding: 0.25rem 0.5rem;
   border-radius: var(--vtn-radius-sm);
   transition: all 0.12s ease;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .md-nav__link:hover {
@@ -463,7 +463,7 @@ body,
 .md-nav__item--nested > .md-nav__link {
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.04em;
   color: var(--vtn-text-muted);
   margin-top: 0.7rem;
@@ -490,8 +490,8 @@ body,
 
 .md-typeset {
   font-family: var(--vtn-font-body);
-  font-size: 0.875rem;
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.7;
   color: var(--vtn-text);
   font-weight: 400;
 }
@@ -499,30 +499,30 @@ body,
 .md-typeset h1 {
   font-family: var(--vtn-font-heading);
   font-weight: 700;
-  font-size: 1.75rem;
-  letter-spacing: -0.02em;
+  font-size: 2rem;
+  letter-spacing: -0.025em;
   color: var(--vtn-text);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   line-height: 1.2;
 }
 
 .md-typeset h2 {
   font-family: var(--vtn-font-heading);
   font-weight: 700;
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   color: var(--vtn-text);
   margin-top: 2.5rem;
   margin-bottom: 0.6rem;
   padding-bottom: 0;
   border-bottom: none;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
   line-height: 1.3;
 }
 
 .md-typeset h3 {
   font-family: var(--vtn-font-heading);
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--vtn-text);
   margin-top: 1.8rem;
   line-height: 1.35;
@@ -533,7 +533,7 @@ body,
   font-family: var(--vtn-font-heading);
   font-weight: 600;
   color: var(--vtn-text);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   margin-top: 1.4rem;
   line-height: 1.4;
   letter-spacing: 0;
@@ -958,12 +958,12 @@ body,
   .md-typeset h1 { font-size: 1.75rem; }
   .md-typeset h2 { font-size: 1.35rem; }
   .md-typeset h3 { font-size: 1.15rem; }
-  .md-typeset { font-size: 1rem; }
+  .md-typeset { font-size: 0.95rem; }
   .vtn-hero h1 { font-size: 2rem !important; }
 }
 
 @media screen and (max-width: 550px) {
-  .md-typeset { font-size: 0.95rem; }
+  .md-typeset { font-size: 0.92rem; }
   .md-typeset h1 { font-size: 1.5rem; }
   .md-typeset h2 { font-size: 1.2rem; }
   .md-content {
