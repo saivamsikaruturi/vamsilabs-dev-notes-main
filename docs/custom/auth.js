@@ -127,14 +127,27 @@ function updateUI(user) {
   }
 }
 
+// Detect mobile browsers
+function isMobile() {
+  return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+}
+
 // Sign in with Google
 async function signInWithGoogle() {
   try {
     await initFirebase();
     const provider = new firebase.auth.GoogleAuthProvider();
-    await auth.signInWithPopup(provider);
+    if (isMobile()) {
+      await auth.signInWithRedirect(provider);
+    } else {
+      await auth.signInWithPopup(provider);
+    }
   } catch (error) {
-    showAuthError(error.message);
+    if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-browser') {
+      await auth.signInWithRedirect(provider);
+    } else {
+      showAuthError(error.message);
+    }
   }
 }
 
@@ -144,9 +157,19 @@ async function signInWithMicrosoft() {
     await initFirebase();
     const provider = new firebase.auth.OAuthProvider('microsoft.com');
     provider.setCustomParameters({ prompt: 'select_account' });
-    await auth.signInWithPopup(provider);
+    if (isMobile()) {
+      await auth.signInWithRedirect(provider);
+    } else {
+      await auth.signInWithPopup(provider);
+    }
   } catch (error) {
-    showAuthError(error.message);
+    if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-browser') {
+      const provider = new firebase.auth.OAuthProvider('microsoft.com');
+      provider.setCustomParameters({ prompt: 'select_account' });
+      await auth.signInWithRedirect(provider);
+    } else {
+      showAuthError(error.message);
+    }
   }
 }
 
@@ -284,9 +307,18 @@ window.addEventListener('beforeunload', () => {
   }).catch(() => {});
 });
 
-// Initialize auth on page load (check if user already logged in)
+// Handle redirect result (for mobile sign-in)
 document.addEventListener('DOMContentLoaded', () => {
   initFirebase().then(() => {
+    auth.getRedirectResult().then(result => {
+      if (result && result.user) {
+        updateUI(result.user);
+      }
+    }).catch(error => {
+      if (error.code !== 'auth/no-auth-event') {
+        showAuthError(error.message);
+      }
+    });
     loadProgress();
   }).catch(() => {});
 });
