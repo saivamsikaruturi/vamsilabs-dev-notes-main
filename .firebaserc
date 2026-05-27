@@ -1,5 +1,12 @@
 {
   "projects": {
     "default": "vamsilabs-a5121"
+  },
+  "targets": {
+    "vamsilabs-a5121": {
+      "hosting": {
+        "vamsilabs": ["vamsilabs"]
+      }
+    }
   }
 }

@@ -8,3 +8,4 @@ build
 *.iml
 .springBeans
 /site/
+node_modules/
