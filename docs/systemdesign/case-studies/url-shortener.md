@@ -475,7 +475,22 @@ function next_id():
 
 ---
 
-## 12. Quick Recall
+## 12. URL Abuse & Security
+
+URL shorteners are inherently **phishing vectors** — a malicious destination is hidden behind an opaque short link, and users cannot inspect where they'll land before clicking.
+
+| Threat | Mitigation |
+|---|---|
+| **Malicious destinations** | Check URLs against Google Safe Browsing API at creation time; reject known-bad URLs |
+| **Stale abuse** | Periodic re-scanning of stored URLs (destinations can change after shortening) |
+| **ID space exhaustion** | Rate limiting on the write path (per IP, per API key) to prevent adversarial ID consumption |
+| **User trust** | URL preview/interstitial page for unknown or flagged destinations (e.g., "You are being redirected to X. Continue?") |
+
+These measures add minimal write-path latency (Safe Browsing lookup is ~20ms) and protect both end users and the platform's domain reputation.
+
+---
+
+## 13. Quick Recall
 
 | Question | Answer |
 |---|---|

@@ -210,6 +210,11 @@ Consider an order service that calls a payment service. Payment fails. What happ
 
 ### REQUIRES_NEW — Audit Log Example
 
+!!! danger "Subtle Bug: Exception propagation from REQUIRES_NEW"
+    Even though `auditService.log()` runs in its own transaction, if it throws an exception,
+    that exception propagates up to the caller and rolls back the **outer** transaction too.
+    The payment was successful, but the order would be rolled back due to an audit failure!
+
 ```java
 @Service
 public class OrderService {
@@ -218,8 +223,16 @@ public class OrderService {
     public void placeOrder(OrderRequest request) {
         Order order = orderRepository.save(new Order(request));
         paymentService.charge(order);  // If this fails, order rolls back
-        
-        auditService.log("ORDER_PLACED", order.getId());  // Should persist regardless!
+
+        // WRONG: if auditService.log() throws, it rolls back the outer TX too!
+        // auditService.log("ORDER_PLACED", order.getId());
+
+        // FIX Option 1: Wrap in try-catch so audit failure doesn't kill the order
+        try {
+            auditService.log("ORDER_PLACED", order.getId());
+        } catch (Exception e) {
+            log.warn("Audit logging failed, order still committed", e);
+        }
     }
 }
 
@@ -229,10 +242,39 @@ public class AuditService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void log(String action, Long entityId) {
         auditRepository.save(new AuditLog(action, entityId));
-        // Commits in its own TX — survives even if calling TX rolls back
     }
 }
 ```
+
+!!! success "Recommended: Use @TransactionalEventListener instead"
+    The cleanest pattern for "do something after the main TX commits" is an event listener.
+    This decouples audit from the business logic entirely and guarantees the audit only
+    fires after a successful commit.
+
+    ```java
+    @Service
+    public class OrderService {
+
+        @Autowired private ApplicationEventPublisher eventPublisher;
+
+        @Transactional
+        public void placeOrder(OrderRequest request) {
+            Order order = orderRepository.save(new Order(request));
+            paymentService.charge(order);
+            eventPublisher.publishEvent(new OrderPlacedEvent(order.getId()));
+            // Event is held until commit — no risk to the main transaction
+        }
+    }
+
+    @Component
+    public class AuditEventHandler {
+
+        @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+        public void onOrderPlaced(OrderPlacedEvent event) {
+            auditRepository.save(new AuditLog("ORDER_PLACED", event.getOrderId()));
+        }
+    }
+    ```
 
 ---
 

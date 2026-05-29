@@ -36,7 +36,7 @@ Constructor selection rules:
 
 - Single constructor → used automatically (no `@Autowired` needed since Spring 4.3)
 - Multiple constructors → use the one with `@Autowired`
-- No annotation + multiple → Spring uses no-arg constructor
+- No `@Autowired` + multiple constructors → Spring throws `BeanInstantiationException` (Spring Framework 6+). It does NOT fall back to the no-arg constructor. You must explicitly mark one constructor with `@Autowired`.
 
 ### 3. Dependency Injection
 

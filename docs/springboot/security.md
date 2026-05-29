@@ -25,6 +25,20 @@ flowchart LR
 
 ---
 
+## Threat Model (OWASP Top 10 Relevance)
+
+| OWASP Risk | How Spring Security Addresses It |
+|---|---|
+| **A01 – Broken Access Control** | URL-level (`authorizeHttpRequests`) and method-level (`@PreAuthorize`) enforcement with deny-by-default |
+| **A02 – Cryptographic Failures** | `PasswordEncoder` enforces BCrypt/Argon2; JWT signing with HMAC-SHA or RSA; TLS termination at the gateway |
+| **A03 – Injection** | CSRF tokens prevent forged form submissions; input binding via `@RequestBody` with Bean Validation |
+| **A05 – Security Misconfiguration** | Starter auto-secures all endpoints on first dependency add; explicit opt-in to disable CSRF or permit paths |
+| **A07 – Auth Failures** | Brute-force mitigation via account locking (`AccountStatusException`); short-lived JWTs + refresh rotation |
+
+Spring Security does **not** solve SQL injection or XSS — those require parameterized queries and output encoding respectively.
+
+---
+
 ## Filter Chain Architecture
 
 Spring Security is a servlet filter chain that intercepts every HTTP request before it reaches your controller.
@@ -219,6 +233,10 @@ sequenceDiagram
 @Service
 public class JwtService {
 
+    // ⚠️ PRODUCTION: Never store secrets in application.properties/yml in plain text.
+    // Use a secrets manager with rotation: HashiCorp Vault, AWS Secrets Manager,
+    // GCP Secret Manager, Azure Key Vault, or K8s Secrets (encrypted at rest).
+    // Example with Vault: spring.cloud.vault.kv.backend=secret
     @Value("${jwt.secret}")
     private String secret;
 
@@ -268,6 +286,8 @@ public class JwtService {
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
@@ -282,23 +302,41 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = header.substring(7);
-        String username = jwtService.extractUsername(token);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        try {
+            String username = jwtService.extractUsername(token);
 
-            if (jwtService.isTokenValid(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                if (jwtService.isTokenValid(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+        } catch (ExpiredJwtException ex) {
+            log.warn("JWT expired: {}", ex.getMessage());
+            SecurityContextHolder.clearContext();
+        } catch (MalformedJwtException ex) {
+            log.warn("Malformed JWT: {}", ex.getMessage());
+            SecurityContextHolder.clearContext();
+        } catch (Exception ex) {
+            log.error("JWT authentication failed: {}", ex.getMessage());
+            SecurityContextHolder.clearContext();
         }
+
+        // Always continue the chain — unauthenticated requests will be rejected
+        // by Spring Security's authorization layer with a proper 401/403.
         chain.doFilter(request, response);
     }
 }
 ```
+
+!!! danger "Why the try-catch matters"
+    Without exception handling, a malformed or expired token causes an unhandled exception that bubbles up as a **500 Internal Server Error**. The client gets no useful feedback. By catching and clearing the context, the request proceeds as unauthenticated and Spring Security's `AuthorizationFilter` returns a proper **401 Unauthorized**.
 
 ### Step 3 — Auth Controller (Login Endpoint)
 
@@ -670,12 +708,20 @@ A complete minimal setup. Four files.
             return new BCryptPasswordEncoder();
         }
 
+        // ⚠️ WARNING: allowedOriginPatterns("*") with allowCredentials(true) is effectively
+        // a CORS bypass — any origin can make credentialed requests to your API.
+        // Use specific origins in production. Profile-based approach shown below.
+        @Value("${app.cors.allowed-origins}")
+        private List<String> allowedOrigins; // dev: http://localhost:3000
+                                             // prod: https://myapp.com,https://admin.myapp.com
+
         private CorsConfigurationSource corsSource() {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOriginPatterns(List.of("*"));
+            config.setAllowedOrigins(allowedOrigins);  // explicit origins, NOT patterns("*")
             config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-            config.setAllowedHeaders(List.of("*"));
+            config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
             config.setAllowCredentials(true);
+            config.setMaxAge(3600L);
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
             source.registerCorsConfiguration("/**", config);
             return source;
@@ -689,6 +735,8 @@ A complete minimal setup. Four files.
     @Component
     @RequiredArgsConstructor
     public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+        private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
         private final JwtService jwtService;
         private final UserDetailsService userDetailsService;
@@ -704,19 +752,29 @@ A complete minimal setup. Four files.
             }
 
             String token = header.substring(7);
-            String username = jwtService.extractUsername(token);
 
-            if (username != null
-                    && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails user = userDetailsService.loadUserByUsername(username);
-                if (jwtService.isTokenValid(token, user)) {
-                    var authToken = new UsernamePasswordAuthenticationToken(
-                        user, null, user.getAuthorities());
-                    authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+            try {
+                String username = jwtService.extractUsername(token);
+
+                if (username != null
+                        && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails user = userDetailsService.loadUserByUsername(username);
+                    if (jwtService.isTokenValid(token, user)) {
+                        var authToken = new UsernamePasswordAuthenticationToken(
+                            user, null, user.getAuthorities());
+                        authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
                 }
+            } catch (ExpiredJwtException | MalformedJwtException ex) {
+                log.warn("Invalid JWT: {}", ex.getMessage());
+                SecurityContextHolder.clearContext();
+            } catch (Exception ex) {
+                log.error("JWT processing failed: {}", ex.getMessage());
+                SecurityContextHolder.clearContext();
             }
+
             chain.doFilter(request, response);
         }
     }

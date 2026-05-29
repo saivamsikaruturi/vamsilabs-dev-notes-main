@@ -19,6 +19,14 @@ flowchart LR
     style JPA fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#1E40AF
 ```
 
+!!! tip "When NOT to use JPA"
+    JPA is not always the right tool. Consider alternatives when:
+
+    - **Bulk operations (millions of rows)** — JPA's entity lifecycle adds overhead. Use plain JDBC batch inserts or jOOQ.
+    - **Complex reporting/analytics queries** — Multi-join aggregations are painful in JPQL. Use jOOQ or native queries.
+    - **Document or graph data** — JPA models relational data. Use MongoDB, Neo4j, or their Spring Data modules instead.
+    - **Extreme read performance** — When microseconds matter, direct JDBC with manual `ResultSet` mapping avoids proxy/reflection overhead.
+
 ---
 
 ## Repository Hierarchy
@@ -269,7 +277,13 @@ When query logic depends on runtime conditions (search filters, optional params)
 Your repository must extend `JpaSpecificationExecutor<T>`.
 
 ```java
-public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {}
+public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
+
+    // Eagerly fetch 'author' to prevent N+1 when mapping posts to DTOs
+    @Override
+    @EntityGraph(attributePaths = {"author"})
+    Page<Post> findAll(Specification<Post> spec, Pageable pageable);
+}
 ```
 
 ```java
@@ -281,8 +295,12 @@ public class PostSpecifications {
     }
 
     public static Specification<Post> titleContains(String keyword) {
-        return (root, query, cb) -> 
-            keyword == null ? null : cb.like(cb.lower(root.get("title")), "%" + keyword.toLowerCase() + "%");
+        return (root, query, cb) -> {
+            if (keyword == null) return null;
+            // Escape LIKE wildcards to prevent SQL injection via pattern characters
+            String escaped = keyword.replace("%", "\\%").replace("_", "\\_");
+            return cb.like(cb.lower(root.get("title")), "%" + escaped.toLowerCase() + "%");
+        };
     }
 
     public static Specification<Post> createdAfter(LocalDateTime date) {
@@ -770,6 +788,9 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    // N+1 FIX: Without @EntityGraph, calling post.getAuthor().getName() triggers
+    // a separate SELECT for each post's author (N+1 problem). The @EntityGraph on
+    // the repository method eagerly fetches the author in the same query.
     public Page<PostSummaryView> searchPosts(PostSearchFilter filter, Pageable pageable) {
         Specification<Post> spec = Specification
             .where(PostSpecifications.hasStatus(PostStatus.PUBLISHED))
@@ -777,7 +798,7 @@ public class PostService {
             .and(PostSpecifications.createdAfter(filter.getFromDate()))
             .and(PostSpecifications.hasTag(filter.getTag()));
 
-        return postRepository.findAll(spec, pageable)
+        return postRepository.findAll(spec, pageable) // uses @EntityGraph below
             .map(post -> new PostSummaryView(post.getId(), post.getTitle(), 
                 post.getCreatedAt(), post.getAuthor().getName()));
     }

@@ -307,9 +307,26 @@ window.addEventListener('beforeunload', () => {
   }).catch(() => {});
 });
 
-// Handle redirect result (for mobile sign-in)
+// Handle redirect result (for mobile sign-in) and magic link completion
 document.addEventListener('DOMContentLoaded', () => {
   initFirebase().then(() => {
+    // Complete magic link sign-in if this is a sign-in link
+    if (auth.isSignInWithEmailLink(window.location.href)) {
+      var email = localStorage.getItem('vtn-magic-email');
+      if (!email) {
+        email = window.prompt('Please enter your email to confirm sign-in:');
+      }
+      if (email) {
+        auth.signInWithEmailLink(email, window.location.href).then(function() {
+          localStorage.removeItem('vtn-magic-email');
+          // Clean the URL
+          window.history.replaceState(null, '', window.location.pathname);
+        }).catch(function(error) {
+          showAuthError(error.message);
+        });
+      }
+    }
+
     auth.getRedirectResult().then(result => {
       if (result && result.user) {
         updateUI(result.user);

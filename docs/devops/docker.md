@@ -1,398 +1,672 @@
+# Docker
 
-  ![docker.png](docker.png)
+> **Master containerization from kernel internals to production orchestration.** Covers Linux namespaces, cgroups, image layering, networking, storage, Compose, CI/CD pipelines, and every interview question that comes up at senior-level interviews.
 
-**Docker**
+---
 
-* To create, deploy and run applications easily by using containers.
+## How to Use This Guide
 
-**Problem Statement 1**
+This guide is structured as a progressive deep-dive, from foundational concepts to production-grade patterns:
 
-* Dev, QA
-* Required Depenedecies and the app need to be run in qa. 
-* For example the java version is changed from java 8 to java 17 in dev env. then the version in qa should also be changed. otherwise the application will not run.
-* Problems : Time Consuming
-             Compatibility issues
-             Error Prone
-* Need to ship all the dependencies along the error-prone.
-* Docker packages the application and the dependencies required to run in a single bundle and ship it to the Target env.
-* In docker, we call this bundle as Image.
-* When we run this image in other env this creates an isolated env.for the application to run by installing all the required packages and we call this isolation env as container.
+- **Sections 1-4** — Core theory: why Docker exists, engine architecture, kernel-level isolation, containers vs VMs.
+- **Sections 5-7** — Practical mastery: image layers & build cache, networking internals, volumes & persistence.
+- **Sections 8-11** — Production: Compose, CI/CD pipelines, security hardening, debugging techniques.
+- **Section 12** — FAANG-level interview questions with concise answers covering kernel internals, architecture, and design.
 
-**Problem Statement 2**
+Start with Sections 1-3 if you need to explain Docker internals in an interview. If you already understand the fundamentals, jump to Section 5 for image optimization or directly to the Interview Q&A for rapid prep.
 
-* Consider 3 applications running on the same host, and now we want to isolate these 3 applications due to security reasons.
-* The immediate solution we get is to deploy these 3 applications on 3 different hosts and this works. 
-* But this is not the cost-efficient solution and increases the maintenance overhead.
-* The second thought that we get is, what if we install 3 different VM's on a single host.This solution also works. But this is also not an effective solution and VM's take a lot of resources from the host
-* With docker, we can package these 3 applications into 3 different images and run them on a single host.
-* Now, 3 different containers are created on the same host.
-* Containers are lightweight and smaller whereas vm takes a lot of space.
+---
 
-**Docker Architecture**
+## 1. The Origin Story — Why Containers Exist
 
-   ![Docker-Architecture.png](Docker-Architecture.png)
-**Docker Engine:** 
+<div class="vtn-story-box vtn-animate-fade-up">
+  <h4>The Deployment Problem (circa 2013)</h4>
+  <p>At scale companies like Google, teams deployed thousands of services daily. Every service had different dependencies — Java 7 vs Java 8, Python 2 vs 3, conflicting native libraries. Deployment failures consumed 40% of operations time.</p>
+  <p>Google had solved this internally with <strong>Borg</strong> (their cluster manager using Linux containers since 2003). Docker democratized this — giving every developer access to container technology that previously only Google/Facebook engineers had.</p>
+  <p><strong>The fundamental insight:</strong> Don't try to make environments identical. Instead, ship the environment WITH the application. The container IS the environment.</p>
+</div>
 
-* It is a client server application and used to build and containerize the applications. 
-* This is where we run the docker images to create containers.
-* It includes docker servers which is a type of long-running program called daemon process and used to create and manage docker objects like images,containers,networks and volumes.
-* Docker server pulls and pushes the image to docker registry.
-* Docker Registry is a place where we store docker images.
-* Docker client, with which the user can interact with the docker. It includes the Rest Api that includes the interface to takl to daemon.
-* A cli which uses the docker rest api internally to control or interact with the docker daemon through scripting or commands.
+---
 
-* **Advantages of Using Docker**
+## 2. Architecture — Docker Engine Internals
 
-* Portability
-* High Performance
-* Isolation
-* Scalability
-* Rapid Development
+```mermaid
+flowchart TB
+    subgraph CLIENT["Docker Client (CLI)"]
+        CMD1["docker build"]
+        CMD2["docker run"]
+        CMD3["docker push"]
+    end
 
+    subgraph DAEMON["Docker Daemon (dockerd)"]
+        direction TB
+        REST["REST API<br/>/var/run/docker.sock"]
+        IMG_SVC["Image Service"]
+        CTR_SVC["Container Service"]
+        NET_SVC["Network Service"]
+        VOL_SVC["Volume Service"]
+    end
 
-## Container
+    subgraph RUNTIME["Container Runtime Stack"]
+        direction TB
+        CONTAINERD["containerd<br/><small>container lifecycle management</small>"]
+        SHIM["containerd-shim<br/><small>keeps container alive if containerd restarts</small>"]
+        RUNC["runc<br/><small>OCI runtime — creates namespaces + cgroups</small>"]
+    end
 
-   ![docker-arch.png](docker-arch.png)
+    subgraph REGISTRY["Registry (Docker Hub / ECR / GCR)"]
+        REPO["Repositories<br/>nginx, postgres, myapp"]
+    end
 
-| VM                   | Container                 |
-|----------------------|---------------------------|
-| Virtualizes Hardware | Virtualizes OS            |
-| Has Guest OS         | Shared Host OS            |
-| Huge in Size(GB)     | Smaller in Size(MB)       |
-| Takes time to create | Can be created in seconds |
-| Takes time to bootup | Can be started in seconds |  
-  
+    CLIENT -->|"REST API over Unix socket"| REST
+    REST --> IMG_SVC & CTR_SVC & NET_SVC & VOL_SVC
+    CTR_SVC --> CONTAINERD
+    CONTAINERD --> SHIM
+    SHIM --> RUNC
+    IMG_SVC <-->|"pull / push"| REPO
 
-## Install Docker
+    style CLIENT fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+    style DAEMON fill:#FEF3C7,stroke:#F59E0B,color:#92400E
+    style RUNTIME fill:#D1FAE5,stroke:#10B981,color:#065F46
+    style REGISTRY fill:#EDE9FE,stroke:#8B5CF6,color:#5B21B6
+```
 
+<div class="vtn-callout">
+  <strong>Key insight for interviews:</strong> Docker is NOT a monolith. The CLI, daemon, containerd, and runc are separate processes. When you <code>docker run</code>, the request flows through 4 layers. This separation means containerd can restart without killing running containers (the shim keeps them alive).
+</div>
 
-## Basic Docker Commands
+### The Execution Flow — What Actually Happens
 
-* Before running the commands make sure docker is running in local machine.
+When you type `docker run -d --name web -p 8080:80 nginx`:
 
-* docker --help - to get the different commands available in docker. 
-  ex: docker run --help
+<div class="vtn-timeline">
+  <div class="vtn-timeline-item">
+    <h4>1. CLI → Daemon (REST API)</h4>
+    <p>Docker CLI serializes the command into a REST POST to <code>/var/run/docker.sock</code>. This is why you can also use <code>curl</code> to talk to Docker directly.</p>
+  </div>
+  <div class="vtn-timeline-item">
+    <h4>2. Image Resolution</h4>
+    <p>Daemon checks if <code>nginx:latest</code> exists locally. If not, contacts Docker Hub's registry API, authenticates, pulls the image manifest (list of layer digests), then pulls each layer in parallel.</p>
+  </div>
+  <div class="vtn-timeline-item">
+    <h4>3. Container Creation</h4>
+    <p>Daemon tells containerd to create a container. containerd prepares the root filesystem (OverlayFS: image layers + writable layer), generates an OCI runtime spec (JSON config for namespaces, cgroups, mounts).</p>
+  </div>
+  <div class="vtn-timeline-item">
+    <h4>4. runc Fork + Exec</h4>
+    <p><code>runc</code> forks a new process, sets up Linux namespaces (PID, NET, MNT, UTS, IPC, USER), configures cgroups for resource limits, pivots the root filesystem, then executes the container's entrypoint (nginx).</p>
+  </div>
+  <div class="vtn-timeline-item">
+    <h4>5. Network Setup</h4>
+    <p>A veth (virtual ethernet) pair is created — one end in the container's network namespace, other end attached to the docker0 bridge. iptables NAT rule maps host:8080 → container:80.</p>
+  </div>
+  <div class="vtn-timeline-item">
+    <h4>6. Container Running</h4>
+    <p>The shim process holds the container's stdio. If containerd crashes, the shim keeps the container alive. Daemon returns the container ID to CLI.</p>
+  </div>
+</div>
 
-1. docker pull nginx
-      * To pull the image from the docker registry.
-      * It pulls the latest image if the version is not specified.
-   
-2. docker pull nginx:1.20  
+---
 
-3. docker images 
-    * To check the images available in the machine.
+## 3. Linux Kernel Internals — How Isolation Works
 
-4. docker run nginx
+This is what separates a "Docker user" from a "container engineer." Containers are NOT VMs. They're just normal Linux processes with restrictions.
 
-5. docker ps
-    * To get the containers list which are running.
+### Namespaces — Isolation
 
-6. docker ps -a
-    * To get the containers which are running and stopped.
+Each namespace gives a container its own view of a system resource:
 
-7. docker run -d nginx
-    * To run the container in background (-d)
+| Namespace | What it isolates | Effect |
+|-----------|-----------------|--------|
+| **PID** | Process IDs | Container's first process is PID 1 (can't see host processes) |
+| **NET** | Network stack | Own IP, ports, routing table, iptables rules |
+| **MNT** | Filesystem mounts | Own root filesystem (can't see host files) |
+| **UTS** | Hostname | Container has its own hostname |
+| **IPC** | Inter-process communication | Shared memory/semaphores isolated |
+| **USER** | User/group IDs | Container's root (UID 0) maps to unprivileged host user |
+| **CGROUP** | Cgroup hierarchy visibility | Can't see or modify parent cgroups |
 
-8. docker run -p 80:80 nginx
-    * mapping the host port to container port.
+```mermaid
+graph TB
+    subgraph HOST["Host Kernel (shared)"]
+        subgraph NS1["Container A Namespaces"]
+            PID1["PID: 1 (nginx)"]
+            NET1["NET: 172.17.0.2"]
+            MNT1["MNT: /app rootfs"]
+        end
+        subgraph NS2["Container B Namespaces"]
+            PID2["PID: 1 (java)"]
+            NET2["NET: 172.17.0.3"]
+            MNT2["MNT: /app rootfs"]
+        end
+    end
 
-9. docker rm containerId
-    * To delete a container which is not required.
-    * Before deleting the container stop the container.
-   
-10. docker stop containerId
-    * To stop a container which is running.
+    style HOST fill:#F0FDF4,stroke:#22C55E,color:#166534
+    style NS1 fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+    style NS2 fill:#EDE9FE,stroke:#8B5CF6,color:#5B21B6
+```
+
+### Cgroups — Resource Limits
+
+Cgroups (Control Groups) limit HOW MUCH of a resource a container can use:
+
+| Cgroup Controller | What it limits | Docker flag |
+|-------------------|---------------|-------------|
+| **cpu** | CPU time/shares | `--cpus=2.0` or `--cpu-shares=512` |
+| **memory** | RAM + swap | `--memory=512m --memory-swap=1g` |
+| **blkio** | Disk I/O bandwidth | `--device-read-bps=/dev/sda:10mb` |
+| **pids** | Number of processes | `--pids-limit=100` |
+
+!!! danger "The OOM Killer — #1 Production Issue"
+    When a container exceeds its memory limit, the Linux OOM killer terminates it. Docker reports this as exit code 137 (128 + SIGKILL=9). Check with `docker inspect <container> | grep OOMKilled`. 
     
-11. docker rename "new name" "old name"
-    * To rename the container.
+    **Fix:** Set limits generously (2x average usage). For JVM apps, ALWAYS set `-XX:MaxRAMPercentage=75.0` — this makes the JVM respect cgroup limits instead of reading host memory.
 
-12. docker start containerId
-    * To start a container.
+### Union Filesystem (OverlayFS) — Layers Made Real
+
+```mermaid
+graph TB
+    subgraph OFS["OverlayFS Mount"]
+        MERGED["Merged View<br/><small>(what the container sees)</small>"]
+    end
+
+    subgraph UPPER["Upper Layer (writable)"]
+        UF1["modified-config.yml"]
+        UF2["new-logfile.log"]
+        UF3[".wh.deleted-file<br/><small>(whiteout = deletion marker)</small>"]
+    end
+
+    subgraph LOWER["Lower Layers (read-only image)"]
+        L3["Layer 3: COPY app.jar"]
+        L2["Layer 2: RUN apt-get install"]
+        L1["Layer 1: FROM ubuntu:22.04"]
+    end
+
+    MERGED --> UPPER
+    MERGED --> LOWER
+
+    style OFS fill:#FEF3C7,stroke:#F59E0B,color:#92400E
+    style UPPER fill:#FEE2E2,stroke:#EF4444,color:#991B1B
+    style LOWER fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+```
+
+**How writes work:** Container writes go to the upper (writable) layer. Reads check upper first, then fall through to lower layers. Deletes create "whiteout" files. This is why containers start instantly — no filesystem copy needed.
+
+**Why this matters for production:**
+- 100 containers from the same image share ONE copy of the lower layers (massive disk savings)
+- Writes only exist in the container's upper layer (destroyed on `docker rm`)
+- If you write large files inside a container without volumes, OverlayFS performance degrades
+
+---
+
+## 4. Containers vs VMs — The Real Difference
+
+```mermaid
+graph TB
+    subgraph VM_STACK["Virtual Machine Architecture"]
+        direction TB
+        VM_APP1["App A"] & VM_APP2["App B"]
+        VM_BIN1["Bins/Libs"] & VM_BIN2["Bins/Libs"]
+        VM_OS1["Guest OS<br/><small>Ubuntu 22.04</small>"] & VM_OS2["Guest OS<br/><small>CentOS 9</small>"]
+        VM_HYP["Hypervisor (VMware / KVM / Xen)"]
+        VM_HOST["Host Operating System"]
+        VM_HW["Infrastructure (Hardware)"]
+    end
+
+    subgraph CTR_STACK["Container Architecture"]
+        direction TB
+        CTR_APP1["App A"] & CTR_APP2["App B"] & CTR_APP3["App C"] & CTR_APP4["App D"]
+        CTR_BIN1["Bins/Libs"] & CTR_BIN2["Bins/Libs"] & CTR_BIN3["Bins/Libs"] & CTR_BIN4["Bins/Libs"]
+        CTR_RT["Container Runtime (containerd)"]
+        CTR_HOST["Host Operating System (shared kernel)"]
+        CTR_HW["Infrastructure (Hardware)"]
+    end
+
+    style VM_STACK fill:#FEE2E2,stroke:#EF4444,color:#991B1B
+    style CTR_STACK fill:#D1FAE5,stroke:#10B981,color:#065F46
+```
+
+| | Virtual Machine | Container |
+|---|---|---|
+| **Virtualization level** | Hardware (hypervisor emulates CPU, RAM, disk) | OS (shares host kernel, isolates via namespaces) |
+| **Boot time** | 30-60 seconds | < 1 second |
+| **Image size** | 1-20 GB (includes full OS) | 5-500 MB (only app + deps) |
+| **Resource overhead** | 10-20% (hypervisor tax) | < 1% (no hypervisor) |
+| **Density** | 10-20 per host | 100-1000 per host |
+| **Isolation strength** | Hardware-level (very strong) | Process-level (weaker — kernel bugs can escape) |
+| **Cross-OS** | Yes (Windows guest on Linux host) | No (must match host kernel) |
+| **Security boundary** | Strong (used for multi-tenancy) | Weaker (not safe for untrusted workloads without gVisor/Kata) |
+
+!!! warning "Critical Interview Point"
+    **Why can't you run Windows containers on Linux?** Containers share the host kernel. A Windows container needs the Windows kernel (win32k, NT syscalls). Docker Desktop on Mac/Windows actually runs a Linux VM — containers run INSIDE that VM.
+
+---
+
+## 5. Image Deep Dive — Layers & Build Cache
+
+### Layer Architecture
+
+Every Dockerfile instruction creates a layer. Docker caches layers by content hash. If nothing changed → cache hit → skip rebuild.
+
+```mermaid
+graph TB
+    subgraph BUILD["Build Process"]
+        direction TB
+        I1["FROM eclipse-temurin:21-jdk<br/><small>CACHED: base image (pulled once)</small>"]
+        I2["COPY pom.xml + mvnw<br/><small>CACHED: until pom.xml changes</small>"]
+        I3["RUN mvn dependency:resolve<br/><small>CACHED: deps change ~weekly</small>"]
+        I4["COPY src/<br/><small>INVALIDATED: every commit</small>"]
+        I5["RUN mvn package<br/><small>REBUILD: triggered by src change</small>"]
+    end
+
+    I1 --> I2 --> I3 --> I4 --> I5
+
+    style I1 fill:#D1FAE5,stroke:#10B981,color:#065F46
+    style I2 fill:#D1FAE5,stroke:#10B981,color:#065F46
+    style I3 fill:#D1FAE5,stroke:#10B981,color:#065F46
+    style I4 fill:#FEE2E2,stroke:#EF4444,color:#991B1B
+    style I5 fill:#FEE2E2,stroke:#EF4444,color:#991B1B
+```
+
+**The golden rule:** Order instructions from LEAST frequently changing to MOST frequently changing. Any layer that changes invalidates ALL layers below it.
+
+### Multi-Stage Builds — Shrink Images by 80%
+
+```dockerfile
+# ============ Stage 1: Build (has all tools, ~800MB) ============
+FROM eclipse-temurin:21-jdk AS builder
+WORKDIR /app
+
+# Layer 1: Dependencies (cached until pom.xml changes)
+COPY pom.xml mvnw ./
+COPY .mvn/ .mvn/
+RUN ./mvnw dependency:resolve -B
+
+# Layer 2: Source + build (changes every commit)
+COPY src/ src/
+RUN ./mvnw package -DskipTests -B && \
+    # Extract layered JAR for even smaller runtime
+    java -Djarmode=layertools -jar target/*.jar extract --destination /extracted
+
+# ============ Stage 2: Runtime (minimal, ~200MB) ============
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+
+# Security: non-root user
+RUN groupadd -r app && useradd -r -g app -d /app app
+
+# Copy extracted layers (maximizes Docker layer caching at runtime)
+COPY --from=builder /extracted/dependencies/ ./
+COPY --from=builder /extracted/spring-boot-loader/ ./
+COPY --from=builder /extracted/snapshot-dependencies/ ./
+COPY --from=builder /extracted/application/ ./
+
+RUN chown -R app:app /app
+USER app
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
+
+# Note: -Djava.security.egd=file:/dev/./urandom is unnecessary since Java 11;
+# the default SecureRandom already uses /dev/urandom.
+ENTRYPOINT ["java", \
+  "-XX:+UseContainerSupport", \
+  "-XX:MaxRAMPercentage=75.0", \
+  "-XX:InitialRAMPercentage=50.0", \
+  "org.springframework.boot.loader.launch.JarLauncher"]
+```
+
+**Why `-XX:MaxRAMPercentage=75.0`?** The JVM by default reads the HOST's memory, not the cgroup limit. Without this flag, a container with `--memory=512m` on a 32GB host will think it has 32GB and set heap to 8GB → instant OOM kill.
+
+### Image Naming & Tagging Strategy
+
+```
+registry.example.com/team-name/service-name:v2.1.0-alpine
+─────────────────── ───────── ──────────── ──────────────
+     registry         org/team    repo        tag
+```
+
+**Production tagging rules:**
+
+- Never use `:latest` in production (non-reproducible deploys)
+- Use semantic versions: `v2.1.0`
+- Include variant: `v2.1.0-alpine`, `v2.1.0-jre21`
+- CI should tag with git SHA: `v2.1.0-abc123f` (exact traceability)
+
+---
+
+## 6. Networking — Bridges, veth Pairs, iptables
+
+### How Container Networking Works
+
+```mermaid
+flowchart TB
+    subgraph HOST["Host Machine"]
+        subgraph BRIDGE["docker0 bridge (172.17.0.0/16)"]
+            VETH1["veth-abc<br/>→ Container A"]
+            VETH2["veth-def<br/>→ Container B"]
+        end
+        ETH0["eth0 (host NIC)<br/>192.168.1.100"]
+        IPTABLES["iptables NAT rules<br/><small>-p 8080:80 → DNAT to 172.17.0.2:80</small>"]
+    end
+
+    subgraph CNSA["Container A (172.17.0.2)"]
+        CETH1["eth0 → veth pair"]
+        NGINX["nginx :80"]
+    end
+
+    subgraph CNSB["Container B (172.17.0.3)"]
+        CETH2["eth0 → veth pair"]
+        PG["postgres :5432"]
+    end
+
+    INTERNET["Internet / Host"] -->|":8080"| IPTABLES
+    IPTABLES -->|"DNAT"| VETH1
+    VETH1 --- CETH1
+    VETH2 --- CETH2
+    CETH1 --- NGINX
+    CETH2 --- PG
+
+    style BRIDGE fill:#D1FAE5,stroke:#10B981,color:#065F46
+    style CNSA fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+    style CNSB fill:#EDE9FE,stroke:#8B5CF6,color:#5B21B6
+```
+
+**Under the hood:**
+
+1. Each container gets its own **network namespace** (isolated network stack)
+2. A **veth pair** connects the container's namespace to the host bridge
+3. The **docker0 bridge** acts like a virtual switch
+4. **iptables NAT** handles port mapping (host → container) and outbound traffic (container → internet via MASQUERADE)
+
+### Network Types — When To Use Each
+
+| Driver | How it works | Use case | Limitations |
+|--------|-------------|----------|-------------|
+| **bridge (default)** | Virtual bridge + veth pairs + NAT | Single-host, quick testing | No DNS, containers use IPs |
+| **User-defined bridge** | Same as above + embedded DNS server | **Multi-container apps (USE THIS)** | Single host only |
+| **host** | Container uses host's network namespace directly | Ultra-low latency, performance testing | No port isolation, port conflicts |
+| **overlay** | VXLAN tunnels between hosts + distributed DNS | Swarm multi-host clustering | Overhead from encapsulation |
+| **macvlan** | Container gets its own MAC + IP on physical network | Legacy apps needing L2 access | Complex, needs promiscuous mode |
+| **none** | No network interface at all | Security: air-gapped workloads | No network access |
+
+<div class="vtn-callout">
+  <strong>The #1 networking mistake:</strong> Using the default bridge. It has no DNS — containers can only reach each other by IP (which changes on restart). Always create a user-defined bridge: <code>docker network create mynet</code>. This gives you automatic DNS by container name.
+</div>
+
+---
+
+## 7. Volumes & Storage — Persistence Strategies
+
+### The Three Types
+
+```mermaid
+flowchart LR
+    subgraph NV["Named Volume"]
+        direction TB
+        NVD["Docker manages location<br/>/var/lib/docker/volumes/pgdata/_data"]
+        NVP["Portable, survives everything"]
+    end
+
+    subgraph BM["Bind Mount"]
+        direction TB
+        BMD["You specify exact host path<br/>/home/dev/project/src:/app/src"]
+        BMP["Development live-reload"]
+    end
+
+    subgraph TM["tmpfs"]
+        direction TB
+        TMD["RAM only, never hits disk<br/>--tmpfs /app/tmp"]
+        TMP["Sensitive scratch data"]
+    end
+
+    style NV fill:#D1FAE5,stroke:#10B981,color:#065F46
+    style BM fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+    style TM fill:#FEF3C7,stroke:#F59E0B,color:#92400E
+```
+
+### Production Database Pattern
+
+```bash
+# Create a named volume (persists across container lifecycle)
+docker volume create pgdata
+
+# Run Postgres with volume + resource limits + health check
+docker run -d \
+  --name postgres \
+  --network app-net \
+  -v pgdata:/var/lib/postgresql/data \
+  -e POSTGRES_PASSWORD_FILE=/run/secrets/pg_pass \
+  --memory=2g --cpus=2.0 \
+  --restart unless-stopped \
+  --health-cmd="pg_isready -U postgres" \
+  --health-interval=10s \
+  postgres:16-alpine
+
+# Backup the volume (production pattern)
+docker run --rm \
+  -v pgdata:/source:ro \
+  -v $(pwd)/backups:/backup \
+  alpine tar czf /backup/pgdata-$(date +%Y%m%d-%H%M%S).tar.gz -C /source .
+```
+
+!!! danger "Data Loss Scenario"
+    `docker rm -v postgres` deletes the container AND its anonymous volumes. Named volumes (like `pgdata`) survive. ALWAYS use named volumes for databases. ALWAYS have automated backups.
+
+---
+
+## 8. Docker Compose — Multi-Service Orchestration
+
+### Production-Grade Stack
+
+```yaml
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production       # multi-stage target
+    ports: ["8080:8080"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/myapp
+      SPRING_REDIS_HOST: cache
+      JAVA_OPTS: "-XX:MaxRAMPercentage=75.0"
+    depends_on:
+      db: { condition: service_healthy }
+      cache: { condition: service_healthy }
+    deploy:
+      resources:
+        limits: { memory: 1G, cpus: '2.0' }
+        reservations: { memory: 512M, cpus: '0.5' }
+    restart: unless-stopped
+    networks: [app-net]
+
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_PASSWORD: ${DB_PASSWORD}   # from .env file
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits: { memory: 2G }
+    networks: [app-net]
+
+  cache:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes: [redis-data:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+    networks: [app-net]
+
+  nginx:
+    image: nginx:1.25-alpine
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      api: { condition: service_healthy }
+    networks: [app-net]
+
+volumes:
+  pgdata:
+  redis-data:
+
+networks:
+  app-net:
+    driver: bridge
+```
+
+---
+
+## 9. CI/CD — The Production Pipeline
+
+```mermaid
+flowchart LR
+    A["Git Push"] --> B["Lint Dockerfile<br/><small>hadolint</small>"]
+    B --> C["Build Image<br/><small>--cache-from registry</small>"]
+    C --> D["Unit Tests<br/><small>inside container</small>"]
+    D --> E["Security Scan<br/><small>trivy / docker scout</small>"]
+    E --> F{"CVEs found?"}
+    F -->|Critical| G["Block Deploy"]
+    F -->|None/Low| H["Push to Registry<br/><small>:git-sha + :latest</small>"]
+    H --> I["Deploy to Staging"]
+    I --> J["Integration Tests"]
+    J --> K["Deploy to Prod<br/><small>canary → full</small>"]
+
+    style G fill:#FEE2E2,stroke:#EF4444,color:#991B1B
+    style H fill:#D1FAE5,stroke:#10B981,color:#065F46
+    style K fill:#D1FAE5,stroke:#10B981,color:#065F46
+```
+
+---
+
+## 10. Production Hardening & Security
+
+<div class="vtn-concept-grid">
+  <div class="vtn-concept-card">
+    <h4>Security</h4>
+    <p>Non-root user (<code>USER app</code>) · Minimal base (alpine/distroless) · CVE scanning in CI · No secrets in images · Read-only rootfs (<code>--read-only</code>) · Drop all capabilities (<code>--cap-drop=ALL</code>) · Seccomp/AppArmor profiles</p>
+  </div>
+  <div class="vtn-concept-card">
+    <h4>Performance</h4>
+    <p>Multi-stage builds · .dockerignore (exclude .git, node_modules, target) · BuildKit parallel stages · Registry-backed cache (<code>--cache-from</code>) · Layer ordering · JVM: <code>-XX:MaxRAMPercentage=75</code></p>
+  </div>
+  <div class="vtn-concept-card">
+    <h4>Reliability</h4>
+    <p>HEALTHCHECK defined · Resource limits (memory + CPU) · <code>--init</code> flag (PID 1 signal handling) · <code>--restart unless-stopped</code> · Graceful shutdown (SIGTERM handling) · Log to stdout/stderr</p>
+  </div>
+  <div class="vtn-concept-card">
+    <h4>Observability</h4>
+    <p>Structured JSON logs · Health endpoints (/health, /ready) · Prometheus metrics endpoint · Distributed tracing headers · Container labels for discovery</p>
+  </div>
+</div>
+
+---
+
+## 11. Debugging Production Containers
+
+<div class="vtn-timeline">
+  <div class="vtn-timeline-item">
+    <h4>Container keeps restarting (exit code 137)</h4>
+    <p><strong>Cause:</strong> OOM killed. <code>docker inspect &lt;c&gt; | grep OOMKilled</code>.<br/><strong>Fix:</strong> Increase memory limit or fix memory leak. For JVM: check <code>-XX:MaxRAMPercentage</code>.</p>
+  </div>
+  <div class="vtn-timeline-item">
+    <h4>Container exits immediately (exit code 1)</h4>
+    <p><strong>Debug:</strong> <code>docker logs &lt;c&gt;</code> for app error. <code>docker run -it --entrypoint sh &lt;image&gt;</code> to inspect filesystem. Check if config files are mounted correctly.</p>
+  </div>
+  <div class="vtn-timeline-item">
+    <h4>Container runs but health check fails</h4>
+    <p><strong>Debug:</strong> <code>docker exec -it &lt;c&gt; curl localhost:8080/health</code>. Check if the app binds to 0.0.0.0 (not 127.0.0.1). Verify EXPOSE port matches app's listening port.</p>
+  </div>
+  <div class="vtn-timeline-item">
+    <h4>Image build is slow</h4>
+    <p><strong>Fix:</strong> Check layer ordering (deps before source?). Use BuildKit (<code>DOCKER_BUILDKIT=1</code>). Add <code>.dockerignore</code>. Use <code>--cache-from</code> with registry cache in CI.</p>
+  </div>
+  <div class="vtn-timeline-item">
+    <h4>Networking: container can't reach another container</h4>
+    <p><strong>Debug:</strong> Are they on the same network? <code>docker network inspect</code>. Using default bridge? Switch to user-defined. DNS not resolving? Only works on user-defined bridges.</p>
+  </div>
+</div>
+
+---
+
+## 12. Interview Q&A (FAANG-Level)
+
+??? question "Walk me through what happens at the kernel level when you run `docker run nginx`"
+    1. Docker daemon asks containerd to create a container
+    2. containerd creates an OCI bundle (rootfs + config.json)
+    3. containerd-shim forks and calls runc
+    4. runc calls `clone()` syscall with namespace flags (CLONE_NEWPID | CLONE_NEWNET | CLONE_NEWNS | CLONE_NEWUTS | CLONE_NEWIPC)
+    5. Child process is now in new namespaces — sees PID 1, empty network, empty mount table
+    6. runc sets up cgroups (writes to /sys/fs/cgroup/memory/docker/<id>/memory.limit_in_bytes)
+    7. runc calls `pivot_root()` to change the root filesystem to the OverlayFS merge dir
+    8. runc calls `execve()` to replace itself with the nginx binary
+    9. Shim keeps the stdio file descriptors open and reports container state to containerd
+
+??? question "Explain the difference between COPY and ADD. When would you use ADD?"
+    **COPY** simply copies files from build context into image. **ADD** does the same PLUS: (1) auto-extracts tar archives (.tar, .tar.gz, .tar.bz2) and (2) can fetch URLs. Use ADD only when you need tar extraction. Never use it to fetch URLs in production (can't cache, no checksum verification — use `curl` + `RUN` instead).
+
+??? question "You have a 2GB Docker image. How would you reduce it to under 200MB?"
+    1. **Multi-stage build** — separate build tools from runtime artifact
+    2. **Alpine/distroless base** — replace ubuntu (80MB) with alpine (5MB) or distroless (20MB)
+    3. **Minimize layers** — combine RUN commands, clean up in same layer (`apt-get install && rm -rf /var/lib/apt/lists/*`)
+    4. **Only copy what's needed** — don't COPY entire project, just the built artifact
+    5. **Use .dockerignore** — exclude .git (can be 100MB+), node_modules, build artifacts
+    6. **For JVM** — use JRE not JDK, use jlink to create custom minimal runtime
+
+??? question "How would you handle secrets in Docker containers?"
+    **Never bake secrets into images** (they persist in layer history even after deletion). Options by security level:
     
-13. docker rmi imageId
-    * To remove a image which is not required.
-    * Before removing the image, stop the container which is using the image and remove the container.
+    - **Basic**: Environment variables at runtime (`-e SECRET=xxx`) — visible in `docker inspect`
+    - **Better**: Docker secrets (Swarm) or mount secrets at runtime (`-v /path/to/secret:/run/secrets/key:ro`)
+    - **Production**: External secret manager (Vault, AWS Secrets Manager) with sidecar/init container that fetches at startup
+    - **Best**: Short-lived tokens via identity federation (IRSA on EKS, Workload Identity on GKE)
 
-14. docker stop $(docker ps -a)
-    * To stop all containers at once.
+??? question "Explain how Docker networking works. What happens when Container A pings Container B on the same bridge?"
+    1. Container A's ping creates an ICMP packet with destination = Container B's IP
+    2. The packet goes through Container A's `eth0` (which is one end of a veth pair)
+    3. The other end of the veth is attached to the `docker0` bridge on the host
+    4. The bridge looks up its MAC table, finds which veth pair leads to Container B's IP
+    5. Packet is forwarded through Container B's veth pair into Container B's network namespace
+    6. Container B receives the ICMP packet on its `eth0`
     
-
-## Container Communication
-
-    docker run --name neo4j --publish=7474:7474 --publish=7687:7687 --env NEO4J_AUTH=neo4j/password --detach neo4j:latest
-
-*  docker inspect containerId | grep IpAddress
-* docker network ls
-   * none
-   * host
-   * bridge
-  
-**none network**: If the container is in the none-network you will not be able to access anything outside this container.
-       
-       docker run -d --network none alpine
-
-* This will automatically will terminate, because the purpose of container is not to host any operating system.
-* The purpose of container is to run some service or to run some computation in the container.
-
-       docker run -d --network name alphine sleep 500
-
-* To get to into any container
-
-       docker exec -it containerId sh
-
-* now, if you try to ping google.com, you will not be access it. as the container is in none network.
-* This network is not suitable for most of the situation as we consume different apis or database.
-
-
-**bridge network**: Bridge networks can access external resources and containers in the same network.
-            
-      docker run -d --network bridge alphine sleep 500
-
-* By default, the network is bridge.
-* If 3 containers are in bridge network, they can communicate with each other.
-* We can access other container resources using the ipAddress of the other container.
-* But our goal was to access the container with the name of the container. This is not possible with default bridge network. 
-* We should create custom bridge network for access through container name.
-
-      docker network  create mongo-net --driver bridge
-
-      docker run --name neo4j --publish=7474:7474 --publish=7687:7687 --env NEO4J_AUTH=neo4j/password --detach --network mongo-net neo4j:latest
-
-      docker run --name lenskart-app --publish=8080:8080 --env NEO4J_URI=bolt://neo4j1:7687 --env NEO4J_USER=neo4j --env NEO4J_PASSWORD=password --detach --network mongo-net lenskart-image:latest
-
-**host**: when you create a container in a host network, we can access anything from the container.
-
-## Building Custom Image & Deploying Spring Boot
-
-![dockerfiles.avif](dockerfiles.avif)
-
-
-* Creating image without docker file:
-
-       mvn spring-boot:build-image
-
-**Docker File**: It is having list of instructions to build an image.
-
-* we will run docker build command to build an image.
-* we can push this image to docker hub to share it with the community or pulling it in a different environment.
-* we can create the container by running the image.
-
-* All the instructions will be in the form of instruction followed by arguments
-* For ex: if you want to copy something from your local to the image all you do is:
-           
-         COPY source  destination     COPY  target/app.jar  app.jar
-
-## Dockerfile
-
-      # Download Java
-      ARG JAVA_VERSION="18-jdk"
-      FROM openjdk:${JAVA_VERSION}
-
-      LABEL versioin="1.0.0"
-
-      ENV PROJECT_NAME="todo-api"
-
-      ARG APP_HOME="/opt/deployment/"
-
-      # Copy the jar from local to image
-      RUN mkdir ${APP_HOME}
-      COPY target/todo-1.0.0.jar ${APP_HOME}/todo-1.0.0.jar
-
-      WORKDIR ${APP_HOME}
-
-      EXPOSE 8080
-
-      # Run application with java -jar
-      ENTRYPOINT ["java", "-jar", "todo-1.0.0.jar"]
-
-* we need to build the image from the docker file.
-
-       docker build -t todo-api .
-
-* run the image.
-
-       docker run -p 8080:8080 --network=your-docker-network --name your-spring-app 
-      -e SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-container:5432/your_database_name \
-      -e SPRING_DATASOURCE_USERNAME=your_username 
-      -e SPRING_DATASOURCE_PASSWORD=your_password 
-       todo-api
-
-
-## Docker Instructions
-
-**FROM** : The FROM instruction initializes a new build stage and sets the Base Image for subsequent instructions.
-
-`FROM <image>[:<tag>|@<digest>]`
-
-`FROM ubuntu:latest`
-
-**COPY**: The COPY instruction copies new files or directories from `<src>` and adds them to the filesystem of the container at the path `<dest>`.
-
-`COPY <src> ... <dst>`
-
-`COPY html /var/www/html`
-
-`COPY httpd.conf magic /etc/httpd/conf/`
-
-**ADD**: The ADD instruction copies new files, directories or remote file URLs from `<src>` and adds them to the filesystem of the image at the path `<dest>`.
-
-`ADD <src> ... <dst>`
-
-`ADD web-page-config.tar /`
-
-**ENV**: The ENV instruction sets the environment variable `<key>` to the value `<value>`.
-
-`ENV <key> <value>`
-
-`ENV DEBUG_LVL 3`
-
-`ENV APACHE_LOG_DIR /var/log/apache`
-
-**WORKDIR** : The WORKDIR instruction sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile. If the WORKDIR doesn’t exist, it will be created even if it’s not used in any subsequent Dockerfile instruction.
-
-`WORKDIR <dirpath>`
-
-`WORKDIR /var/log`
-
-**EXPOSE**: The EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime.
-
-`EXPOSE <port>[/<proto>] [<port>[/<proto>]...]`
-
-`EXPOSE 8080 8787`
-
-**LABEL**: The LABEL instruction adds metadata to an image. A LABEL is a key-value pair.
-
-`LABEL <key-1>=<val-1> <key-2>=<val-2> ... <key-n>=<val-n>`
-
-`LABEL version="2.0" release-date="2016-08-05"`
-
-**RUN** The `RUN` command executes during build time.
-
-`RUN <command>` (or) `RUN ["<exec>", "<arg-1>", ..., "<arg-n>"]`
-
-* `RUN echo "echo Welcome to Docker!" >> /root/.bashrc`
-* `RUN ["bash", "-c", "rm", "-rf", "/tmp/abc"]`
-
-**CMD**: The CMD is to provide defaults for an executing container and runs when container starts. There can only be one CMD instruction in a Dockerfile. If you list more than one CMD then only the last CMD will take effect.
-
-`CMD <command>` (or) `CMD ["<exec>", "<arg-1>", ..., "<arg-n>"]` (or) `CMD ["<arg-1>", ..., "<arg-n>"]`
-
-//Dockerfile to demonstrate the behavior of CMD
-```
-FROM busybox:latest
-MAINTAINER Vamsi <krishnavamsikaruturi@gmail.com>
-CMD ["echo", "Dockerfile CMD demo"]
-```
-
-`> docker build -t cmd-demo .`
-
-`> sudo docker run cmd-demo`
-
-**Output** : Dockerfile CMD demo
-
-`> sudo docker run cmd-demo echo Override CMD demo`
-
-**Output** : Override CMD demo
-
-**ENTRYPOINT**: An ENTRYPOINT allows you to configure a container that will run as an executable.
-
-`ENTRYPOINT <command>` (or) `ENTRYPOINT ["<exec>", "<arg-1>", ..., "<arg-n>"]`
-
-Only the last ENTRYPOINT instruction will be effective.
-
-//Dockerfile to demonstrate the behavior of ENTRYPOINT
-```
-FROM busybox:latest
-ENTRYPOINT ["echo", "Dockerfile ENTRYPOINT demo"]
-```
-
-`> sudo docker build -t entrypoint-demo .`
-
-`> sudo docker run entrypoint-demo`
-
-**Output** : Dockerfile ENTRYPOINT demo
-
-`> sudo docker run entrypoint-demo with additional arguments`
-
-**Output** : Dockerfile ENTRYPOINT demo with additional arguments
-
-`> sudo docker run -it --entrypoint="/bin/sh" entrypoint-demo`
-
-**Output** : /#
-
-**HEALTHCHECK**: The `HEALTHCHECK` instruction tells Docker how to test a container to check that it is still working.
-
-`HEALTHCHECK [<options>] CMD <command>`
-
-Only the last HEALTHCHECK instruction will take effect.
-
-`HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost/ || exit 1`
-
-**Push image to DockerHub**
-
-`$ docker images -a`
-
-`$ docker login`
-
-Username: vamsi
-
-Password: my_password
-
-* `docker push vamsikaruturi/myapp`
-
-Delete Image
-
-* `docker rmi vamsikaruturi/myapp`
-
-## Docker cleanup
-
-Delete volumes
-
-* `docker volume rm $(docker volume ls -qf dangling=true)`
-* `docker volume ls -qf dangling=true | xargs -r docker volume rm`
-
-Delete networks
-
-* `docker network ls`
-* `docker network ls | grep "bridge"`
-* `docker network rm $(docker network ls | grep "bridge" | awk '/ / { print $1 }')`
-* `docker network prune`
-
-Remove docker images
-
-* `docker images`
-* `docker rmi $(docker images -q)` //delete all images
-* `docker rmi $(docker images --filter "dangling=true" -q --no-trunc)`
-* `docker images | grep "none"`
-* `docker rmi $(docker images | grep "none" | awk '/ / { print $3 }')`
-
-Remove docker containers
-
-* `docker ps -a`
-* `docker kill $(docker ps -q)`
-* `docker rm $(docker ps -qa --no-trunc --filter "status=exited")`
-
-Docker System Prune
-
-```
-$ docker system prune -a
-
-WARNING! This will remove:
-	- all stopped containers
-	- all volumes not used by at least one container
-	- all networks not used by at least one container
-	- all images without at least one container associated to them
-Are you sure you want to continue? [y/N] y
-```
-
-Resize disk space for docker vm
-
-* `docker-machine create --driver virtualbox --virtualbox-disk-size "40000" default`
-
-
-## Docker Volumes:
-
-* Containers are ephemeral i.e. when a container is created from an image, it can be destroyed and new containers can be created from the same image and put in place with a minimum of configuration.
-* When a container is deleted any data written to that container will be lost.
-* What if we want to persist the data of a container ? like database containers.
-* This can be achieved with docker volumes.
+    No NAT involved for container-to-container on same bridge — it's direct L2 switching.
+
+??? question "What is the PID 1 problem in Docker containers?"
+    Linux PID 1 has special responsibilities: reaping zombie processes and forwarding signals. Most application processes (nginx, java) don't handle this. If your app runs as PID 1 and receives SIGTERM, it might not shut down gracefully.
+    
+    **Solutions:** (1) Use `--init` flag (adds tini as PID 1, forwards signals), (2) Use `ENTRYPOINT ["/bin/sh", "-c", "exec java -jar app.jar"]` (exec replaces shell as PID 1), (3) Use a proper init system like `dumb-init` or `tini` in the image.
+
+??? question "How does Docker build cache work? When is the cache invalidated?"
+    Each instruction is cached by: (1) the parent layer's ID, (2) the instruction itself, (3) for COPY/ADD: the content checksum of source files. Cache is invalidated when:
+    
+    - Any instruction changes (even a comment in a RUN command)
+    - For COPY/ADD: any file in the source path changes
+    - **All subsequent layers are also invalidated** (cache is linear, not tree-shaped)
+    
+    This is why you COPY dependency files (pom.xml, package.json) BEFORE source code — deps change less often, so that layer stays cached.
+
+??? question "Design a Docker-based CI/CD pipeline for a microservices architecture"
+    ```
+    Push → Lint Dockerfile (hadolint) → Build with layer cache from registry
+    → Run unit tests inside container → Security scan (trivy)
+    → Push tagged image (git-sha + semver) → Deploy to staging
+    → Run integration tests against staging → Canary deploy to prod (10%)
+    → Monitor error rate for 15min → Full rollout or auto-rollback
+    ```
+    
+    Key decisions: Use BuildKit for parallel build stages. Cache layers in the registry (`--cache-to type=registry`). Pin all base images by digest. Gate deploys on zero critical CVEs. Use immutable tags (git SHA, never `:latest`).

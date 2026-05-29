@@ -183,6 +183,9 @@ sequenceDiagram
 - Acceptors accept if they haven't promised a higher number
 - If majority accepts, value is chosen
 
+!!! note "Basic Paxos vs Multi-Paxos"
+    Basic Paxos agrees on a **single value** — useful for theory but impractical alone. Production systems (Google Chubby, Spanner, etcd) use **Multi-Paxos** or Raft to agree on a **sequence of values** (a replicated log). Multi-Paxos elects a stable leader and skips Phase 1 for subsequent proposals, making it equivalent in structure to Raft. This is the form that actually matters in practice.
+
 ---
 
 ## Raft vs Paxos
@@ -222,7 +225,7 @@ For N nodes: quorum = ⌊N/2⌋ + 1 (majority)
 | Operation | Latency | Why |
 |-----------|---------|-----|
 | Read from leader | 1 RTT | Leader has latest committed state |
-| Write | 2 RTTs | Leader → replicate to majority → respond |
+| Write | 1 RTT (client-perceived) | Client → leader, leader replicates to followers in parallel, majority ACK → responds to client. Internal leader-follower communication is pipelined within this single client RTT. |
 | Read from follower | 1 RTT + staleness | May read uncommitted data (linearizability trade-off) |
 | Leader election | 150-300ms | Election timeout + vote collection |
 

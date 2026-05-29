@@ -108,7 +108,7 @@ DynamoDB's key model is the best framework for thinking about partition design i
 - Category skew: "electronics" category has 10x items vs "garden supplies"
 
 **Back-of-envelope:**
-- DynamoDB partition limit: ~3000 RCU / 1000 WCU per partition
+- DynamoDB partition limit: ~3000 RCU / 1000 WCU per partition (baseline planning numbers — since 2018-2019, adaptive capacity and burst capacity allow individual partitions to temporarily exceed these limits, so they are no longer hard ceilings)
 - Celebrity with 100M followers: follower fanout = 1M writes/sec during a post
 - Single partition handles 1000 WCU → needs 1000 partitions for that ONE user
 
@@ -123,6 +123,9 @@ DynamoDB's key model is the best framework for thinking about partition design i
 | **Caching** | Cache hot partition reads | Redis in front of hot partition | Cache invalidation |
 
 **Instagram's approach:** For celebrity accounts, partition key = `user_id + random(0-9)`. Writes spread across 10 partitions. Reads: 10 parallel queries → merge → return. Works because read fanout (10 queries) is cheap, write hotspot (10,000 WCU on one partition) is impossible.
+
+!!! warning "Read Fan-Out Tradeoff"
+    Spreading writes across 10 partitions means reads now require scatter-gather across all 10, adding tail latency variance (p99 is bounded by the slowest partition). This is acceptable for write-heavy workloads (celebrity posts) but problematic for read-heavy patterns — if a key is read 1000x per second, you're paying 10,000 partition reads instead of 1,000. Only apply write sharding to genuinely write-hot keys.
 
 ---
 

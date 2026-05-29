@@ -102,6 +102,48 @@ stateDiagram-v2
 
 ## UDP — The Fast Transport
 
+### TCP vs UDP — The Vibe Check
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    rect rgb(239, 246, 255)
+    Note over C,S: TCP — The Formal Handshake
+    C->>S: SYN (Hey, can we talk?)
+    S->>C: SYN-ACK (Sure, ready when you are)
+    C->>S: ACK (Cool, let's go)
+    C->>S: Data
+    S->>C: ACK (Got it)
+    end
+
+    rect rgb(254, 242, 242)
+    Note over C,S: UDP — Yeet and Forget
+    C->>S: Data (Here, catch!)
+    Note right of S: Maybe received,<br/>maybe not 🤷
+    end
+```
+
+### UDP Header — 8 Bytes of Freedom
+
+```
+ 0      7 8     15 16    23 24    31
++--------+--------+--------+--------+
+|   Source Port    |    Dest Port    |
++--------+--------+--------+--------+
+|     Length       |    Checksum     |
++--------+--------+--------+--------+
+|              Data ...              |
++------------------------------------+
+
+Total header: 8 bytes. That's it.
+```
+
+TCP needs 20-60 bytes for its flags, sequence numbers, window sizes, and options. UDP said "nah, 8 bytes, we ship."
+
+### TCP vs UDP Comparison
+
 | Feature | TCP | UDP |
 |---|---|---|
 | Connection | Connection-oriented | Connectionless |
@@ -111,7 +153,29 @@ stateDiagram-v2
 | Use cases | HTTP, SSH, SMTP | DNS, DHCP, video, gaming |
 | Speed | Slower (handshake, ACKs) | Faster (fire and forget) |
 
-**Security insight**: DNS over UDP (port 53) is commonly exploited for amplification attacks. DNS response is much larger than request — attacker spoofs source IP to flood victim.
+### DNS Amplification Attack
+
+```mermaid
+sequenceDiagram
+    participant A as Attacker
+    participant R as Open DNS<br/>Resolvers
+    participant V as Victim
+
+    Note over A: Spoofs source IP<br/>to Victim's IP
+    A->>R: DNS query "ANY example.com?"<br/>(~60 bytes, src=Victim IP)
+    A->>R: DNS query "ANY example.com?"<br/>(~60 bytes, src=Victim IP)
+    A->>R: DNS query "ANY example.com?"<br/>(~60 bytes, src=Victim IP)
+
+    R->>V: DNS response (~3000 bytes)
+    R->>V: DNS response (~3000 bytes)
+    R->>V: DNS response (~3000 bytes)
+
+    Note over V: Flooded with 50x<br/>amplified traffic 💀
+```
+
+**Why UDP enables this**: No handshake = no source verification. TCP's 3-way handshake would force the attacker to complete the connection from their real IP, making spoofing impossible.
+
+**Security insight**: DNS over UDP (port 53) is commonly exploited for amplification attacks. DNS response is much larger than request — attacker spoofs source IP to flood victim. Amplification factor can reach **50-70x** with `ANY` queries.
 
 ---
 

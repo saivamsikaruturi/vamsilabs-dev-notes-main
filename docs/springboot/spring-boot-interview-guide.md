@@ -18,31 +18,122 @@ Start with Sections 1-2 if you need to refresh core concepts. If you are already
 
 ## 1. Spring Core & IoC
 
-### Key Topics
+### What Interviewers Expect
 
 Interviewers at senior levels expect you to explain not just *what* IoC and DI are, but *how* Spring implements them internally — the BeanFactory vs ApplicationContext distinction, bean definition parsing, and the full lifecycle from instantiation to destruction. You should be able to discuss when to use constructor vs setter injection and articulate the trade-offs.
 
-### Must-Know Questions
+### Top Questions
 
 **Q: What is IoC and DI? How does Spring implement them?**
-Inversion of Control means the framework manages object creation and wiring rather than the application code. Dependency Injection is the mechanism — Spring's IoC container reads configuration (annotations, XML, or Java config), creates bean definitions, resolves dependencies via reflection, and injects them through constructors, setters, or fields.
+
+- **IoC** = framework manages object creation/wiring, not your code
+- **DI** = the mechanism Spring uses to achieve IoC
+- Spring's container reads config (annotations, XML, Java config) → creates bean definitions → resolves dependencies via reflection → injects via constructors, setters, or fields
+
+```java
+@Service
+public class OrderService {
+    private final PaymentGateway gateway; // injected by Spring
+
+    public OrderService(PaymentGateway gateway) { // constructor injection
+        this.gateway = gateway;
+    }
+}
+```
+
+---
 
 **Q: What are the different bean scopes?**
-Singleton (one instance per container, default), Prototype (new instance per request), Request (one per HTTP request), Session (one per HTTP session), Application (one per ServletContext), and WebSocket (one per WebSocket session). Injecting a prototype into a singleton requires a proxy or ObjectFactory to avoid stale references.
+
+- **Singleton** — one instance per container (default)
+- **Prototype** — new instance per injection/request
+- **Request** — one per HTTP request
+- **Session** — one per HTTP session
+- **Application** — one per ServletContext
+- **WebSocket** — one per WebSocket session
+
+!!! warning "Prototype inside Singleton"
+    Injecting a prototype into a singleton gives you a stale reference. Use `ObjectFactory<T>` or `@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)` to get fresh instances.
+
+```java
+@Component
+@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class ShoppingCart { /* new instance per access */ }
+```
+
+---
 
 **Q: Explain the bean lifecycle.**
-Instantiation → populate properties → BeanNameAware → BeanFactoryAware → ApplicationContextAware → BeanPostProcessor#postProcessBeforeInitialization → @PostConstruct → InitializingBean#afterPropertiesSet → custom init-method → BeanPostProcessor#postProcessAfterInitialization → ready → @PreDestroy → DisposableBean#destroy → custom destroy-method.
+
+- Instantiation → populate properties
+- `BeanNameAware` → `BeanFactoryAware` → `ApplicationContextAware`
+- `BeanPostProcessor#postProcessBeforeInitialization`
+- `@PostConstruct`
+- `InitializingBean#afterPropertiesSet`
+- Custom `init-method`
+- `BeanPostProcessor#postProcessAfterInitialization`
+- **Bean is ready**
+- `@PreDestroy`
+- `DisposableBean#destroy`
+- Custom `destroy-method`
+
+```java
+@Component
+public class CacheWarmer {
+    @PostConstruct
+    public void warmUp() { /* runs after DI is complete */ }
+
+    @PreDestroy
+    public void flushCache() { /* runs before shutdown */ }
+}
+```
+
+---
 
 **Q: What is circular dependency and how does Spring handle it?**
-A circular dependency occurs when Bean A depends on Bean B and Bean B depends on Bean A. Spring resolves this for singleton beans using a three-level cache (singletonObjects, earlySingletonObjects, singletonFactories) that exposes early references. This does NOT work with constructor injection — you must use @Lazy or redesign.
+
+- Occurs when Bean A depends on Bean B and Bean B depends on Bean A
+- Spring resolves this for **singleton** beans using a three-level cache:
+    - `singletonObjects` — fully initialized beans
+    - `earlySingletonObjects` — partially initialized (exposed early)
+    - `singletonFactories` — factory lambdas that produce early refs
+- Does **NOT** work with constructor injection — use `@Lazy` or redesign
+
+---
 
 **Q: What is the difference between BeanFactory and ApplicationContext?**
-BeanFactory provides basic IoC (lazy initialization, bean instantiation). ApplicationContext extends it with eager initialization, event publishing, internationalization, AOP integration, and environment abstraction. In production, you always use ApplicationContext.
+
+| Feature | BeanFactory | ApplicationContext |
+|---------|-------------|-------------------|
+| Initialization | Lazy | Eager |
+| Events | No | Yes |
+| i18n | No | Yes |
+| AOP integration | Limited | Full |
+
+- In production, you always use `ApplicationContext`
+
+---
 
 **Q: When should you use @Component vs @Bean?**
-@Component is for classpath scanning of your own classes. @Bean is for explicit registration in @Configuration classes, typically for third-party library classes you cannot annotate, or when you need programmatic construction logic.
 
-### Deep Dive Pages
+- `@Component` — classpath scanning for **your own** classes
+- `@Bean` — explicit registration in `@Configuration` classes for:
+    - Third-party library classes you cannot annotate
+    - Beans requiring programmatic construction logic
+
+```java
+@Configuration
+public class AppConfig {
+    @Bean // third-party class — can't add @Component to it
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    }
+}
+```
+
+### Go Deeper
 
 - [Spring IoC Container](SpringIOC.md)
 - [Types of Dependency Injection](TypesOfDi.md)
@@ -57,28 +148,79 @@ BeanFactory provides basic IoC (lazy initialization, bean instantiation). Applic
 
 ## 2. Auto-Configuration & Internals
 
-### Key Topics
+### Core Concepts
 
 Senior engineers are expected to understand what happens when a Spring Boot application starts — from SpringApplication.run() through auto-configuration resolution. Know how @Conditional annotations drive auto-configuration, how to write custom starters, and what changed in Spring Boot 3 (Jakarta namespace, GraalVM AOT, observability APIs).
 
-### Must-Know Questions
+### Interview Questions
 
 **Q: How does Spring Boot auto-configuration work?**
-Spring Boot reads META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports (Boot 3) or META-INF/spring.factories (Boot 2). Each auto-configuration class uses @Conditional annotations (@ConditionalOnClass, @ConditionalOnMissingBean, @ConditionalOnProperty) to decide whether to apply. Your explicit @Bean definitions take priority over auto-configured ones.
+
+- Boot reads `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` (Boot 3) or `META-INF/spring.factories` (Boot 2)
+- Each class uses `@Conditional` annotations to decide whether to apply:
+    - `@ConditionalOnClass` — only if class is on classpath
+    - `@ConditionalOnMissingBean` — only if you haven't defined one
+    - `@ConditionalOnProperty` — only if property is set
+- Your explicit `@Bean` definitions **always take priority**
+
+```java
+@AutoConfiguration
+@ConditionalOnClass(DataSource.class)
+@ConditionalOnProperty(name = "spring.datasource.url")
+public class DataSourceAutoConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public DataSource dataSource(DataSourceProperties props) {
+        return props.initializeDataSourceBuilder().build();
+    }
+}
+```
+
+---
 
 **Q: What is the difference between @SpringBootApplication and its components?**
-@SpringBootApplication combines @Configuration (Java-based config), @EnableAutoConfiguration (trigger auto-configuration), and @ComponentScan (scan current package and sub-packages). Understanding this helps you control scanning scope and auto-configuration behavior.
+
+- `@Configuration` — marks class as Java-based config source
+- `@EnableAutoConfiguration` — triggers auto-configuration
+- `@ComponentScan` — scans current package + sub-packages
+- Understanding this lets you control scanning scope and auto-config behavior
+
+---
 
 **Q: How do you create a custom Spring Boot starter?**
-Create two modules: an autoconfigure module with @Configuration classes annotated with @Conditional* annotations, and a starter module that pulls in the autoconfigure module as a dependency. Register the configuration in the AutoConfiguration.imports file. Provide sensible defaults and allow override via application properties.
+
+- Create **two modules**:
+    1. `autoconfigure` module — `@Configuration` classes with `@Conditional*` annotations
+    2. `starter` module — pulls in autoconfigure + required dependencies
+- Register configuration in `AutoConfiguration.imports`
+- Provide sensible defaults, allow override via `application.properties`
+
+---
 
 **Q: What happens during SpringApplication.run()?**
-Creates SpringApplication instance → loads SpringApplicationRunListeners → prepares Environment → creates ApplicationContext (reactive vs servlet) → loads bean definitions → refreshes context (instantiates beans) → calls runners (CommandLineRunner, ApplicationRunner) → publishes ApplicationReadyEvent.
+
+1. Creates `SpringApplication` instance
+2. Loads `SpringApplicationRunListeners`
+3. Prepares `Environment`
+4. Creates `ApplicationContext` (reactive vs servlet)
+5. Loads bean definitions
+6. Refreshes context (instantiates all singleton beans)
+7. Calls runners (`CommandLineRunner`, `ApplicationRunner`)
+8. Publishes `ApplicationReadyEvent`
+
+---
 
 **Q: What changed in Spring Boot 3?**
-Java 17 baseline, Jakarta EE 10 (javax.* → jakarta.*), GraalVM native image support, built-in observability with Micrometer, ProblemDetail for error responses (RFC 7807), new declarative HTTP clients, and deprecation of spring.factories for auto-configuration.
 
-### Deep Dive Pages
+- Java 17 baseline
+- Jakarta EE 10 (`javax.*` → `jakarta.*`)
+- GraalVM native image support (first-class AOT processing)
+- Built-in observability with Micrometer
+- `ProblemDetail` for error responses (RFC 7807)
+- New declarative HTTP clients
+- Deprecation of `spring.factories` for auto-configuration
+
+### Further Reading
 
 - [Auto-Configuration](AutoConfiguration.md)
 - [Spring Boot 3 Features](SpringBoot3.md)
@@ -90,31 +232,97 @@ Java 17 baseline, Jakarta EE 10 (javax.* → jakarta.*), GraalVM native image su
 
 ## 3. Web & REST APIs
 
-### Key Topics
+### What You Need to Know
 
 You must understand the full MVC request lifecycle from DispatcherServlet through handler mapping, argument resolution, and response rendering. Interviewers expect you to design RESTful APIs following best practices and handle cross-cutting concerns (validation, exception handling, content negotiation) cleanly.
 
-### Must-Know Questions
+### Frequently Asked
 
 **Q: Explain the Spring MVC request lifecycle.**
-Request hits DispatcherServlet → HandlerMapping finds the controller method → HandlerAdapter invokes it with resolved arguments (via HandlerMethodArgumentResolvers) → method executes → return value processed by HandlerMethodReturnValueHandler → ViewResolver (if view) or HttpMessageConverter (if @ResponseBody) produces response.
+
+1. Request hits `DispatcherServlet`
+2. `HandlerMapping` finds the controller method
+3. `HandlerAdapter` invokes it with resolved arguments (via `HandlerMethodArgumentResolvers`)
+4. Method executes business logic
+5. Return value processed by `HandlerMethodReturnValueHandler`
+6. `ViewResolver` (if view) or `HttpMessageConverter` (if `@ResponseBody`) produces response
+
+---
 
 **Q: How do you handle exceptions globally?**
-Use @ControllerAdvice with @ExceptionHandler methods. Spring Boot 3 adds ProblemDetail support for RFC 7807 responses. You can also implement ErrorController for overriding the default /error endpoint, or use ResponseStatusException for simple cases.
+
+- Use `@ControllerAdvice` with `@ExceptionHandler` methods
+- Spring Boot 3 adds `ProblemDetail` for RFC 7807 responses
+- `ResponseStatusException` works for simple one-off cases
+- Implement `ErrorController` to override the default `/error` endpoint
+
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ProblemDetail handleNotFound(ResourceNotFoundException ex) {
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        pd.setTitle("Resource Not Found");
+        pd.setDetail(ex.getMessage());
+        return pd;
+    }
+}
+```
+
+---
 
 **Q: What is the difference between @Controller and @RestController?**
-@RestController combines @Controller and @ResponseBody — every method returns serialized data directly rather than a view name. Use @Controller when you need to return views (Thymeleaf, JSP).
+
+- `@RestController` = `@Controller` + `@ResponseBody` on every method
+- Returns serialized data directly (JSON/XML)
+- Use `@Controller` when returning view names (Thymeleaf, JSP)
+
+---
 
 **Q: How does validation work in Spring Boot?**
-Add spring-boot-starter-validation. Annotate DTOs with Bean Validation annotations (@NotNull, @Size, @Email). Use @Valid or @Validated on method parameters. Validation errors trigger MethodArgumentNotValidException, which you handle in @ControllerAdvice. For custom validation, implement ConstraintValidator.
+
+- Add `spring-boot-starter-validation`
+- Annotate DTOs with Bean Validation annotations (`@NotNull`, `@Size`, `@Email`)
+- Use `@Valid` or `@Validated` on method parameters
+- Failures throw `MethodArgumentNotValidException` → handle in `@ControllerAdvice`
+- Custom rules: implement `ConstraintValidator`
+
+```java
+public record CreateUserRequest(
+    @NotBlank String username,
+    @Email String email,
+    @Size(min = 8, max = 64) String password
+) {}
+
+@PostMapping("/users")
+public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest req) {
+    return ResponseEntity.status(201).body(userService.create(req));
+}
+```
+
+---
 
 **Q: How do filters differ from interceptors?**
-Filters (javax.servlet.Filter) operate at the servlet level — they see raw requests before Spring processes them. HandlerInterceptors operate at the Spring MVC level — they have access to the handler method and model. Filters are for security, logging, compression. Interceptors are for controller-specific concerns.
+
+| Aspect | Filter | HandlerInterceptor |
+|--------|--------|--------------------|
+| Level | Servlet container | Spring MVC |
+| Access to handler | No | Yes |
+| Use cases | Security, logging, compression | Auth checks, audit, model prep |
+
+- Filters see **raw** requests before Spring processes them
+- Interceptors have access to the handler method and model
+
+---
 
 **Q: How do you version a REST API?**
-URI versioning (/api/v1/users), header versioning (Accept: application/vnd.api.v1+json), or query parameter (?version=1). URI versioning is most common and cache-friendly. Header versioning is more RESTful but less discoverable. Pick one and be consistent.
 
-### Deep Dive Pages
+- **URI versioning** — `/api/v1/users` (most common, cache-friendly)
+- **Header versioning** — `Accept: application/vnd.api.v1+json` (more RESTful, less discoverable)
+- **Query param** — `?version=1`
+- Pick one and be consistent across your service
+
+### Related Pages
 
 - [MVC Request Lifecycle](mvc-request-lifecycle.md)
 - [REST API Best Practices](restapibestpractices.md)
@@ -132,28 +340,92 @@ URI versioning (/api/v1/users), header versioning (Accept: application/vnd.api.v
 
 ## 4. Security
 
-### Key Topics
+### The Security Mental Model
 
 Spring Security is a top interview topic. You need to understand the filter chain architecture, authentication vs authorization flow, and how to secure both traditional and stateless (JWT/OAuth2) applications. Senior candidates should be able to explain security internals — not just configuration.
 
-### Must-Know Questions
+### Critical Questions
 
 **Q: How does the Spring Security filter chain work?**
-DelegatingFilterProxy delegates to FilterChainProxy, which holds one or more SecurityFilterChain instances. Each chain contains ordered filters (CsrfFilter, AuthenticationFilter, AuthorizationFilter, etc.). The chain processes sequentially; each filter can short-circuit the chain. You can add custom filters at specific positions.
+
+- `DelegatingFilterProxy` → delegates to `FilterChainProxy`
+- `FilterChainProxy` holds one or more `SecurityFilterChain` instances
+- Each chain contains ordered filters:
+    - `CsrfFilter` → `AuthenticationFilter` → `AuthorizationFilter` → ...
+- Chain processes sequentially; each filter can **short-circuit**
+- You can add custom filters at specific positions
+
+```java
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/public/**").permitAll()
+            .anyRequest().authenticated())
+        .sessionManagement(s -> s.sessionCreationPolicy(STATELESS))
+        .build();
+}
+```
+
+---
 
 **Q: What is the difference between authentication and authorization?**
-Authentication verifies identity (who are you?) via AuthenticationManager → AuthenticationProvider → UserDetailsService. Authorization verifies permissions (what can you do?) via AuthorizationManager, checked after successful authentication. Spring stores both in the SecurityContext (ThreadLocal by default).
+
+- **Authentication** — verifies identity (*who are you?*)
+    - `AuthenticationManager` → `AuthenticationProvider` → `UserDetailsService`
+- **Authorization** — verifies permissions (*what can you do?*)
+    - `AuthorizationManager`, checked **after** successful authentication
+- Both stored in `SecurityContext` (ThreadLocal by default)
+
+---
 
 **Q: How do you implement JWT authentication in Spring Boot?**
-Create a OncePerRequestFilter that extracts the JWT from the Authorization header, validates it (signature, expiration, claims), creates an Authentication object, and sets it in SecurityContextHolder. Configure SecurityFilterChain as stateless (SessionCreationPolicy.STATELESS) and register the filter before UsernamePasswordAuthenticationFilter.
+
+- Create a `OncePerRequestFilter` that:
+    1. Extracts JWT from the `Authorization` header
+    2. Validates it (signature, expiration, claims)
+    3. Creates an `Authentication` object
+    4. Sets it in `SecurityContextHolder`
+- Configure `SecurityFilterChain` as stateless (`SessionCreationPolicy.STATELESS`)
+- Register the filter **before** `UsernamePasswordAuthenticationFilter`
+
+```java
+@Component
+public class JwtAuthFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest req,
+            HttpServletResponse res, FilterChain chain) throws Exception {
+        String token = extractToken(req);
+        if (token != null && jwtUtil.isValid(token)) {
+            var auth = jwtUtil.toAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+        chain.doFilter(req, res);
+    }
+}
+```
+
+---
 
 **Q: How does method-level security work?**
-Enable with @EnableMethodSecurity. Use @PreAuthorize("hasRole('ADMIN')") for pre-invocation checks, @PostAuthorize for post-invocation checks, @Secured for simple role checks. These use AOP proxies — so self-invocation bypasses security (same as @Transactional).
+
+- Enable with `@EnableMethodSecurity`
+- `@PreAuthorize("hasRole('ADMIN')")` — pre-invocation check
+- `@PostAuthorize` — post-invocation check
+- `@Secured` — simple role check
+- Uses AOP proxies → **self-invocation bypasses security** (same as `@Transactional`)
+
+---
 
 **Q: How do you secure a REST API against CSRF?**
-For stateless APIs (JWT-based), disable CSRF — the token-based auth itself prevents CSRF. For session-based APIs, use Spring's CsrfFilter with the Synchronizer Token Pattern or the cookie-based approach (CookieCsrfTokenRepository).
 
-### Deep Dive Pages
+- **Stateless APIs (JWT-based)** — disable CSRF; token-based auth prevents it inherently
+- **Session-based APIs** — use Spring's `CsrfFilter` with:
+    - Synchronizer Token Pattern, or
+    - `CookieCsrfTokenRepository` (cookie-based)
+
+### Explore Security In Depth
 
 - [Spring Security](security.md)
 - [Security Filter Chain Internals](security-filter-chain.md)
@@ -165,31 +437,120 @@ For stateless APIs (JWT-based), disable CSRF — the token-based auth itself pre
 
 ## 5. Data Access & JPA
 
-### Key Topics
+### What Sets Senior Candidates Apart
 
 Expect deep questions on JPA internals, Hibernate session management, transaction propagation, and performance optimization (especially the N+1 problem). Senior engineers should understand persistence context, dirty checking, and when JPA is not the right tool.
 
-### Must-Know Questions
+### The Hard Questions
 
 **Q: What is the N+1 problem and how do you fix it?**
-When you load a parent entity and Hibernate lazily loads each child with a separate query. Fixes: JOIN FETCH in JPQL, @EntityGraph, batch fetching (@BatchSize), or using a DTO projection. Choose based on whether you need managed entities or read-only data.
+
+- **Problem**: Load a parent entity → Hibernate lazily fetches each child with a **separate** query (1 + N queries)
+- **Fixes**:
+    - `JOIN FETCH` in JPQL
+    - `@EntityGraph` on repository methods
+    - Batch fetching (`@BatchSize`)
+    - DTO projection (skip managed entities entirely)
+- Choose based on whether you need managed entities or read-only data
+
+```java
+// BAD: triggers N+1
+List<Order> orders = orderRepo.findAll(); // 1 query
+orders.forEach(o -> o.getItems().size()); // N queries
+
+// GOOD: single query with JOIN FETCH
+@Query("SELECT o FROM Order o JOIN FETCH o.items")
+List<Order> findAllWithItems();
+```
+
+---
 
 **Q: Explain transaction propagation levels.**
-REQUIRED (join existing or create new — default), REQUIRES_NEW (always new, suspends existing), NESTED (savepoint within existing), SUPPORTS (join if exists, else non-transactional), NOT_SUPPORTED (suspend existing), MANDATORY (must exist, else exception), NEVER (must not exist, else exception).
+
+| Propagation | Behavior |
+|-------------|----------|
+| `REQUIRED` | Join existing or create new (default) |
+| `REQUIRES_NEW` | Always create new, suspend existing |
+| `NESTED` | Savepoint within existing |
+| `SUPPORTS` | Join if exists, else non-transactional |
+| `NOT_SUPPORTED` | Suspend existing |
+| `MANDATORY` | Must exist, else exception |
+| `NEVER` | Must NOT exist, else exception |
+
+---
 
 **Q: Why does @Transactional not work on private methods or self-invocation?**
-Spring AOP uses proxies (JDK dynamic proxy or CGLIB). When a method calls another method on the same object, it bypasses the proxy — so the transactional advice is never applied. Solutions: inject self, use TransactionTemplate programmatically, or restructure into separate beans.
+
+- Spring AOP uses proxies (JDK dynamic proxy or CGLIB)
+- Self-call bypasses the proxy → transactional advice never applied
+- **Solutions**:
+    - Inject self (`@Lazy private MyService self;`)
+    - Use `TransactionTemplate` programmatically
+    - Restructure into separate beans
+
+```java
+// BROKEN — self-invocation, no proxy
+@Service
+public class PaymentService {
+    @Transactional
+    public void processPayment() {
+        this.updateLedger(); // bypasses proxy!
+    }
+    @Transactional(propagation = REQUIRES_NEW)
+    public void updateLedger() { /* ... */ }
+}
+
+// FIX — inject self or extract to another bean
+@Service
+public class PaymentService {
+    @Lazy @Autowired private PaymentService self;
+    
+    @Transactional
+    public void processPayment() {
+        self.updateLedger(); // goes through proxy
+    }
+}
+```
+
+---
 
 **Q: What is the difference between EAGER and LAZY loading?**
-EAGER loads associated entities immediately with the parent query. LAZY loads them on first access (via proxy). Default: @ManyToOne/@OneToOne are EAGER; @OneToMany/@ManyToMany are LAZY. Best practice: use LAZY everywhere and fetch explicitly when needed.
+
+- **EAGER** — loads associations immediately with the parent query
+- **LAZY** — loads on first access (via Hibernate proxy)
+- Defaults:
+    - `@ManyToOne` / `@OneToOne` → EAGER
+    - `@OneToMany` / `@ManyToMany` → LAZY
+- **Best practice**: use LAZY everywhere, fetch explicitly when needed
+
+---
 
 **Q: How does the Hibernate first-level cache work?**
-The persistence context (Session) acts as a first-level cache — every entity loaded in a transaction is cached by its ID. Repeated findById calls return the same object instance. It enables dirty checking (comparing snapshot at flush time) and repeatable reads within a transaction.
+
+- The persistence context (`Session`) caches every entity loaded in a transaction **by ID**
+- Repeated `findById` calls return the **same object instance**
+- Enables:
+    - **Dirty checking** — compares snapshot at flush time to detect changes
+    - **Repeatable reads** — within a single transaction
+
+---
 
 **Q: How do you handle optimistic vs pessimistic locking?**
-Optimistic: @Version field — Hibernate checks version on update, throws OptimisticLockException on conflict. Best for low-contention scenarios. Pessimistic: @Lock(LockModeType.PESSIMISTIC_WRITE) — database-level lock. Best for high-contention, short-lived transactions.
 
-### Deep Dive Pages
+- **Optimistic** — `@Version` field; Hibernate checks on update, throws `OptimisticLockException` on conflict. Best for **low-contention** scenarios.
+- **Pessimistic** — `@Lock(LockModeType.PESSIMISTIC_WRITE)` → database-level lock. Best for **high-contention, short-lived** transactions.
+
+```java
+@Entity
+public class Account {
+    @Version
+    private Long version; // optimistic locking
+
+    private BigDecimal balance;
+}
+```
+
+### Data Access Deep Dives
 
 - [Spring Data JPA](spring-data-jpa.md)
 - [N+1 Problem & JPA Internals](n-plus-one-jpa.md)
@@ -204,25 +565,82 @@ Optimistic: @Version field — Hibernate checks version on update, throws Optimi
 
 ## 6. Testing
 
-### Key Topics
+### Testing Strategy Overview
 
 Senior engineers must demonstrate testing strategy — unit tests with mocks, integration tests with slices, and end-to-end tests with real infrastructure. Know the trade-offs between test speed and confidence. Interviewers want to see that you understand the test pyramid in a Spring context.
 
-### Must-Know Questions
+### Commonly Tested Questions
 
 **Q: What are Spring Boot test slices and when do you use them?**
-Test slices load only a subset of the application context. @WebMvcTest loads MVC layer only (controllers, filters, advice). @DataJpaTest loads JPA layer (repositories, EntityManager). @JsonTest loads JSON serialization. They are faster than @SpringBootTest because they avoid loading the full context.
+
+- Test slices load **only a subset** of the application context
+- Much faster than `@SpringBootTest` (avoids full context load)
+
+| Slice | What it loads |
+|-------|---------------|
+| `@WebMvcTest` | Controllers, filters, advice |
+| `@DataJpaTest` | Repositories, EntityManager |
+| `@JsonTest` | JSON serialization only |
+
+```java
+@WebMvcTest(UserController.class)
+class UserControllerTest {
+    @Autowired MockMvc mockMvc;
+    @MockBean UserService userService;
+
+    @Test
+    void returnsUser() throws Exception {
+        when(userService.findById(1L)).thenReturn(new User("Alice"));
+        mockMvc.perform(get("/users/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value("Alice"));
+    }
+}
+```
+
+---
 
 **Q: How does @MockBean differ from @Mock?**
-@Mock (Mockito) creates a standalone mock not registered in Spring context. @MockBean replaces or adds a bean in the Spring ApplicationContext with a mock — useful when you need the mock to be injected into other Spring-managed beans during integration tests.
+
+- `@Mock` (Mockito) — standalone mock, **not** in Spring context
+- `@MockBean` — replaces/adds a bean in the `ApplicationContext` with a mock
+- Use `@MockBean` when the mock needs to be injected into other Spring-managed beans
+
+---
 
 **Q: When should you use Testcontainers?**
-When you need integration tests against real infrastructure (PostgreSQL, Redis, Kafka, Elasticsearch) without relying on shared test environments. Testcontainers spins up Docker containers per test class or test suite, giving you isolated, reproducible tests. Use @ServiceConnection in Boot 3.1+ for auto-configuration of connection properties.
+
+- When you need integration tests against **real infrastructure** (PostgreSQL, Redis, Kafka)
+- No shared test environments needed — Docker containers per test class/suite
+- Isolated, reproducible tests
+- Boot 3.1+ provides `@ServiceConnection` for auto-configuration of connection properties
+
+```java
+@SpringBootTest
+@Testcontainers
+class OrderRepositoryIT {
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> pg = new PostgreSQLContainer<>("postgres:16");
+
+    @Autowired OrderRepository repo;
+
+    @Test
+    void savesOrder() {
+        Order saved = repo.save(new Order("item-1", 2));
+        assertThat(saved.getId()).isNotNull();
+    }
+}
+```
+
+---
 
 **Q: How do you test @Transactional behavior?**
-Use @SpringBootTest with @Transactional on the test class — Spring rolls back after each test. To test actual commit behavior (e.g., testing that optimistic locking works), remove @Transactional from the test and clean up manually or use @DirtiesContext.
 
-### Deep Dive Pages
+- `@SpringBootTest` + `@Transactional` on test class → auto-rollback after each test
+- To test actual commit behavior (e.g., optimistic locking): remove `@Transactional`, clean up manually or use `@DirtiesContext`
+
+### Testing Resources
 
 - [Testing in Spring Boot](testing.md)
 - [Slice Testing](slice-testing.md)
@@ -232,25 +650,87 @@ Use @SpringBootTest with @Transactional on the test class — Spring rolls back 
 
 ## 7. Messaging & Async
 
-### Key Topics
+### Distributed Communication Essentials
 
 Distributed systems rely heavily on asynchronous communication. Know when to use message brokers vs direct async, understand at-least-once vs exactly-once semantics, and be prepared to discuss how Spring abstracts Kafka, RabbitMQ, and other messaging systems.
 
-### Must-Know Questions
+### Key Scenarios & Questions
 
 **Q: How does @Async work in Spring?**
-@EnableAsync enables proxy-based async execution. Methods annotated with @Async run on a TaskExecutor thread pool. The method must return void or CompletableFuture. Caveats: self-invocation bypasses the proxy, exceptions in void methods are lost (use AsyncUncaughtExceptionHandler), and you should always configure a custom executor rather than using the default SimpleAsyncTaskExecutor (which creates unbounded threads).
+
+- `@EnableAsync` enables proxy-based async execution
+- Methods run on a `TaskExecutor` thread pool
+- Must return `void` or `CompletableFuture`
+- **Caveats**:
+    - Self-invocation bypasses the proxy
+    - Exceptions in void methods are **lost** (use `AsyncUncaughtExceptionHandler`)
+    - Always configure a custom executor — default `SimpleAsyncTaskExecutor` creates unbounded threads
+
+```java
+@Configuration
+@EnableAsync
+public class AsyncConfig {
+    @Bean
+    public TaskExecutor taskExecutor() {
+        var executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(50);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix("async-");
+        return executor;
+    }
+}
+
+@Service
+public class NotificationService {
+    @Async
+    public CompletableFuture<Void> sendEmail(String to, String body) {
+        // runs on async thread pool
+        emailClient.send(to, body);
+        return CompletableFuture.completedFuture(null);
+    }
+}
+```
+
+---
 
 **Q: How do you handle Kafka consumer failures?**
-Use a RetryTopic or DefaultErrorHandler with backoff. Configure a dead-letter topic (DLT) for messages that exceed retry attempts. For ordering-sensitive consumers, pause the partition on failure. Spring Kafka provides @RetryableTopic annotation for declarative retry with exponential backoff and DLT routing.
+
+- Use `@RetryableTopic` or `DefaultErrorHandler` with backoff
+- Configure a **dead-letter topic** (DLT) for messages exceeding retry attempts
+- For ordering-sensitive consumers: pause the partition on failure
+- Spring Kafka provides declarative retry with exponential backoff + DLT routing
+
+```java
+@RetryableTopic(
+    backoff = @Backoff(delay = 1000, multiplier = 2),
+    attempts = "3",
+    dltStrategy = DltStrategy.FAIL_ON_ERROR)
+@KafkaListener(topics = "orders")
+public void processOrder(OrderEvent event) {
+    orderService.process(event); // retried up to 3x, then sent to DLT
+}
+```
+
+---
 
 **Q: What is the difference between @KafkaListener and @RabbitListener error handling?**
-Kafka: offset-based — failed message blocks the partition unless you use a SeekToCurrentErrorHandler or skip. RabbitMQ: acknowledgment-based — failed messages can be nacked and requeued or routed to a dead-letter exchange. RabbitMQ gives more granular per-message control; Kafka requires partition-level strategies.
+
+- **Kafka** — offset-based; failed message blocks the partition unless you use `SeekToCurrentErrorHandler` or skip
+- **RabbitMQ** — ack-based; failed messages can be nacked and requeued or routed to a dead-letter exchange
+- RabbitMQ gives more granular per-message control; Kafka requires partition-level strategies
+
+---
 
 **Q: When should you use Spring Batch vs async processing?**
-Spring Batch is for large-volume, chunk-based processing with built-in restart, skip, and retry capabilities, plus job repository for tracking. Use @Async or messaging for real-time, event-driven workloads. Batch is for ETL, report generation, and data migration.
 
-### Deep Dive Pages
+| | Spring Batch | @Async / Messaging |
+|-|-------------|-------------------|
+| Use case | ETL, report generation, data migration | Real-time event-driven workloads |
+| Features | Chunk processing, restart, skip, retry | Fire-and-forget or CompletableFuture |
+| Tracking | Job repository with execution history | Manual or messaging DLT |
+
+### Messaging & Async Deep Dives
 
 - [Async Processing](async.md)
 - [Spring Kafka](spring-kafka.md)
@@ -263,28 +743,87 @@ Spring Batch is for large-volume, chunk-based processing with built-in restart, 
 
 ## 8. Production & Operations
 
-### Key Topics
+### Production Readiness Checklist
 
 FAANG interviews increasingly focus on production readiness — observability, performance tuning, containerization, and operational maturity. You should demonstrate that you have shipped and operated Spring Boot services at scale, not just built them.
 
-### Must-Know Questions
+### Operations Questions
 
 **Q: What Actuator endpoints should every production service expose?**
-/health (for load balancer probes — with liveness and readiness groups in Kubernetes), /metrics (Prometheus-compatible via Micrometer), /info (build metadata), and /env or /configprops for debugging. Secure sensitive endpoints with Spring Security. Never expose /env or /beans publicly.
+
+- `/health` — load balancer probes (liveness + readiness groups in K8s)
+- `/metrics` — Prometheus-compatible via Micrometer
+- `/info` — build metadata
+- `/env` or `/configprops` — debugging only
+
+!!! danger "Security"
+    Never expose `/env` or `/beans` publicly. Secure sensitive endpoints with Spring Security.
+
+```yaml
+# application.yml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, info, prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+```
+
+---
 
 **Q: How do you implement health checks for Kubernetes?**
-Configure liveness and readiness probe groups in application.yml. Liveness (/actuator/health/liveness) checks if the app is alive — failures trigger pod restart. Readiness (/actuator/health/readiness) checks if the app can serve traffic — failures remove from service. Add custom HealthIndicators for downstream dependencies to readiness only.
+
+- Configure liveness and readiness probe groups:
+    - **Liveness** (`/actuator/health/liveness`) — is the app alive? Failure → pod restart
+    - **Readiness** (`/actuator/health/readiness`) — can it serve traffic? Failure → removed from service
+- Add custom `HealthIndicator` for downstream dependencies to **readiness only**
+
+```yaml
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: db, redis, customDependency
+```
+
+---
 
 **Q: How do you tune a Spring Boot application for throughput?**
-Size the Tomcat thread pool (server.tomcat.threads.max) to match your workload. Tune HikariCP pool (maximumPoolSize slightly above thread count for DB-bound apps). Enable response compression. Use virtual threads (Java 21) for I/O-bound workloads. Profile with async-profiler to find bottlenecks before tuning blindly.
+
+- **Tomcat thread pool** — `server.tomcat.threads.max` matched to workload
+- **HikariCP pool** — `maximumPoolSize` slightly above thread count for DB-bound apps
+- **Response compression** — enable for text responses
+- **Virtual threads** (Java 21) — for I/O-bound workloads
+- **Profile first** — use async-profiler to find bottlenecks before tuning blindly
+
+---
 
 **Q: What is the benefit of GraalVM native images for Spring Boot?**
-Near-instant startup (milliseconds vs seconds) and lower memory footprint — ideal for serverless and scale-to-zero scenarios. Trade-offs: longer build times, limited reflection/dynamic proxy support (requires hint configuration), and no runtime class loading. Spring Boot 3 provides first-class AOT processing to generate native hints automatically.
+
+- Near-instant startup (milliseconds vs seconds)
+- Lower memory footprint
+- Ideal for serverless and scale-to-zero
+- **Trade-offs**:
+    - Longer build times
+    - Limited reflection/dynamic proxy support (requires hint config)
+    - No runtime class loading
+- Spring Boot 3 provides first-class AOT processing to generate native hints automatically
+
+---
 
 **Q: How do you implement distributed tracing in Spring Boot?**
-Spring Boot 3 uses Micrometer Tracing (replacing Spring Cloud Sleuth). Add micrometer-tracing-bridge-otel for OpenTelemetry integration. Trace IDs propagate automatically through RestTemplate, WebClient, @Async, and messaging. Export spans to Zipkin, Jaeger, or any OTLP-compatible backend.
 
-### Deep Dive Pages
+- Spring Boot 3 uses **Micrometer Tracing** (replacing Spring Cloud Sleuth)
+- Add `micrometer-tracing-bridge-otel` for OpenTelemetry
+- Trace IDs propagate automatically through `RestTemplate`, `WebClient`, `@Async`, and messaging
+- Export spans to Zipkin, Jaeger, or any OTLP-compatible backend
+
+### Production Deep Dives
 
 - [Actuator](actuator.md)
 - [Observability](observability.md)
@@ -298,25 +837,77 @@ Spring Boot 3 uses Micrometer Tracing (replacing Spring Cloud Sleuth). Add micro
 
 ## 9. Advanced & Ecosystem
 
-### Key Topics
+### Architecture & Breadth Topics
 
 These topics demonstrate breadth and architectural maturity. Reactive programming, modular monoliths, AI integration, and cloud patterns show that you think beyond CRUD applications. Not all FAANG interviews go this deep, but these differentiate strong senior candidates.
 
-### Must-Know Questions
+### Senior-Level Deep Questions
 
 **Q: When should you use WebFlux over Spring MVC?**
-WebFlux (Project Reactor) is for high-concurrency, I/O-bound workloads where you need to handle thousands of concurrent connections with minimal threads (streaming, real-time APIs, gateway services). It is NOT faster for CPU-bound work and adds complexity. If your app is primarily CRUD with moderate concurrency, Spring MVC (especially with virtual threads) is simpler and sufficient.
+
+- **Use WebFlux** for:
+    - High-concurrency, I/O-bound workloads
+    - Thousands of concurrent connections with minimal threads
+    - Streaming, real-time APIs, gateway services
+- **Don't use WebFlux** when:
+    - App is primarily CRUD with moderate concurrency
+    - CPU-bound work (no benefit)
+    - Team isn't comfortable with reactive paradigm
+- Spring MVC + virtual threads (Java 21) is simpler for most cases
+
+---
 
 **Q: What is Spring Modulith and when would you use it?**
-Spring Modulith enforces logical module boundaries within a monolith using package conventions and ArchUnit-style tests. It provides event-based inter-module communication, module documentation generation, and a path to microservices extraction. Use it when you want modular architecture without the distributed systems overhead.
+
+- Enforces logical module boundaries **within a monolith**
+- Uses package conventions + ArchUnit-style tests
+- Provides:
+    - Event-based inter-module communication
+    - Module documentation generation
+    - Path to microservices extraction
+- Use when you want modular architecture **without** distributed systems overhead
+
+```java
+// Module boundary enforced — other modules cannot access internals
+// com.example.order (public API)
+// com.example.order.internal (package-private, not accessible)
+
+@ApplicationModuleTest
+class OrderModuleTest {
+    // Verifies module boundaries are respected
+}
+```
+
+---
 
 **Q: How does Spring AOP work internally?**
-Spring AOP uses proxy-based interception. For interfaces, it uses JDK dynamic proxies. For concrete classes, it uses CGLIB subclass proxies. Aspects are woven at runtime (not compile-time like AspectJ). Advisors contain pointcuts (where) and advice (what). Limitations: only public method invocations through the proxy are intercepted.
+
+- Uses **proxy-based interception** (not compile-time weaving like full AspectJ)
+- For interfaces → JDK dynamic proxies
+- For concrete classes → CGLIB subclass proxies
+- Advisors contain:
+    - **Pointcuts** — where to apply (method matching)
+    - **Advice** — what to do (before, after, around)
+- **Limitation**: only public method invocations **through the proxy** are intercepted
+
+---
 
 **Q: What design patterns does Spring use internally?**
-Factory (BeanFactory), Singleton (bean scope), Proxy (AOP, @Transactional), Template Method (JdbcTemplate, RestTemplate), Observer (ApplicationEvent), Strategy (HandlerMapping, ResourceLoader), Adapter (HandlerAdapter), and Composite (CompositeCacheManager). Understanding these helps you extend the framework correctly.
 
-### Deep Dive Pages
+| Pattern | Spring Example |
+|---------|---------------|
+| Factory | `BeanFactory` |
+| Singleton | Default bean scope |
+| Proxy | AOP, `@Transactional` |
+| Template Method | `JdbcTemplate`, `RestTemplate` |
+| Observer | `ApplicationEvent` |
+| Strategy | `HandlerMapping`, `ResourceLoader` |
+| Adapter | `HandlerAdapter` |
+| Composite | `CompositeCacheManager` |
+
+Understanding these helps you extend the framework correctly.
+
+### Advanced Reading
 
 - [AOP](aop.md)
 - [Design Patterns in Spring](design-patterns.md)

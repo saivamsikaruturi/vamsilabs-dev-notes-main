@@ -140,7 +140,7 @@ nav:
       - DSA: dsa.md
       - Behavioral (Amazon LPs): behavioral/behavioral.md
   - Java:
-      - "Interview Guide": java/java-interview-guide.md
+      - "Core Concepts & Questions": java/java-interview-guide.md
       - Core Java:
           - Ecosystem & Setup: java/ecosystem.md
           - "Java Basics — Part 1: Fundamentals": java/JavaBasics.md
@@ -243,7 +243,7 @@ nav:
           - Maven: java/maven.md
           - Gradle: java/gradle.md
   - Spring:
-      - "Interview Guide": springboot/spring-boot-interview-guide.md
+      - "Core Concepts & Questions": springboot/spring-boot-interview-guide.md
       - Core Fundamentals:
           - Introduction: springboot/introduction.md
           - Auto Configuration: springboot/AutoConfiguration.md
@@ -392,9 +392,11 @@ nav:
           - Data Partitioning: systemdesign/data-partitioning.md
           - Replication: systemdesign/replication.md
           - Bloom Filters: systemdesign/bloom-filters.md
+          - Geohashing & Spatial Indexing: systemdesign/geohashing.md
           - Estimation Cheat Sheet: systemdesign/estimation-cheatsheet.md
       - Networking & Communication:
           - HTTPS & TLS: https.md
+          - DNS Deep Dive: systemdesign/dns.md
           - Load Balancing: loadbalancer.md
           - CDN: systemdesign/cdn.md
           - Proxies: systemdesign/proxies.md
@@ -414,6 +416,8 @@ nav:
           - Message Queues: systemdesign/message-queues.md
           - Distributed Transactions: systemdesign/distributed-transactions.md
           - Circuit Breakers & Bulkheads: systemdesign/circuit-breakers.md
+          - Event Sourcing: systemdesign/event-sourcing.md
+          - Batch vs Stream Processing: systemdesign/batch-stream-processing.md
       - API Design:
           - REST API Design: apidesign/apidesign.md
           - GraphQL: graphql/graphql.md

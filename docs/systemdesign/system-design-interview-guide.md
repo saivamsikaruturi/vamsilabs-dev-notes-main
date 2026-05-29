@@ -83,7 +83,7 @@ Demonstrate maturity by discussing what you would do differently at 10x or 100x 
 
 ## 1. Networking & Communication
 
-### Key Concepts
+### What You Need to Know
 
 Every distributed system relies on network communication between components. Understanding protocols, load distribution, and content delivery is foundational. You should be able to explain the difference between L4 and L7 load balancing, when to use WebSockets vs. polling, and how a CDN reduces latency for global users.
 
@@ -93,7 +93,7 @@ Key questions interviewers ask:
 - When would you use a reverse proxy vs. a load balancer?
 - How do you push real-time updates to millions of connected clients?
 
-### Deep Dive Pages
+### Go Deeper
 
 - [HTTPS & TLS](../https.md) — TLS handshake, certificate chains, and how secure communication works end-to-end
 - [WebSockets & SSE](websockets-sse.md) — Real-time communication patterns, connection management at scale
@@ -106,7 +106,7 @@ Key questions interviewers ask:
 
 ## 2. Data Storage & Databases
 
-### Key Concepts
+### Core Principles
 
 Database choice is often the most consequential decision in a system design. You need to understand when relational databases excel (ACID transactions, complex joins, strong consistency) vs. when NoSQL is the right fit (flexible schema, horizontal scaling, high write throughput).
 
@@ -118,7 +118,7 @@ Key principles:
 - **Denormalization** trades storage for read speed — common in read-heavy systems
 - **Write-ahead logs (WAL)** ensure durability before acknowledging writes
 
-### Deep Dive Pages
+### Further Reading
 
 - [SQL vs NoSQL](../sqlvsnosql.md) — Decision framework for choosing between relational and non-relational databases
 - [CAP Theorem](../capTheorem.md) — Why you must choose between consistency and availability during network partitions
@@ -131,7 +131,7 @@ Key principles:
 
 ## 3. Caching & Performance
 
-### Key Concepts
+### Strategies & Trade-offs
 
 Caching is the single most impactful technique for reducing latency and database load. A well-designed cache can reduce p99 latency from 100ms to under 5ms. However, caching introduces complexity around invalidation, consistency, and memory management.
 
@@ -150,7 +150,7 @@ Caching is the single most impactful technique for reducing latency and database
 
 **Cache eviction policies:** LRU (most common), LFU, FIFO, Random
 
-### Deep Dive Pages
+### Reference Pages
 
 - [Distributed Caching](../distributedCaching.md) — Cache topologies, consistency challenges, thundering herd prevention
 - [Redis](../redis.md) — Data structures (strings, hashes, sorted sets, streams), clustering, persistence modes
@@ -161,7 +161,7 @@ Caching is the single most impactful technique for reducing latency and database
 
 ## 4. Distributed Systems Concepts
 
-### Key Concepts
+### Failure Modes & Guarantees
 
 Distributed systems introduce failure modes that don't exist in single-machine applications. Networks can partition, clocks can drift, nodes can crash silently, and messages can arrive out of order. Understanding these challenges — and the algorithms designed to handle them — separates senior engineers from juniors in interviews.
 
@@ -178,7 +178,7 @@ Distributed systems introduce failure modes that don't exist in single-machine a
 - **Linearizability**: Strongest consistency — every operation appears to happen at a single point in time
 - **Causal consistency**: Operations that are causally related appear in order; concurrent operations may be reordered
 
-### Deep Dive Pages
+### Study These Topics
 
 - [Consensus Algorithms](consensus-algorithms.md) — Paxos and Raft: how distributed nodes agree on a single value despite failures
 - [Leader Election](leader-election.md) — Bully algorithm, ring algorithm, ZooKeeper-based election
@@ -192,7 +192,7 @@ Distributed systems introduce failure modes that don't exist in single-machine a
 
 ## 5. Design Building Blocks
 
-### Key Concepts
+### Essential Components
 
 Beyond the core distributed systems theory, certain components appear in nearly every system design answer. Message queues enable asynchronous processing, decouple producers from consumers, and absorb traffic spikes. Unique ID generation is required whenever you need to identify entities across a distributed system without coordination.
 
@@ -210,7 +210,7 @@ Beyond the core distributed systems theory, certain components appear in nearly 
 - Compact enough for URLs or database keys
 - High throughput (thousands of IDs per second per node)
 
-### Deep Dive Pages
+### Deep Dives
 
 - [Message Queues](message-queues.md) — Kafka vs. RabbitMQ, delivery semantics, partitioning, consumer groups, dead letter queues
 - [Unique ID Generation](unique-id-generation.md) — UUID, Twitter Snowflake, ULID, database sequences, and trade-offs between approaches

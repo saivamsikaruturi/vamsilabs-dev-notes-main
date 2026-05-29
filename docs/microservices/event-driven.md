@@ -103,7 +103,10 @@ public class BankAccount {
         switch (event) {
             case MoneyDeposited e -> balance = balance.add(e.amount());
             case MoneyWithdrawn e -> balance = balance.subtract(e.amount());
-            default -> {}
+            // Fail loudly on unknown events — silent defaults hide bugs when new
+            // event types are added but replay logic isn't updated.
+            default -> throw new IllegalStateException(
+                "Unknown event type: " + event.getClass().getName());
         }
     }
 }
@@ -152,20 +155,24 @@ public class PaymentConsumer {
     @KafkaListener(topics = "order-events")
     @Transactional
     public void handle(OrderPlacedEvent event) {
-        // Check if already processed
-        if (processedEvents.existsByEventId(event.eventId())) {
-            log.info("Event already processed, skipping: {}", event.eventId());
-            return;
-        }
-        
         // Process the event
         paymentService.charge(event.orderId(), event.amount());
         
-        // Mark as processed
-        processedEvents.save(new ProcessedEvent(event.eventId()));
+        // Record processing — relies on UNIQUE constraint on event_id column.
+        // If a duplicate event arrives, the constraint violation is our guard.
+        try {
+            processedEvents.save(new ProcessedEvent(event.eventId()));
+        } catch (DataIntegrityViolationException e) {
+            // Duplicate event — already processed, safe to ignore.
+            log.info("Duplicate event, skipping: {}", event.eventId());
+            return;
+        }
     }
 }
 ```
+
+!!! warning "Why SELECT-then-INSERT is not enough"
+    A naive `if (existsByEventId(...)) return;` check is racy — two concurrent consumers can both see "not exists" and both proceed. The real idempotency guard is a **database unique constraint** on `event_id`. Let the DB enforce uniqueness and catch `DataIntegrityViolationException` (or `DuplicateKeyException`). This is safe under concurrency without distributed locks.
 
 ### Dead Letter Queue (DLQ)
 

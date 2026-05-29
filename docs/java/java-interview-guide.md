@@ -10,17 +10,51 @@
 
 The type system, memory semantics, object lifecycle, OOP. Interviewers use these to gauge whether you actually understand the language or just use it mechanically — they show up in nearly every phone screen.
 
-### Must-Know Questions
+### Core Questions
 
 - **Is Java pass-by-value or pass-by-reference?** Always pass-by-value. When you pass an object, the reference itself is copied — the caller's reference cannot be reassigned by the callee. This is why swapping two objects inside a method has no effect on the caller.
 
-- **What is the contract between equals() and hashCode()?** If two objects are equal according to `equals()`, they must have the same `hashCode()`. Violating this breaks HashMap, HashSet, and any hash-based collection. The reverse is not required — unequal objects may share a hash code (collisions).
+    ```java
+    void swap(Object a, Object b) {
+        Object temp = a;
+        a = b;       // only reassigns local copy
+        b = temp;    // caller's references unchanged
+    }
+    ```
 
-- **Explain the difference between abstract classes and interfaces (post-Java 8).** Interfaces support multiple inheritance and default methods but cannot hold state (instance fields). Abstract classes can hold state and constructors but limit you to single inheritance. Use interfaces for capabilities ("can-do"), abstract classes for shared implementation ("is-a" with common code).
+- **What is the contract between equals() and hashCode()?**
+    - If two objects are equal via `equals()`, they **must** return the same `hashCode()`
+    - Violating this breaks HashMap, HashSet, and any hash-based collection
+    - The reverse is not required — unequal objects may share a hash code (collisions)
+    - Override both or neither; never override just one
 
-- **Why should you favor immutability?** Immutable objects are inherently thread-safe, safe as map keys, simple to reason about, and enable sharing without defensive copies. The trade-off is object creation cost, which modern JVMs handle well via escape analysis and garbage collection.
+    ```java
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee e)) return false;
+        return id == e.id && name.equals(e.name);
+    }
 
-### Deep Dive Pages
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+    ```
+
+- **Explain the difference between abstract classes and interfaces (post-Java 8).**
+    - **Interfaces** — support multiple inheritance, default methods, but cannot hold instance state (fields)
+    - **Abstract classes** — can hold state and constructors, but limit you to single inheritance
+    - **Rule of thumb** — interfaces for capabilities ("can-do"), abstract classes for shared implementation ("is-a" with common code)
+
+- **Why should you favor immutability?**
+    - **Thread safety** — inherently safe without synchronization
+    - **Safe map keys** — hashCode never changes
+    - **Simplicity** — easier to reason about, no defensive copies needed
+    - **Sharing** — instances can be freely shared across threads and caches
+    - Trade-off is object creation cost, which modern JVMs handle well via escape analysis and GC
+
+### Study Resources
 
 - [Java Basics Part 1](JavaBasics.md) — Language fundamentals, types, control flow
 - [Java Basics Part 2](JavaBasics2.md) — Methods, memory model, strings
@@ -42,17 +76,50 @@ The type system, memory semantics, object lifecycle, OOP. Interviewers use these
 
 Strings come up disproportionately because they intersect immutability, memory management, the String pool, and API fluency. Wrapper classes test autoboxing pitfalls, caching ranges, and equality semantics. L1 entry point, but follow-ups reach L2 fast.
 
-### Must-Know Questions
+### Key Questions
 
-- **Why is String immutable in Java?** Four reasons: (1) String pool sharing — multiple references can point to the same literal safely, (2) thread safety without synchronization, (3) security — class names, URLs, file paths cannot be tampered with after creation, (4) hashCode caching — computed once and reused.
+- **Why is String immutable in Java?**
+    - **Pool sharing** — multiple references point to same literal safely
+    - **Thread safety** — no synchronization needed
+    - **Security** — class names, URLs, file paths can't be tampered
+    - **Performance** — `hashCode()` computed once and cached
 
-- **What is the difference between String, StringBuilder, and StringBuffer?** String is immutable. StringBuilder is mutable and not thread-safe (fast). StringBuffer is mutable and thread-safe via synchronized methods (slower). In almost all modern code, prefer StringBuilder; StringBuffer is a legacy class.
+- **What is the difference between String, StringBuilder, and StringBuffer?**
+    - **String** — immutable; every modification creates a new object
+    - **StringBuilder** — mutable, not thread-safe (fast, prefer this)
+    - **StringBuffer** — mutable, thread-safe via synchronized methods (legacy, slower)
 
-- **Explain the String pool and `intern()`.** The String pool (in the heap since Java 7) stores unique String literals. When you write `"hello"`, the JVM checks the pool first. `intern()` explicitly adds a String to the pool and returns the canonical reference. This enables `==` comparison for interned strings but can cause memory issues if overused.
+- **Explain the String pool and `intern()`.**
+    - The String pool (in the heap since Java 7) stores unique String literals
+    - When you write `"hello"`, the JVM checks the pool first
+    - `intern()` explicitly adds a String to the pool and returns the canonical reference
+    - Enables `==` comparison for interned strings, but overuse can cause memory issues
 
-- **What is the Integer cache, and why does `Integer.valueOf(127) == Integer.valueOf(127)` return true?** Java caches Integer values from -128 to 127. `valueOf()` returns cached instances in that range, so `==` works. Outside that range, new objects are created and `==` returns false. Always use `.equals()` for wrapper comparisons.
+    ```java
+    String a = "hello";          // pool literal
+    String b = new String("hello"); // new heap object
+    String c = b.intern();       // returns pool reference
 
-### Deep Dive Pages
+    System.out.println(a == b);  // false — different objects
+    System.out.println(a == c);  // true  — same pool reference
+    ```
+
+- **What is the Integer cache, and why does `Integer.valueOf(127) == Integer.valueOf(127)` return true?**
+    - Java caches Integer values from -128 to 127
+    - `valueOf()` returns cached instances in that range, so `==` works
+    - Outside that range, new objects are created and `==` returns false
+    - **Always use `.equals()` for wrapper comparisons**
+
+    ```java
+    Integer x = 127, y = 127;
+    System.out.println(x == y);       // true  — cached
+
+    Integer a = 128, b = 128;
+    System.out.println(a == b);       // false — new objects
+    System.out.println(a.equals(b));  // true  — correct way
+    ```
+
+### Go Deeper
 
 - [Strings](Strings.md) — Immutability, pool, methods
 - [String Pool Internals](StringPoolInternals.md) — How the pool works internally
@@ -65,17 +132,46 @@ Strings come up disproportionately because they intersect immutability, memory m
 
 The most-tested area in Java interviews. They don't just ask *what* each collection does — they want the internals: hash tables, red-black trees, array resizing, iterator fail-fast behavior. Know when to pick what and why.
 
-### Must-Know Questions
+### Interview Essentials
 
-- **How does HashMap work internally?** HashMap uses an array of buckets. A key's `hashCode()` determines the bucket index (via bit manipulation). Collisions are handled with linked lists that convert to red-black trees when a bucket exceeds 8 entries (treeification threshold). Load factor (default 0.75) triggers resizing at capacity * load factor entries.
+- **How does HashMap work internally?**
+    - Uses an array of buckets (default capacity 16)
+    - Key's `hashCode()` determines bucket index via bit manipulation
+    - Collisions handled with linked lists that convert to **red-black trees** when a bucket exceeds 8 entries (treeification threshold)
+    - Load factor (default 0.75) triggers resizing at `capacity * loadFactor` entries
 
-- **What is the difference between HashMap and ConcurrentHashMap?** HashMap is not thread-safe. ConcurrentHashMap (Java 8+) uses CAS operations and synchronized blocks on individual bins rather than locking the entire map. It never throws ConcurrentModificationException and supports atomic operations like `computeIfAbsent()`.
+    ```java
+    // Simplified internal structure
+    // table[0] -> null
+    // table[1] -> Node("key1",val) -> Node("key2",val) -> null
+    // table[2] -> TreeNode (when list > 8 nodes)
+    // ...
+    // table[15] -> null
+    Map<String, Integer> map = new HashMap<>(16, 0.75f);
+    ```
 
-- **When would you use TreeMap vs HashMap vs LinkedHashMap?** HashMap for O(1) access without ordering. TreeMap for sorted key order (O(log n) operations, backed by red-black tree). LinkedHashMap for insertion-order or access-order iteration (useful for LRU caches).
+- **What is the difference between HashMap and ConcurrentHashMap?**
+    - **HashMap** — not thread-safe, allows one null key
+    - **ConcurrentHashMap** (Java 8+) — uses CAS operations and per-bin synchronization (not full-map locking)
+    - Never throws ConcurrentModificationException
+    - Supports atomic operations like `computeIfAbsent()`, `merge()`
 
-- **Explain fail-fast vs fail-safe iterators.** Fail-fast iterators (ArrayList, HashMap) throw ConcurrentModificationException if the collection is structurally modified during iteration. Fail-safe iterators (ConcurrentHashMap, CopyOnWriteArrayList) work on a snapshot or tolerate concurrent modification without throwing.
+    ```java
+    ConcurrentHashMap<String, Integer> counts = new ConcurrentHashMap<>();
+    // Atomic compute — no external synchronization needed
+    counts.merge("key", 1, Integer::sum);
+    ```
 
-### Deep Dive Pages
+- **When would you use TreeMap vs HashMap vs LinkedHashMap?**
+    - **HashMap** — O(1) access, no ordering guarantees
+    - **TreeMap** — sorted key order, O(log n) operations, backed by red-black tree
+    - **LinkedHashMap** — insertion-order or access-order iteration (useful for LRU caches)
+
+- **Explain fail-fast vs fail-safe iterators.**
+    - **Fail-fast** (ArrayList, HashMap) — throw `ConcurrentModificationException` if collection is structurally modified during iteration
+    - **Fail-safe** (ConcurrentHashMap, CopyOnWriteArrayList) — work on a snapshot or tolerate concurrent modification without throwing
+
+### Reference Pages
 
 - [Collections Framework](Collections.md) — Overview of List, Set, Map, Queue
 - [HashMap Internals](HashMapInternals.md) — Hashing, buckets, tree nodes
@@ -94,15 +190,51 @@ The most-tested area in Java interviews. They don't just ask *what* each collect
 
 This is what separates senior from mid. Thread safety, visibility, ordering, liveness — plus practical patterns like thread pools, CompletableFuture pipelines, and Java 21 virtual threads. The Java Memory Model's happens-before rules are L3 territory.
 
-### Must-Know Questions
+### What Gets Asked
 
-- **What is the difference between `synchronized`, `volatile`, and `Lock`?** `synchronized` provides mutual exclusion and visibility (happens-before). `volatile` provides visibility and ordering but not atomicity for compound operations. `Lock` (ReentrantLock) gives explicit control — try-lock, timed-lock, interruptible lock, and multiple conditions.
+- **What is the difference between `synchronized`, `volatile`, and `Lock`?**
+    - **`synchronized`** — mutual exclusion + visibility (happens-before); implicit lock/unlock
+    - **`volatile`** — visibility and ordering only; no atomicity for compound operations
+    - **`Lock` (ReentrantLock)** — explicit control: try-lock, timed-lock, interruptible, multiple conditions
 
-- **How do you prevent deadlocks?** Four strategies: (1) lock ordering — always acquire locks in a consistent global order, (2) try-lock with timeout, (3) avoid nested locks where possible, (4) use higher-level concurrency utilities (ConcurrentHashMap, atomic variables) that eliminate explicit locking.
+    ```java
+    // volatile: visibility only — NOT safe for count++
+    private volatile boolean running = true;
 
-- **What are virtual threads and when should you use them?** Virtual threads (Java 21, JEP 444) are lightweight threads managed by the JVM rather than the OS. They are ideal for I/O-bound workloads (HTTP calls, database queries) where you need high concurrency. They are NOT suited for CPU-bound tasks, where platform threads with parallelism equal to core count are more appropriate.
+    // synchronized: mutual exclusion + visibility
+    synchronized (lock) {
+        count++;  // safe compound operation
+    }
+    ```
 
-- **Explain CompletableFuture vs Future.** `Future` can only block with `get()`. `CompletableFuture` supports non-blocking composition (`thenApply`, `thenCompose`, `thenCombine`), exception handling (`exceptionally`, `handle`), and async execution on custom executors. It enables reactive-style pipelines without blocking threads.
+- **How do you prevent deadlocks?**
+    - **Lock ordering** — always acquire locks in a consistent global order
+    - **Try-lock with timeout** — fail gracefully instead of waiting forever
+    - **Avoid nested locks** — restructure code to minimize lock scope
+    - **Higher-level utilities** — use ConcurrentHashMap, atomic variables to eliminate explicit locking
+
+    ```java
+    // Try-lock with timeout — avoids indefinite blocking
+    if (lock1.tryLock(100, TimeUnit.MILLISECONDS)) {
+        try {
+            if (lock2.tryLock(100, TimeUnit.MILLISECONDS)) {
+                try { /* critical section */ }
+                finally { lock2.unlock(); }
+            }
+        } finally { lock1.unlock(); }
+    }
+    ```
+
+- **What are virtual threads and when should you use them?**
+    - Lightweight threads managed by the JVM, not the OS (Java 21, JEP 444)
+    - Ideal for I/O-bound workloads: HTTP calls, database queries, file I/O
+    - Can run millions concurrently — each costs ~1 KB vs ~1 MB for platform threads
+    - **NOT suited** for CPU-bound tasks where platform threads with parallelism = core count are better
+
+- **Explain CompletableFuture vs Future.**
+    - **`Future`** — can only block with `get()`; no composition or callbacks
+    - **`CompletableFuture`** — non-blocking composition (`thenApply`, `thenCompose`, `thenCombine`), exception handling (`exceptionally`, `handle`), async execution on custom executors
+    - Enables reactive-style pipelines without blocking threads
 
 ### Deep Dive Pages
 
@@ -125,17 +257,45 @@ This is what separates senior from mid. Thread safety, visibility, ordering, liv
 
 What happens beneath your code. Class loading, runtime memory areas (heap, metaspace, stack, code cache), GC algorithms, and production diagnostics — memory leaks, CPU profiling, thread dumps. This is where you prove you can debug systems, not just write them.
 
-### Must-Know Questions
+### Production Questions
 
-- **Describe the JVM memory areas.** The heap stores objects (divided into Young Gen and Old Gen). The stack stores frames (local variables, operand stack) per thread. Metaspace (off-heap) stores class metadata. The code cache holds JIT-compiled native code. Program Counter registers track execution per thread.
+- **Describe the JVM memory areas.**
+    - **Heap** — stores objects; divided into Young Gen (Eden + Survivor) and Old Gen
+    - **Stack** — one per thread; stores frames with local variables and operand stack
+    - **Metaspace** — off-heap; stores class metadata (replaced PermGen in Java 8)
+    - **Code Cache** — holds JIT-compiled native code
+    - **PC Registers** — track execution position per thread
 
-- **How does G1 garbage collector work?** G1 divides the heap into equal-sized regions (not fixed generations). It prioritizes collecting regions with the most garbage ("garbage first"). It uses concurrent marking, mixed collections (young + some old regions), and aims to meet a pause-time target (`-XX:MaxGCPauseMillis`). It is the default GC since Java 9.
+- **How does G1 garbage collector work?**
+    - Divides the heap into equal-sized regions (not fixed generations)
+    - Prioritizes collecting regions with the most garbage ("garbage first")
+    - Uses concurrent marking, mixed collections (young + some old regions)
+    - Aims to meet a pause-time target (`-XX:MaxGCPauseMillis`)
+    - Default GC since Java 9
 
-- **How would you diagnose a memory leak in production?** (1) Monitor heap growth over time with metrics/JMX, (2) take a heap dump (`jmap` or `-XX:+HeapDumpOnOutOfMemoryError`), (3) analyze with Eclipse MAT or VisualVM — find the dominator tree and retained size, (4) identify the object holding unexpected references (common culprits: static collections, listeners not deregistered, class loader leaks).
+- **How would you diagnose a memory leak in production?**
+    - Monitor heap growth over time with metrics/JMX
+    - Take a heap dump (`jmap` or automatic on OOM)
+    - Analyze with Eclipse MAT or VisualVM — find dominator tree and retained size
+    - Identify objects holding unexpected references (static collections, listeners, class loader leaks)
 
-- **What is the happens-before relationship?** A guarantee in the Java Memory Model that if action A happens-before action B, then A's effects are visible to B. Key rules: program order within a thread, monitor unlock happens-before subsequent lock, volatile write happens-before subsequent read, thread start happens-before any action in the started thread.
+    ```bash
+    # Take heap dump from running process
+    jmap -dump:live,format=b,file=heap.hprof <pid>
 
-### Deep Dive Pages
+    # Or set JVM flag to dump automatically on OOM
+    java -XX:+HeapDumpOnOutOfMemoryError \
+         -XX:HeapDumpPath=/tmp/heap.hprof -jar app.jar
+    ```
+
+- **What is the happens-before relationship?**
+    - A guarantee in the JMM: if action A happens-before action B, then A's effects are visible to B
+    - **Program order** — within a thread, each action happens-before the next
+    - **Monitor unlock** — happens-before subsequent lock of the same monitor
+    - **Volatile write** — happens-before subsequent read of the same variable
+    - **Thread start** — `thread.start()` happens-before any action in the started thread
+
+### Further Reading
 
 - [JVM Architecture](Jvm.md) — Class loading, runtime data areas
 - [Garbage Collection](GarbageCollection.md) — GC algorithms, tuning
@@ -152,17 +312,51 @@ What happens beneath your code. Class loading, runtime memory areas (heap, metas
 
 Lambdas, streams, Optional, records, sealed classes, pattern matching. If you're still writing Java 6-era code, this is where it shows. Senior-level: stream internals (spliterators, characteristics) and when *not* to use streams.
 
-### Must-Know Questions
+### Modern Java Questions
 
-- **What is the difference between `map()` and `flatMap()` in streams?** `map()` applies a one-to-one transformation (T -> R). `flatMap()` applies a one-to-many transformation and flattens the result (T -> Stream<R> flattened to R). Use `flatMap()` when each element maps to multiple elements — e.g., lines to words, orders to items.
+- **What is the difference between `map()` and `flatMap()` in streams?**
+    - **`map()`** — one-to-one transformation (T -> R)
+    - **`flatMap()`** — one-to-many transformation, flattened (T -> Stream\<R> -> R)
+    - Use `flatMap()` when each element maps to multiple elements — e.g., lines to words, orders to items
 
-- **When should you use Optional vs null?** Use Optional as a return type to signal "this method might not have a result." Never use it for fields, method parameters, or collections (which should be empty, not absent). Use `orElseGet()` over `orElse()` when the default is expensive to compute.
+    ```java
+    // map: one order -> one customer name
+    orders.stream().map(Order::getCustomerName)
 
-- **What are sealed classes and why do they matter?** Sealed classes (Java 17) restrict which classes can extend them via a `permits` clause. This enables exhaustive pattern matching in switch expressions — the compiler knows all subtypes. They model closed hierarchies like AST nodes, command types, or state machines.
+    // flatMap: one order -> many items
+    orders.stream().flatMap(o -> o.getItems().stream())
+    ```
 
-- **Explain records and when to use them.** Records (Java 16) are immutable data carriers. The compiler generates `equals()`, `hashCode()`, `toString()`, accessors, and a canonical constructor. Use them for DTOs, value objects, and any class whose identity is defined by its data. They cannot extend other classes but can implement interfaces.
+- **When should you use Optional vs null?**
+    - Use Optional as a **return type** to signal "this method might not have a result"
+    - **Never** use for fields, method parameters, or collections (use empty collections instead)
+    - Prefer `orElseGet()` over `orElse()` when the default is expensive to compute
 
-### Deep Dive Pages
+- **What are sealed classes and why do they matter?**
+    - Restrict which classes can extend them via a `permits` clause (Java 17)
+    - Enable exhaustive pattern matching in switch — compiler knows all subtypes
+    - Model closed hierarchies: AST nodes, command types, state machines
+
+- **Explain records and when to use them.**
+    - Immutable data carriers (Java 16) — compiler generates `equals()`, `hashCode()`, `toString()`, accessors, canonical constructor
+    - Use for DTOs, value objects, and identity-by-data classes
+    - Cannot extend other classes but can implement interfaces
+
+    ```java
+    // Imperative style
+    int sum = 0;
+    for (Order o : orders) {
+        if (o.getTotal() > 100) sum += o.getTotal();
+    }
+
+    // Stream style — declarative, composable
+    int sum = orders.stream()
+        .mapToInt(Order::getTotal)
+        .filter(t -> t > 100)
+        .sum();
+    ```
+
+### Study Materials
 
 - [Java 8 Features](Java8.md) — Lambdas, streams, Optional
 - [Functional Programming](FunctionalProgramming.md) — Functional interfaces, method references
@@ -183,15 +377,41 @@ Lambdas, streams, Optional, records, sealed classes, pattern matching. If you're
 
 SOLID, generics, Effective Java patterns — the OOD portion of your loop. Senior roles: whiteboard a class hierarchy, defend composition over inheritance, explain how frameworks leverage reflection and proxies.
 
-### Must-Know Questions
+### Design Questions
 
-- **Explain the Liskov Substitution Principle with an example.** Subtypes must be substitutable for their base types without altering program correctness. Classic violation: a `Square` extending `Rectangle` where `setWidth()` also changes height — clients expecting independent width/height break. Fix: use composition or separate interfaces.
+- **Explain the Liskov Substitution Principle with an example.**
+    - Subtypes must be substitutable for their base types without altering program correctness
+    - Classic violation: `Square` extending `Rectangle` where `setWidth()` also changes height — clients expecting independent width/height break
+    - Fix: use composition or separate interfaces
 
-- **What is type erasure and why does it matter?** Generics are a compile-time mechanism. At runtime, `List<String>` becomes `List` (raw type). This means you cannot create generic arrays, use `instanceof` with parameterized types, or get the type parameter at runtime without workarounds (like passing a `Class<T>` token). It also explains why `List<Integer>` and `List<String>` share the same class.
+- **What is type erasure and why does it matter?**
+    - Generics are compile-time only — at runtime, `List<String>` becomes `List` (raw type)
+    - **Consequences:**
+        - Cannot create generic arrays (`new T[]`)
+        - Cannot use `instanceof` with parameterized types
+        - Cannot get type parameter at runtime without a `Class<T>` token
+        - `List<Integer>` and `List<String>` share the same class at runtime
 
-- **When would you use a dynamic proxy?** When you need to intercept method calls without modifying the target class — AOP (logging, transactions, security), lazy loading, remote method invocation. `java.lang.reflect.Proxy` creates a proxy implementing specified interfaces; all calls route through an `InvocationHandler`. For classes (not interfaces), use CGLIB or ByteBuddy.
+- **When would you use a dynamic proxy?**
+    - Intercept method calls without modifying the target class
+    - Use cases: AOP (logging, transactions, security), lazy loading, remote invocation
+    - `java.lang.reflect.Proxy` works for interfaces; use CGLIB/ByteBuddy for classes
 
-### Deep Dive Pages
+    ```java
+    // Dynamic proxy — intercepts all method calls
+    Object proxy = Proxy.newProxyInstance(
+        target.getClass().getClassLoader(),
+        target.getClass().getInterfaces(),
+        (proxyObj, method, args) -> {
+            System.out.println("Before: " + method.getName());
+            Object result = method.invoke(target, args);
+            System.out.println("After: " + method.getName());
+            return result;
+        }
+    );
+    ```
+
+### Related Topics
 
 - [Design Principles (SOLID)](DesignPrinciples.md) — SOLID principles explained
 - [Effective Java Patterns](EffectiveJavaPatterns.md) — Joshua Bloch's key items
@@ -209,13 +429,32 @@ SOLID, generics, Effective Java patterns — the OOD portion of your loop. Senio
 
 Less frequent in interviews but proves breadth. Blocking I/O vs NIO vs NIO.2 comes up in system design discussions. Serialization pitfalls (security, versioning) matter for any distributed system role.
 
-### Must-Know Questions
+### I/O Questions
 
-- **What is the difference between IO and NIO?** Classic IO is stream-oriented and blocking — one thread per connection. NIO is buffer-oriented with channels and selectors, enabling non-blocking multiplexed I/O — one thread can handle many connections. NIO is the foundation of high-performance servers (Netty, Tomcat NIO connector).
+- **What is the difference between IO and NIO?**
+    - **Classic IO** — stream-oriented, blocking; one thread per connection
+    - **NIO** — buffer-oriented with channels and selectors; non-blocking multiplexed I/O
+    - NIO enables one thread to handle many connections — foundation of Netty, Tomcat NIO connector
 
-- **Why is Java serialization considered dangerous?** Deserialization can trigger arbitrary code execution through gadget chains. The `readObject()` method runs during deserialization, potentially calling dangerous methods. Prefer JSON/Protobuf, or use serialization filters (JEP 290) if you must use Java serialization.
+    ```java
+    // NIO: non-blocking selector pattern (simplified)
+    Selector selector = Selector.open();
+    channel.configureBlocking(false);
+    channel.register(selector, SelectionKey.OP_READ);
 
-### Deep Dive Pages
+    while (selector.select() > 0) {
+        for (SelectionKey key : selector.selectedKeys()) {
+            if (key.isReadable()) { /* handle read */ }
+        }
+    }
+    ```
+
+- **Why is Java serialization considered dangerous?**
+    - Deserialization can trigger arbitrary code execution through gadget chains
+    - `readObject()` runs during deserialization, potentially calling dangerous methods
+    - **Alternatives:** JSON/Protobuf for data exchange, serialization filters (JEP 290) if you must use native serialization
+
+### Related Pages
 
 - [File Handling](FileHandling.md) — Files, Paths, NIO.2
 - [NIO](NIO.md) — Channels, buffers, selectors
