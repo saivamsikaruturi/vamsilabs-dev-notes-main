@@ -4,17 +4,19 @@
 
 ---
 
-!!! abstract "Real-World Analogy"
-    Think of a **bank transfer**. Moving $500 from Account A to Account B requires TWO operations: debit A, credit B. If the system crashes after debiting A but before crediting B, the money vanishes! A transaction ensures either BOTH happen or NEITHER happens.
+!!! abstract "Real-World Scenario: Multi-Line Order Fulfillment"
+    At an e-commerce marketplace, placing an order requires FOUR operations: reserve inventory, create the order record, initiate the payment hold, and publish an event to the fulfillment service. If the system crashes after reserving inventory but before creating the order, you've locked stock that nobody can buy. If it crashes after payment hold but before the fulfillment event, the customer is charged but nothing ships. A transaction ensures either ALL four succeed or NONE do — the system never lands in a half-finished state.
 
 ```mermaid
 flowchart LR
     subgraph TX["🔄 @Transactional"]
-        S1["1. Debit Account A<br/>-$500"] --> S2["2. Credit Account B<br/>+$500"]
+        S1["1. Reserve Inventory<br/>(lock 2 units)"] --> S2["2. Create Order<br/>(status=PENDING)"]
+        S2 --> S3["3. Payment Hold<br/>($149.99)"]
+        S3 --> S4["4. Publish Event<br/>(OrderCreated)"]
     end
     
-    S2 -->|"✅ Both succeed"| Commit["COMMIT"]
-    S1 -->|"❌ Any failure"| Rollback["ROLLBACK<br/>(undo everything)"]
+    S4 -->|"✅ All succeed"| Commit["COMMIT"]
+    S1 -->|"❌ Any failure"| Rollback["ROLLBACK<br/>(inventory released,<br/>order deleted,<br/>hold cancelled)"]
 
     style TX fill:#ECFDF5,stroke:#6EE7B7,stroke-width:2px,color:#1E40AF
     style Commit fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF

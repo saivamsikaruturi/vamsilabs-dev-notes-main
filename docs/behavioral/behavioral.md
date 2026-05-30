@@ -6,6 +6,45 @@ Use the **STAR method** for every answer: **Situation → Task → Action → Re
 
 ---
 
+## How to Build Your Own STAR Stories
+
+The examples below are mine — you need to craft YOUR stories using this framework:
+
+### Step 1: Build Your Story Bank (Do This First)
+
+List 5-7 major projects/incidents from your career. For each, write down:
+
+| Column | What to Write | Example Prompt |
+|---|---|---|
+| **Project** | What you built or fixed | "Migrated payment service to microservices" |
+| **Your Role** | Your specific contribution (not the team's) | "I designed the data migration strategy" |
+| **Challenge** | What made it hard (technical or people) | "3 teams had conflicting schema requirements" |
+| **Metrics** | Quantified impact (latency, revenue, incidents) | "Reduced P1 incidents from 12/quarter to 2" |
+| **Conflict** | Any disagreement and how you resolved it | "Senior argued against caching — I built a PoC" |
+| **Failure** | What went wrong and what you learned | "First rollout caused 15-min downtime — added canary" |
+
+### Step 2: Map Stories to LPs
+
+Each story should cover 2-3 Leadership Principles. A "conflict resolved" story works for **Are Right, A Lot** + **Earn Trust** + **Have Backbone**. An incident response story covers **Ownership** + **Bias for Action** + **Dive Deep**. Prepare 5-7 stories that collectively cover all 14 LPs.
+
+### Step 3: Structure Each Answer (60-90 seconds)
+
+| Section | Time | What to Say |
+|---|---|---|
+| **Situation** | 15 sec | Set the scene: company, team size, what was at stake |
+| **Task** | 10 sec | YOUR specific responsibility (not the team's task) |
+| **Action** | 40 sec | Step-by-step what YOU did — be specific (tools, decisions, tradeoffs) |
+| **Result** | 15 sec | Quantified outcome + what you'd do differently next time |
+
+### Common Mistakes
+
+- Saying "we" too much — interviewers want to hear what **you** did
+- No numbers — "improved performance" vs "reduced p99 latency from 800ms to 120ms"
+- No conflict — sanitized stories are boring and unbelievable
+- Too long — if your answer exceeds 2 minutes, you've lost the interviewer
+
+---
+
 ## The 14 Amazon Leadership Principles + Questions & Answers
 
 ### 1. Customer Obsession

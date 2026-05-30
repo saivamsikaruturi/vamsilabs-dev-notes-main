@@ -2,6 +2,21 @@
 
 Multithreading is the foundation of concurrent programming in Java. It allows multiple tasks to execute simultaneously within a single process, enabling efficient CPU utilization, responsive applications, and high-throughput systems.
 
+!!! tip "Modern Java (21+): Start Here"
+    If you're on Java 21+, **Virtual Threads** are the default choice for I/O-bound concurrency. You write simple blocking code that scales to millions of concurrent tasks — no thread pool tuning, no reactive frameworks. See [Virtual Threads & Structured Concurrency](VirtualThreads.md) for the modern approach. This page covers the foundational threading model that Virtual Threads build upon — essential for understanding the JVM, debugging production issues, and answering interview questions about what happens under the hood.
+
+---
+
+## When to Use What (2026 Decision Guide)
+
+| Scenario | Recommended Approach | Why |
+|---|---|---|
+| I/O-bound work (HTTP calls, DB queries) | Virtual Threads (`Executors.newVirtualThreadPerTaskExecutor()`) | Scales to millions of tasks with zero pool tuning |
+| CPU-bound computation (image processing, crypto) | Platform threads with `ForkJoinPool` | Virtual threads can't parallelize faster than core count |
+| Need fine-grained control (locks, barriers) | Platform threads + `java.util.concurrent` | Full control over scheduling, priority, affinity |
+| Legacy codebase (Java 8-17) | `ExecutorService` + thread pools | Virtual threads require Java 21+ |
+| Fire-and-forget async tasks | Virtual Threads (simplest) or `CompletableFuture` | Both work; VTs are simpler for blocking I/O |
+
 ---
 
 ## Process vs Thread

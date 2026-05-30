@@ -16,16 +16,16 @@ hide:
 
 <div class="vtn-stats">
   <div class="vtn-stat">
-    <span class="vtn-stat-number">180+</span>
+    <span class="vtn-stat-number">300+</span>
     <span class="vtn-stat-label">In-Depth Articles</span>
   </div>
   <div class="vtn-stat">
-    <span class="vtn-stat-number">420+</span>
+    <span class="vtn-stat-number">1,600+</span>
     <span class="vtn-stat-label">Interview Questions</span>
   </div>
   <div class="vtn-stat">
-    <span class="vtn-stat-number">52</span>
-    <span class="vtn-stat-label">Java Master Guide</span>
+    <span class="vtn-stat-number">95</span>
+    <span class="vtn-stat-label">Java Deep Dive Topics</span>
   </div>
 </div>
 
@@ -75,33 +75,35 @@ Admin Dashboard
 </div>
 
 
-<!-- Interview Prep Highlight -->
-<div class="vtn-interview-highlight" markdown>
-<div class="vtn-interview-highlight-inner">
-<div class="vtn-interview-highlight-icon">🎯</div>
-<div class="vtn-interview-highlight-text">
-<h3>Interview Preparation Strategy</h3>
-<p>The complete meta-guide — DSA roadmap, system design prep, behavioral STAR stories, problem-solving frameworks, and week-by-week study plans. <strong>Start here if you're preparing for interviews.</strong></p>
-</div>
-<a class="vtn-interview-highlight-btn" href="interviewquestions/">Open Strategy Guide →</a>
-</div>
-</div>
-
 <!-- What's New Banner -->
 <div class="vtn-whats-new" markdown>
-<span class="vtn-whats-new-badge">NEW</span>
-<span class="vtn-whats-new-text">Just added: <a href="networks/networks/">Computer Networks</a> · <a href="os/os-fundamentals/">OS Fundamentals</a> · <a href="os/os-security/">OS Security & EDR</a> · <a href="networks/network-security/">Network Threat Detection</a> — complete coverage for Microsoft Defender interviews</span>
+<span class="vtn-whats-new-badge">NEW in 2026</span>
+<span class="vtn-whats-new-text">Latest: <a href="golang/introduction/">Go Deep Dive</a> (production patterns, concurrency) · <a href="aiml/agents/">AI Agents & Tool Use</a> · <a href="systemdesign/case-studies/url-shortener/">URL Shortener</a> (with interviewer pushback scenarios) · Java 23-25 coverage · <a href="devops/devops/">DevOps</a> (secrets management, incident response, multi-env promotion)</span>
 </div>
 
-<!-- Learning Paths -->
-<div class="vtn-section-title">Pick Your Path</div>
+<!-- Audience Selector -->
+<div class="vtn-section-title">How Much Time Do You Have?</div>
 
 <div class="vtn-paths">
+<div class="vtn-path-card" data-path="sprint-2-weeks">
+<div class="vtn-path-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+<div class="vtn-path-content">
+<h3>Sprint Mode — 2 Weeks</h3>
+<p>Interview next week? Focus on the 20% that covers 80% of questions.</p>
+<div class="vtn-path-steps">
+<a href="java/Collections/">Collections</a> → <a href="java/MultiThreading/">Concurrency</a> → <a href="springboot/transactions/">@Transactional</a> → <a href="systemdesign/system-design-interview-guide/">System Design Guide</a> → <a href="behavioral/behavioral/">Behavioral</a>
+</div>
+<div class="vtn-path-progress" style="display:none;">
+<div class="vtn-path-progress-bar"><div class="vtn-path-progress-fill"></div></div>
+<span class="vtn-path-progress-label"></span>
+</div>
+</div>
+</div>
 <div class="vtn-path-card" data-path="faang-prep">
 <div class="vtn-path-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
 <div class="vtn-path-content">
-<h3>FAANG Interview Prep</h3>
-<p>Java → Spring Boot → System Design → Behavioral. 4-6 weeks.</p>
+<h3>FAANG Interview Prep — 4-6 Weeks</h3>
+<p>Assumes Java proficiency. Focused on what FAANG actually asks.</p>
 <div class="vtn-path-steps">
 <a href="java/oops/">OOP</a> → <a href="java/Collections/">Collections</a> → <a href="springboot/introduction/">Spring Boot</a> → <a href="microservices/microservices/">Microservices</a> → <a href="designpatterns/dp/">Design Patterns</a>
 </div>
@@ -111,6 +113,26 @@ Admin Dashboard
 </div>
 </div>
 </div>
+<div class="vtn-path-card" data-path="deep-prep-6-months">
+<div class="vtn-path-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg></div>
+<div class="vtn-path-content">
+<h3>Deep Prep — 6 Months (Fresher / Career Switch)</h3>
+<p>Starting from CS basics? This path builds from zero to FAANG-ready with no gaps.</p>
+<div class="vtn-path-steps">
+<a href="java/JavaBasics/">Java Basics</a> → <a href="java/oops/">OOP</a> → <a href="dsa/">DSA</a> → <a href="java/Collections/">Collections</a> → <a href="java/MultiThreading/">Threading</a> → <a href="designpatterns/dp/">Patterns</a> → <a href="springboot/introduction/">Spring Boot</a> → <a href="databases/sql/">SQL</a> → <a href="systemdesign/system-design-interview-guide/">System Design</a> → <a href="microservices/microservices/">Microservices</a> → <a href="behavioral/behavioral/">Behavioral</a>
+</div>
+<div class="vtn-path-progress" style="display:none;">
+<div class="vtn-path-progress-bar"><div class="vtn-path-progress-fill"></div></div>
+<span class="vtn-path-progress-label"></span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Specialized Tracks -->
+<div class="vtn-section-title">Specialized Tracks</div>
+
+<div class="vtn-paths">
 <div class="vtn-path-card" data-path="spring-boot-mastery">
 <div class="vtn-path-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
 <div class="vtn-path-content">
@@ -129,9 +151,23 @@ Admin Dashboard
 <div class="vtn-path-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="8" rx="1"/><path d="M17 14v7"/><path d="M7 14v7"/><path d="M17 3v3"/><path d="M7 3v3"/><path d="M10 14 2.3 6.3"/><path d="m14 6 7.7 7.7"/><path d="M8 21h8"/></svg></div>
 <div class="vtn-path-content">
 <h3>Microservices Architect</h3>
-<p>Design, build, deploy, and observe distributed systems.</p>
+<p>Design, build, deploy, and observe distributed systems. <em>Prereq: Spring Boot basics.</em></p>
 <div class="vtn-path-steps">
 <a href="microservices/design-principles/">Design</a> → <a href="microservices/InterServiceCommunication/">Comm.</a> → <a href="microservices/resilience-patterns/">Resilience</a> → <a href="microservices/deployment-strategies/">Deploy</a> → <a href="microservices/logging-monitoring/">Observe</a>
+</div>
+<div class="vtn-path-progress" style="display:none;">
+<div class="vtn-path-progress-bar"><div class="vtn-path-progress-fill"></div></div>
+<span class="vtn-path-progress-label"></span>
+</div>
+</div>
+</div>
+<div class="vtn-path-card" data-path="system-design-deep">
+<div class="vtn-path-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+<div class="vtn-path-content">
+<h3>System Design — Case Studies</h3>
+<p>11 real system designs with architecture diagrams. <em>Prereq: Distributed systems fundamentals.</em></p>
+<div class="vtn-path-steps">
+<a href="systemdesign/case-studies/url-shortener/">URL Shortener</a> → <a href="systemdesign/case-studies/rate-limiter/">Rate Limiter</a> → <a href="systemdesign/case-studies/chat-system/">Chat System</a> → <a href="systemdesign/case-studies/notification-system/">Notifications</a> → <a href="systemdesign/case-studies/payment-system/">Payments</a>
 </div>
 <div class="vtn-path-progress" style="display:none;">
 <div class="vtn-path-progress-bar"><div class="vtn-path-progress-fill"></div></div>

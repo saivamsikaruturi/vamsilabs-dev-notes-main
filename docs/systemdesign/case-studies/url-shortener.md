@@ -484,13 +484,39 @@ URL shorteners are inherently **phishing vectors** — a malicious destination i
 | **Malicious destinations** | Check URLs against Google Safe Browsing API at creation time; reject known-bad URLs |
 | **Stale abuse** | Periodic re-scanning of stored URLs (destinations can change after shortening) |
 | **ID space exhaustion** | Rate limiting on the write path (per IP, per API key) to prevent adversarial ID consumption |
+| **Read-path DDoS** | Rate limit per IP at the load balancer (e.g., 1000 req/sec per IP). CDN naturally absorbs volumetric attacks. For application-layer abuse (rotating IPs hitting non-existent short URLs to bypass cache), use a Bloom filter to reject URLs that were never created — zero DB hit for invalid lookups. |
 | **User trust** | URL preview/interstitial page for unknown or flagged destinations (e.g., "You are being redirected to X. Continue?") |
+| **Enumeration attack** | Attacker iterates through short URLs (aaa0001, aaa0002...) to discover all destinations. Mitigation: Base62 encoding of non-sequential IDs (Snowflake includes timestamp + randomness), making enumeration impractical. |
 
 These measures add minimal write-path latency (Safe Browsing lookup is ~20ms) and protect both end users and the platform's domain reputation.
 
 ---
 
-## 13. Quick Recall
+## 13. What If the Interviewer Pushes Back?
+
+Real interviews test your ability to defend and adapt your design. Here are the most common challenges and how to handle them:
+
+??? question "What if I don't want a single point of failure in the ID generation service?"
+    **Adapt:** Switch to a **distributed ID scheme** — each server generates its own IDs using a combination of `timestamp + server_id + sequence_number` (like Twitter's Snowflake). No central coordination needed. Trade-off: IDs are no longer strictly sequential, but they're still unique and roughly time-ordered. This eliminates the SPOF at the cost of slightly longer IDs (64-bit vs 43-bit).
+
+??? question "100:1 read-write ratio seems generous. What if it's 1000:1 (like a viral tweet shortener)?"
+    **Adapt:** At 1000:1, the CDN becomes your primary serving layer, not Redis. You'd push TTLs to 7 days at the CDN edge, accept slightly stale redirects for expired URLs (serve the redirect, async-check expiry, lazy-delete on next cache miss). Redis becomes a warm fallback, not the primary cache. The DB barely gets touched — maybe 0.1% of reads reach it.
+
+??? question "What if the interviewer says 'DynamoDB, not PostgreSQL' — how does the design change?"
+    **Adapt:** DynamoDB simplifies operations (no sharding logic, no replicas to manage) but changes your consistency model. Use `short_url` as the partition key for single-digit ms reads. Custom alias uniqueness check becomes a conditional write (`attribute_not_exists`). You lose transactional multi-row writes — but for a URL shortener, you never need them. The Kafka + ClickHouse analytics pipeline stays identical.
+
+??? question "How do you handle a viral URL that gets 10M clicks in 1 minute?"
+    **Defend:** This is exactly why CDN is layer 1. A 301 cached at the CDN edge means the origin never sees 99% of that traffic. If the URL is somehow not cached (just created, 302 mode for analytics), Redis handles 10M reads/minute trivially — that's 166K reads/sec, and a single Redis cluster handles 1M+ ops/sec. The key insight: viral traffic is inherently cacheable because it's the SAME URL being requested.
+
+??? question "What about URL expiration — won't stale cache entries serve expired URLs?"
+    **Defend:** Yes, briefly. A URL that expired 5 minutes ago might still be cached at the CDN (24h TTL) or Redis (24h TTL). This is an acceptable trade-off — the alternative (checking expiry on every read) adds a DB lookup to the hot path, defeating the purpose of caching. For strict expiration: reduce cache TTL to 1 hour, or use 302 redirects so every request comes through your service where you can check expiry before redirecting.
+
+??? question "Why not just use a hash (like MD5) and avoid the ID service entirely?"
+    **Defend:** You could — and it's simpler. MD5 (truncated to 7 chars of Base62) works if you accept: (1) collision resolution via DB lookup on every write, (2) same long URL always produces same short URL (dedup for free), (3) slightly higher write latency. The counter-based approach is better at scale because writes are zero-coordination — no DB check needed. For < 1M URLs/month, hash-based is simpler and perfectly fine.
+
+---
+
+## 14. Quick Recall
 
 | Question | Answer |
 |---|---|

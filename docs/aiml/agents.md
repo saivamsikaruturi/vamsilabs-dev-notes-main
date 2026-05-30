@@ -4,6 +4,13 @@
 
 ---
 
+!!! warning "Prerequisites"
+    Before reading this page, you should understand: **LLMs** (what they are, how they generate text), **prompt engineering** (system prompts, few-shot examples), and **API basics** (REST, JSON). If those are new to you, start with [Transformers & LLMs](transformers-llms.md) first.
+
+    **Frameworks mentioned here:** LangChain, CrewAI, AutoGen, Claude's tool use. You don't need to know them beforehand — this page explains the concepts, not the framework APIs.
+
+---
+
 ## What is an AI Agent?
 
 An AI Agent is an **LLM with superpowers**. It can reason, plan, use tools, remember past interactions, and take actions in the real world.

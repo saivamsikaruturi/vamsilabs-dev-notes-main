@@ -180,6 +180,95 @@ Daily batch job that compares your records with the PSP's records to catch discr
 | TIMEOUT | NOT FOUND | ✅ Never charged — safe to retry or close |
 | FAILED | COMPLETED | 🚨 Customer was charged but told it failed! Fix immediately |
 
+### T+1 Batch Reconciliation Process
+
+```mermaid
+sequenceDiagram
+    participant R as Reconciliation Service
+    participant DB as Payment DB
+    participant PSP as Stripe Settlement API
+    participant Alert as Alert System
+
+    Note over R: Runs daily at 2 AM (T+1)
+    R->>PSP: GET /settlements?date=yesterday
+    PSP->>R: Settlement file (all charges + refunds)
+    R->>DB: SELECT * FROM payments WHERE date = yesterday
+    R->>R: Compare line-by-line (amount, status, currency)
+    alt Mismatch found
+        R->>DB: INSERT INTO reconciliation_exceptions
+        R->>Alert: Page on-call if amount > $1000
+    end
+    Note over R: Generate daily report for finance team
+```
+
+The settlement file from PSPs arrives T+1 (next business day). You cannot reconcile in real-time — PSPs batch their settlements. Your reconciliation service must handle:
+
+- **Currency rounding** — PSP may round differently than you (match within ±$0.01)
+- **Timezone mismatches** — your "yesterday" might span two days in the PSP's timezone
+- **Partial settlements** — large merchants get multiple settlement files per day
+
+### The Late-Arriving Webhook Problem
+
+!!! danger "The Scariest Edge Case"
+    Your system says **COMPLETED** → you show the user a success page → 30 seconds later, Stripe sends a webhook saying the charge was **declined** by the issuing bank. This happens with 3D Secure, bank-level fraud checks, and cross-border transactions where the issuer does async verification.
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant PS as Payment Service
+    participant PSP as Stripe
+    participant Bank as Issuing Bank
+
+    C->>PS: Pay $200
+    PS->>PSP: Charge request
+    PSP->>PS: 200 OK (status: succeeded)
+    PS->>C: ✅ "Payment successful!"
+    Note over C: User sees success, leaves page
+
+    PSP->>Bank: Authorization (async for some issuers)
+    Bank->>PSP: DECLINED (fraud rule triggered)
+    PSP->>PS: Webhook: charge.dispute / charge.refunded
+    Note over PS: 😱 We already told the user it succeeded!
+```
+
+**How to handle it:**
+
+```java
+@PostMapping("/webhooks/stripe")
+public ResponseEntity<Void> handleWebhook(@RequestBody StripeEvent event) {
+    if (event.getType().equals("charge.failed") || event.getType().equals("charge.disputed")) {
+        Payment payment = paymentRepo.findByPspChargeId(event.getChargeId());
+
+        if (payment.getStatus() == PaymentStatus.COMPLETED) {
+            // Late reversal — we already told the user it worked
+            payment.setStatus(PaymentStatus.REVERSED);
+            paymentRepo.save(payment);
+
+            // Reverse the ledger entries
+            ledgerService.reverseEntry(payment.getId());
+
+            // Notify the user immediately
+            notificationService.sendPaymentReversed(payment.getUserId(), payment);
+
+            // If order was fulfilled, trigger compensation
+            if (orderService.isShipped(payment.getOrderId())) {
+                compensationService.createRecoveryCase(payment);
+            }
+        }
+    }
+    return ResponseEntity.ok().build();
+}
+```
+
+**Design principles for late webhooks:**
+
+| Principle | Implementation |
+|-----------|---------------|
+| Never treat PSP `200 OK` as final | Mark as `COMPLETED_PENDING_SETTLEMENT` internally |
+| Webhook idempotency | Deduplicate by event ID, process at-least-once |
+| Grace period before fulfillment | Wait 60s after payment before shipping/delivering |
+| Compensation over prevention | You can't prevent all late reversals — design for recovery |
+
 ---
 
 ## Security Considerations

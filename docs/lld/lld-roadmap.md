@@ -108,6 +108,17 @@ flowchart LR
 !!! tip "Practice Repository"
     All problems below have full Java implementations: [:fontawesome-brands-github: machine-coding-feedback](https://github.com/saivamsikaruturi/machine-coding-feedback)
 
+!!! info "How to Use These Solutions (For Freshers)"
+    **Don't just read the code.** Follow this process for each problem:
+
+    1. **Read the requirements** (5 min) — identify entities, actions, and constraints
+    2. **Draw a class diagram on paper** (10 min) — before writing any code
+    3. **Attempt the solution yourself** (30 min timer) — messy code is fine
+    4. **Compare with the solution** — note the patterns used and why
+    5. **Rewrite from scratch next day** — without looking at the solution
+
+    The solutions show the END state. The thought process matters more: "I identified that parking spot selection is an algorithm that could change → Strategy pattern."
+
 | # | Problem | Patterns Used | Difficulty | Code |
 |---|---------|--------------|-----------|------|
 | 1 | **Parking Lot System** | Strategy, State, Singleton, Factory | Medium | [:material-github: Solution](https://github.com/saivamsikaruturi/machine-coding-feedback/tree/master/parkingLot) |

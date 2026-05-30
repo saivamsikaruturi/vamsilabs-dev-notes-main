@@ -4,8 +4,19 @@
 
 ---
 
+!!! tip "Reading Order — Which Pages to Prioritize"
+    This section has 25 topics. **For a 45-minute system design interview, you need 5:**
+
+    1. **This page** (fundamentals, tradeoffs, when to use)
+    2. [Inter-Service Communication](InterServiceCommunication.md) (sync vs async, gRPC vs REST)
+    3. [Resilience Patterns](resilience-patterns.md) (circuit breaker, retry, bulkhead)
+    4. [Distributed Transactions / Saga](distributed-transactions.md) (the #1 follow-up question)
+    5. [Observability](Observability.md) (how you debug a 20-service system)
+
+    **Deep prep (have more time)?** Add: [Event-Driven Architecture](event-driven.md), [Service Mesh](service-mesh.md), [Deployment Strategies](deployment-strategies.md).
+
 !!! abstract "Real-World Analogy"
-    Think of a **shopping mall** vs a **single mega-store**. In a mega-store (monolith), if the electronics section catches fire, the entire store shuts down. In a mall (microservices), each shop operates independently — if one shop closes for renovation, the rest of the mall continues business as usual. Each shop has its own staff, inventory, and cash register.
+    Think of a **city with specialized hospitals** vs a **single general hospital**. In the general hospital (monolith), a plumbing failure in the radiology wing floods the ER, surgery, and pharmacy — everything shuts down. In a city with specialized hospitals (microservices), the cardiac center, the eye clinic, and the trauma center each have their own building, staff, power supply, and patient records. If the eye clinic closes for renovation, cardiac surgeries continue uninterrupted. Each facility scales independently — a flu outbreak means the general clinic adds capacity without affecting the orthopedic center. The tradeoff: patients needing cross-specialty care now require referrals (network calls) and record transfers (data consistency challenges) between buildings.
 
 ```mermaid
 flowchart LR

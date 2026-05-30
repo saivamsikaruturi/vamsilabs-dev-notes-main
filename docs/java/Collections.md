@@ -106,6 +106,39 @@ flowchart LR
 
 ---
 
+## SequencedCollection (Java 21+)
+
+Java 21 introduced `SequencedCollection`, `SequencedSet`, and `SequencedMap` to provide **uniform access to the first and last elements** across ordered collections. Before Java 21, getting the last element was inconsistent: `list.get(list.size()-1)` for List, `((TreeSet)set).last()` for SortedSet, `deque.peekLast()` for Deque.
+
+```java
+// Now unified across List, LinkedHashSet, SortedSet, Deque
+SequencedCollection<String> seq = new ArrayList<>(List.of("a", "b", "c"));
+seq.getFirst();    // "a"
+seq.getLast();     // "c"
+seq.addFirst("z"); // adds at beginning
+seq.reversed();    // reversed view (not a copy)
+
+// Works on LinkedHashSet too!
+SequencedSet<String> set = new LinkedHashSet<>(List.of("x", "y", "z"));
+set.getFirst();    // "x"
+set.getLast();     // "z"
+
+// SequencedMap — first/last entry access
+SequencedMap<String, Integer> map = new LinkedHashMap<>();
+map.put("a", 1); map.put("b", 2); map.put("c", 3);
+map.firstEntry(); // a=1
+map.lastEntry();  // c=3
+map.reversed();   // reversed view
+```
+
+| Interface | Extends | Implementations |
+|---|---|---|
+| `SequencedCollection<E>` | `Collection<E>` | `ArrayList`, `LinkedList`, `ArrayDeque`, `LinkedHashSet`, `TreeSet` |
+| `SequencedSet<E>` | `SequencedCollection<E>`, `Set<E>` | `LinkedHashSet`, `TreeSet` |
+| `SequencedMap<K,V>` | `Map<K,V>` | `LinkedHashMap`, `TreeMap` |
+
+---
+
 ## Collection vs Collections
 
 | `Collection` | `Collections` |

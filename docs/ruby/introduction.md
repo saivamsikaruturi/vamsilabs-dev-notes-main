@@ -1,5 +1,27 @@
 # Ruby Fundamentals
 
+> **A dynamic, interpreted language optimized for developer happiness — powers Shopify, GitHub, Airbnb, and Stripe's early backends.**
+
+---
+
+!!! abstract "Why Ruby Matters for Backend Engineers"
+    Ruby is relevant for interviews at companies built on Rails (Shopify, GitHub, Basecamp, Stripe's billing system). Even if you're a Java engineer, understanding Ruby's metaprogramming and convention-over-configuration philosophy helps you appreciate why frameworks like Spring Boot borrowed ideas from Rails. Key differentiator: Ruby optimizes for **developer productivity** over raw performance.
+
+## Ruby vs Java — Quick Comparison
+
+| Aspect | Ruby | Java |
+|---|---|---|
+| **Typing** | Dynamic, duck-typed | Static, nominal |
+| **Paradigm** | Object-oriented + functional | Object-oriented |
+| **Concurrency** | GIL limits parallelism (use Ractors in 3.x) | True multi-threading |
+| **Performance** | ~10-50x slower than Java | Fast (JIT compiled) |
+| **Deployment** | Interpreted, requires runtime | Compiled to bytecode, JVM |
+| **Metaprogramming** | First-class (define_method, method_missing) | Reflection (verbose) |
+| **Convention** | "Convention over Configuration" | Explicit configuration |
+| **Startup** | Fast (< 1s) | Slow (2-5s without GraalVM) |
+
+---
+
 ## Overview
 
 Ruby is a dynamic, interpreted, object-oriented programming language designed for developer happiness and productivity. Created by Yukihiro "Matz" Matsumoto in 1995, Ruby follows the principle of least surprise.
@@ -383,3 +405,19 @@ bundle exec rails server
 - **RSpec** — Testing framework
 - **Pry** — Debugging console
 - **Rubocop** — Linting and formatting
+
+---
+
+## Interview Questions
+
+??? question "What is the Global Interpreter Lock (GIL) and how does it affect concurrency?"
+    Ruby's GIL (in MRI/CRuby) allows only one thread to execute Ruby code at a time, even on multi-core machines. This means CPU-bound work doesn't benefit from threads. I/O-bound work (HTTP requests, DB queries) still benefits because the GIL is released during I/O waits. Alternatives: use Ractors (Ruby 3+) for true parallelism, or JRuby (no GIL). For CPU-intensive tasks, use multiple processes (Sidekiq workers) instead of threads.
+
+??? question "Explain the difference between `include`, `extend`, and `prepend`."
+    `include` adds module methods as instance methods (mixed into the class). `extend` adds module methods as class-level (singleton) methods. `prepend` inserts the module BEFORE the class in the lookup chain — useful for wrapping/overriding existing methods without aliasing. `prepend` is how many gems implement transparent method decoration.
+
+??? question "How does Ruby's method lookup work?"
+    When you call a method, Ruby searches: (1) the object's singleton class, (2) prepended modules, (3) the object's class, (4) included modules (last included first), (5) superclass chain, (6) `method_missing`. This is called the "ancestor chain" — inspect it with `MyClass.ancestors`.
+
+??? question "What is 'duck typing' and when is it dangerous?"
+    Ruby doesn't check types — if an object responds to a method, it can be used. This enables flexible, reusable code (any object with `.each` works with `Enumerable`). It's dangerous when: method names collide across unrelated objects, or when refactoring breaks implicit contracts silently. Mitigate with: interface-like tests, `respond_to?` checks, or Sorbet/RBS type annotations.

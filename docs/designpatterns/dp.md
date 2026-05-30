@@ -1,5 +1,19 @@
 # Design Patterns
 
+!!! tip "Interview Priority — The 8 Patterns That Actually Get Asked"
+    You don't need all 23 for interviews. Focus on these in order:
+
+    1. **Singleton** — thread-safe implementation, when NOT to use it
+    2. **Factory / Abstract Factory** — payment processors, notification channels
+    3. **Strategy** — runtime algorithm switching (sorting, pricing rules)
+    4. **Observer** — event systems, pub/sub, reactive streams
+    5. **Builder** — complex object construction (think HTTP request builders)
+    6. **Decorator** — I/O streams, middleware chains, logging wrappers
+    7. **Adapter** — legacy system integration, third-party library wrapping
+    8. **Proxy** — lazy loading, access control, caching (Spring AOP uses this)
+
+    Master these 8 deeply (with code + real-world use case), then skim the remaining 15.
+
 ## Why Do We Need Design Patterns?
 
 ```mermaid

@@ -85,9 +85,11 @@ Since Java 10 (2018), Oracle ships a **new release every 6 months** (March and S
 | Java 11 | LTS | HTTP Client, `var` in lambdas, removal of Java EE modules |
 | Java 17 | LTS | Sealed classes, pattern matching for `instanceof`, records |
 | Java 21 | LTS | Virtual Threads, pattern matching in switch, sequenced collections |
-| Java 25 | LTS (upcoming) | Value classes, structured concurrency (preview) |
+| Java 23 | Feature | Primitive types in patterns (preview), markdown doc comments, `Stream.gather()` |
+| Java 24 | Feature | Flexible constructor bodies, compact source launcher, ahead-of-time class loading |
+| Java 25 | LTS (Sep 2025) | Value classes (preview), structured concurrency (final), scoped values (final) |
 
-> **Production rule of thumb**: Run the latest LTS version unless you have a specific reason to use a feature release.
+> **Production rule of thumb**: Run the latest LTS version unless you have a specific reason to use a feature release. As of 2026, most production systems should be on **Java 21** (LTS) with migration plans toward **Java 25** (LTS).
 
 ---
 

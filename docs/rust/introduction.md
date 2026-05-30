@@ -1,5 +1,12 @@
 # Rust Programming Language
 
+> **Memory safety without garbage collection — powers Cloudflare Workers, Discord's backend, Dropbox's sync engine, and the Linux kernel.**
+
+---
+
+!!! abstract "Why Rust Matters for Backend Engineers"
+    Rust is relevant for interviews at Cloudflare, Discord, Figma, AWS (Firecracker, Lambda runtime), Microsoft (Windows kernel), and any company building performance-critical infrastructure. As a Java/Go developer, learning Rust gives you: (1) deeper understanding of memory management that makes you better at JVM tuning, (2) fearless concurrency patterns that transfer to any language, (3) access to the fastest-growing systems programming ecosystem. Rust has been voted "most loved language" on Stack Overflow for 8 years straight.
+
 ## Why Rust?
 
 Rust is a systems programming language focused on **safety**, **speed**, and **concurrency** — without a garbage collector.
@@ -246,6 +253,40 @@ tokio = { version = "1", features = ["full"] }
 reqwest = { version = "0.12", features = ["json"] }
 ```
 
+## Async Rust (Tokio)
+
+```rust
+use tokio;
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let resp = reqwest::get("https://api.example.com/users")
+        .await?
+        .json::<Vec<User>>()
+        .await?;
+    
+    println!("Got {} users", resp.len());
+    Ok(())
+}
+
+// Concurrent requests (like Promise.all in JS)
+async fn fetch_all(urls: Vec<String>) -> Vec<String> {
+    let futures: Vec<_> = urls.iter()
+        .map(|url| reqwest::get(url))
+        .collect();
+    
+    let results = futures::future::join_all(futures).await;
+    results.into_iter()
+        .filter_map(|r| r.ok())
+        .map(|r| r.text())
+        // ...
+        .collect()
+}
+```
+
+---
+
 ## When to Use Rust
 
 !!! tip "Great for"
@@ -256,3 +297,25 @@ reqwest = { version = "0.12", features = ["json"] }
     - **Blockchain** — Solana, Polkadot
     - **Game engines** — Bevy
     - **Data pipelines** — Polars, DataFusion
+
+!!! warning "Not ideal for"
+    - **Rapid prototyping** — compile times and borrow checker slow iteration
+    - **CRUD web apps** — Go/Java/Python are simpler for typical REST APIs
+    - **Teams new to systems programming** — steep learning curve (6-12 months to productivity)
+    - **Short-lived scripts** — Python is faster to write for one-off tasks
+
+---
+
+## Interview Questions
+
+??? question "What problem does Rust's ownership system solve?"
+    It eliminates use-after-free, double-free, dangling pointers, and data races — **at compile time** with zero runtime cost. In C/C++, these bugs cause ~70% of security vulnerabilities (per Microsoft and Google's published data). Rust makes it impossible to write these bugs without `unsafe` blocks.
+
+??? question "What is the difference between `&` (borrow) and `clone()`?"
+    `&` creates a reference without copying data — zero cost, but the original owner must outlive the borrow. `clone()` creates a deep copy — safe but allocates new memory. Prefer borrowing; clone when you need independent ownership (e.g., sending data to another thread).
+
+??? question "When would you use `unsafe` in Rust?"
+    When the compiler can't verify safety but you can: FFI (calling C libraries), implementing data structures with raw pointers (custom linked lists), performance-critical code where bounds-checking is a bottleneck. The rule: minimize `unsafe` scope and wrap it in a safe API.
+
+??? question "How does Rust achieve 'fearless concurrency'?"
+    The ownership + type system prevents data races at compile time. You can't share mutable data across threads unless it's wrapped in `Arc<Mutex<T>>` or sent via channels. The compiler rejects code that could race — it's not a runtime check, it's a compile-time guarantee.

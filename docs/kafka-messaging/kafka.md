@@ -720,6 +720,22 @@ public DefaultErrorHandler errorHandler(KafkaTemplate<String, OrderEvent> templa
 
 ---
 
+## Gotchas in Production
+
+Things that bite you in production but never appear in tutorials:
+
+| Gotcha | What Happens | How to Prevent |
+|---|---|---|
+| **Rebalancing storms** | A consumer takes >300ms to process a batch → `max.poll.interval.ms` exceeded → consumer evicted → rebalance → more consumers evicted → cascading rebalances | Increase `max.poll.interval.ms`, reduce `max.poll.records`, or move heavy processing to a thread pool and commit offsets manually |
+| **Consumer lag snowball** | Consumer falls behind by millions of offsets → memory pressure from buffering → OOM or GC pauses → falls further behind | Alert at 10K lag, not 1M. Add consumers BEFORE you're drowning. Consider `auto.offset.reset=latest` for non-critical consumers |
+| **Partition skew** | One key produces 80% of messages → one partition is 100x larger → one consumer does all the work | Use a sub-key (`customerId + "-" + timestamp.minute`) or repartition hot keys across multiple partitions |
+| **Offset commit timing** | Commit offset BEFORE processing → message lost on crash. Commit AFTER processing → message reprocessed on crash | Choose based on tolerance: at-least-once (commit after) is usually right. Make consumers idempotent. |
+| **Schema evolution breaks** | Producer adds a required field → old consumers crash on deserialization | Always use Schema Registry with BACKWARD compatibility. Never add required fields — only optional ones |
+| **Coordinator failover** | Group coordinator broker dies → all consumers in that group lose assignments → 30-60s of no consumption | Set `session.timeout.ms=10000` (lower than default 45s) and `heartbeat.interval.ms=3000` for faster detection |
+| **Compaction tombstones** | Producing `null` value for a key = tombstone = key deleted after compaction delay. Accidental null values = data loss | Validate payloads before producing. Use a schema that rejects null values for non-delete events |
+
+---
+
 !!! abstract "Key Takeaways"
     - Kafka is a **distributed commit log** — not a traditional message queue
     - Ordering only within a partition — use meaningful keys

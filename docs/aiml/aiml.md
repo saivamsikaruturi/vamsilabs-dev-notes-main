@@ -39,14 +39,21 @@ Think of it like cooking: AI is the kitchen, ML is learning recipes by tasting f
 
 ## What's in This Section
 
-| Page | What You'll Learn | Who It's For |
-|------|-------------------|-------------|
-| **[Neural Networks & Deep Learning](neural-networks.md)** | How neurons compute, backpropagation, CNN for images, RNN for sequences | Everyone starting ML |
-| **[Transformers & LLMs](transformers-llms.md)** | Attention mechanism, GPT vs BERT, how LLMs are trained, prompt engineering | Anyone working with AI APIs |
-| **[RAG & Vector Databases](rag.md)** | Retrieval-augmented generation, chunking, embeddings, Pinecone/pgvector | Building AI-powered apps |
-| **[AI Agents & Tools](agents.md)** | ReAct loop, function calling, multi-agent systems, LangChain/CrewAI | Building autonomous systems |
-| **[MLOps & Production AI](mlops.md)** | Model serving, drift detection, monitoring, deployment patterns | Deploying ML to production |
-| **[Fine-Tuning Guide](fine-tuning.md)** | LoRA, QLoRA, RLHF, when to fine-tune vs RAG, practical walkthrough | Customizing models |
+| # | Page | What You'll Learn | Prerequisites | Who It's For |
+|---|------|-------------------|---------------|-------------|
+| 1 | **[Neural Networks & Deep Learning](neural-networks.md)** | How neurons compute, backpropagation, CNN for images, RNN for sequences | Basic math (matrices, derivatives) | Everyone starting ML |
+| 2 | **[Transformers & LLMs](transformers-llms.md)** | Attention mechanism, GPT vs BERT, how LLMs are trained, prompt engineering | Page 1 (neural network basics) | Anyone working with AI APIs |
+| 3 | **[RAG & Vector Databases](rag.md)** | Retrieval-augmented generation, chunking, embeddings, Pinecone/pgvector | Page 2 (understand embeddings) | Building AI-powered apps |
+| 4 | **[AI Agents & Tools](agents.md)** | ReAct loop, function calling, multi-agent systems, LangChain/CrewAI | Page 2 + REST API knowledge | Building autonomous systems |
+| 5 | **[MLOps & Production AI](mlops.md)** | Model serving, drift detection, monitoring, deployment patterns | Docker, CI/CD basics | Deploying ML to production |
+| 6 | **[Fine-Tuning Guide](fine-tuning.md)** | LoRA, QLoRA, RLHF, when to fine-tune vs RAG, practical walkthrough | Pages 1-2 + Python | Customizing models |
+
+!!! info "Recommended Reading Order"
+    **If you're a backend engineer new to AI:** Pages 1 → 2 → 3 → 4. Skip 5 and 6 until you've built something.
+
+    **If you're building AI features into an app:** Start at Page 3 (RAG) or Page 4 (Agents) — refer back to Pages 1-2 when concepts feel unfamiliar.
+
+    **If you're prepping for an AI/ML interview:** All 6, in order. Budget 2-3 hours per page.
 
 ---
 

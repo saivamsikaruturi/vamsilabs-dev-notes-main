@@ -1,5 +1,12 @@
 # Kotlin Fundamentals
 
+> **Java's modern successor on the JVM — null-safe, concise, and coroutine-powered. The language of Android and increasingly server-side microservices.**
+
+---
+
+!!! abstract "Why Kotlin Matters for Backend Engineers"
+    Kotlin is relevant for interviews at Google (Android), JetBrains, Square, Netflix (some services), and any company with a Kotlin/JVM stack. For Java developers, Kotlin is a natural next step — it runs on the same JVM, uses the same libraries, and interops seamlessly. Key differentiator: Kotlin eliminates entire classes of bugs (NPE, boilerplate) that Java requires manual discipline to avoid.
+
 ## Overview
 
 Kotlin is a statically-typed, JVM-based programming language developed by JetBrains. It is fully interoperable with Java and is the preferred language for Android development. Kotlin emphasizes conciseness, null safety, and developer productivity.

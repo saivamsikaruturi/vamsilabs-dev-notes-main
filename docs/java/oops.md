@@ -8,6 +8,19 @@
 
 ---
 
+## Why OOP Exists — The Problem It Solves
+
+Before OOP, large programs were written as collections of functions operating on shared global data. This worked fine for small programs, but at scale (10+ developers, 100K+ lines), it fell apart:
+
+- **Any function could modify any data** — a billing function could accidentally corrupt user session state
+- **Changes cascaded unpredictably** — modifying one data structure broke 47 functions across 12 files
+- **No way to model real-world entities** — a "Customer" was scattered across 30 different arrays and maps
+- **Testing was nearly impossible** — you couldn't isolate a piece of logic without setting up the entire global state
+
+OOP solves this by bundling **data + behavior into objects** with controlled access. Each object protects its own state, exposes only what's necessary, and can be tested in isolation. The four pillars below are the mechanisms that make this possible.
+
+---
+
 ## The Four Pillars at a Glance
 
 ```mermaid

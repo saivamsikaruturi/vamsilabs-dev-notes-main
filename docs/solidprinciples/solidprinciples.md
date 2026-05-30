@@ -6,6 +6,20 @@ SOLID is not academic theory. It's the lens through which FAANG interviewers eva
 
 ---
 
+## Spot SOLID Violations in Code Review (Checklist)
+
+Use this during PRs to catch violations before they merge:
+
+| Principle | Red Flags to Look For |
+|---|---|
+| **SRP** | Class has `AND` in its description ("validates AND saves AND notifies"). Method is >50 lines. Class imports from 4+ unrelated packages. Change in one feature requires touching this class. |
+| **OCP** | `if/else` or `switch` on a type field that grows with new features. Adding a new payment type requires modifying `PaymentProcessor`. |
+| **LSP** | Subclass throws `UnsupportedOperationException` for inherited methods. Overridden method has stronger preconditions or weaker postconditions. `instanceof` checks before calling methods on a supertype. |
+| **ISP** | Interface with 10+ methods where most implementors leave half as no-ops. A class implements an interface but only uses 2 of its 8 methods. |
+| **DIP** | `new ConcreteService()` inside a class instead of injecting an interface. High-level module directly imports low-level implementation package. |
+
+---
+
 ## Quick Reference
 
 | Principle | One-liner | Real-world analogy |
