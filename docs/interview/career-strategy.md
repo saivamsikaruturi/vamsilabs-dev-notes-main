@@ -24,23 +24,21 @@ Recruiters spend an average of **6 seconds** on initial resume scan. They look a
 
 ### Technical Resume Structure
 
-```
-┌─────────────────────────────────────────┐
-│  Name | Email | LinkedIn | GitHub        │
-├─────────────────────────────────────────┤
-│  SUMMARY (2-3 lines, keyword-rich)      │
-├─────────────────────────────────────────┤
-│  EXPERIENCE                              │
-│    Company 1 (most recent)              │
-│      • Achievement with metrics          │
-│      • Achievement with metrics          │
-│    Company 2                             │
-│      • Achievement with metrics          │
-├─────────────────────────────────────────┤
-│  SKILLS (grouped by category)           │
-├─────────────────────────────────────────┤
-│  EDUCATION                               │
-└─────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    A["Name | Email | LinkedIn | GitHub"]
+    B["SUMMARY — 2-3 lines, keyword-rich"]
+    C["EXPERIENCE<br/>Company 1 • Achievement with metrics<br/>Company 2 • Achievement with metrics"]
+    D["SKILLS — grouped by category"]
+    E["EDUCATION"]
+
+    A --> B --> C --> D --> E
+
+    style A fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+    style B fill:#FEF3C7,stroke:#F59E0B,color:#92400E
+    style C fill:#D1FAE5,stroke:#10B981,color:#065F46
+    style D fill:#F3E8FF,stroke:#A78BFA,color:#5B21B6
+    style E fill:#F3F4F6,stroke:#6B7280,color:#374151
 ```
 
 ### Quantify Everything

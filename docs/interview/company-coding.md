@@ -4,23 +4,6 @@ A comprehensive collection of 100+ real coding problems asked in technical inter
 
 ---
 
-## Quick Navigation
-
-```mermaid
-flowchart LR
-    subgraph Topics
-        direction LR
-        S["Strings (25+)"]
-        A["Arrays (20+)"]
-        H["HashMap & Frequency (12+)"]
-        ST["Stream API (30+)"]
-        M["Math & Numbers (8+)"]
-        DS["Data Structures (6+)"]
-    end
-```
-
----
-
 ## String Problems
 
 ### Reverse Operations
