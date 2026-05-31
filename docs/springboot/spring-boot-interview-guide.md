@@ -1,3 +1,7 @@
+---
+description: "Complete Spring Boot interview guide for senior developers. Covers IoC, auto-configuration, JPA, Security, transactions, microservices patterns, and 50+ must-know questions for FAANG interviews."
+---
+
 # Complete Spring Boot Interview Guide — From Basics to Production
 
 > **Master Spring Boot for senior-level interviews.** Covers IoC, auto-configuration, security, data access, microservices patterns, and production-grade topics that FAANG companies ask.
@@ -997,6 +1001,36 @@ Beyond the core Spring Boot questions, FAANG interviewers often bridge into:
 - **Debugging** — A Spring Boot app has a memory leak; walk me through your investigation. (Heap dump, MAT analysis, common causes like unbounded caches or session state)
 - **Migration** — How do you migrate a monolith to microservices using Spring? (Strangler fig, Spring Modulith as intermediate step, API gateway introduction)
 - **Trade-offs** — When would you NOT use Spring Boot? (Simple CLI tools, serverless with extreme cold-start sensitivity, polyglot systems where framework lock-in is a concern)
+
+---
+
+---
+
+## Frequently Asked Questions
+
+??? question "What are the top Spring Boot interview questions for senior developers?"
+
+    Senior-level Spring Boot interviews focus on: auto-configuration internals and conditional beans, Bean lifecycle (instantiation → population → init → destroy), transaction propagation and isolation levels, Spring Security filter chain architecture, production tuning (connection pools, thread pools, caching), and how Spring Boot differs from Spring Framework. Expect deep dives into AOP proxies, circular dependency resolution, and reactive vs servlet stacks.
+
+??? question "What is Spring Boot auto-configuration and how does it work?"
+
+    Auto-configuration automatically configures beans based on classpath dependencies and defined properties. Spring Boot scans `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`, evaluates `@Conditional` annotations (e.g., `@ConditionalOnClass`, `@ConditionalOnMissingBean`), and registers beans only when conditions are met. You can override any auto-configured bean by defining your own.
+
+??? question "What is the difference between @Component, @Service, @Repository, and @Controller?"
+
+    All four are stereotype annotations that mark classes as Spring-managed beans. `@Component` is the generic stereotype. `@Service` indicates business logic (no extra behavior). `@Repository` adds persistence exception translation (SQLExceptions → DataAccessExceptions). `@Controller` enables MVC request mapping. Functionally they're interchangeable, but semantics improve code readability.
+
+??? question "How do you handle transactions in Spring Boot?"
+
+    Use `@Transactional` on methods or classes. Spring creates a proxy that manages the transaction lifecycle. Key attributes: `propagation` (REQUIRED, REQUIRES_NEW, etc.), `isolation` (READ_COMMITTED, SERIALIZABLE, etc.), `rollbackFor` (which exceptions trigger rollback). Common pitfall: `@Transactional` doesn't work on private methods or self-invocation because Spring uses proxy-based AOP.
+
+??? question "What is the N+1 problem in Spring Data JPA and how to fix it?"
+
+    The N+1 problem occurs when loading a parent entity triggers N additional queries for each child relationship. Solutions: use `@EntityGraph` or `JOIN FETCH` in JPQL for eager loading, batch fetching with `@BatchSize`, DTO projections to select only needed columns, or switch to a native query. Always enable SQL logging during development to detect N+1 issues early.
+
+??? question "How does Spring Security filter chain work?"
+
+    Spring Security uses a chain of servlet filters (DelegatingFilterProxy → FilterChainProxy → SecurityFilterChain). Each filter handles a specific concern: CSRF, authentication, authorization, session management. Requests pass through filters sequentially. You configure the chain via `SecurityFilterChain` bean with `HttpSecurity` builder. Custom filters can be inserted at specific positions using `addFilterBefore`/`addFilterAfter`.
 
 ---
 

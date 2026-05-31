@@ -1,3 +1,7 @@
+---
+description: "Complete Java interview guide for FAANG and top-tier companies. Covers Core Java, Collections, Concurrency, JVM internals, Streams, and 200+ interview questions for 3-10+ years experience."
+---
+
 # Java Interview Guide — FAANG & Top-Tier
 
 > Every Java interview at a top company follows the same arc: they start with fundamentals to see if you *actually* understand the language, escalate into concurrency and JVM internals to test depth, then finish with design to gauge production instinct. This guide mirrors that arc.
@@ -581,6 +585,36 @@ Avoid these pitfalls that trip up even experienced candidates:
 - [System Design — Consistent Hashing](../consistenthashing.md) — Distributed systems patterns
 - [Rate Limiting](../ratelimiting.md) — API design patterns
 - [Redis](../redis.md) — Caching and data structures
+
+---
+
+---
+
+## Frequently Asked Questions
+
+??? question "What are the most asked Java interview questions for 5+ years experience?"
+
+    At the senior level, interviewers focus on: HashMap internals and collision handling, ConcurrentHashMap vs synchronized collections, volatile vs AtomicInteger, JVM memory model and garbage collection tuning, CompletableFuture and reactive patterns, design patterns in production code, and Java Memory Model (happens-before guarantees). You should also expect questions on classloaders, memory leaks, and profiling tools.
+
+??? question "Is Java pass-by-value or pass-by-reference?"
+
+    Java is always **pass-by-value**. When you pass an object, the reference (pointer) is copied — not the object itself. The callee cannot reassign the caller's variable, but can mutate the object it points to. This distinction is critical in interviews.
+
+??? question "What is the difference between HashMap and ConcurrentHashMap?"
+
+    HashMap is not thread-safe and allows one null key. ConcurrentHashMap is thread-safe using segment-level (Java 7) or node-level CAS (Java 8+) locking, does not allow null keys/values, and provides atomic operations like `computeIfAbsent`. ConcurrentHashMap is preferred in multi-threaded applications where you need concurrent reads and writes without external synchronization.
+
+??? question "How does garbage collection work in Java?"
+
+    The JVM divides heap into Young Generation (Eden + Survivor spaces) and Old Generation. New objects go to Eden; survivors are promoted to Old Gen. GC algorithms include G1 (default since Java 9), ZGC (low-latency, Java 15+), and Shenandoah. Tuning involves setting heap size (`-Xmx`), choosing the right collector, and monitoring GC pause times.
+
+??? question "What are Virtual Threads in Java 21?"
+
+    Virtual Threads (Project Loom) are lightweight threads managed by the JVM rather than the OS. They enable millions of concurrent threads with minimal memory overhead, making blocking I/O code performant without reactive frameworks. Created via `Thread.ofVirtual().start()` or `Executors.newVirtualThreadPerTaskExecutor()`.
+
+??? question "What is the Java Memory Model?"
+
+    The Java Memory Model (JMM) defines how threads interact through memory. Key concepts: happens-before relationships, volatile guarantees visibility across threads, synchronized establishes mutual exclusion and memory visibility, and final fields are safely published after construction. Understanding JMM is essential for writing correct concurrent code.
 
 ---
 

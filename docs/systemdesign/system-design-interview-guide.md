@@ -1,3 +1,7 @@
+---
+description: "Complete system design interview guide for FAANG companies. Covers CAP theorem, load balancing, database sharding, caching, message queues, 10+ case studies, and a structured interview framework."
+---
+
 # Complete System Design Interview Guide — FAANG Level
 
 > **The systematic approach to system design interviews.** Learn the building blocks, then apply them to real case studies. This guide links 30+ deep-dive topics organized by concept, giving you a structured path from fundamentals to interview-ready confidence.
@@ -367,6 +371,36 @@ Beyond technical knowledge, how you communicate matters significantly:
 - **MIT 6.824: Distributed Systems** — Lecture videos covering Raft, MapReduce, and fault tolerance with academic rigor.
 - **The Google SRE Book (free online)** — Real-world operational concerns: monitoring, incident response, capacity planning.
 - **RFC documents** — Reading RFCs for protocols you mention (HTTP/2, gRPC, WebSocket) demonstrates deep understanding.
+
+---
+
+---
+
+## Frequently Asked Questions
+
+??? question "What system design topics are most commonly asked at FAANG companies?"
+
+    The most frequently asked topics are: URL shortener (entry-level), chat/messaging systems, news feed/timeline, notification systems, rate limiter, distributed cache, and video streaming platforms. Senior roles additionally face: payment systems, search autocomplete, ride-sharing, and distributed file storage. All require understanding of scalability, availability, consistency trade-offs, and back-of-envelope estimation.
+
+??? question "How do you estimate scale in a system design interview?"
+
+    Use back-of-envelope estimation: start with DAU (Daily Active Users), derive QPS (queries per second = DAU × actions/day / 86400), calculate storage (users × data per user × retention), and bandwidth (QPS × avg response size). Key numbers to memorize: 1 day = 86,400 seconds, 1 million requests/day ≈ 12 QPS, 1 byte of ASCII = 1 char, and 1 GB of RAM can hold ~250 million integers.
+
+??? question "What is the CAP theorem and how does it affect system design?"
+
+    CAP theorem states that a distributed system can guarantee at most two of three properties: Consistency (all nodes see the same data), Availability (every request gets a response), and Partition tolerance (system works despite network failures). Since network partitions are unavoidable, you choose between CP (consistent but may reject requests) or AP (available but may serve stale data). Real systems use tunable consistency (e.g., Cassandra's quorum reads).
+
+??? question "When should you use SQL vs NoSQL databases?"
+
+    Use SQL (PostgreSQL, MySQL) when you need ACID transactions, complex joins, strong consistency, and structured data with clear relationships. Use NoSQL when you need horizontal scalability, flexible schema, high write throughput, or denormalized data access patterns. Common choices: DynamoDB/Cassandra for key-value at scale, MongoDB for document storage, Redis for caching, and Neo4j for graph relationships.
+
+??? question "How do you design a system for high availability?"
+
+    Key patterns: geographic redundancy (multi-region deployment), load balancing (distribute traffic across healthy nodes), database replication (primary-replica for reads, multi-primary for writes), circuit breakers (fail fast on unhealthy dependencies), graceful degradation (serve cached/partial data during outages), health checks with automatic failover, and chaos engineering to validate resilience. Target: 99.99% availability = ~52 minutes downtime per year.
+
+??? question "What is the difference between horizontal and vertical scaling?"
+
+    Vertical scaling (scale up) means adding more CPU/RAM/disk to a single machine — simpler but has hardware limits and creates a single point of failure. Horizontal scaling (scale out) means adding more machines — supports virtually unlimited growth but adds complexity (data partitioning, consistency, service discovery). Most interview answers should favor horizontal scaling with stateless services, sharded databases, and distributed caches.
 
 ---
 

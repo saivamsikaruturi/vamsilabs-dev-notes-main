@@ -1,3 +1,21 @@
 [build]
 command = "mkdocs build --config-file mkdocs.yml"
 publish = "site"
+
+[build.environment]
+ENABLE_SOCIAL_CARDS = "false"
+
+[[headers]]
+for = "/robots.txt"
+[headers.values]
+Content-Type = "text/plain"
+
+[[headers]]
+for = "/sitemap.xml"
+[headers.values]
+Content-Type = "application/xml"
+
+[[headers]]
+for = "/*"
+[headers.values]
+X-Robots-Tag = "index, follow"

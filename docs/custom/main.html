@@ -6,21 +6,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <!-- SEO Meta Tags -->
-<meta name="description" content="VamsiLabs Dev Notes — FAANG-level Java, Spring Boot, and System Design interview prep. 100+ deep-dive topics with diagrams, code examples, and interview questions.">
-<meta name="keywords" content="Java interview, Spring Boot, System Design, FAANG prep, microservices, data structures, algorithms">
+<meta name="description" content="{{ page.meta.description | default(config.site_description) | e }}">
+<meta name="keywords" content="Java interview, Spring Boot, System Design, FAANG prep, microservices, {{ page.title | e }}">
 <meta name="author" content="Vamsi Karuturi">
 <meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ page.canonical_url }}">
 <!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="VamsiLabs Dev Notes — Java & Spring Boot Interview Prep">
-<meta property="og:description" content="100+ FAANG-level deep-dive notes on Java, Spring Boot, and System Design with diagrams, code, and interview questions.">
-<meta property="og:url" content="https://vamsilabs.netlify.app">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ page.title | e }} — VamsiLabs">
+<meta property="og:description" content="{{ page.meta.description | default(config.site_description) | e }}">
+<meta property="og:url" content="{{ page.canonical_url }}">
 <meta property="og:site_name" content="VamsiLabs Dev Notes">
+<meta property="og:image" content="https://vamsilabs.netlify.app/assets/images/social/{{ page.url | replace('/', '-') | trim('-') }}.png">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="VamsiLabs Dev Notes">
-<meta name="twitter:description" content="FAANG-level Java, Spring Boot & System Design interview prep with 100+ topics.">
-<!-- Structured Data -->
+<meta name="twitter:title" content="{{ page.title | e }} — VamsiLabs">
+<meta name="twitter:description" content="{{ page.meta.description | default(config.site_description) | e }}">
+<meta name="twitter:image" content="https://vamsilabs.netlify.app/assets/images/social/{{ page.url | replace('/', '-') | trim('-') }}.png">
+<!-- Structured Data: WebSite + Person -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -30,7 +33,14 @@
   "description": "FAANG-level Java, Spring Boot, and System Design interview prep",
   "author": {
     "@type": "Person",
-    "name": "Vamsi Karuturi"
+    "name": "Vamsi Karuturi",
+    "url": "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/",
+    "jobTitle": "Senior Software Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Walmart Global Tech"
+    },
+    "knowsAbout": ["Java", "Spring Boot", "Microservices", "System Design", "Distributed Systems", "Kafka", "Docker", "Kubernetes"]
   },
   "potentialAction": {
     "@type": "SearchAction",
@@ -39,6 +49,60 @@
   }
 }
 </script>
+<!-- Structured Data: Article (per-page) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ page.title | e }}",
+  "description": "{{ page.meta.description | default(config.site_description) | e }}",
+  "url": "{{ page.canonical_url }}",
+  "author": {
+    "@type": "Person",
+    "name": "Vamsi Karuturi",
+    "url": "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "VamsiLabs",
+    "url": "https://vamsilabs.netlify.app"
+  },
+  "mainEntityOfPage": "{{ page.canonical_url }}"
+}
+</script>
+<!-- Structured Data: BreadcrumbList -->
+{% if page and page.parent %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://vamsilabs.netlify.app/"
+    }
+    {% set ns = namespace(pos=2) %}
+    {% for ancestor in page.ancestors %}
+    ,{
+      "@type": "ListItem",
+      "position": {{ ns.pos }},
+      "name": "{{ ancestor.title | e }}",
+      "item": "https://vamsilabs.netlify.app/{{ ancestor.url }}"
+    }
+    {% set ns.pos = ns.pos + 1 %}
+    {% endfor %}
+    ,{
+      "@type": "ListItem",
+      "position": {{ ns.pos }},
+      "name": "{{ page.title | e }}",
+      "item": "{{ page.canonical_url }}"
+    }
+  ]
+}
+</script>
+{% endif %}
 <!-- Header auth button styles -->
 <style>
 .vtn-header-auth {
@@ -524,6 +588,11 @@ function showGateSuccess(msg) {
   var path = window.location.pathname.replace(/\/+$/, '');
   var isHome = path === '' || path === '/index.html' || path === '/index';
   if (isHome) return;
+
+  // Let search engine crawlers and AI bots access content without login
+  var ua = navigator.userAgent.toLowerCase();
+  var isCrawler = /googlebot|bingbot|slurp|duckduckbot|baiduspider|yandexbot|facebookexternalhit|twitterbot|linkedinbot|whatsapp|telegrambot|gptbot|chatgpt-user|claudebot|anthropic-ai|perplexitybot|google-extended|applebot|semrushbot|ahrefsbot|mj12bot|dotbot/.test(ua);
+  if (isCrawler) return;
 
   // Non-home page: check auth, show gate if not logged in
   initFirebase().then(function() {
