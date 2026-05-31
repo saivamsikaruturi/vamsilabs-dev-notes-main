@@ -37,56 +37,30 @@ public void processOrder(Order order) {
 
 The JVM divides the heap into generations based on object age. This design exploits the **Generational Hypothesis**: most objects die young.
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                              JVM MEMORY                                  │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│  ┌───────────────────────────────────┐  ┌────────────────────────────┐  │
-│  │         YOUNG GENERATION          │  │       OLD GENERATION       │  │
-│  │                                   │  │       (Tenured)            │  │
-│  │  ┌─────────┐  ┌─────┐  ┌─────┐   │  │                            │  │
-│  │  │  Eden   │  │ S0  │  │ S1  │   │  │  Long-lived objects        │  │
-│  │  │  Space  │  │(From)│  │(To) │   │  │  (survived many GC        │  │
-│  │  │         │  │     │  │     │   │  │   cycles)                  │  │
-│  │  │ (new    │  │     │  │     │   │  │                            │  │
-│  │  │ objects)│  │     │  │     │   │  │                            │  │
-│  │  └─────────┘  └─────┘  └─────┘   │  └────────────────────────────┘  │
-│  └───────────────────────────────────┘                                  │
-│                                                                         │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │                     METASPACE (off-heap)                          │   │
-│  │  Class metadata, method bytecode, constant pools                 │   │
-│  │  (Replaced PermGen in Java 8 — grows dynamically)                │   │
-│  └──────────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
 ```mermaid
 flowchart LR
-    subgraph JVM Heap
-        subgraph Young Generation
-            Eden[/"Eden Space<br/>(new objects allocated here)"/]
-            S0(["Survivor S0 (From)"])
-            S1(["Survivor S1 (To)"])
-        end
-        subgraph Old Generation
-            Tenured{{"Tenured Space<br/>(long-lived objects)"}}
-        end
+    subgraph Young["Young Generation"]
+        direction LR
+        Eden["Eden Space<br/>(new objects)"]
+        S0["S0 (From)"]
+        S1["S1 (To)"]
     end
-    subgraph Off-Heap
-        Meta[["Metaspace<br/>(class metadata, replaced PermGen in Java 8)"]]
+    subgraph Old["Old Generation"]
+        Tenured["Tenured Space<br/>(long-lived)"]
+    end
+    subgraph OffHeap["Off-Heap"]
+        Meta["Metaspace<br/>(class metadata)"]
     end
 
     Eden -->|"Minor GC<br/>survivors"| S0
-    S0 -->|"Age threshold<br/>exceeded"| S1
-    S1 -->|"Promotion<br/>(age > 15)"| Tenured
+    S0 <-->|"Swap each cycle"| S1
+    S1 -->|"Promote<br/>(age > 15)"| Tenured
 
     style Eden fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
-    style Meta fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
     style S0 fill:#FEF3C7,stroke:#FCD34D,color:#92400E
     style S1 fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
-    style Tenured fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
+    style Tenured fill:#E9D5FF,stroke:#A78BFA,color:#5B21B6
+    style Meta fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
 ```
 
 | Region | Purpose | Default Size |
@@ -132,8 +106,8 @@ All GC algorithms share a fundamental three-phase approach:
 
 ```mermaid
 flowchart LR
-    A{{"1. MARK<br/>Traverse from GC roots,<br/>mark reachable objects"}} --> B{{"2. SWEEP<br/>Reclaim memory of<br/>unmarked objects"}}
-    B --> C(["3. COMPACT<br/>Defragment by moving<br/>live objects together"])
+    A["1. MARK<br/>Traverse from GC roots,<br/>mark reachable objects"] --> B["2. SWEEP<br/>Reclaim memory of<br/>unmarked objects"]
+    B --> C["3. COMPACT<br/>Defragment by moving<br/>live objects together"]
 
     style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
     style B fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
@@ -141,26 +115,40 @@ flowchart LR
     style s fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
 ```
 
+**BEFORE GC** — A,C,E are live; B,D,F are garbage:
+
+```mermaid
+flowchart LR
+    B1A["A"]:::live --- B1B["B"]:::dead --- B1C["C"]:::live --- B1D["D"]:::dead --- B1E["E"]:::live --- B1F["F"]:::dead
+    classDef live fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef dead fill:#FEE2E2,stroke:#EF4444,color:#991B1B
 ```
-BEFORE GC:
-┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ A │ B │   │ C │   │ D │   │ E │   │ F │   (A,C,E = live; B,D,F = garbage)
-└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 
-AFTER MARK:
-┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ A*│ B │   │ C*│   │ D │   │ E*│   │ F │   (* = marked as live)
-└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+**AFTER MARK** — reachable objects marked:
 
-AFTER SWEEP:
-┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ A │   │   │ C │   │   │   │ E │   │   │   (garbage reclaimed, fragmented)
-└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+```mermaid
+flowchart LR
+    M2A["A ✓"]:::marked --- M2B["B"]:::dead --- M2C["C ✓"]:::marked --- M2D["D"]:::dead --- M2E["E ✓"]:::marked --- M2F["F"]:::dead
+    classDef marked fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+    classDef dead fill:#FEE2E2,stroke:#EF4444,color:#991B1B
+```
 
-AFTER COMPACT:
-┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ A │ C │ E │   │   │   │   │   │   │   │   (contiguous free space)
-└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+**AFTER SWEEP** — garbage reclaimed, memory fragmented:
+
+```mermaid
+flowchart LR
+    S3A["A"]:::live --- S3x1[" "]:::free --- S3C["C"]:::live --- S3x2[" "]:::free --- S3E["E"]:::live --- S3x3[" "]:::free
+    classDef live fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef free fill:#F9FAFB,stroke:#D1D5DB,color:#D1D5DB
+```
+
+**AFTER COMPACT** — live objects moved together, contiguous free space:
+
+```mermaid
+flowchart LR
+    C4A["A"]:::live --- C4C["C"]:::live --- C4E["E"]:::live --- C4x1[" "]:::free --- C4x2[" "]:::free --- C4x3[" "]:::free
+    classDef live fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef free fill:#F9FAFB,stroke:#D1D5DB,color:#D1D5DB
 ```
 
 **GC Roots** (starting points for the mark phase):
@@ -205,163 +193,387 @@ sequenceDiagram
 
 **Promotion threshold**: Objects that survive 15 Minor GC cycles (default, tunable with `-XX:MaxTenuringThreshold`) are promoted to Old Generation.
 
+### Eden → S0 → S1 → Old Gen: Step-by-Step
+
+#### Step 1: New objects allocated in Eden
+
+```mermaid
+flowchart LR
+    subgraph Eden["Eden Space"]
+        A["A"] & B["B"] & C["C"] & D["D"] & E["E"] & F["F"] & G["G"] & H["H"]
+    end
+    subgraph S0["Survivor S0"]
+        empty1["(empty)"]
+    end
+    subgraph S1["Survivor S1"]
+        empty2["(empty)"]
+    end
+    subgraph Old["Old Generation"]
+        empty3["(empty)"]
+    end
+
+    style Eden fill:#DBEAFE,stroke:#3B82F6
+    style S0 fill:#FEF3C7,stroke:#F59E0B
+    style S1 fill:#FEE2E2,stroke:#EF4444
+    style Old fill:#E5E7EB,stroke:#6B7280
+```
+
+> All new objects are allocated in Eden. S0, S1, and Old Gen are empty.
+
+#### Step 2: Eden fills up → Minor GC #1
+
+```mermaid
+flowchart LR
+    subgraph Before["Before GC"]
+        direction LR
+        subgraph Eden1["Eden (FULL)"]
+            A1["A"]:::live
+            B1["B"]:::dead
+            C1["C"]:::live
+            D1["D"]:::dead
+            E1["E"]:::dead
+            F1["F"]:::live
+            G1["G"]:::dead
+            H1["H"]:::dead
+        end
+    end
+
+    Before -->|"Minor GC #1"| After
+
+    subgraph After["After GC"]
+        direction LR
+        subgraph Eden2["Eden (CLEARED)"]
+            x1["(empty)"]
+        end
+        subgraph S0a["S0 (To)"]
+            A2["A (age=1)"]:::promoted
+            C2["C (age=1)"]:::promoted
+            F2["F (age=1)"]:::promoted
+        end
+    end
+
+    classDef live fill:#D1FAE5,stroke:#10B981
+    classDef dead fill:#FEE2E2,stroke:#EF4444
+    classDef promoted fill:#FEF3C7,stroke:#F59E0B
+```
+
+> Dead objects (B,D,E,G,H) are swept. Survivors copied to S0 with age=1.
+
+#### Step 3: New objects fill Eden → Minor GC #2
+
+```mermaid
+flowchart LR
+    subgraph Before2["Before GC #2"]
+        direction LR
+        subgraph Eden3["Eden (FULL)"]
+            I1["I"]:::live
+            J1["J"]:::dead
+            K1["K"]:::live
+            L1["L"]:::dead
+            M1["M"]:::dead
+        end
+        subgraph S0b["S0 (From)"]
+            A3["A (age=1)"]:::live
+            C3["C (age=1)"]:::dead
+            F3["F (age=1)"]:::live
+        end
+    end
+
+    Before2 -->|"Minor GC #2"| After2
+
+    subgraph After2["After GC #2"]
+        direction LR
+        subgraph Eden4["Eden (CLEARED)"]
+            x2["(empty)"]
+        end
+        subgraph S0c["S0 (CLEARED)"]
+            x3["(empty)"]
+        end
+        subgraph S1a["S1 (To)"]
+            A4["A (age=2)"]:::old
+            F4["F (age=2)"]:::old
+            I2["I (age=1)"]:::promoted
+            K2["K (age=1)"]:::promoted
+        end
+    end
+
+    classDef live fill:#D1FAE5,stroke:#10B981
+    classDef dead fill:#FEE2E2,stroke:#EF4444
+    classDef promoted fill:#FEF3C7,stroke:#F59E0B
+    classDef old fill:#DBEAFE,stroke:#3B82F6
+```
+
+> S0 and S1 **swap roles** every cycle. ALL survivors move to the "To" space.
+
+#### Step 4: After many cycles → Promotion to Old Gen
+
+```mermaid
+flowchart LR
+    subgraph Before3["Before GC — Object A has age=15"]
+        direction LR
+        subgraph S0d["S0 (From)"]
+            A5["A (age=15)"]:::promote
+            X1["X (age=3)"]:::live
+            Y1["Y (age=1)"]:::live
+        end
+    end
+
+    Before3 -->|"Minor GC"| After3
+
+    subgraph After3["After GC"]
+        direction LR
+        subgraph S1b["S1 (To)"]
+            X2a["X (age=4)"]:::promoted
+            Y2a["Y (age=2)"]:::promoted
+        end
+        subgraph OldGen["Old Generation"]
+            A6["A (tenured)"]:::tenured
+        end
+    end
+
+    classDef promote fill:#FDE68A,stroke:#D97706
+    classDef live fill:#D1FAE5,stroke:#10B981
+    classDef promoted fill:#FEF3C7,stroke:#F59E0B
+    classDef tenured fill:#C4B5FD,stroke:#7C3AED
+```
+
+> Object A survived 15 GC cycles (MaxTenuringThreshold) → **promoted to Old Generation** permanently.
+
+**Key rules of Survivor spaces:**
+
+- One Survivor space is **always empty** (the "To" space)
+- Survivors are copied between S0 and S1 every Minor GC (copying collector)
+- The empty space becomes "To", the occupied space becomes "From"
+- Objects too large for Survivor go directly to Old Gen ("premature promotion")
+
+### How Minor GC Works — Internal Mechanics
+
+```mermaid
+flowchart LR
+    A["Eden Full"] --> B["STW Pause"]
+    B --> C["Reachable?"]
+    C -->|No| D["Discard"]
+    C -->|Yes| E["Age ≥ 15?"]
+    E -->|Yes| F["Promote to Old Gen"]
+    E -->|No| G["Copy to Survivor"]
+    D & F & G --> H["Clear Eden + From, Swap S0↔S1, Resume"]
+
+    style B fill:#FEE2E2,stroke:#991B1B,color:#991B1B
+    style D fill:#FEF3C7,stroke:#92400E,color:#92400E
+    style F fill:#DBEAFE,stroke:#1E40AF,color:#1E40AF
+    style H fill:#D1FAE5,stroke:#065F46,color:#065F46
+```
+
+### GC Types — Visual Comparison
+
+| Collector | Threads | Pause Type | Heap Size | Best For | JVM Flag | Default In |
+|-----------|---------|-----------|-----------|----------|----------|-----------|
+| **Serial GC** | Single | Full STW | < 100MB | Client apps, single-core | `-XX:+UseSerialGC` | — |
+| **Parallel GC** | Multiple | Full STW (shorter) | 100MB–8GB | Batch jobs, max throughput | `-XX:+UseParallelGC` | Java 8 |
+| **G1 GC** | Multiple | Short, predictable | 4GB–64GB | Microservices, web apps | `-XX:+UseG1GC` | Java 9+ |
+| **ZGC** | Concurrent | < 1ms (any heap) | 8MB–16TB | Trading, real-time systems | `-XX:+UseZGC` | — (Java 15+) |
+| **Shenandoah** | Concurrent | < 10ms | Large | Low-latency, Red Hat | `-XX:+UseShenandoahGC` | — (Java 12+) |
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '14px'}}}%%
+gantt
+    title GC Pause Behavior — Timeline Comparison
+    dateFormat X
+    axisFormat %s
+
+    section Serial GC
+    App Running           :done, 0, 3
+    STW (1 thread)        :crit, 3, 8
+    App Running           :done, 8, 12
+
+    section Parallel GC
+    App Running           :done, 0, 3
+    STW (N threads)       :crit, 3, 6
+    App Running           :done, 6, 12
+
+    section G1 GC
+    App Running           :done, 0, 2
+    Init Mark (STW)       :crit, 2, 3
+    Concurrent Mark       :active, 3, 8
+    Remark (STW)          :crit, 8, 9
+    App Running           :done, 9, 12
+
+    section ZGC
+    App Running           :done, 0, 1
+    Pause (<1ms)          :crit, 1, 1
+    Concurrent (all work) :active, 1, 11
+    Pause (<1ms)          :crit, 11, 11
+    App Running           :done, 11, 12
+```
+
+```mermaid
+quadrantChart
+    title GC Collectors — Pause Time vs Throughput
+    x-axis "Low Throughput" --> "High Throughput"
+    y-axis "Low Pause (fast)" --> "High Pause (slow)"
+    quadrant-1 "High pause, High throughput"
+    quadrant-2 "High pause, Low throughput"
+    quadrant-3 "Low pause, Low throughput"
+    quadrant-4 "Low pause, High throughput"
+    Serial GC: [0.25, 0.85]
+    Parallel GC: [0.75, 0.70]
+    G1 GC: [0.65, 0.35]
+    ZGC: [0.60, 0.10]
+    Shenandoah: [0.55, 0.12]
+```
+
+> **Evolution**: Serial → Parallel → G1 → ZGC/Shenandoah = progressively lower pauses. Trade-off: lower pauses require more CPU for concurrent GC bookkeeping.
+
+```mermaid
+flowchart TD
+    subgraph "GC Selection Decision Tree"
+        direction TB
+        Q1["What's your heap size?"]
+        Q1 -->|"< 100MB"| Serial["Serial GC<br/>-XX:+UseSerialGC"]
+        Q1 -->|"100MB – 8GB"| Q2["What matters more?"]
+        Q1 -->|"> 8GB"| Q3["Latency requirement?"]
+        Q2 -->|"Throughput"| Parallel["Parallel GC<br/>-XX:+UseParallelGC"]
+        Q2 -->|"Latency"| G1["G1 GC<br/>-XX:+UseG1GC"]
+        Q3 -->|"P99 < 10ms"| ZGC["ZGC<br/>-XX:+UseZGC"]
+        Q3 -->|"P99 < 200ms"| G1
+        Q3 -->|"Red Hat"| Shen["Shenandoah<br/>-XX:+UseShenandoahGC"]
+    end
+
+    style Serial fill:#F3F4F6,stroke:#6B7280
+    style Parallel fill:#DBEAFE,stroke:#3B82F6
+    style G1 fill:#D1FAE5,stroke:#10B981
+    style ZGC fill:#FEF3C7,stroke:#F59E0B
+    style Shen fill:#FCE7F3,stroke:#EC4899
+```
+
+### G1 GC Region Layout
+
+```mermaid
+flowchart LR
+    E1["E"]:::eden --- E2["E"]:::eden --- S1["S"]:::surv --- O1["O"]:::old --- O2["O"]:::old --- H1["H"]:::humon --- H2["H"]:::humon --- O3["O"]:::old --- F1["-"]:::free --- E3["E"]:::eden
+
+    classDef eden fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+    classDef surv fill:#FEF3C7,stroke:#F59E0B,color:#92400E
+    classDef old fill:#E5E7EB,stroke:#6B7280,color:#374151
+    classDef humon fill:#FCE7F3,stroke:#EC4899,color:#9D174D
+    classDef free fill:#FFFFFF,stroke:#D1D5DB,color:#9CA3AF
+```
+
+**E** = Eden | **S** = Survivor | **O** = Old | **H** = Humongous (>50% region) | **-** = Free
+
+> Regions are NOT contiguous by type. G1 picks regions with the MOST garbage to collect first — maximizes reclaimed space per pause.
+
+### ZGC — Colored Pointers
+
+```mermaid
+flowchart LR
+    U["16 unused"]:::unused --> M0["M0"]:::mark --> R["Remap"]:::remap --> FN["Final"]:::final --> M1["M1"]:::mark --> ADDR["44-bit Address (16TB)"]:::addr
+
+    classDef unused fill:#F3F4F6,stroke:#6B7280,color:#6B7280
+    classDef mark fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+    classDef remap fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef final fill:#FEF3C7,stroke:#F59E0B,color:#92400E
+    classDef addr fill:#F5F3FF,stroke:#8B5CF6,color:#5B21B6
+```
+
+| Bit | Purpose |
+|-----|---------|
+| **M0/M1** | Marked — alternates between GC cycles |
+| **Remap** | Object relocated — reference needs update |
+| **Final** | Needs finalization before reclaim |
+
+**Load barrier**: on every object reference load, checks color bits. If stale → self-heals the reference. No STW needed.
+
 ---
 
 ## GC Algorithms
 
 ### 1. Serial GC
 
-The simplest collector — single-threaded, Stop-The-World (STW) for both Young and Old Gen.
-
-```java
-// Enable with:
-// -XX:+UseSerialGC
+```mermaid
+flowchart LR
+    subgraph Serial["Serial GC — Single Thread, Full STW"]
+        direction LR
+        A1["App Running"]:::app --> P1["⏸ STW Pause<br/>(1 GC thread)"]:::stw --> A2["App Running"]:::app
+    end
+    classDef app fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef stw fill:#FEE2E2,stroke:#EF4444,color:#991B1B
 ```
 
-```
-Application Threads:   ─────────┤ STOP ├─────────────────
-                                │      │
-Serial GC Thread:               ├──GC──┤
-                                │      │
-                        ────────┴──────┴─────────────────► time
-```
-
-- **Best for**: Single-CPU machines, small heaps (<100MB), client applications
-- **Pause**: Full STW during collection
+- **Flag**: `-XX:+UseSerialGC`
+- **Best for**: Single-CPU, small heaps (<100MB), client apps
 - **Algorithm**: Mark-Copy (Young) + Mark-Sweep-Compact (Old)
 
 ### 2. Parallel GC (Throughput Collector)
 
-Multi-threaded STW collector — maximizes application throughput (time spent running app vs time spent in GC).
-
-```java
-// Enable with:
-// -XX:+UseParallelGC
-// Default in Java 8
+```mermaid
+flowchart LR
+    subgraph Parallel["Parallel GC — N Threads, Full STW"]
+        direction LR
+        A1["App Running"]:::app --> P1["⏸ STW Pause<br/>(N GC threads in parallel)"]:::stw --> A2["App Running"]:::app
+    end
+    classDef app fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef stw fill:#FEE2E2,stroke:#EF4444,color:#991B1B
 ```
 
-```
-Application Threads:   ─────────┤   STOP   ├───────────────
-                                │          │
-GC Thread 1:                    ├──GC──────┤
-GC Thread 2:                    ├──GC──────┤
-GC Thread 3:                    ├──GC──────┤
-GC Thread 4:                    ├──GC──────┤
-                                │          │
-                        ────────┴──────────┴───────────────► time
-```
-
-- **Best for**: Batch processing, data pipelines, backend jobs where throughput matters more than latency
-- **Pause**: STW but faster (multiple threads working in parallel)
-- **Tuning**: `-XX:ParallelGCThreads=N`, `-XX:GCTimeRatio=99` (1% time in GC)
+- **Flag**: `-XX:+UseParallelGC` (default Java 8)
+- **Best for**: Batch processing, data pipelines, throughput > latency
+- **Tuning**: `-XX:ParallelGCThreads=N`, `-XX:GCTimeRatio=99`
 
 ### 3. CMS (Concurrent Mark-Sweep) — Deprecated
 
-Reduced pause times by doing most marking concurrently with application threads.
-
-```java
-// Enable with:
-// -XX:+UseConcMarkSweepGC
-// DEPRECATED in Java 9, REMOVED in Java 14
+```mermaid
+flowchart LR
+    subgraph CMS["CMS — Mostly Concurrent"]
+        direction LR
+        A1["App"]:::app --> IM["⏸ Init Mark<br/>(STW)"]:::stw --> CM["Concurrent<br/>Mark"]:::conc --> RM["⏸ Remark<br/>(STW)"]:::stw --> CS["Concurrent<br/>Sweep"]:::conc --> A2["App"]:::app
+    end
+    classDef app fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef stw fill:#FEE2E2,stroke:#EF4444,color:#991B1B
+    classDef conc fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
 ```
 
-```
-Application Threads:   ────────────────────────────────────────────
-                           │STW│               │STW│
-CMS Phases:                ├───┤               ├───┤
-                       Init Mark  Concurrent   Remark  Concurrent
-                                   Mark                  Sweep
-```
-
-**Phases:**
-
-1. **Initial Mark** (STW) — mark objects directly reachable from GC roots
-2. **Concurrent Mark** — traverse object graph concurrently with application
-3. **Remark** (STW) — fix changes made during concurrent mark
-4. **Concurrent Sweep** — reclaim dead objects concurrently
-
-**Problems** (why it was deprecated):
-
-- No compaction — leads to fragmentation
-- "Concurrent mode failure" — falls back to Serial Full GC if Old Gen fills up during marking
-- Higher CPU usage for concurrent phases
+- **Flag**: `-XX:+UseConcMarkSweepGC` (removed Java 14)
+- **Problems**: No compaction → fragmentation, concurrent mode failure
 
 ### 4. G1 GC (Garbage-First) — Default Since Java 9
 
-Region-based collector designed for large heaps with **predictable pause times**.
-
-```java
-// Enable with:
-// -XX:+UseG1GC (default in Java 9+)
-// -XX:MaxGCPauseMillis=200 (target pause time)
+```mermaid
+flowchart LR
+    subgraph G1["G1 — Region-based, Predictable Pauses"]
+        direction LR
+        A1["App"]:::app --> YGC["⏸ Young GC<br/>(evacuate regions)"]:::stw --> A2["App"]:::app --> MIX["⏸ Mixed GC<br/>(Young + Old regions)"]:::stw --> A3["App"]:::app
+    end
+    classDef app fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef stw fill:#FEF3C7,stroke:#F59E0B,color:#92400E
 ```
 
-```
-┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
-│  E  │  E  │  S  │  O  │  O  │  E  │  H  │  O  │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-│  O  │  -  │  E  │  O  │  -  │  S  │  H  │  E  │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-│  -  │  O  │  -  │  E  │  O  │  -  │  O  │  -  │
-└─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘
-
-E = Eden region    S = Survivor region    O = Old region
-H = Humongous      - = Free region
-```
-
-**Key innovations:**
-
-- Heap divided into **equal-sized regions** (1-32MB each)
-- Regions are dynamically assigned roles (Eden, Survivor, Old, Humongous)
-- **Garbage-First** = collects regions with the most garbage first (best ROI)
-- Targets a **configurable pause time** (default 200ms)
-- **Mixed collections** — can collect some Old Gen regions during Young GC
-
-**Phases:**
-
-1. Young-only phase (evacuate Eden + Survivor regions)
-2. Space reclamation phase (mixed GCs — Young + selected Old regions)
-3. Full GC (fallback — should be rare if tuned properly)
+- **Flag**: `-XX:+UseG1GC` (default Java 9+), `-XX:MaxGCPauseMillis=200`
+- **Key**: Heap split into equal regions (E/S/O/H), collects regions with most garbage first
+- **Phases**: Young-only → Space reclamation (mixed) → Full GC (rare fallback)
 
 ### 5. ZGC (Z Garbage Collector) — Ultra-Low Latency
 
-Designed for applications requiring **sub-millisecond pause times** regardless of heap size.
-
-```java
-// Enable with:
-// -XX:+UseZGC (production-ready since Java 15)
-// Works with heaps from 8MB to 16TB
+```mermaid
+flowchart LR
+    subgraph ZGC["ZGC — Fully Concurrent, < 1ms Pauses"]
+        direction LR
+        A1["App"]:::app --> P1["⏸<br/>< 1ms"]:::stw --> CW["Concurrent relocation<br/>+ remapping"]:::conc --> P2["⏸<br/>< 1ms"]:::stw --> A2["App"]:::app
+    end
+    classDef app fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef stw fill:#FEE2E2,stroke:#EF4444,color:#991B1B
+    classDef conc fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
 ```
 
-```
-Application Threads:   ────────────────────────────────────────────
-                           │<1ms│                         │<1ms│
-ZGC Pauses:                ├────┤                         ├────┤
-                                    ▲ concurrent work ▲
-                                    │  (relocation,   │
-                                    │   remapping)    │
-```
-
-**Key innovations:**
-
-- **Colored pointers** — stores GC metadata in unused pointer bits (64-bit only)
-- **Load barriers** — intercepts object references at load time to handle relocation
-- **Concurrent compaction** — moves objects without stopping the application
-- **Pause time < 1ms** — does NOT scale with heap size or live set size
-- **No generational distinction** (until Generational ZGC in Java 21)
-
-**Best for**: Latency-sensitive applications (trading systems, real-time services, large in-memory caches)
+- **Flag**: `-XX:+UseZGC` (production Java 15+, heaps 8MB–16TB)
+- **Key**: Colored pointers, load barriers, concurrent compaction
+- **Best for**: Trading systems, real-time services, large in-memory caches
 
 ### 6. Shenandoah GC
 
-Similar goals to ZGC — low pause times with concurrent compaction. Developed by Red Hat.
-
-```java
-// Enable with:
-// -XX:+UseShenandoahGC (available since Java 12, backported to Java 8/11)
-```
-
-**Key difference from ZGC**: Uses **Brooks forwarding pointers** (extra word per object) instead of colored pointers. Works on 32-bit JVMs (ZGC requires 64-bit).
+- **Flag**: `-XX:+UseShenandoahGC` (Java 12+, backported to 8/11)
+- **Key difference from ZGC**: Brooks forwarding pointers (extra word per object). Works on 32-bit JVMs.
+- **Similar goals**: Low pause, concurrent compaction. Developed by Red Hat.
 
 ---
 

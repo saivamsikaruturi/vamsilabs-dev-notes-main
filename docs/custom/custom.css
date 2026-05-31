@@ -520,11 +520,12 @@ body,
 }
 
 .md-nav--secondary .md-nav__title {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--vtn-text-muted);
+  margin-bottom: 0.2rem;
 }
 
 .md-nav .md-nav {
@@ -612,17 +613,17 @@ body,
 
 .md-typeset pre {
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #3d3f41;
   margin: 1.6em 0;
-  background: #f5f5f5 !important;
-  box-shadow: none;
+  background: #2b2b2b !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   position: relative;
   overflow: hidden;
 }
 
 [data-md-color-scheme="slate"] .md-typeset pre {
-  background: #1e293b !important;
-  border-color: #334155;
+  background: #2b2b2b !important;
+  border-color: #3d3f41;
 }
 
 .md-typeset pre::before {
@@ -634,52 +635,52 @@ body,
 }
 
 .md-typeset pre > code {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 0.8125rem;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.78rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.55;
   letter-spacing: 0;
-  padding: 1em 1.2em;
-  color: #000000;
+  padding: 0.9em 1.1em;
+  color: #A9B7C6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 [data-md-color-scheme="slate"] .md-typeset pre > code {
-  color: #e2e8f0;
+  color: #A9B7C6;
 }
 
 .md-typeset code:not(pre code) {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  background: #f1f5f9;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  background: #3C3F41;
   padding: 0.15em 0.4em;
   border-radius: 4px;
-  font-size: 0.8125rem;
+  font-size: 0.85rem;
   font-weight: 400;
-  border: 1px solid #e2e8f0;
-  color: #0f172a;
+  border: 1px solid #4E5254;
+  color: #A9B7C6;
 }
 
 [data-md-color-scheme="slate"] .md-typeset code:not(pre code) {
-  background: #334155;
-  border-color: #475569;
-  color: #e2e8f0;
+  background: #3C3F41;
+  border-color: #4E5254;
+  color: #A9B7C6;
 }
 
 .highlight .filename {
-  background: #f1f5f9;
-  color: #64748b;
+  background: #313335;
+  color: #A9B7C6;
   font-weight: 500;
   padding: 0.4em 1.2em;
   border-radius: 8px 8px 0 0;
-  font-size: 0.75rem;
-  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.8rem;
+  border-bottom: 1px solid #3d3f41;
 }
 
 [data-md-color-scheme="slate"] .highlight .filename {
-  background: #0f172a;
-  color: #94a3b8;
-  border-bottom-color: #334155;
+  background: #313335;
+  color: #A9B7C6;
+  border-bottom-color: #3d3f41;
 }
 
 .md-clipboard {
@@ -694,97 +695,53 @@ body,
   transform: scale(0.95);
 }
 
-/* Syntax highlighting — Oracle Java docs style */
-.md-typeset .highlight .hll { background: #e8f0fe !important; }
+/* Syntax highlighting — IntelliJ Darcula theme */
+.md-typeset .highlight .hll { background: rgba(50, 89, 148, 0.3) !important; }
 .md-typeset .highlight .c,
 .md-typeset .highlight .cm,
 .md-typeset .highlight .c1,
 .md-typeset .highlight .cs,
-.md-typeset .highlight .cp { color: #888888 !important; font-style: italic !important; font-size: 0.92em !important; }
+.md-typeset .highlight .cp { color: #808080 !important; font-style: italic !important; }
 .md-typeset .highlight .k,
 .md-typeset .highlight .kc,
 .md-typeset .highlight .kd,
 .md-typeset .highlight .kn,
 .md-typeset .highlight .kp,
 .md-typeset .highlight .kr,
-.md-typeset .highlight .kt { color: #0066cc !important; font-weight: 600 !important; }
+.md-typeset .highlight .kt { color: #CC7832 !important; font-weight: 600 !important; }
 .md-typeset .highlight .s,
 .md-typeset .highlight .s1,
 .md-typeset .highlight .s2,
 .md-typeset .highlight .sb,
 .md-typeset .highlight .sc,
 .md-typeset .highlight .sd,
-.md-typeset .highlight .sh { color: #2a7f62 !important; }
+.md-typeset .highlight .sh { color: #6A8759 !important; }
 .md-typeset .highlight .mi,
 .md-typeset .highlight .mf,
 .md-typeset .highlight .mh,
 .md-typeset .highlight .mo,
-.md-typeset .highlight .il { color: #c4500f !important; }
-.md-typeset .highlight .na,
+.md-typeset .highlight .il { color: #6897BB !important; }
+.md-typeset .highlight .na { color: #BBB529 !important; }
 .md-typeset .highlight .nb,
 .md-typeset .highlight .nc,
-.md-typeset .highlight .nd,
 .md-typeset .highlight .ni,
-.md-typeset .highlight .ne,
-.md-typeset .highlight .nf { color: #0066cc !important; }
+.md-typeset .highlight .ne { color: #A9B7C6 !important; }
+.md-typeset .highlight .nd { color: #BBB529 !important; }
+.md-typeset .highlight .nf { color: #FFC66D !important; }
 .md-typeset .highlight .nn,
-.md-typeset .highlight .nt { color: #0066cc !important; }
+.md-typeset .highlight .nt { color: #A9B7C6 !important; }
 .md-typeset .highlight .nv,
-.md-typeset .highlight .no { color: #0066cc !important; }
+.md-typeset .highlight .no { color: #9876AA !important; }
 .md-typeset .highlight .o,
-.md-typeset .highlight .ow { color: #000000 !important; }
-.md-typeset .highlight .p { color: #000000 !important; }
-.md-typeset .highlight .se { color: #c4500f !important; }
-.md-typeset .highlight .si { color: #2a7f62 !important; }
-.md-typeset .highlight .err { color: #cc0000 !important; }
-.md-typeset .highlight .w { color: #000000 !important; }
-.md-typeset .highlight .n { color: #000000 !important; }
+.md-typeset .highlight .ow { color: #A9B7C6 !important; }
+.md-typeset .highlight .p { color: #A9B7C6 !important; }
+.md-typeset .highlight .se { color: #CC7832 !important; }
+.md-typeset .highlight .si { color: #CC7832 !important; }
+.md-typeset .highlight .err { color: #BC3F3C !important; }
+.md-typeset .highlight .w { color: #A9B7C6 !important; }
+.md-typeset .highlight .n { color: #A9B7C6 !important; }
 
-/* Syntax highlighting — dark mode (Oracle-inspired, adapted for dark bg) */
-[data-md-color-scheme="slate"] .md-typeset .highlight .hll { background: rgba(0, 102, 204, 0.1) !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .c,
-[data-md-color-scheme="slate"] .md-typeset .highlight .cm,
-[data-md-color-scheme="slate"] .md-typeset .highlight .c1,
-[data-md-color-scheme="slate"] .md-typeset .highlight .cs,
-[data-md-color-scheme="slate"] .md-typeset .highlight .cp { color: #8b9dad !important; font-style: italic !important; font-size: 0.92em !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .k,
-[data-md-color-scheme="slate"] .md-typeset .highlight .kc,
-[data-md-color-scheme="slate"] .md-typeset .highlight .kd,
-[data-md-color-scheme="slate"] .md-typeset .highlight .kn,
-[data-md-color-scheme="slate"] .md-typeset .highlight .kp,
-[data-md-color-scheme="slate"] .md-typeset .highlight .kr,
-[data-md-color-scheme="slate"] .md-typeset .highlight .kt { color: #6ab0f3 !important; font-weight: 600 !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .s,
-[data-md-color-scheme="slate"] .md-typeset .highlight .s1,
-[data-md-color-scheme="slate"] .md-typeset .highlight .s2,
-[data-md-color-scheme="slate"] .md-typeset .highlight .sb,
-[data-md-color-scheme="slate"] .md-typeset .highlight .sc,
-[data-md-color-scheme="slate"] .md-typeset .highlight .sd,
-[data-md-color-scheme="slate"] .md-typeset .highlight .sh { color: #7ec699 !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .mi,
-[data-md-color-scheme="slate"] .md-typeset .highlight .mf,
-[data-md-color-scheme="slate"] .md-typeset .highlight .mh,
-[data-md-color-scheme="slate"] .md-typeset .highlight .mo,
-[data-md-color-scheme="slate"] .md-typeset .highlight .il { color: #f5a962 !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .na,
-[data-md-color-scheme="slate"] .md-typeset .highlight .nb,
-[data-md-color-scheme="slate"] .md-typeset .highlight .nc,
-[data-md-color-scheme="slate"] .md-typeset .highlight .nd,
-[data-md-color-scheme="slate"] .md-typeset .highlight .ni,
-[data-md-color-scheme="slate"] .md-typeset .highlight .ne,
-[data-md-color-scheme="slate"] .md-typeset .highlight .nf { color: #6ab0f3 !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .nn,
-[data-md-color-scheme="slate"] .md-typeset .highlight .nt { color: #6ab0f3 !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .nv,
-[data-md-color-scheme="slate"] .md-typeset .highlight .no { color: #6ab0f3 !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .o,
-[data-md-color-scheme="slate"] .md-typeset .highlight .ow { color: #e0e6ed !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .p { color: #e0e6ed !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .se { color: #f5a962 !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .si { color: #7ec699 !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .err { color: #f28779 !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .w { color: #e0e6ed !important; }
-[data-md-color-scheme="slate"] .md-typeset .highlight .n { color: #e0e6ed !important; }
+/* Syntax highlighting — dark mode inherits Darcula (same dark bg in both modes) */
 
 /* ==========================================================================
    ADMONITIONS — subtle, clean
@@ -918,15 +875,20 @@ body,
 }
 
 .md-nav--secondary .md-nav__link {
-  font-size: 0.76rem;
-  padding: 0.2rem 0.6rem;
-  line-height: 1.5;
+  font-size: 0.68rem;
+  padding: 0.12rem 0.5rem;
+  line-height: 1.3;
   color: var(--vtn-text-muted);
 }
 
 .md-nav--secondary .md-nav__link--active {
   color: var(--vtn-brand);
   font-weight: 600;
+}
+
+.md-nav--secondary .md-nav__item {
+  margin: 0;
+  padding: 0;
 }
 
 /* ==========================================================================

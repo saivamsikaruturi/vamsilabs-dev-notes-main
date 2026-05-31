@@ -33,7 +33,7 @@ flowchart LR
         T3 --> L1_3
     end
 
-    L2{{"Shared L2/L3 Cache"}}
+    L2["Shared L2/L3 Cache"]
     MAIN(["Main Memory (Heap)"])
 
     L1_1 --> L2
@@ -191,22 +191,11 @@ graph LR
 
 ```mermaid
 flowchart LR
-    subgraph "volatile Write (Thread-1)"
-        direction LR
-        VW1[/"All writes BEFORE volatile write"/] --> VW2{{"volatile write<br/>(StoreStore + StoreLoad barrier)"}}
-    end
+    VW1["Writes before"]:::before --> VW2["volatile write"]:::fence -.->|"happens-before"| VR1["volatile read"]:::fence --> VR2["Reads after"]:::after
 
-    subgraph "volatile Read (Thread-2)"
-        direction LR
-        VR1{{"volatile read<br/>(LoadLoad + LoadStore barrier)"}} --> VR2[/"All reads AFTER volatile read"/]
-    end
-
-    VW2 -.->|"happens-before"| VR1
-
-    style VW2 fill:#FEF3C7,color:#1E40AF
-    style VR1 fill:#FEF3C7,color:#1E40AF
-    style VW1 fill:#BFDBFE,color:#1E40AF
-    style VR2 fill:#BFDBFE,color:#1E40AF
+    classDef before fill:#BFDBFE,stroke:#3B82F6,color:#1E40AF
+    classDef fence fill:#FEF3C7,stroke:#F59E0B,color:#92400E
+    classDef after fill:#BFDBFE,stroke:#3B82F6,color:#1E40AF
 ```
 
 ### When volatile is Enough
@@ -352,7 +341,7 @@ flowchart LR
 
     subgraph "With StoreStore Barrier"
         direction LR
-        B1(["Store x = 1"]) --> FENCE{{"--- StoreStore Fence ---"}} --> B2(["Store y = 2"])
+        B1(["Store x = 1"]) --> FENCE["StoreStore Fence"] --> B2(["Store y = 2"])
     end
 
     style FENCE fill:#FEE2E2,color:#1E40AF,stroke-width:3px
@@ -387,18 +376,15 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Q1{"Need compound<br/>actions (if-then-act)?"}
-    Q1 -->|Yes| SYNC[["Use synchronized<br/>or Lock"]]
-    Q1 -->|No| Q2{"Need atomic<br/>increment/CAS?"}
-    Q2 -->|Yes| ATOMIC(["Use AtomicXxx"])
-    Q2 -->|No| Q3{"Need visibility<br/>+ ordering only?"}
-    Q3 -->|Yes| VOLATILE{{"Use volatile"}}
-    Q3 -->|No| NONE[/"No synchronization needed"/]
+    Q1["Compound action?"] -->|Yes| SYNC["synchronized"]:::sync
+    Q1 -->|No| Q2["Atomic CAS?"] -->|Yes| ATOMIC["AtomicXxx"]:::atomic
+    Q2 -->|No| Q3["Visibility only?"] -->|Yes| VOL["volatile"]:::vol
+    Q3 -->|No| NONE["None needed"]:::none
 
-    style SYNC fill:#FEE2E2,color:#1E40AF
-    style ATOMIC fill:#FEF3C7,color:#1E40AF
-    style VOLATILE fill:#D1FAE5,color:#1E40AF
-    style NONE fill:#BFDBFE,color:#1E40AF
+    classDef sync fill:#FEE2E2,stroke:#EF4444,color:#991B1B
+    classDef atomic fill:#FEF3C7,stroke:#F59E0B,color:#92400E
+    classDef vol fill:#D1FAE5,stroke:#10B981,color:#065F46
+    classDef none fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
 ```
 
 ---
