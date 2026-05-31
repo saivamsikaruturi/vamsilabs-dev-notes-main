@@ -215,6 +215,8 @@ nav:
           - Collectors & Parallel Streams: java/CollectorsAndParallelStreams.md
           - CompletableFuture: java/CompletableFuture.md
           - Reactive Streams: java/ReactiveStreams.md
+      - Performance & Production:
+          - Performance & Debugging: java/performance-production.md
       - JVM Internals:
           - JVM Architecture: java/Jvm.md
           - ClassLoaders: java/ClassLoaders.md
@@ -478,6 +480,8 @@ nav:
       - Rust: rust/introduction.md
       - Ruby: ruby/introduction.md
   - Interviews:
+      - Career Strategy: interview/career-strategy.md
+      - Coding Scenarios & Challenges: interview/coding-scenarios.md
       - Core Java Q&A: interview/java-core.md
       - Java Strings Q&A: interview/java-strings.md
       - Java Collections Q&A: interview/java-collections.md

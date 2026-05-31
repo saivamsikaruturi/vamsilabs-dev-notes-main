@@ -338,13 +338,15 @@ body,
 .md-header__topic:first-child {
   font-weight: 800;
   color: #FAFAF9;
+  opacity: 1 !important;
+  transform: none !important;
+  position: relative !important;
 }
 
 .md-header__topic + .md-header__topic {
-  font-size: 0.82rem;
-  opacity: 0.85;
-  color: #FAFAF9;
+  display: none;
 }
+
 
 @media screen and (max-width: 76.25em) {
   .md-header__title {
@@ -365,6 +367,9 @@ body,
 
 .md-header__inner {
   padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  min-height: 2.4rem;
 }
 
 /* ==========================================================================
@@ -373,9 +378,10 @@ body,
 
 .md-tabs {
   background: #292524;
-  border-top: 2px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   overflow: visible;
   position: relative;
+  z-index: 1;
 }
 
 .md-tabs .md-grid {
