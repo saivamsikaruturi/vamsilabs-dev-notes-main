@@ -112,12 +112,6 @@ hooks:
 plugins:
   - search:
       separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-  - social:
-      enabled: !ENV [ENABLE_SOCIAL_CARDS, false]
-      cards_layout_options:
-        background_color: "#1C1917"
-        color: "#FAFAF9"
-  - meta
   - glightbox:
       touchNavigation: true
       loop: false
