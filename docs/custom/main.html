@@ -218,19 +218,13 @@
       Continue with Google
     </button>
     <div class="vtn-login-gate-divider"><span>or use email</span></div>
-    <div class="vtn-login-gate-email" id="gate-magiclink-form">
-      <input type="email" id="gate-magic-email-input" placeholder="Email address" class="vtn-login-gate-input" />
-      <button class="vtn-login-gate-btn vtn-login-gate-btn--email" onclick="gateSendMagicLink()">Send me a sign-in link</button>
-      <button class="vtn-login-gate-link" onclick="showPasswordForm()">Use password instead</button>
-    </div>
-    <div class="vtn-login-gate-email" id="gate-signin-form" style="display:none;">
+    <div class="vtn-login-gate-email" id="gate-signin-form">
       <input type="email" id="gate-email-input" placeholder="Email address" class="vtn-login-gate-input" />
       <input type="password" id="gate-password-input" placeholder="Password" class="vtn-login-gate-input" />
       <button class="vtn-login-gate-btn vtn-login-gate-btn--email" onclick="gateEmailSignIn()">Sign In</button>
       <div class="vtn-login-gate-links">
         <button class="vtn-login-gate-link" onclick="showForgotPassword()">Forgot password?</button>
         <button class="vtn-login-gate-link" onclick="showSignUpForm()">Don't have an account? <strong>Sign Up</strong></button>
-        <button class="vtn-login-gate-link" onclick="showMagicLinkForm()">Use magic link instead</button>
       </div>
     </div>
     <div class="vtn-login-gate-email" id="gate-signup-form" style="display:none;">
@@ -390,19 +384,10 @@ function gateSignIn() {
 }
 
 function hideAllForms() {
-  document.getElementById('gate-magiclink-form').style.display = 'none';
   document.getElementById('gate-signin-form').style.display = 'none';
   document.getElementById('gate-signup-form').style.display = 'none';
   document.getElementById('gate-forgot-form').style.display = 'none';
   hideGateMessages();
-}
-function showMagicLinkForm() {
-  hideAllForms();
-  document.getElementById('gate-magiclink-form').style.display = 'flex';
-}
-function showPasswordForm() {
-  hideAllForms();
-  document.getElementById('gate-signin-form').style.display = 'flex';
 }
 function showSignInForm() {
   hideAllForms();
@@ -499,36 +484,6 @@ function gateEmailSignUp() {
   }).catch(function() {});
 }
 
-function gateSendMagicLink() {
-  initFirebase().then(function() {
-    var email = document.getElementById('gate-magic-email-input').value.trim();
-    if (!email) {
-      showGateError('Please enter your email address');
-      return;
-    }
-    if (!isValidEmail(email)) {
-      showGateError('Please enter a valid email address');
-      return;
-    }
-    var baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'https://vamsilabs.netlify.app' + window.location.pathname
-      : window.location.href;
-    var actionCodeSettings = {
-      url: baseUrl,
-      handleCodeInApp: true
-    };
-    auth.sendSignInLinkToEmail(email, actionCodeSettings).then(function() {
-      localStorage.setItem('vtn-magic-email', email);
-      showGateSuccess('Sign-in link sent to ' + email + '! Check your inbox and spam folder.');
-    }).catch(function(error) {
-      if (error.code === 'auth/unauthorized-continue-uri') {
-        showGateError('Email sign-in is not configured for this domain. Please use Google sign-in or password.');
-      } else {
-        showGateError(error.message);
-      }
-    });
-  }).catch(function() {});
-}
 
 function gateForgotPassword() {
   initFirebase().then(function() {
