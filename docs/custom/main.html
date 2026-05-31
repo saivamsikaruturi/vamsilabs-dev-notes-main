@@ -6,23 +6,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <!-- SEO Meta Tags -->
-<meta name="description" content="{{ page.meta.description | default(config.site_description) | e }}">
-<meta name="keywords" content="Java interview, Spring Boot, System Design, FAANG prep, microservices, {{ page.title | e }}">
+<meta name="description" content="{{ (page.meta.description if page and page.meta and page.meta.description else config.site_description) | e }}">
+<meta name="keywords" content="Java interview, Spring Boot, System Design, FAANG prep, microservices{{ ', ' ~ (page.title | e) if page and page.title else '' }}">
 <meta name="author" content="Vamsi Karuturi">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="{{ page.canonical_url }}">
+{% if page and page.canonical_url %}<link rel="canonical" href="{{ page.canonical_url }}">{% endif %}
 <!-- Open Graph -->
 <meta property="og:type" content="article">
-<meta property="og:title" content="{{ page.title | e }} — VamsiLabs">
-<meta property="og:description" content="{{ page.meta.description | default(config.site_description) | e }}">
-<meta property="og:url" content="{{ page.canonical_url }}">
+<meta property="og:title" content="{{ (page.title | e) if page and page.title else 'VamsiLabs Dev Notes' }} — VamsiLabs">
+<meta property="og:description" content="{{ (page.meta.description if page and page.meta and page.meta.description else config.site_description) | e }}">
+<meta property="og:url" content="{{ page.canonical_url if page and page.canonical_url else config.site_url }}">
 <meta property="og:site_name" content="VamsiLabs Dev Notes">
-<meta property="og:image" content="https://vamsilabs.netlify.app/assets/images/social/{{ page.url | replace('/', '-') | trim('-') }}.png">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ page.title | e }} — VamsiLabs">
-<meta name="twitter:description" content="{{ page.meta.description | default(config.site_description) | e }}">
-<meta name="twitter:image" content="https://vamsilabs.netlify.app/assets/images/social/{{ page.url | replace('/', '-') | trim('-') }}.png">
+<meta name="twitter:title" content="{{ (page.title | e) if page and page.title else 'VamsiLabs Dev Notes' }} — VamsiLabs">
+<meta name="twitter:description" content="{{ (page.meta.description if page and page.meta and page.meta.description else config.site_description) | e }}">
 <!-- Structured Data: WebSite + Person -->
 <script type="application/ld+json">
 {
@@ -49,13 +47,14 @@
   }
 }
 </script>
+{% if page and page.title %}
 <!-- Structured Data: Article (per-page) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "{{ page.title | e }}",
-  "description": "{{ page.meta.description | default(config.site_description) | e }}",
+  "description": "{{ (page.meta.description if page.meta and page.meta.description else config.site_description) | e }}",
   "url": "{{ page.canonical_url }}",
   "author": {
     "@type": "Person",
@@ -70,8 +69,9 @@
   "mainEntityOfPage": "{{ page.canonical_url }}"
 }
 </script>
-<!-- Structured Data: BreadcrumbList -->
+{% endif %}
 {% if page and page.parent %}
+<!-- Structured Data: BreadcrumbList -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
