@@ -340,6 +340,7 @@ nav:
       - Data & Patterns:
           - Data Management: microservices/data-management.md
           - CQRS: CQRS.md
+          - Domain-Driven Design (DDD): microservices/ddd.md
       - Operations:
           - Deployment Strategies: microservices/deployment-strategies.md
           - Logging & Monitoring: microservices/logging-monitoring.md
@@ -482,6 +483,7 @@ nav:
   - Interviews:
       - Career Strategy: interview/career-strategy.md
       - Coding Scenarios & Challenges: interview/coding-scenarios.md
+      - Scenario-Based Questions: interview/java-scenarios.md
       - Core Java Q&A: interview/java-core.md
       - Java Strings Q&A: interview/java-strings.md
       - Java Collections Q&A: interview/java-collections.md
