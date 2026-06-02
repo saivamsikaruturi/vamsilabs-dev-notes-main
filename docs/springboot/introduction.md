@@ -1,235 +1,612 @@
 ---
-description: "Spring Boot tutorial for beginners and experienced developers — auto-configuration, starters, embedded servers, and building production-ready applications."
+description: "Introduction to Spring Boot — auto-configuration, starters, embedded servers, startup internals, request lifecycle, and building production-ready applications from day one."
 ---
 
-# Spring Boot
+# Introduction to Spring Boot
+
+You've written Java programs. You know how to create objects, manage databases, handle HTTP requests. But doing all that manually for a production application? You'd spend 2 weeks just on configuration — XML files, dependency version conflicts, external server setup, connection pool tuning.
+
+Spring Boot gives you all of that in 30 seconds. One annotation, one `main()` method, and you have a running production-ready application. Let me show you how.
+
+---
 
 ## What is Spring Boot?
 
-```mermaid
-flowchart LR
-    A["You write<br/>business logic"] --> B["Spring Boot handles<br/>everything else"]
-    B --> C["Running<br/>application"]
+Spring Boot is **not** just "opinionated Spring." It is a complete application framework built on 4 pillars:
 
-    style A fill:#DBEAFE,stroke:#93C5FD,color:#1E40AF
-    style B fill:#D1FAE5,stroke:#6EE7B7,color:#065F46
-    style e fill:#FEF3C7,stroke:#FCD34D,color:#92400E
-    style n fill:#FEE2E2,stroke:#FCA5A5,color:#991B1B
+```mermaid
+flowchart TB
+    SB["<b>Spring Boot</b><br/>Write business logic from minute one"]
+    SB --> AC["<b>1. Auto-Configuration</b><br/>Convention over configuration.<br/>Detects your classpath, configures everything."]
+    SB --> SD["<b>2. Starter Dependencies</b><br/>Curated dependency sets.<br/>One starter = 15 compatible libraries."]
+    SB --> ES["<b>3. Embedded Server</b><br/>No WAR deployment.<br/>java -jar app.jar = done."]
+    SB --> PR["<b>4. Production-Ready Features</b><br/>Health checks, metrics, tracing.<br/>Actuator out of the box."]
+
+    style SB fill:#1E40AF,stroke:#1E40AF,color:#FFFFFF
+    style AC fill:#ECFDF5,stroke:#10B981,color:#065F46
+    style SD fill:#EFF6FF,stroke:#3B82F6,color:#1E40AF
+    style ES fill:#FEF3C7,stroke:#F59E0B,color:#92400E
+    style PR fill:#FEE2E2,stroke:#EF4444,color:#991B1B
 ```
 
-!!! abstract "In Simple Words"
-    **Spring Boot** is a framework that lets you build production-ready Java applications with minimal setup. Think of it as a "smart assistant" — you tell it what you want to build, and it configures everything for you automatically.
+| Pillar | What It Does | Why It Matters |
+|--------|-------------|----------------|
+| **Auto-Configuration** | Scans your classpath, creates beans you need | Zero boilerplate for 90% of use cases |
+| **Starter Dependencies** | One dependency pulls in a tested set of libraries | No more version conflict hell |
+| **Embedded Server** | Tomcat/Jetty/Undertow inside your JAR | Deploy anywhere with `java -jar` |
+| **Production-Ready Features** | Health, metrics, env, loggers endpoints | Operations team loves you on day one |
 
-Spring Boot is not a replacement for the Spring Framework — it sits **on top** of it. The Spring Framework provides powerful capabilities like dependency injection, AOP, transaction management, and web MVC. But configuring all of that manually requires extensive XML or Java configuration, careful dependency management, and deep knowledge of the framework internals.
-
-Spring Boot eliminates that friction. It provides **opinionated defaults** — sensible configuration choices that work for 90% of use cases — while still letting you override anything when needed. The philosophy is **convention over configuration**: if you follow the conventions, everything just works.
-
-!!! info "The Origin Story"
-    Spring Boot was created in 2014 by Pivotal (now VMware) in response to developer frustration with Spring's configuration complexity. The goal was simple: make it possible to build a production-ready Spring application in minutes, not hours. Today, it is the most widely used Java framework for building backend services, REST APIs, and microservices.
+!!! tip "One-liner for interviews"
+    "Spring Boot is a framework that eliminates boilerplate configuration so you can write business logic from minute one. It auto-configures your application based on classpath detection, packages an embedded server into your JAR, and provides production monitoring out of the box."
 
 ---
 
-## The Problem Spring Boot Solves
+## What Problem Does It Solve?
 
-Imagine you want to build a web application in Java. Without Spring Boot, you'd need to:
+### The BEFORE World (Spring without Boot)
 
-```mermaid
-flowchart LR
-    A(["Write your code"]) --> B{{"Configure a web server<br/>(Tomcat, Jetty)"}}
-    B --> C{{"Write XML configuration<br/>(dozens of files)"}}
-    C --> D{{"Manage library versions<br/>(compatibility hell)"}}
-    D --> E{{"Deploy to external server"}}
-    E --> F(["Pray it works 🙏"])
+To get a "Hello World" web application running with raw Spring Framework, you needed **three XML files** before writing a single line of business logic:
 
-    style A fill:#ECFDF5,stroke:#93C5FD
-    style B fill:#FEF3C7,stroke:#FCD34D
-    style C fill:#FEF3C7,stroke:#FCD34D
-    style D fill:#FEE2E2,stroke:#FCA5A5
-    style E fill:#FEE2E2,stroke:#FCA5A5
-    style F fill:#FEE2E2,stroke:#FCA5A5
-```
+=== "web.xml (Deployment Descriptor)"
 
-Each of these steps introduces its own set of problems:
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0">
 
-- **Web server configuration** — You need to download Tomcat or Jetty, configure `server.xml`, set up connection pools, thread pools, and SSL certificates.
-- **XML configuration** — Spring's `applicationContext.xml` can grow to hundreds of lines. You need to declare every bean, every dependency, every datasource manually.
-- **Dependency management** — Spring Framework 5.3.x works with Hibernate 5.6.x but not 6.0. Jackson 2.13 is compatible but 2.14 breaks serialization. Getting all libraries to work together is a full-time job.
-- **External deployment** — You package a WAR file, deploy it to an external server, configure context paths, and hope the server's classloader doesn't conflict with your application's libraries.
+        <!-- Load Spring context -->
+        <context-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/applicationContext.xml</param-value>
+        </context-param>
 
-**With Spring Boot**, all of that disappears:
+        <listener>
+            <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+        </listener>
 
-```mermaid
-flowchart LR
-    A["Write your code"] --> B["Run it ✅"]
+        <!-- Front controller -->
+        <servlet>
+            <servlet-name>dispatcher</servlet-name>
+            <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+            <init-param>
+                <param-name>contextConfigLocation</param-name>
+                <param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
+            </init-param>
+            <load-on-startup>1</load-on-startup>
+        </servlet>
 
-    style A fill:#ECFDF5,stroke:#93C5FD
-    style B fill:#ECFDF5,stroke:#93C5FD
-```
+        <servlet-mapping>
+            <servlet-name>dispatcher</servlet-name>
+            <url-pattern>/</url-pattern>
+        </servlet-mapping>
+    </web-app>
+    ```
 
-You add one dependency (`spring-boot-starter-web`), write your controller, and run `java -jar app.jar`. Spring Boot figures out that you want a web application, embeds Tomcat, configures a connection pool, sets up JSON serialization, and starts everything on port 8080.
+=== "dispatcher-servlet.xml"
 
-!!! example "Real-World Impact"
-    A typical Spring MVC project in 2013 had **50-80 lines of XML configuration** before writing a single line of business logic. A Spring Boot project in 2024 has **zero configuration files** for the same functionality. The `application.yml` file is optional and only needed when you want to override defaults.
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <beans xmlns="http://www.springframework.org/schema/beans"
+           xmlns:mvc="http://www.springframework.org/schema/mvc"
+           xmlns:context="http://www.springframework.org/schema/context">
 
----
+        <context:component-scan base-package="com.company.app"/>
+        <mvc:annotation-driven/>
 
-## Spring vs Spring Boot — What's the Difference?
+        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+            <property name="prefix" value="/WEB-INF/views/"/>
+            <property name="suffix" value=".jsp"/>
+        </bean>
+    </beans>
+    ```
 
-| Aspect | **Spring Framework** | **Spring Boot** |
-|---|---|---|
-| **Relationship** | The core framework with DI, AOP, MVC | A layer on top of Spring that removes boilerplate |
-| **Configuration** | Manual XML or Java-based `@Configuration` classes | Auto-configuration — detects your classpath and configures beans |
-| **Server** | Requires external application server (Tomcat, WildFly) | Embedded server — Tomcat, Jetty, or Undertow built into the JAR |
-| **Dependency management** | You manually ensure all library versions are compatible | Starter POMs with pre-tested, compatible dependency sets |
-| **Setup time** | Hours of configuration before writing business logic | Minutes — generate project at start.spring.io and start coding |
-| **Production readiness** | You build monitoring, health checks, and metrics yourself | Actuator provides health checks, metrics, and monitoring out of the box |
-| **Analogy** | Building a car from individual parts | Buying a car that's ready to drive, with the option to customize every part |
+=== "applicationContext.xml"
 
-!!! tip "Key Insight"
-    Spring Boot **is** Spring — it just removes the boring parts. Every Spring feature (DI, AOP, transactions, security, data access) works exactly the same in Spring Boot. The difference is that Spring Boot auto-configures them based on what's on your classpath, so you only write configuration for the things you want to customize.
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <beans xmlns="http://www.springframework.org/schema/beans">
 
----
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+            <property name="driverClassName" value="org.postgresql.Driver"/>
+            <property name="url" value="jdbc:postgresql://localhost:5432/mydb"/>
+            <property name="username" value="postgres"/>
+            <property name="password" value="secret"/>
+        </bean>
 
-## Core Concepts (The 5 Pillars)
+        <bean id="entityManagerFactory"
+              class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="dataSource" ref="dataSource"/>
+            <property name="packagesToScan" value="com.company.app.model"/>
+            <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+            </property>
+        </bean>
 
-```mermaid
-flowchart LR
-    SB(("🚀 <b>SPRING BOOT</b>"))
-    SB --> P1{{"① <b>Auto Configuration</b><br/>Detects what you need<br/>and configures it"}}
-    SB --> P2{{"② <b>Starter Dependencies</b><br/>One dependency = everything<br/>you need for a feature"}}
-    SB --> P3{{"③ <b>Embedded Server</b><br/>Tomcat built into<br/>your application"}}
-    SB --> P4[["④ <b>Spring IoC</b><br/>Objects managed<br/>by the framework"]]
-    SB --> P5[["⑤ <b>Actuator</b><br/>Monitor your app<br/>in production"]]
+        <bean id="transactionManager"
+              class="org.springframework.orm.jpa.JpaTransactionManager">
+            <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        </bean>
+    </beans>
+    ```
 
-    style SB fill:#FEF3C7,stroke:#FCD34D,stroke-width:2px
-    style P1 fill:#ECFDF5,stroke:#93C5FD
-    style P2 fill:#ECFDF5,stroke:#93C5FD
-    style P3 fill:#ECFDF5,stroke:#93C5FD
-    style P4 fill:#EFF6FF,stroke:#93C5FD
-    style P5 fill:#EFF6FF,stroke:#93C5FD
-```
+That is **100+ lines of XML** — and you still need to download Tomcat, configure it, package a WAR file, and deploy manually.
 
----
-
-### ① Auto Configuration
-
-Auto-configuration is the heart of Spring Boot. When your application starts, Spring Boot scans the classpath to see which libraries are present, then automatically creates and configures the beans those libraries need.
-
-**How it works internally:**
-
-1. Spring Boot loads all classes listed in `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` from every JAR on the classpath.
-2. Each auto-configuration class has `@Conditional` annotations — conditions that must be true for that configuration to activate.
-3. If the conditions are met, the beans defined in that class are created and added to the application context.
+### The AFTER World (Spring Boot)
 
 ```java
-// This is what Spring Boot does behind the scenes for DataSource
-@AutoConfiguration
-@ConditionalOnClass(DataSource.class) // Only if DataSource is on classpath
-@ConditionalOnProperty(name = "spring.datasource.url") // Only if URL is configured
-public class DataSourceAutoConfiguration {
-
-    @Bean
-    @ConditionalOnMissingBean // Only if you haven't defined your own
-    public DataSource dataSource(DataSourceProperties properties) {
-        return properties.initializeDataSourceBuilder().build();
+@SpringBootApplication
+public class OrderServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(OrderServiceApplication.class, args);
     }
 }
 ```
 
-The `@ConditionalOnMissingBean` annotation is critical — it means auto-configuration **backs off** if you define your own bean. This is how Spring Boot provides sensible defaults while remaining fully customizable.
+That's it. **3 lines.** Spring Boot detects you want a web app, embeds Tomcat, configures Jackson for JSON, sets up HikariCP for database connections, and starts everything on port 8080.
 
-!!! tip "Debugging Auto-Configuration"
-    Add `--debug` to your startup command or set `debug=true` in `application.properties`. Spring Boot will print a detailed report showing which auto-configurations were applied and which were skipped, along with the reason.
+!!! danger "What breaks"
+    People who learn Spring Boot without understanding what it replaces often can't debug configuration issues. When auto-configuration fails (and it will), you need to know what Spring Boot is doing under the hood. That's why this page explains the internals.
 
-    ```
-    Positive matches:    (applied)
-    DataSourceAutoConfiguration matched:
-       - @ConditionalOnClass found required class 'javax.sql.DataSource'
-    
-    Negative matches:    (skipped)
-    MongoAutoConfiguration:
-       - @ConditionalOnClass did not find 'com.mongodb.client.MongoClient'
-    ```
+### Comparison Table: Spring Framework vs Spring Boot
 
-**Example:** If you add `spring-boot-starter-data-jpa` to your `pom.xml`, Spring Boot will automatically:
+| Aspect | Spring Framework | Spring Boot |
+|--------|-----------------|-------------|
+| **Configuration** | Manual XML or `@Configuration` classes | Auto-configuration from classpath |
+| **Server** | External Tomcat/WildFly required | Embedded Tomcat in your JAR |
+| **Dependencies** | You manage versions manually | Starter BOMs with tested compatibility |
+| **Setup time** | Hours before first endpoint | Minutes (start.spring.io) |
+| **Deployment** | WAR file to external server | `java -jar app.jar` anywhere |
+| **Monitoring** | Build it yourself | Actuator out of the box |
+| **Learning curve** | Steep (must know everything) | Gentle (just works, learn internals later) |
 
-- Create a `DataSource` connection pool (HikariCP by default)
-- Configure Hibernate as the JPA provider
-- Set up a `PlatformTransactionManager` for `@Transactional` support
-- Create Spring Data JPA repositories from your interfaces
-- Run schema generation or Flyway/Liquibase migrations
+!!! question "Counter-questions"
+    **Q: "Can you use Spring without Boot?"**
+    A: Yes. Spring Boot uses Spring Framework internally. You can still write raw Spring apps with manual configuration. But nobody does this for new projects since 2014.
 
-You write **zero** configuration for any of this. If you want to change the pool size or the dialect, you set a property in `application.yml`.
-
-→ Deep dive: [Auto Configuration](AutoConfiguration.md)
+    **Q: "Is Spring Boot a different framework from Spring?"**
+    A: No. Spring Boot IS Spring Framework + auto-configuration + embedded server + starters. Every Spring concept (DI, AOP, transactions) works identically in Spring Boot.
 
 ---
 
-### ② Starter Dependencies
+## How a Spring Boot App Starts (Internal Flow)
 
-Starters are curated dependency descriptors. Instead of researching which 15 libraries you need for web development (and which versions are compatible), you add one starter and get everything.
-
-```xml
-<!-- This single dependency gives you:
-     - Spring MVC (web framework)
-     - Embedded Tomcat (server)
-     - Jackson (JSON serialization/deserialization)
-     - Bean Validation (input validation)
-     - Logging (SLF4J + Logback) -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-web</artifactId>
-</dependency>
-```
-
-| Starter | What You Get | Typical Use Case |
-|---------|-------------|-----------------|
-| `spring-boot-starter-web` | Spring MVC, Tomcat, Jackson, Validation | REST APIs, web applications |
-| `spring-boot-starter-data-jpa` | Hibernate, HikariCP, Spring Data JPA | Database access with ORM |
-| `spring-boot-starter-security` | Spring Security, authentication filters | Authentication, authorization, OAuth2 |
-| `spring-boot-starter-test` | JUnit 5, Mockito, Spring Test, AssertJ | Unit and integration testing |
-| `spring-boot-starter-validation` | Hibernate Validator, Jakarta Validation | Input validation with `@Valid` |
-| `spring-boot-starter-actuator` | Micrometer, health endpoints | Production monitoring |
-| `spring-boot-starter-cache` | Spring Cache abstraction | Method-level caching |
-| `spring-boot-starter-mail` | JavaMail, Spring Mail | Sending emails |
-
-!!! warning "Version Management"
-    Never specify versions for starter dependencies manually. The Spring Boot parent POM (`spring-boot-starter-parent`) manages all versions through a BOM (Bill of Materials). This guarantees that all libraries are tested together and compatible. If you override a version, you take responsibility for compatibility.
-
----
-
-### ③ Embedded Server
-
-Traditional Java web applications are packaged as WAR files and deployed to an external application server. This creates a tight coupling between your application and the server's configuration, classloader, and lifecycle.
-
-Spring Boot **inverts** this model — the server is embedded inside your application. Your application is a self-contained JAR that includes everything it needs to run.
+This is the most asked interview question about Spring Boot internals. Here is exactly what happens when you call `SpringApplication.run()`:
 
 ```mermaid
-flowchart LR
-    subgraph Traditional["Traditional Approach"]
-        direction LR
-        A1[/"Your Code (WAR)"/] --> A2{{"Deploy to Tomcat"}}
-        A2 --> A3{{"Configure Server"}}
-    end
+sequenceDiagram
+    participant M as main()
+    participant SA as SpringApplication
+    participant CTX as ApplicationContext
+    participant AC as AutoConfiguration
+    participant T as Embedded Tomcat
+    participant APP as Your Application
 
-    subgraph SpringBoot["Spring Boot Approach"]
-        direction LR
-        B1[/"Your Code + Tomcat (JAR)"/] --> B2(["java -jar app.jar"])
-    end
-
-    style Traditional fill:#FEE2E2,stroke:#FCA5A5
-    style SpringBoot fill:#ECFDF5,stroke:#93C5FD
+    M->>SA: SpringApplication.run(MyApp.class, args)
+    SA->>SA: 1. Determine WebApplicationType<br/>(SERVLET, REACTIVE, or NONE)
+    SA->>SA: 2. Load SpringApplicationRunListeners
+    SA->>SA: 3. Prepare Environment<br/>(read application.yml, env vars, CLI args)
+    SA->>CTX: 4. Create ApplicationContext<br/>(AnnotationConfigServletWebServerApplicationContext)
+    CTX->>CTX: 5. Load BeanDefinitions<br/>(component scan your package)
+    CTX->>AC: 6. Process AutoConfiguration<br/>(evaluate @Conditional annotations)
+    AC->>CTX: Register auto-configured beans
+    CTX->>CTX: 7. Refresh Context<br/>(instantiate singletons, wire dependencies)
+    CTX->>T: 8. Start Embedded Tomcat<br/>(bind to port, register DispatcherServlet)
+    T-->>CTX: Server started on port 8080
+    CTX->>APP: 9. Fire ApplicationStartedEvent
+    CTX->>APP: 10. Run CommandLineRunners / ApplicationRunners
+    CTX->>APP: 11. Fire ApplicationReadyEvent
+    APP-->>M: Application is READY to serve requests
 ```
 
-Just run: `java -jar myapp.jar` — done.
+### Step-by-Step Breakdown
 
-| Server | Default? | Best For | Performance |
-|--------|----------|----------|-------------|
-| **Tomcat** | Yes | General purpose, most teams | Good all-around |
-| **Jetty** | No | Lightweight, async-heavy apps | Better for long-lived connections |
-| **Undertow** | No | High-performance, non-blocking | Best throughput in benchmarks |
+| Step | What Happens | Key Class |
+|------|-------------|-----------|
+| 1 | Checks if `Servlet` or `Reactive` classes are on classpath | `WebApplicationType.deduceFromClasspath()` |
+| 2 | Loads listeners from `META-INF/spring.factories` | `SpringApplicationRunListener` |
+| 3 | Merges properties from 17+ sources (env vars > CLI > yml > defaults) | `ConfigurableEnvironment` |
+| 4 | Creates the right context type for your app | `AnnotationConfigServletWebServerApplicationContext` |
+| 5 | Scans your root package + sub-packages for `@Component` classes | `ClassPathBeanDefinitionScanner` |
+| 6 | Evaluates all auto-configuration classes and their conditions | `AutoConfigurationImportSelector` |
+| 7 | Creates all singleton beans, resolves dependencies, injects them | `DefaultListableBeanFactory` |
+| 8 | Starts Tomcat, registers `DispatcherServlet` on `/` | `TomcatWebServer` |
+| 9-11 | Signals that the app is started and ready | `ApplicationEvent` |
 
-To switch servers, exclude Tomcat and add the alternative:
+!!! example "Interview Tip"
+    When asked "What happens when you run a Spring Boot application?", walk through this flow. Mention the **ApplicationContext type** (most candidates don't know it's `AnnotationConfigServletWebServerApplicationContext`), the **order of events** (Started before Ready), and that **auto-configuration evaluates AFTER component scanning** (your beans override auto-configured ones).
+
+!!! question "Counter-questions"
+    **Q: "What's the difference between ApplicationStartedEvent and ApplicationReadyEvent?"**
+    A: `ApplicationStartedEvent` fires after the context is refreshed but BEFORE `CommandLineRunner`/`ApplicationRunner` beans execute. `ApplicationReadyEvent` fires AFTER runners complete — meaning the app is fully ready to serve traffic.
+
+    **Q: "How does Spring Boot decide between SERVLET and REACTIVE?"**
+    A: If `DispatcherServlet` is on classpath → SERVLET. If `DispatcherHandler` (WebFlux) is on classpath → REACTIVE. If neither → NONE (no web server started).
+
+---
+
+## The Request Lifecycle (HTTP to Response)
+
+When a browser hits `GET /api/restaurants/42`, here is every component the request passes through:
+
+```mermaid
+sequenceDiagram
+    participant B as Browser/Client
+    participant T as Tomcat (NIO Connector)
+    participant F as Filter Chain<br/>(Security, CORS, Logging)
+    participant DS as DispatcherServlet<br/>(Front Controller)
+    participant HM as HandlerMapping<br/>(URL → Controller method)
+    participant HA as HandlerAdapter<br/>(invoke method + resolve args)
+    participant C as @RestController<br/>(Your Code)
+    participant MC as HttpMessageConverter<br/>(Jackson → JSON)
+
+    B->>T: HTTP Request<br/>GET /api/restaurants/42
+    T->>F: Parsed HttpServletRequest
+    F->>DS: Request passes all filters
+    DS->>HM: Find handler for GET /api/restaurants/{id}
+    HM-->>DS: RestaurantController.getById(Long id)
+    DS->>HA: Invoke handler method
+    HA->>C: Call getById(42)<br/>(PathVariable resolved)
+    C-->>HA: Returns RestaurantDTO object
+    HA->>MC: Serialize DTO to JSON
+    MC-->>DS: JSON response body
+    DS-->>F: HttpServletResponse
+    F-->>T: Response passes filters
+    T-->>B: HTTP 200 OK<br/>{"id":42,"name":"Pizza Palace",...}
+```
+
+### What Each Component Does
+
+| Component | Responsibility | What Happens If It Fails |
+|-----------|---------------|--------------------------|
+| **Tomcat NIO Connector** | Accept TCP connections, parse HTTP | Connection refused / timeout |
+| **Filter Chain** | Cross-cutting: auth, CORS, request logging | 401/403 before controller is reached |
+| **DispatcherServlet** | Route request to correct handler | 404 — no handler found |
+| **HandlerMapping** | Match URL pattern + HTTP method to controller method | 404 or 405 Method Not Allowed |
+| **HandlerAdapter** | Resolve `@PathVariable`, `@RequestBody`, `@Valid` | 400 Bad Request (validation failure) |
+| **Your Controller** | Business logic delegation | 500 (or your custom exception → proper status) |
+| **HttpMessageConverter** | Serialize response object to JSON/XML | 500 — serialization failure |
+
+!!! tip "One-liner for interviews"
+    "Every request goes through: Tomcat → Filters → DispatcherServlet → HandlerMapping → HandlerAdapter → Controller → MessageConverter → Response. The DispatcherServlet is the front controller pattern — one entry point that dispatches to the correct handler."
+
+---
+
+## Spring Boot vs Spring Framework vs Spring MVC
+
+This is one of the most confused topics in interviews. Let me make it crystal clear:
+
+```mermaid
+flowchart TB
+    subgraph SF["Spring Framework (The Engine)"]
+        direction LR
+        IOC["IoC Container<br/>Dependency Injection"]
+        AOP["AOP<br/>Cross-cutting concerns"]
+        TX["Transactions<br/>@Transactional"]
+        JDBC["JDBC/ORM<br/>Data access abstraction"]
+    end
+
+    subgraph MVC["Spring MVC (The Steering)"]
+        direction LR
+        DS2["DispatcherServlet"]
+        RM["Request Mapping"]
+        VR["View Resolution"]
+        MC2["Message Converters"]
+    end
+
+    subgraph SB2["Spring Boot (The Car)"]
+        direction LR
+        AUTO["Auto-Configuration"]
+        STAR["Starters"]
+        EMB["Embedded Server"]
+        ACT["Actuator"]
+    end
+
+    SB2 -->|"configures"| MVC
+    SB2 -->|"configures"| SF
+    MVC -->|"built on"| SF
+
+    style SF fill:#DBEAFE,stroke:#3B82F6
+    style MVC fill:#FEF3C7,stroke:#F59E0B
+    style SB2 fill:#D1FAE5,stroke:#10B981
+```
+
+| | Spring Framework | Spring MVC | Spring Boot |
+|---|---|---|---|
+| **What** | Core container — IoC, AOP, abstractions | Web module — controllers, request mapping, REST | Scaffolding — auto-configures everything |
+| **Scope** | Foundation for ALL Spring projects | Only web layer (HTTP handling) | Orchestrator that ties everything together |
+| **Requires** | Nothing (it IS the base) | Spring Framework | Spring Framework + your choice of modules |
+| **Standalone?** | Yes, but manual config | No, needs Spring Framework | No, IS Spring Framework + extras |
+
+**Analogy:** Spring Framework is the engine. Spring MVC is the steering wheel and transmission. Spring Boot is buying a fully assembled car instead of sourcing parts from a junkyard.
+
+!!! example "Interview Tip"
+    Never say "Spring Boot is a replacement for Spring" — that's wrong. Say: "Spring Boot is a layer on top of Spring Framework that auto-configures Spring modules (including Spring MVC) based on classpath detection, eliminating manual configuration while keeping full customization capability."
+
+---
+
+## Project Structure (Production-Grade)
+
+Here's how a real food delivery backend service is organized — not a tutorial project, a production one:
+
+```
+com.company.orderservice/
+├── OrderServiceApplication.java         ← Main class (MUST be at root package!)
+├── config/                              ← @Configuration classes
+│   ├── SecurityConfig.java              ← CORS, JWT filter, endpoint security
+│   ├── AsyncConfig.java                 ← Thread pool for @Async methods
+│   └── SwaggerConfig.java              ← OpenAPI documentation (dev only)
+├── controller/                          ← @RestController (THIN! No business logic)
+│   ├── OrderController.java             ← HTTP concerns only
+│   └── RestaurantController.java
+├── service/                             ← @Service (ALL business logic lives HERE)
+│   ├── OrderService.java                ← Order creation, status transitions
+│   ├── PricingService.java              ← Delivery fee calculation
+│   └── NotificationService.java         ← Push notifications, emails
+├── repository/                          ← @Repository (data access)
+│   ├── OrderRepository.java             ← Spring Data JPA interface
+│   └── RestaurantRepository.java
+├── model/
+│   ├── entity/                          ← JPA entities (map to DB tables)
+│   │   ├── Order.java
+│   │   └── Restaurant.java
+│   └── dto/                             ← Request/Response objects (API contract)
+│       ├── CreateOrderRequest.java
+│       ├── OrderResponse.java
+│       └── RestaurantDTO.java
+├── exception/                           ← Custom exceptions + global handler
+│   ├── OrderNotFoundException.java
+│   ├── RestaurantClosedException.java
+│   └── GlobalExceptionHandler.java      ← @ControllerAdvice
+└── util/                                ← Helpers (use SPARINGLY)
+    └── DistanceCalculator.java
+```
+
+### Why This Structure?
+
+**Layered architecture + component scanning:**
+
+1. **Main class at root package** — `@ComponentScan` scans the package of `@SpringBootApplication` and ALL sub-packages. If `OrderServiceApplication` is in `com.company.orderservice`, everything in sub-packages gets picked up automatically. Put it in `com.company.orderservice.app`? Your controllers won't be found.
+
+2. **Controllers are THIN** — They handle HTTP concerns only: extract path variables, validate request bodies, set response status codes, call the service. Zero business logic. Why? Because controllers are hard to unit test (they need MockMvc), but services are trivial to test.
+
+3. **Services own the logic** — All business rules, calculations, orchestration between repositories, transaction boundaries. This is where your interview answer "separation of concerns" actually lives.
+
+4. **DTOs separate API from database** — Never return JPA entities from controllers. Your database schema is NOT your API contract. Add a column? That shouldn't break your mobile app.
+
+!!! danger "What breaks"
+    **Main class in wrong package:** If your main class is in `com.company.orderservice.app` but your controllers are in `com.company.orderservice.controller`, they will NOT be scanned. You'll get 404 on every endpoint with no error message. This is the #1 Spring Boot debugging headache for beginners.
+
+---
+
+## application.yml — Essential Properties
+
+Here's a production-ready configuration for our food delivery Order Service, grouped by concern:
+
+```yaml
+# ═══════════════════════════════════════════════════════════════
+# SERVER
+# ═══════════════════════════════════════════════════════════════
+server:
+  port: 8080                              # Default: 8080. Change for multiple services on same host.
+  shutdown: graceful                      # Wait for active requests to finish on shutdown
+  tomcat:
+    max-threads: 200                      # Default: 200. Tune based on load testing.
+    connection-timeout: 5s                # Drop idle connections after 5 seconds
+    accept-count: 100                     # Queue size when all threads are busy
+
+# ═══════════════════════════════════════════════════════════════
+# DATABASE
+# ═══════════════════════════════════════════════════════════════
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/orderservice
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD}              # NEVER hardcode. Use env var or secrets manager.
+    hikari:
+      maximum-pool-size: 20              # Default: 10. Formula: connections = (core_count * 2) + disk_spindles
+      minimum-idle: 5
+      connection-timeout: 30000          # 30s — fail fast if pool is exhausted
+      idle-timeout: 600000               # 10min — release idle connections
+
+  # ═══════════════════════════════════════════════════════════════
+  # JPA / HIBERNATE
+  # ═══════════════════════════════════════════════════════════════
+  jpa:
+    open-in-view: false                  # ⚠️  DEFAULT IS TRUE. Set to FALSE always!
+    hibernate:
+      ddl-auto: validate                 # NEVER 'update' in prod! Use Flyway/Liquibase.
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_batch_fetch_size: 16     # Reduce N+1 queries
+        order_inserts: true              # Batch inserts for performance
+        order_updates: true
+    show-sql: false                      # true only in dev
+
+# ═══════════════════════════════════════════════════════════════
+# LOGGING
+# ═══════════════════════════════════════════════════════════════
+logging:
+  level:
+    com.company.orderservice: INFO       # Your app
+    org.springframework.web: WARN        # Framework noise
+    org.hibernate.SQL: WARN              # Set to DEBUG to see queries (dev only)
+    org.hibernate.type.descriptor: WARN  # Set to TRACE to see bind parameters
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# ═══════════════════════════════════════════════════════════════
+# ACTUATOR
+# ═══════════════════════════════════════════════════════════════
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized       # Don't leak internals to public
+      probes:
+        enabled: true                     # Kubernetes liveness/readiness
+  metrics:
+    tags:
+      application: order-service          # Tag all metrics with service name
+```
+
+### Critical Properties Explained
+
+| Property | Default | Why You Should Care |
+|----------|---------|-------------------|
+| `spring.jpa.open-in-view` | `true` | **Set to `false`!** When true, keeps a DB connection open for the ENTIRE HTTP request, including JSON serialization. Lazy-loaded collections fire queries in your controller layer. This hides N+1 bugs and exhausts your connection pool under load. |
+| `spring.jpa.hibernate.ddl-auto` | `none` | Options: `none`, `validate`, `update`, `create`, `create-drop`. In production, ONLY use `validate` (verifies schema matches entities) or `none`. The `update` option modifies your production schema without migration history! |
+| `server.shutdown` | `immediate` | Set to `graceful`. Without this, active requests get killed during deployment. Graceful shutdown waits for in-flight requests to complete (up to 30s by default). |
+| `spring.datasource.hikari.maximum-pool-size` | `10` | Most apps need 15-30. Too few = threads waiting for connections. Too many = database overwhelmed. Profile first, tune second. |
+
+!!! danger "What breaks"
+    **`ddl-auto=update` in production:** Hibernate will ALTER your production tables. It can add columns but NEVER removes them. It doesn't handle data migration. It doesn't create indexes. One day it'll lock a table with 10M rows for 30 minutes. Use Flyway.
+
+    **`open-in-view=true` (the default!):** Your controller returns an entity with a lazy `List<OrderItem>`. Jackson serializes it, triggering a SELECT for every order item. You get N+1 queries, a connection held for 200ms instead of 20ms, and eventually `HikariPool-1 - Connection is not available, request timed out after 30000ms`.
+
+---
+
+## Profiles
+
+### What
+
+Profiles let you run the same application with different configurations for different environments. Your dev machine uses H2 in-memory database, but production uses PostgreSQL with a connection pool.
+
+### Why
+
+You don't want to comment/uncomment database URLs every time you deploy. You don't want Swagger exposed in production. You don't want debug logging flooding your prod logs.
+
+### How
+
+=== "application-dev.yml"
+
+    ```yaml
+    spring:
+      datasource:
+        url: jdbc:h2:mem:orderservice       # In-memory DB, fast, no setup
+        driver-class-name: org.h2.Driver
+      jpa:
+        hibernate:
+          ddl-auto: create-drop             # Recreate schema every restart
+        show-sql: true                      # See all SQL in console
+      h2:
+        console:
+          enabled: true                     # H2 web console at /h2-console
+
+    logging:
+      level:
+        com.company.orderservice: DEBUG     # Verbose logging for development
+        org.hibernate.SQL: DEBUG
+
+    springdoc:
+      swagger-ui:
+        enabled: true                       # Swagger UI available
+    ```
+
+=== "application-prod.yml"
+
+    ```yaml
+    spring:
+      datasource:
+        url: jdbc:postgresql://${DB_HOST}:5432/orderservice
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+      jpa:
+        hibernate:
+          ddl-auto: validate                # Only verify schema matches entities
+        show-sql: false
+
+    logging:
+      level:
+        com.company.orderservice: WARN      # Only warnings and errors
+        org.springframework: WARN
+
+    springdoc:
+      swagger-ui:
+        enabled: false                      # No Swagger in production!
+
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: health,info,prometheus  # Locked down actuator
+    ```
+
+=== "Activation"
+
+    ```bash
+    # Option 1: Environment variable (recommended for containers)
+    export SPRING_PROFILES_ACTIVE=prod
+    java -jar order-service.jar
+
+    # Option 2: Command-line argument
+    java -jar order-service.jar --spring.profiles.active=prod
+
+    # Option 3: In application.yml (for default profile)
+    # spring.profiles.active: dev
+    ```
+
+### Profile-Specific Beans
+
+```java
+@Configuration
+@Profile("dev")
+public class DevConfig {
+
+    // Mock external payment service in dev — no real charges
+    @Bean
+    public PaymentGateway paymentGateway() {
+        return new MockPaymentGateway(); // Always returns success
+    }
+}
+
+@Configuration
+@Profile("prod")
+public class ProdConfig {
+
+    @Bean
+    public PaymentGateway paymentGateway(
+            @Value("${stripe.api-key}") String apiKey) {
+        return new StripePaymentGateway(apiKey); // Real Stripe integration
+    }
+}
+```
+
+!!! tip "One-liner for interviews"
+    "Profiles provide environment-specific configuration. Profile-specific YAML files override base properties, and `@Profile` annotations conditionally create beans. Activated via `SPRING_PROFILES_ACTIVE` environment variable — the most container-friendly approach."
+
+---
+
+## Starters — What They Actually Do
+
+Starters are not magic. Each one is just a `pom.xml` that pulls in a curated set of dependencies. Here is what you actually get:
+
+### `spring-boot-starter-web`
+
+| Dependency | Purpose |
+|-----------|---------|
+| Spring MVC | `@RestController`, `@RequestMapping`, `DispatcherServlet` |
+| Embedded Tomcat | Web server inside your JAR |
+| Jackson (`jackson-databind`) | JSON serialization/deserialization |
+| Bean Validation (Hibernate Validator) | `@Valid`, `@NotNull`, `@Size` |
+| SLF4J + Logback | Logging framework |
+| Spring Boot AutoConfigure | Auto-config for all the above |
+
+### `spring-boot-starter-data-jpa`
+
+| Dependency | Purpose |
+|-----------|---------|
+| Hibernate (JPA implementation) | ORM — map objects to tables |
+| HikariCP | Connection pool (fastest in Java) |
+| Spring Data JPA | Repository interfaces, query derivation |
+| Spring JDBC | Low-level database access |
+| Spring Transaction | `@Transactional` support |
+
+### Switching Embedded Servers
+
+Want Jetty instead of Tomcat? Exclude one, add the other:
 
 ```xml
 <dependency>
@@ -242,454 +619,432 @@ To switch servers, exclude Tomcat and add the alternative:
         </exclusion>
     </exclusions>
 </dependency>
+
 <dependency>
     <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-undertow</artifactId>
+    <artifactId>spring-boot-starter-jetty</artifactId>
 </dependency>
 ```
 
-!!! info "Container Deployment"
-    The embedded server model is perfect for containers (Docker/Kubernetes). Each container runs a single JAR — no need to install and configure Tomcat inside the container image. This makes your Docker images smaller, faster to build, and easier to manage.
+Spring Boot's auto-configuration detects Jetty on classpath (not Tomcat), and starts Jetty instead. Zero code changes. This is the power of classpath-based auto-configuration.
+
+!!! question "Counter-questions"
+    **Q: "How does Spring Boot know to start Jetty instead of Tomcat?"**
+    A: `ServletWebServerFactoryAutoConfiguration` has `@ConditionalOnClass` checks. It looks for `Tomcat.class`, `Server.class` (Jetty), or `Undertow.class` — whichever is on classpath gets configured.
 
 ---
 
-### ④ Spring IoC (Inversion of Control)
+## Common Mistakes (With Fixes)
 
-Instead of **you** creating objects and managing their dependencies, Spring creates and manages them for you. This is called **Inversion of Control** — the framework controls the object lifecycle, not your code.
+### 1. Main Class in Wrong Package
 
 ```java
-// ❌ Without Spring — you manage everything manually
-// Every time you need PaymentService, you create all its dependencies
-PaymentService paymentService = new PaymentService(
-    new StripePaymentGateway(new HttpClient(), new RetryTemplate()),
-    new EmailNotificationService(new SmtpMailSender("smtp.gmail.com")),
-    new DatabaseAuditLogger(new JdbcTemplate(dataSource))
-);
+// ❌ WRONG — controllers in com.company.order.controller won't be found!
+package com.company.order.app;
 
-// ✅ With Spring — just declare the dependency
+@SpringBootApplication
+public class OrderServiceApplication { ... }
+```
+
+```java
+// ✅ CORRECT — main class at the ROOT of your package hierarchy
+package com.company.order;
+
+@SpringBootApplication
+public class OrderServiceApplication { ... }
+```
+
+**Why:** `@ComponentScan` scans the package of `@SpringBootApplication` and sub-packages. `com.company.order.app` does NOT scan `com.company.order.controller`.
+
+### 2. `open-in-view=true` (The Silent Killer)
+
+```java
+// This looks innocent...
+@GetMapping("/orders/{id}")
+public Order getOrder(@PathVariable Long id) {
+    return orderRepository.findById(id).orElseThrow();
+    // But Order has @OneToMany List<OrderItem> items (LAZY)
+    // Jackson serializes it → triggers SELECT for items
+    // Connection held during entire serialization!
+}
+```
+
+**Fix:** Use DTOs. Fetch everything you need in the service layer with explicit joins:
+
+```java
 @Service
 public class OrderService {
-
-    private final PaymentService paymentService;
-
-    // Spring automatically injects the right PaymentService instance
-    // along with all of ITS dependencies, recursively
-    public OrderService(PaymentService paymentService) {
-        this.paymentService = paymentService;
+    public OrderResponse getOrder(Long id) {
+        Order order = orderRepository.findByIdWithItems(id); // JOIN FETCH
+        return OrderResponse.from(order); // Map to DTO in service layer
     }
 }
 ```
 
-Spring manages all your objects (called **beans**) in an **Application Context** — a container that holds every bean and knows how to wire them together. When your application starts:
-
-1. Spring scans your packages for classes annotated with `@Component`, `@Service`, `@Repository`, `@Controller`
-2. It creates instances of these classes (beans)
-3. It resolves their dependencies by looking at constructor parameters
-4. It injects the right bean into each dependency
-
-!!! tip "Constructor Injection is Preferred"
-    Always use **constructor injection** (not `@Autowired` on fields). Constructor injection makes dependencies explicit, supports immutability (`final` fields), and makes testing easier — you can pass mocks directly through the constructor without reflection.
-
-→ Deep dive: [IoC & Dependency Injection](SpringIOC.md) | [Types of DI](typesofdi.md)
-
----
-
-### ⑤ Actuator — Monitor Your App
-
-In production, you need visibility into your application's health, performance, and behavior. Actuator provides this out of the box — no custom code required.
-
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-actuator</artifactId>
-</dependency>
-```
+### 3. `ddl-auto=update` in Production
 
 ```yaml
-# application.yml
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info, metrics, env, beans
-  endpoint:
-    health:
-      show-details: always
+# ❌ This will ALTER your production database!
+spring.jpa.hibernate.ddl-auto: update
 ```
 
-| Endpoint | What It Shows | Production Use |
-|----------|--------------|----------------|
-| `/actuator/health` | App status, DB connection, disk space | Load balancer health checks, Kubernetes liveness/readiness probes |
-| `/actuator/metrics` | JVM memory, CPU, HTTP request counts, response times | Prometheus scraping → Grafana dashboards |
-| `/actuator/env` | All configuration properties and their sources | Debugging which config file overrode which property |
-| `/actuator/beans` | Every bean in the application context | Debugging dependency injection issues |
-| `/actuator/info` | Build info, git commit, custom app info | Identifying which version is deployed |
-| `/actuator/loggers` | Logger levels — can change at runtime | Enabling DEBUG logging in production without restart |
+**What happens:** You add a `@Column` to an entity. Hibernate issues `ALTER TABLE orders ADD COLUMN discount DECIMAL(19,2)`. On a table with 50M rows, this locks the table for minutes. No migration history. No rollback. No review.
 
-!!! warning "Security"
-    Never expose all actuator endpoints in production without authentication. Endpoints like `/env` and `/beans` reveal sensitive internal details. In production, expose only `/health` and `/info` publicly, and protect everything else behind Spring Security.
+**Fix:** Use Flyway:
 
-→ Deep dive: [Actuator & Monitoring](actuator.md)
+```sql
+-- V3__add_discount_to_orders.sql
+ALTER TABLE orders ADD COLUMN discount DECIMAL(10,2) DEFAULT 0.00;
+CREATE INDEX idx_orders_discount ON orders(discount) WHERE discount > 0;
+```
+
+### 4. Circular Dependencies
+
+```java
+// ❌ ServiceA needs ServiceB, ServiceB needs ServiceA
+@Service
+public class OrderService {
+    private final PaymentService paymentService; // → needs OrderService
+}
+
+@Service
+public class PaymentService {
+    private final OrderService orderService; // → needs PaymentService → BOOM
+}
+```
+
+**Fix:** Don't `@Lazy`-patch it. Redesign. Extract the shared logic into a third service, or use events:
+
+```java
+@Service
+public class OrderService {
+    private final ApplicationEventPublisher events;
+
+    public void completeOrder(Long orderId) {
+        // ... business logic
+        events.publishEvent(new OrderCompletedEvent(orderId));
+    }
+}
+
+@Service
+public class PaymentService {
+    @EventListener
+    public void handleOrderCompleted(OrderCompletedEvent event) {
+        // Process payment after order is complete
+    }
+}
+```
+
+### 5. Not Closing Resources (Connection Pool Exhaustion)
+
+```java
+// ❌ Long-running operation holds connection
+@Transactional
+public void generateMonthlyReport() {
+    List<Order> orders = orderRepository.findAllByMonth(month); // Holds connection
+    pdfService.generatePdf(orders); // Takes 30 seconds!
+    emailService.send(pdf); // Takes 5 seconds!
+    // Connection held for 35 seconds. Pool size is 10. 10 concurrent requests = deadlock.
+}
+```
+
+**Fix:** Separate data fetch from processing:
+
+```java
+public void generateMonthlyReport() {
+    List<Order> orders = orderRepository.findAllByMonth(month); // Connection released here
+    byte[] pdf = pdfService.generatePdf(orders); // No connection needed
+    emailService.send(pdf); // No connection needed
+}
+```
 
 ---
 
-## Your First Spring Boot App (5 Minutes)
+## Real Example: Food Delivery Order Service
 
-=== "Step 1: Create Project"
+Let's build a real endpoint for our Swiggy/DoorDash-style Order Service. This is production code — validation, error handling, proper layering:
 
-    Go to [start.spring.io](https://start.spring.io) and select:
-
-    - **Project:** Maven
-    - **Language:** Java 17+
-    - **Spring Boot:** 3.x (latest stable)
-    - **Dependencies:** Spring Web
-
-    Click **Generate** → Download → Unzip → Open in your IDE
-
-=== "Step 2: Understand the Entry Point"
-
-    ```java
-    @SpringBootApplication // Combines @Configuration + @EnableAutoConfiguration + @ComponentScan
-    public class MyAppApplication {
-
-        public static void main(String[] args) {
-            // This single line starts Tomcat, loads all configs, creates all beans
-            SpringApplication.run(MyAppApplication.class, args);
-        }
-    }
-    ```
-
-    `@SpringBootApplication` is a convenience annotation that combines three annotations:
-
-    - `@Configuration` — This class can define beans via `@Bean` methods
-    - `@EnableAutoConfiguration` — Turn on auto-configuration
-    - `@ComponentScan` — Scan this package and sub-packages for components
-
-=== "Step 3: Write a Controller"
+=== "Controller (Thin)"
 
     ```java
     @RestController
-    @RequestMapping("/api")
-    public class HelloController {
+    @RequestMapping("/api/v1/orders")
+    @RequiredArgsConstructor
+    public class OrderController {
 
-        @GetMapping("/hello")
-        public String hello() {
-            return "Hello, World!";
+        private final OrderService orderService;
+
+        @PostMapping
+        @ResponseStatus(HttpStatus.CREATED)
+        public OrderResponse createOrder(@Valid @RequestBody CreateOrderRequest request) {
+            return orderService.createOrder(request);
         }
 
-        @GetMapping("/hello/{name}")
-        public Map<String, String> greet(@PathVariable String name) {
-            return Map.of("message", "Hello, " + name + "!");
+        @GetMapping("/{orderId}")
+        public OrderResponse getOrder(@PathVariable UUID orderId) {
+            return orderService.getOrder(orderId);
+        }
+
+        @PatchMapping("/{orderId}/status")
+        public OrderResponse updateStatus(
+                @PathVariable UUID orderId,
+                @Valid @RequestBody UpdateStatusRequest request) {
+            return orderService.updateStatus(orderId, request.getStatus());
         }
     }
     ```
 
-=== "Step 4: Run It"
+=== "Service (Business Logic)"
 
-    ```bash
-    ./mvnw spring-boot:run
+    ```java
+    @Service
+    @RequiredArgsConstructor
+    @Transactional(readOnly = true)
+    public class OrderService {
+
+        private final OrderRepository orderRepository;
+        private final RestaurantRepository restaurantRepository;
+        private final PricingService pricingService;
+        private final ApplicationEventPublisher events;
+
+        @Transactional
+        public OrderResponse createOrder(CreateOrderRequest request) {
+            // 1. Validate restaurant is open
+            Restaurant restaurant = restaurantRepository
+                    .findById(request.getRestaurantId())
+                    .orElseThrow(() -> new RestaurantNotFoundException(request.getRestaurantId()));
+
+            if (!restaurant.isOpen()) {
+                throw new RestaurantClosedException(restaurant.getName());
+            }
+
+            // 2. Calculate pricing
+            Money deliveryFee = pricingService.calculateDeliveryFee(
+                    restaurant.getLocation(), request.getDeliveryAddress());
+            Money subtotal = pricingService.calculateSubtotal(request.getItems());
+
+            // 3. Create order
+            Order order = Order.builder()
+                    .id(UUID.randomUUID())
+                    .restaurantId(restaurant.getId())
+                    .customerId(request.getCustomerId())
+                    .items(mapToOrderItems(request.getItems()))
+                    .subtotal(subtotal)
+                    .deliveryFee(deliveryFee)
+                    .status(OrderStatus.PLACED)
+                    .createdAt(Instant.now())
+                    .build();
+
+            Order saved = orderRepository.save(order);
+
+            // 4. Publish event (notify restaurant, start delivery matching)
+            events.publishEvent(new OrderPlacedEvent(saved.getId()));
+
+            return OrderResponse.from(saved);
+        }
+
+        public OrderResponse getOrder(UUID orderId) {
+            return orderRepository.findById(orderId)
+                    .map(OrderResponse::from)
+                    .orElseThrow(() -> new OrderNotFoundException(orderId));
+        }
+    }
     ```
 
-    Open browser → `http://localhost:8080/api/hello` → You'll see `Hello, World!`
+=== "Repository (Data Access)"
 
-    Try `http://localhost:8080/api/hello/Vamsi` → You'll see `{"message":"Hello, Vamsi!"}`
+    ```java
+    public interface OrderRepository extends JpaRepository<Order, UUID> {
 
-That's it. No XML. No external server. No complex setup.
+        // Spring Data generates the query from the method name
+        List<Order> findByCustomerIdAndStatus(UUID customerId, OrderStatus status);
 
----
-
-## How a Request Flows Through Spring Boot
-
-```mermaid
-flowchart LR
-    Client(("🌐 Browser / Client")) --> DS{{"DispatcherServlet<br/>(Front Controller)"}}
-    DS --> HM{{"Handler Mapping<br/>(Which controller?)"}}
-    HM --> C[["Your Controller<br/>(@GetMapping, @PostMapping)"]]
-    C --> S[["Service Layer<br/>(Business Logic)"]]
-    S --> R[["Repository / DAO<br/>(Database Access)"]]
-    R --> DB(("🗄️ Database"))
-    DB --> R
-    R --> S
-    S --> C
-    C --> DS
-    DS --> Client
-
-    style Client fill:#DBEAFE,stroke:#93C5FD
-    style DS fill:#FEF3C7,stroke:#FCD34D
-    style C fill:#ECFDF5,stroke:#93C5FD
-    style S fill:#ECFDF5,stroke:#93C5FD
-    style R fill:#ECFDF5,stroke:#93C5FD
-    style DB fill:#EFF6FF,stroke:#93C5FD
-```
-
-Every HTTP request in a Spring Boot application follows this path:
-
-1. **Client** sends a request (e.g., `GET /api/users/42`)
-2. **Embedded Tomcat** receives the raw HTTP request and forwards it to the `DispatcherServlet`
-3. **DispatcherServlet** is the front controller — the single entry point for all requests. It consults the `HandlerMapping` to find which controller method handles this URL pattern.
-4. **Handler Mapping** matches `/api/users/{id}` with `@GetMapping("/{id}")` to find `UserController.getById()`. It also resolves path variables, request parameters, and headers.
-5. **Controller** receives the request with parameters already extracted and validated. It delegates business logic to the service layer. Controllers should be thin — no business logic here.
-6. **Service Layer** contains all business rules, validation, and orchestration. It coordinates between multiple repositories if needed, handles transactions, and applies domain logic.
-7. **Repository** translates method calls into database queries. Spring Data JPA generates the SQL automatically from method names like `findByEmailAndStatus()`.
-8. **Response flows back** — the repository returns entities, the service transforms them into DTOs, the controller returns the DTO, and Spring's `HttpMessageConverter` (Jackson) serializes it to JSON.
-
-!!! tip "Layered Architecture"
-    Each layer has a specific responsibility:
-
-    - **Controller** → HTTP concerns (request mapping, validation, response codes)
-    - **Service** → Business logic (rules, calculations, orchestration)
-    - **Repository** → Data access (queries, persistence)
-
-    Never skip layers. A controller should never call a repository directly — always go through the service, even if the service just delegates. This keeps your code testable and maintainable as complexity grows.
-
----
-
-## Request Mapping — Routing URLs to Code
-
-```java
-@RestController
-@RequestMapping("/api/users")
-public class UserController {
-
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
+        // Custom query when method name gets too complex
+        @Query("""
+            SELECT o FROM Order o
+            JOIN FETCH o.items
+            WHERE o.restaurantId = :restaurantId
+            AND o.status IN :statuses
+            AND o.createdAt > :since
+            ORDER BY o.createdAt DESC
+            """)
+        List<Order> findRecentByRestaurant(
+                @Param("restaurantId") UUID restaurantId,
+                @Param("statuses") List<OrderStatus> statuses,
+                @Param("since") Instant since);
     }
+    ```
 
-    @GetMapping                    // GET /api/users
-    public List<UserDTO> getAll() {
-        return userService.findAll();
-    }
-
-    @GetMapping("/{id}")           // GET /api/users/123
-    public UserDTO getById(@PathVariable Long id) {
-        return userService.findById(id);
-    }
-
-    @PostMapping                   // POST /api/users
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO create(@Valid @RequestBody CreateUserRequest request) {
-        return userService.create(request);
-    }
-
-    @PutMapping("/{id}")           // PUT /api/users/123
-    public UserDTO update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest request) {
-        return userService.update(id, request);
-    }
-
-    @DeleteMapping("/{id}")        // DELETE /api/users/123
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        userService.delete(id);
-    }
-}
-```
-
-| Annotation | HTTP Method | Typical Use |
-|-----------|-------------|-------------|
-| `@GetMapping` | GET | Fetch data (idempotent, cacheable) |
-| `@PostMapping` | POST | Create a new resource |
-| `@PutMapping` | PUT | Full update of an existing resource |
-| `@PatchMapping` | PATCH | Partial update of an existing resource |
-| `@DeleteMapping` | DELETE | Remove a resource |
-
----
-
-## Project Structure
-
-```
-my-app/
-├── src/main/java/com/example/myapp/
-│   ├── MyAppApplication.java          ← Entry point (@SpringBootApplication)
-│   ├── controller/                    ← REST endpoints (thin, HTTP-only concerns)
-│   │   └── UserController.java
-│   ├── service/                       ← Business logic (rules, orchestration)
-│   │   └── UserService.java
-│   ├── repository/                    ← Database access (Spring Data interfaces)
-│   │   └── UserRepository.java
-│   ├── model/                         ← JPA entities (database tables)
-│   │   └── User.java
-│   ├── dto/                           ← Data transfer objects (API contracts)
-│   │   ├── UserDTO.java
-│   │   └── CreateUserRequest.java
-│   ├── exception/                     ← Custom exceptions + global handler
-│   │   └── GlobalExceptionHandler.java
-│   └── config/                        ← Custom configuration classes
-│       └── SecurityConfig.java
-├── src/main/resources/
-│   ├── application.yml                ← Main configuration
-│   ├── application-dev.yml            ← Dev profile overrides
-│   ├── application-prod.yml           ← Production profile overrides
-│   └── db/migration/                  ← Flyway database migrations
-├── src/test/java/                     ← Tests (mirror the main structure)
-└── pom.xml                            ← Dependencies and build config
-```
-
-!!! info "Package Naming Convention"
-    Spring Boot scans the package of your `@SpringBootApplication` class and all sub-packages. If your main class is in `com.example.myapp`, then all controllers, services, and repositories must be in `com.example.myapp.*` sub-packages. Beans in `com.example.other` will NOT be found unless you explicitly add `@ComponentScan`.
-
----
-
-## Configuration — application.yml
-
-Spring Boot uses a hierarchical configuration system. The most common properties:
-
-```yaml
-# Server configuration
-server:
-  port: 8080
-  servlet:
-    context-path: /api
-
-# Database
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/mydb
-    username: ${DB_USER:postgres}    # Environment variable with default
-    password: ${DB_PASS:password}
-  jpa:
-    hibernate:
-      ddl-auto: validate             # Never use 'update' or 'create' in production
-    show-sql: false
-    open-in-view: false              # Disable OSIV — it's an anti-pattern
-
-# Logging
-logging:
-  level:
-    com.example.myapp: DEBUG
-    org.springframework.web: INFO
-    org.hibernate.SQL: DEBUG
-```
-
-!!! warning "Common Configuration Mistakes"
-    - **`ddl-auto: update` in production** — Hibernate will attempt to alter your production database schema. Use Flyway or Liquibase for migrations instead.
-    - **`open-in-view: true` (the default)** — Keeps a database connection open for the entire HTTP request, including view rendering. This can exhaust your connection pool under load. Always set it to `false`.
-    - **Hardcoded credentials** — Use environment variables (`${DB_PASS}`) or a secrets manager, never plain text in `application.yml`.
-
----
-
-## Spring Boot 3 — What's New?
-
-| Feature | Details | Impact |
-|---------|---------|--------|
-| **Java 17+ required** | Minimum Java version is 17 — records, sealed classes, text blocks available | Modernized codebase, better performance |
-| **Jakarta EE 10** | `javax.*` → `jakarta.*` package change across all APIs | One-time migration — find/replace in imports |
-| **GraalVM Native Images** | Compile to native binary — starts in milliseconds, uses fraction of memory | Ideal for serverless (AWS Lambda) and CLI tools |
-| **Observability** | Built-in Micrometer + OpenTelemetry tracing support | Distributed tracing without adding third-party libraries |
-| **Virtual Threads (Java 21)** | Set `spring.threads.virtual.enabled=true` — every request runs on a virtual thread | Massive throughput improvement for I/O-heavy applications |
-| **Problem Details (RFC 7807)** | Standardized error response format | Consistent error handling across APIs |
-
-→ Deep dive: [Spring Boot 3](SpringBoot3.md)
-
----
-
-## Common Mistakes and Anti-Patterns
-
-| Mistake | Problem | Solution |
-|---------|---------|----------|
-| Business logic in controllers | Hard to test, violates single responsibility | Move logic to `@Service` classes |
-| Field injection (`@Autowired` on fields) | Hidden dependencies, harder to test | Use constructor injection |
-| Returning JPA entities from controllers | Exposes database schema, lazy loading issues | Use DTOs for API responses |
-| Catching `Exception` everywhere | Swallows important errors silently | Use `@ControllerAdvice` global exception handler |
-| Not using profiles | Same config for dev and prod | Use `application-dev.yml` and `application-prod.yml` |
-| `spring.jpa.open-in-view=true` (default) | Holds DB connections too long, N+1 queries hidden | Set to `false`, fetch data explicitly in service layer |
-| No connection pool tuning | Default HikariCP pool size (10) may be too small or large | Tune `spring.datasource.hikari.maximum-pool-size` based on load |
-
----
-
-## When to Use Spring Boot
-
-| Use Case | Spring Boot? | Reason |
-|----------|:---:|--------|
-| REST APIs and backend services | ✅ | Built for this — embedded server, auto-config, actuator |
-| Microservices | ✅ | Spring Cloud ecosystem, lightweight JARs, container-friendly |
-| Web applications (server-rendered) | ✅ | Thymeleaf/Freemarker integration, Spring MVC |
-| Batch processing | ✅ | Spring Batch integration with starter |
-| Event-driven applications | ✅ | Spring for Apache Kafka, RabbitMQ starters |
-| Serverless functions | ✅ | Spring Cloud Function + GraalVM native images |
-| Simple scripts or CLI tools | ❌ | Overkill — use plain Java or a lightweight framework |
-| Android / iOS apps | ❌ | Not designed for mobile |
-| Frontend-only projects | ❌ | Use React, Angular, or Vue instead |
-
----
-
-## Interview Q&A
-
-??? question "What is Spring Boot and how is it different from Spring Framework?"
-    Spring Boot is an opinionated layer on top of the Spring Framework that eliminates boilerplate configuration. Spring Framework provides the core capabilities (DI, AOP, MVC, data access), but requires extensive manual configuration. Spring Boot auto-configures everything based on your classpath — if you add a JPA starter, it sets up DataSource, EntityManager, and transaction management automatically. The key difference is **convention over configuration**: Spring Boot provides sensible defaults that work for most applications, while Spring Framework requires you to configure everything explicitly.
-
-??? question "How does Spring Boot auto-configuration work internally?"
-    When the application starts, `@EnableAutoConfiguration` triggers Spring Boot to load all auto-configuration classes listed in `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`. Each class uses `@Conditional` annotations (like `@ConditionalOnClass`, `@ConditionalOnMissingBean`, `@ConditionalOnProperty`) to determine whether it should activate. For example, `DataSourceAutoConfiguration` only activates if `javax.sql.DataSource` is on the classpath AND you haven't already defined your own DataSource bean. This "back-off" behavior means your explicit configuration always takes precedence.
-
-??? question "What is the purpose of @SpringBootApplication?"
-    It's a convenience annotation that combines three annotations: `@Configuration` (this class can define `@Bean` methods), `@EnableAutoConfiguration` (activate auto-configuration), and `@ComponentScan` (scan the current package and sub-packages for Spring components). It must be placed on the main class and should be in the root package of your application so that `@ComponentScan` finds all your beans.
-
-??? question "How does Spring Boot's embedded server work?"
-    Spring Boot includes a server (Tomcat by default) as a dependency inside your JAR. When you run `java -jar app.jar`, the `main()` method calls `SpringApplication.run()`, which creates the application context, detects that you have web dependencies, starts the embedded server, and registers your `DispatcherServlet`. The server runs in the same JVM process as your application. You can switch to Jetty or Undertow by excluding the Tomcat starter and adding the alternative.
-
-??? question "Explain the Spring Boot application startup process."
-    1. `main()` calls `SpringApplication.run()`
-    2. Spring creates the `ApplicationContext` (the bean container)
-    3. `@ComponentScan` finds all `@Component`, `@Service`, `@Repository`, `@Controller` classes
-    4. `@EnableAutoConfiguration` loads and evaluates all auto-configuration classes
-    5. All beans are created and their dependencies are injected
-    6. `ApplicationRunner` and `CommandLineRunner` beans execute
-    7. Embedded server starts and begins accepting requests
-    8. Application is ready — `ApplicationReadyEvent` is published
-
-??? question "What is the difference between @Controller and @RestController?"
-    `@Controller` is used for traditional MVC controllers that return view names (HTML templates). `@RestController` is `@Controller` + `@ResponseBody` — every method's return value is serialized directly to the HTTP response body (typically JSON). In modern API development, you almost always use `@RestController`.
-
-??? question "How do Spring Boot profiles work?"
-    Profiles let you define different configurations for different environments. You create `application-dev.yml` and `application-prod.yml` with environment-specific settings. Activate a profile with `spring.profiles.active=dev` (via environment variable, command line, or properties file). Profile-specific properties override the base `application.yml`. You can also use `@Profile("dev")` on beans to conditionally create them only in specific environments.
-
-??? question "What is Spring Boot Actuator and how is it used in production?"
-    Actuator exposes operational endpoints for monitoring and managing your application. The `/health` endpoint is used by load balancers and Kubernetes for health checks. The `/metrics` endpoint exposes JVM and application metrics that Prometheus can scrape for Grafana dashboards. The `/loggers` endpoint lets you change log levels at runtime without restarting. In production, you should secure actuator endpoints with Spring Security and only expose `/health` and `/info` publicly.
-
-??? question "How do you handle exceptions globally in Spring Boot?"
-    Use `@ControllerAdvice` with `@ExceptionHandler` methods. This creates a centralized exception handler that catches exceptions from all controllers. Each handler method maps to a specific exception type and returns an appropriate HTTP response. Spring Boot 3 supports RFC 7807 Problem Details for standardized error responses.
+=== "Exception Handler (Global)"
 
     ```java
     @RestControllerAdvice
     public class GlobalExceptionHandler {
 
-        @ExceptionHandler(ResourceNotFoundException.class)
-        @ResponseStatus(HttpStatus.NOT_FOUND)
-        public ProblemDetail handleNotFound(ResourceNotFoundException ex) {
+        @ExceptionHandler(OrderNotFoundException.class)
+        public ResponseEntity<ProblemDetail> handleOrderNotFound(OrderNotFoundException ex) {
             ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
-            detail.setTitle("Resource Not Found");
+            detail.setTitle("Order Not Found");
+            detail.setDetail("Order with ID " + ex.getOrderId() + " does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(detail);
+        }
+
+        @ExceptionHandler(RestaurantClosedException.class)
+        public ResponseEntity<ProblemDetail> handleRestaurantClosed(RestaurantClosedException ex) {
+            ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+            detail.setTitle("Restaurant Closed");
             detail.setDetail(ex.getMessage());
-            return detail;
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(detail);
+        }
+
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<ProblemDetail> handleValidation(MethodArgumentNotValidException ex) {
+            ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+            detail.setTitle("Validation Failed");
+            detail.setDetail(ex.getBindingResult().getFieldErrors().stream()
+                    .map(e -> e.getField() + ": " + e.getDefaultMessage())
+                    .collect(Collectors.joining(", ")));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
         }
     }
     ```
 
-→ Deep dive: [Exception Handling](exceptionhandling.md)
+---
+
+## Interview Q&A — 10 Questions With Follow-ups
+
+### 1. What is Spring Boot?
+
+??? question "What is Spring Boot and how is it different from Spring?"
+    **Answer:** Spring Boot is a framework built on top of Spring Framework that eliminates boilerplate configuration through auto-configuration, provides curated starter dependencies, embeds a web server into your JAR, and includes production-ready monitoring via Actuator. It is NOT a different framework — it IS Spring Framework with an opinionated auto-configuration layer on top.
+
+    **Follow-up: "Can you use Spring without Boot?"**
+    Yes. You can write a raw Spring Framework application with manual XML or Java configuration, deploy it as a WAR to an external Tomcat, and manage all dependency versions yourself. But no new project has done this since 2014 because Spring Boot handles all of that automatically.
+
+### 2. How does auto-configuration work?
+
+??? question "Explain Spring Boot auto-configuration internally."
+    **Answer:** When `@EnableAutoConfiguration` is processed, Spring Boot loads all classes listed in `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` from every JAR on classpath. Each class has `@Conditional` annotations — conditions like `@ConditionalOnClass` (library present?), `@ConditionalOnMissingBean` (you haven't defined your own?), `@ConditionalOnProperty` (property set?). Only if ALL conditions pass does that auto-configuration activate.
+
+    **Follow-up: "How do you override auto-configuration?"**
+    Define your own `@Bean` of the same type. Auto-configuration uses `@ConditionalOnMissingBean`, which means it backs off if you've already defined that bean. You can also exclude specific auto-configurations: `@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})`.
+
+    **Follow-up: "How do you debug what's auto-configured?"**
+    Run with `--debug` flag or set `debug=true`. Spring Boot prints a CONDITIONS EVALUATION REPORT showing positive matches (applied), negative matches (skipped), and exclusions.
+
+### 3. What happens when you run a Spring Boot app?
+
+??? question "Walk through the Spring Boot startup process."
+    **Answer:**
+
+    1. `main()` calls `SpringApplication.run()`
+    2. Determines web application type (SERVLET/REACTIVE/NONE) by checking classpath
+    3. Creates the `Environment` — loads properties from 17+ sources in priority order
+    4. Creates `ApplicationContext` (specifically `AnnotationConfigServletWebServerApplicationContext` for web apps)
+    5. Performs component scan on root package + sub-packages, registering bean definitions
+    6. Processes auto-configuration — evaluates `@Conditional` annotations on all auto-config classes
+    7. Refreshes context — instantiates all singleton beans, resolves and injects dependencies
+    8. Starts embedded Tomcat, binds to port, registers `DispatcherServlet`
+    9. Fires `ApplicationStartedEvent`
+    10. Executes `CommandLineRunner` and `ApplicationRunner` beans
+    11. Fires `ApplicationReadyEvent` — app is ready for traffic
+
+    **Follow-up: "What's the first event fired?"**
+    `ApplicationStartingEvent` — fired immediately when `run()` is called, before anything else. Then `ApplicationEnvironmentPreparedEvent` (environment ready), then `ApplicationContextInitializedEvent` (context created), then `ApplicationPreparedEvent` (beans loaded, not refreshed), then `ApplicationStartedEvent` (context refreshed), and finally `ApplicationReadyEvent`.
+
+### 4. What is @SpringBootApplication?
+
+??? question "What does @SpringBootApplication do?"
+    **Answer:** It's a meta-annotation combining three annotations:
+
+    - `@Configuration` — marks this class as a source of bean definitions
+    - `@EnableAutoConfiguration` — activates Spring Boot's auto-configuration mechanism
+    - `@ComponentScan` — scans the current package and all sub-packages for `@Component`, `@Service`, `@Repository`, `@Controller`
+
+    **Follow-up: "Why must it be in the root package?"**
+    Because `@ComponentScan` without explicit `basePackages` scans from the annotated class's package downward. If your main class is in `com.company.app.main` but controllers are in `com.company.app.controller`, the scan starts at `.main` and never finds `.controller`.
+
+### 5. Explain the DispatcherServlet.
+
+??? question "What is DispatcherServlet and how does it work?"
+    **Answer:** DispatcherServlet is the Front Controller pattern implementation in Spring MVC. It's the single servlet that receives ALL HTTP requests and dispatches them to the appropriate handler. Flow: receives request → consults HandlerMapping to find controller method → uses HandlerAdapter to invoke it (resolving @PathVariable, @RequestBody, etc.) → takes the return value → passes to HttpMessageConverter (Jackson) to serialize the response.
+
+    **Follow-up: "How does Spring Boot register it?"**
+    `DispatcherServletAutoConfiguration` creates the DispatcherServlet bean and registers it with the embedded Tomcat's ServletContext on the "/" URL pattern. This happens automatically when `spring-boot-starter-web` is on classpath.
+
+### 6. What are profiles?
+
+??? question "How do profiles work and when would you use them?"
+    **Answer:** Profiles provide environment-specific configuration. You create `application-{profile}.yml` files with overrides. Activate with `SPRING_PROFILES_ACTIVE=prod`. Profile-specific properties override base `application.yml`. You can also use `@Profile("dev")` on `@Configuration` classes or `@Bean` methods to conditionally create beans.
+
+    **Use case:** Dev uses H2 + debug logging + Swagger enabled + mock payment service. Prod uses PostgreSQL + warn logging + Swagger disabled + real Stripe integration + Actuator locked down.
+
+### 7. How do starters work?
+
+??? question "What is a Spring Boot starter and why does it matter?"
+    **Answer:** A starter is a Maven/Gradle dependency that pulls in a curated, tested set of libraries for a specific feature. `spring-boot-starter-web` brings in Tomcat + Spring MVC + Jackson + Validation. The Spring Boot BOM (Bill of Materials) ensures all versions are compatible — you never specify versions for starter transitive dependencies.
+
+    **Follow-up: "What if two starters have conflicting dependencies?"**
+    The BOM prevents this for official starters. For third-party libraries, Maven's "nearest definition wins" rule applies. You can use `<exclusions>` or dependency management to force a specific version.
+
+### 8. How do you handle exceptions globally?
+
+??? question "What's the best way to handle exceptions in Spring Boot?"
+    **Answer:** Use `@RestControllerAdvice` (or `@ControllerAdvice`) with `@ExceptionHandler` methods. This creates a centralized handler that catches exceptions thrown by any controller. Each method handles a specific exception type and returns a proper HTTP response. Spring Boot 3 supports RFC 7807 `ProblemDetail` for standardized error responses.
+
+    **Follow-up: "What's the order of exception handler resolution?"**
+    Most specific first. `@ExceptionHandler(OrderNotFoundException.class)` takes priority over `@ExceptionHandler(RuntimeException.class)`. Handler methods in the same `@ControllerAdvice` are ordered by exception class hierarchy specificity.
+
+### 9. What is open-in-view and why disable it?
+
+??? question "What is spring.jpa.open-in-view and why should you set it to false?"
+    **Answer:** Open Session In View (OSIV) keeps the Hibernate Session (and therefore the database connection) open for the entire HTTP request lifecycle — including view rendering and JSON serialization. Default is `true` in Spring Boot. You should disable it because:
+
+    1. It holds connections from the pool far longer than needed
+    2. It masks lazy loading bugs — collections load in the controller/view layer without explicit fetches
+    3. Under load, you'll exhaust HikariCP's connection pool because every request holds a connection during JSON serialization
+
+    **Fix:** Set `spring.jpa.open-in-view=false` and fetch all needed data eagerly in the service layer using `JOIN FETCH` or DTOs.
+
+### 10. How do you choose between Tomcat, Jetty, and Undertow?
+
+??? question "When would you choose Jetty or Undertow over Tomcat?"
+    **Answer:**
+
+    - **Tomcat** (default): General purpose, excellent documentation, most teams use it, good enough for 95% of apps
+    - **Jetty**: Better for applications with many long-lived connections (WebSocket, SSE), lower memory footprint, async-first architecture
+    - **Undertow**: Highest throughput in benchmarks, non-blocking by default, best for high-performance use cases where every millisecond counts
+
+    In practice, Tomcat with virtual threads (Java 21+) eliminates most reasons to switch. Choose based on your specific bottleneck, not benchmarks.
+
+---
+
+## Quick Start Checklist
+
+When starting a new Spring Boot project, do these things immediately:
+
+- [ ] Place `@SpringBootApplication` class at the root package
+- [ ] Set `spring.jpa.open-in-view=false`
+- [ ] Set `spring.jpa.hibernate.ddl-auto=validate` (use Flyway for migrations)
+- [ ] Add `server.shutdown=graceful`
+- [ ] Create `application-dev.yml` and `application-prod.yml`
+- [ ] Add `spring-boot-starter-actuator` with `/health` exposed
+- [ ] Use constructor injection everywhere (no `@Autowired` on fields)
+- [ ] Return DTOs from controllers, never JPA entities
+- [ ] Add a `@RestControllerAdvice` global exception handler
+- [ ] Set up structured logging with correlation IDs
 
 ---
 
 ## Next Steps
 
-| Topic | Link |
-|-------|------|
-| Auto Configuration — how it works internally | [Auto Configuration](AutoConfiguration.md) |
-| All Spring Boot Annotations explained | [Annotations](Annotations.md) |
-| IoC & Dependency Injection deep dive | [Spring IoC](SpringIOC.md) |
-| Types of Dependency Injection | [Types of DI](typesofdi.md) |
-| Bean Lifecycle & Scopes | [Bean Lifecycle](bean-lifecycle.md) |
-| REST API Best Practices | [REST APIs](restapibestpractices.md) |
-| Exception Handling | [Exception Handling](exceptionhandling.md) |
-| Spring Boot 3 features | [Spring Boot 3](SpringBoot3.md) |
-
----
-
-## See Also
-
-- [Spring IoC Container](SpringIOC.md) — Bean creation and dependency wiring
-- [Auto-Configuration](AutoConfiguration.md) — How Spring Boot configures itself
-- [Bean Lifecycle](bean-lifecycle.md) — Initialization, scopes, and destruction
-- [Spring Boot 3 Features](SpringBoot3.md) — Jakarta EE, native images, virtual threads
-- [Spring Security](security.md) — Authentication, authorization, and JWT
-- [MVC Request Lifecycle](mvc-request-lifecycle.md) — From HTTP request to response
-- [REST API Best Practices](restapibestpractices.md) — Designing production-grade APIs
+| Topic | Link | Why Read It |
+|-------|------|-------------|
+| Auto Configuration internals | [Auto Configuration](AutoConfiguration.md) | Understand `@Conditional` mechanism |
+| All Spring Boot Annotations | [Annotations](Annotations.md) | Quick reference for every annotation |
+| IoC & Dependency Injection | [Spring IoC](SpringIOC.md) | How the container manages your objects |
+| Bean Lifecycle & Scopes | [Bean Lifecycle](bean-lifecycle.md) | `@PostConstruct`, `@PreDestroy`, prototype vs singleton |
+| REST API Best Practices | [REST APIs](restapibestpractices.md) | Versioning, pagination, HATEOAS |
+| Exception Handling | [Exception Handling](exceptionhandling.md) | `@ControllerAdvice` patterns |
+| Spring Boot 3 features | [Spring Boot 3](SpringBoot3.md) | Jakarta EE, native images, virtual threads |
+| Spring Security | [Security](security.md) | JWT, OAuth2, method-level security |

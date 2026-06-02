@@ -1,28 +1,88 @@
-# Caching in Spring Boot
+# Spring Boot Caching — The Complete Production Guide
 
-> Store frequently accessed data in memory. Skip the database round-trip. Get sub-millisecond reads.
+Caching is deceptively simple to add — `@Cacheable` and done. But in production, caching is where most subtle bugs live. Cache invalidation is one of the "two hard things in computer science" for a reason. When do you use `@CachePut` vs `@CacheEvict`? What happens during a cache stampede? Why is your `@Cacheable` not working when called from the same class? Let me walk you through it...
 
 ---
 
-!!! abstract "Real-World Analogy"
-    A librarian keeps popular books on the desk (cache). Only walks to the shelves (database) on a miss. Same idea — hot data stays close.
+## Why Cache?
+
+### The Performance Pyramid
+
+Every system has a memory hierarchy. The further you go from the CPU, the more expensive data access becomes.
+
+| Layer | Latency | Example |
+|---|---|---|
+| L1 CPU Cache | ~1 ns | Register access |
+| L2/L3 Cache | ~10 ns | On-chip SRAM |
+| Application Cache (Caffeine) | ~50-100 ns | In-process HashMap |
+| Distributed Cache (Redis) | ~1-5 ms | Network round-trip |
+| Database (PostgreSQL) | ~5-50 ms | Disk I/O + query planning |
+| External API Call | ~100-500 ms | Network + remote processing |
+
+!!! tip "💡 One-liner for interviews"
+    "Caching trades memory for latency by keeping frequently accessed data closer to the computation."
+
+### When to Cache
+
+- **Read-heavy workloads** — product catalog viewed 10,000x/sec, updated once/hour
+- **Expensive computations** — price calculations, recommendation scores, report aggregations
+- **Data that changes infrequently** — configuration, feature flags, country/currency lists
+- **External API responses** — weather data, exchange rates, third-party service calls
+
+### When NOT to Cache
+
+- **Write-heavy data** — real-time stock prices, live chat messages (stale instantly)
+- **Security-sensitive data** — tokens, passwords, PII (cache = attack surface)
+- **Data that must be real-time** — account balances, inventory counts during flash sales
+- **Highly personalized data** — unique per user with low reuse (cache pollution)
+
+!!! danger "⚠️ What breaks"
+    Caching financial data without proper invalidation caused a major e-commerce platform to show stale prices for 4 hours. Customers purchased items at old (lower) prices. The company ate $2.3M in losses because the cache TTL was set to 6 hours and no event-based invalidation existed.
+
+---
+
+## Spring Cache Abstraction
+
+### How It Works Internally
+
+!!! tip "💡 One-liner for interviews"
+    "Spring's cache abstraction is an AOP proxy that intercepts method calls and short-circuits execution when a cached result exists for the computed key."
 
 ```mermaid
-flowchart LR
-    R[/"📱 Request: Get User #42"/]
-    R --> Check{"🔍 In cache?"}
-    Check -->|"✅ Cache HIT"| Fast(["⚡ Return instantly<br/>(~1ms)"])
-    Check -->|"❌ Cache MISS"| DB{{"🗄️ Query Database<br/>(~50ms)"}}
-    DB --> Store{{"📥 Store in cache"}}
-    Store --> Return(["Return to client"])
+sequenceDiagram
+    participant Client
+    participant Proxy as AOP Proxy
+    participant Cache as CacheManager
+    participant Method as Target Method
+    participant DB as Database
 
-    style Fast fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
-    style DB fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    Client->>Proxy: getProduct(42)
+    Proxy->>Cache: get("products", key=42)
+    
+    alt Cache HIT
+        Cache-->>Proxy: cached Product
+        Proxy-->>Client: return (skips method)
+    else Cache MISS
+        Cache-->>Proxy: null
+        Proxy->>Method: invoke getProduct(42)
+        Method->>DB: SELECT * FROM products WHERE id=42
+        DB-->>Method: Product row
+        Method-->>Proxy: Product object
+        Proxy->>Cache: put("products", key=42, value=Product)
+        Proxy-->>Client: return Product
+    end
 ```
 
----
+### Core Interfaces
 
-## Quick Setup
+| Interface | What It Does | Why It Exists |
+|---|---|---|
+| `Cache` | Abstraction over a single named cache region | Decouples caching logic from the provider (Redis, Caffeine, etc.) |
+| `CacheManager` | Factory that creates/retrieves `Cache` instances by name | Single point of configuration for all caches in the application |
+| `KeyGenerator` | Generates cache keys from method parameters | Pluggable key strategy without changing business logic |
+| `CacheResolver` | Resolves which cache(s) to use at runtime | Dynamic cache selection (e.g., based on tenant) |
+
+### Quick Setup
 
 ```xml
 <dependency>
@@ -33,151 +93,413 @@ flowchart LR
 
 ```java
 @SpringBootApplication
-@EnableCaching
-public class Application { }
+@EnableCaching  // Activates cache infrastructure via AOP proxies
+public class ECommerceApplication { }
 ```
 
-That single `@EnableCaching` activates Spring's caching infrastructure via AOP proxies.
+That single `@EnableCaching` registers a `CacheInterceptor` that wraps eligible beans in a caching proxy.
 
 ---
 
-## Core Annotations
+## Core Annotations Deep Dive
 
-### @Cacheable
+### @Cacheable — "Check before you compute"
 
-Intercepts the method call. If a cached value exists for the computed key, the method body never executes.
+**What it does:** Intercepts the method call. If a cached value exists for the computed key, the method body *never* executes.
 
-```java
-@Cacheable(value = "products", key = "#id")
-public Product getById(Long id) {
-    log.info("DB hit");  // only logged on cache MISS
-    return productRepository.findById(id).orElseThrow();
-}
-```
+**Why it exists:** To eliminate redundant computation for identical inputs.
 
-**Use when:** reading data that changes infrequently.
+**When to use:** Read operations where the result doesn't change between calls for the same input.
 
-### @CachePut
+**How it works internally:** The `CacheInterceptor` computes the key via `KeyGenerator`, calls `Cache.get(key)`. On hit, returns the cached value directly. On miss, invokes the method, stores the result via `Cache.put(key, result)`, then returns.
 
-Always executes the method. Stores the return value in the cache. Never short-circuits.
+=== "Basic Usage"
+
+    ```java
+    @Service
+    public class ProductService {
+
+        @Cacheable(value = "products", key = "#productId")
+        public Product getProduct(Long productId) {
+            log.info("DB HIT for product {}", productId);  // only on cache MISS
+            return productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+        }
+    }
+    ```
+
+=== "With Conditions"
+
+    ```java
+    @Cacheable(
+        value = "products",
+        key = "#productId",
+        condition = "#productId > 0",           // don't cache invalid IDs
+        unless = "#result.price == 0",          // don't cache free products
+        sync = true                             // prevent cache stampede
+    )
+    public Product getProduct(Long productId) {
+        return productRepository.findById(productId).orElseThrow();
+    }
+    ```
+
+=== "Multiple Cache Names"
+
+    ```java
+    // Stores in BOTH caches — useful for different eviction policies
+    @Cacheable(value = {"productCache", "searchCache"}, key = "#sku")
+    public Product findBySku(String sku) {
+        return productRepository.findBySku(sku);
+    }
+    ```
+
+!!! warning "🔥 Production War Story"
+    A team cached `Optional.empty()` results without `unless = "#result.isEmpty()"`. When a product was later added to the database, the cache kept returning empty for hours. Users reported "product not found" while it was clearly visible in the admin panel.
+
+### @CachePut — "Always execute, always update"
+
+**What it does:** Always executes the method body AND stores the result in the cache.
+
+**Why it exists:** To keep the cache in sync after write operations without requiring a separate evict+read cycle.
+
+**When to use:** Write/update operations where you want the cache to reflect the latest state immediately.
+
+**How it works internally:** The `CacheInterceptor` always invokes the target method, then calls `Cache.put(key, result)` with the return value. Never short-circuits.
 
 ```java
 @CachePut(value = "products", key = "#product.id")
-public Product update(Product product) {
-    return productRepository.save(product);
+public Product updateProduct(Product product) {
+    log.info("Updating product {} and refreshing cache", product.getId());
+    return productRepository.save(product);  // Always executes
 }
 ```
 
-**Use when:** you want to update the cache entry on every write.
+!!! example "🎯 Interview Tip"
+    "Use `@Cacheable` for reads (might skip execution), `@CachePut` for writes (always executes, updates cache). Never use `@Cacheable` on a method that has side effects — if it hits cache, your side effect won't execute."
 
-### @CacheEvict
+### @CacheEvict — "Remove stale data"
 
-Removes one entry (or all entries) from the cache.
+**What it does:** Removes one entry (or all entries) from the cache.
+
+**Why it exists:** To invalidate stale data when the underlying source changes.
+
+**When to use:** Delete operations, or when you want to force a fresh load on next access.
 
 ```java
-@CacheEvict(value = "products", key = "#id")
-public void delete(Long id) {
-    productRepository.deleteById(id);
+// Evict single entry
+@CacheEvict(value = "products", key = "#productId")
+public void deleteProduct(Long productId) {
+    productRepository.deleteById(productId);
 }
 
+// Nuclear option — clear entire cache
 @CacheEvict(value = "products", allEntries = true)
-public void clearProductCache() { }
+public void reloadProductCatalog() {
+    log.info("Full catalog refresh — evicting all cached products");
+}
+
+// Evict BEFORE method executes (useful if method might throw)
+@CacheEvict(value = "inventory", key = "#sku", beforeInvocation = true)
+public void updateInventory(String sku, int quantity) {
+    inventoryRepository.update(sku, quantity);  // might throw
+}
 ```
 
-**Use when:** data is deleted or bulk-invalidation is needed.
+!!! question "❓ Counter-questions"
+    **Q: "Why would you use `beforeInvocation = true`?"**
+    
+    A: If the method throws an exception, default behavior (after invocation) means the eviction never happens. The cache retains stale data. With `beforeInvocation = true`, the entry is removed regardless of whether the method succeeds. Use this when stale data is worse than a cache miss.
 
-### @Caching
+### @Caching — "Multiple operations in one shot"
 
-Combines multiple cache operations on a single method.
+**What it does:** Combines multiple `@Cacheable`, `@CachePut`, and `@CacheEvict` on a single method.
+
+**When to use:** When one operation affects multiple caches or needs both eviction and put.
 
 ```java
 @Caching(
-    evict = {
-        @CacheEvict(value = "products", key = "#product.id"),
-        @CacheEvict(value = "productList", allEntries = true)
-    },
     put = {
-        @CachePut(value = "products", key = "#product.id")
+        @CachePut(value = "products", key = "#product.id"),
+        @CachePut(value = "productsBySku", key = "#product.sku")
+    },
+    evict = {
+        @CacheEvict(value = "productList", allEntries = true),
+        @CacheEvict(value = "categoryProducts", key = "#product.categoryId")
     }
 )
-public Product update(Product product) {
+public Product updateProduct(Product product) {
     return productRepository.save(product);
 }
 ```
 
-**Use when:** a single operation must touch multiple caches or perform evict + put together.
+### @CacheConfig — "DRY for cache settings"
 
-### Annotation Summary
+**What it does:** Class-level defaults for cache name, key generator, cache manager.
 
-| Annotation | Executes Method? | Updates Cache? | Typical Use |
-|---|---|---|---|
-| `@Cacheable` | Only on miss | Yes (on miss) | Reads |
-| `@CachePut` | Always | Always | Writes / updates |
-| `@CacheEvict` | Always | Removes entry | Deletes / invalidation |
-| `@Caching` | Depends on composed annotations | Depends | Multi-cache operations |
+```java
+@Service
+@CacheConfig(cacheNames = "orders", cacheManager = "redisCacheManager")
+public class OrderService {
+
+    @Cacheable(key = "#orderId")          // inherits cache name "orders"
+    public Order getOrder(Long orderId) { ... }
+
+    @CacheEvict(key = "#orderId")         // inherits cache name "orders"
+    public void cancelOrder(Long orderId) { ... }
+}
+```
+
+### Annotation Cheat Sheet
+
+| Annotation | Executes Method? | Reads Cache? | Writes Cache? | Typical Use |
+|---|---|---|---|---|
+| `@Cacheable` | Only on miss | Yes | Yes (on miss) | GET / read operations |
+| `@CachePut` | Always | No | Always | PUT / update operations |
+| `@CacheEvict` | Always | No | Removes | DELETE / invalidation |
+| `@Caching` | Depends | Depends | Depends | Multi-cache operations |
+| `@CacheConfig` | N/A | N/A | N/A | Class-level defaults |
+
+---
+
+## Key Generation
+
+### Default Behavior (SimpleKeyGenerator)
+
+| Parameters | Generated Key |
+|---|---|
+| No params | `SimpleKey.EMPTY` |
+| Single param | The param itself (`Long`, `String`, etc.) |
+| Multiple params | `new SimpleKey(param1, param2, ...)` |
+
+### SpEL Key Expressions
+
+```java
+// Direct parameter reference
+@Cacheable(value = "users", key = "#userId")
+public User getUser(Long userId) { ... }
+
+// Object field access
+@Cacheable(value = "users", key = "#request.email")
+public User findByRequest(UserSearchRequest request) { ... }
+
+// Composite key
+@Cacheable(value = "orders", key = "#userId + ':' + #status")
+public List<Order> findOrders(Long userId, OrderStatus status) { ... }
+
+// Method name in key (avoid collisions)
+@Cacheable(value = "analytics", key = "#root.methodName + ':' + #id")
+public AnalyticsData getMetrics(Long id) { ... }
+
+// Conditional key with ternary
+@Cacheable(value = "search", key = "#query.length() > 50 ? #query.hashCode() : #query")
+public SearchResults search(String query) { ... }
+```
+
+### Custom KeyGenerator Bean
+
+```java
+@Component("tenantAwareKeyGenerator")
+public class TenantAwareKeyGenerator implements KeyGenerator {
+    
+    @Override
+    public Object generate(Object target, Method method, Object... params) {
+        String tenant = TenantContext.getCurrentTenant();
+        String paramKey = Arrays.stream(params)
+            .map(p -> p == null ? "null" : p.toString())
+            .collect(Collectors.joining(":"));
+        return tenant + ":" + method.getName() + ":" + paramKey;
+    }
+}
+
+// Usage
+@Cacheable(value = "products", keyGenerator = "tenantAwareKeyGenerator")
+public List<Product> getTenantProducts(String category) { ... }
+```
+
+!!! danger "⚠️ What breaks"
+    **Null parameters:** If a method parameter is `null`, `SimpleKeyGenerator` uses `null` in the key. Two methods with `(null)` and `(null)` produce the same key — collision. Always handle nulls explicitly in custom keys.
+
+    **Collections as keys:** A `List<Long>` parameter generates a key based on `List.hashCode()`. Order matters! `[1,2,3]` and `[3,2,1]` produce different keys. Sort first if order shouldn't matter.
 
 ---
 
 ## Cache Providers
 
+### Provider Comparison
+
+| Feature | ConcurrentHashMap | Caffeine | Redis | EhCache 3 |
+|---|---|---|---|---|
+| **Type** | Local | Local | Distributed | Local (clustered option) |
+| **TTL/Expiry** | No | Yes | Yes | Yes |
+| **Max Size Eviction** | No | W-TinyLFU | `maxmemory-policy` | LRU/LFU |
+| **Off-Heap** | No | No | N/A (external process) | Yes |
+| **Persistence** | No | No | RDB/AOF | Disk tier |
+| **Speed** | ~5 ns | ~50 ns | ~1-5 ms (network) | ~50 ns (heap) |
+| **Multi-instance** | No | No | Yes | No |
+| **Monitoring** | No | `recordStats` | `INFO`/`MONITOR` | JMX/MBeans |
+| **Best For** | Tests, prototypes | Single-node production | Multi-node production | Overflow to disk |
+
 ### ConcurrentHashMap (Default)
 
-Zero configuration. Spring Boot uses `SimpleCacheManager` backed by `ConcurrentHashMap`. No TTL. No size limit. Entries live forever unless evicted manually.
+Zero config. No TTL, no eviction, entries live forever. **Development only.**
 
 ```yaml
-# No config needed — auto-activated with @EnableCaching
-```
-
-### Caffeine
-
-High-performance, near-optimal hit rate (W-TinyLFU eviction). Local only.
-
-```xml
-<dependency>
-    <groupId>com.github.ben-manes.caffeine</groupId>
-    <artifactId>caffeine</artifactId>
-</dependency>
-```
-
-```yaml
+# Nothing needed — auto-activated with @EnableCaching
 spring:
   cache:
-    type: caffeine
-    caffeine:
-      spec: maximumSize=1000,expireAfterWrite=10m
-    cache-names: products,users,orders
+    type: simple
 ```
 
-### Redis
+!!! danger "⚠️ What breaks"
+    Deploying with the default `SimpleCacheManager` to production = guaranteed OOM. No size limit + no TTL = unbounded memory growth. **Always** configure a real provider in production.
 
-Distributed. Survives app restarts. Shared across instances.
+### Caffeine — High-Performance Local Cache
 
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-redis</artifactId>
-</dependency>
-```
+=== "Dependency"
 
-```yaml
-spring:
-  cache:
-    type: redis
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      password: secret
-```
+    ```xml
+    <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+    </dependency>
+    ```
 
-### EhCache
+=== "application.yml"
 
-Mature. Supports heap + off-heap + disk tiers. XML-based configuration.
+    ```yaml
+    spring:
+      cache:
+        type: caffeine
+        caffeine:
+          spec: maximumSize=10000,expireAfterWrite=10m,recordStats
+        cache-names: products,users,orders,inventory
+    ```
+
+=== "Programmatic (Per-Cache Config)"
+
+    ```java
+    @Configuration
+    @EnableCaching
+    public class CaffeineCacheConfig {
+
+        @Bean
+        public CacheManager cacheManager() {
+            CaffeineCacheManager manager = new CaffeineCacheManager();
+            
+            // Default spec for unnamed caches
+            manager.setCacheSpecification("maximumSize=500,expireAfterWrite=5m");
+            
+            // Per-cache custom configuration
+            manager.registerCustomCache("products",
+                Caffeine.newBuilder()
+                    .maximumSize(10_000)
+                    .expireAfterWrite(Duration.ofHours(1))
+                    .refreshAfterWrite(Duration.ofMinutes(45))
+                    .recordStats()
+                    .build());
+
+            manager.registerCustomCache("userSessions",
+                Caffeine.newBuilder()
+                    .maximumSize(50_000)
+                    .expireAfterAccess(Duration.ofMinutes(30))
+                    .recordStats()
+                    .build());
+
+            manager.registerCustomCache("priceCalculations",
+                Caffeine.newBuilder()
+                    .maximumSize(5_000)
+                    .expireAfterWrite(Duration.ofMinutes(5))
+                    .recordStats()
+                    .build());
+
+            return manager;
+        }
+    }
+    ```
+
+### Redis — Distributed Cache
+
+=== "Dependency"
+
+    ```xml
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    ```
+
+=== "application.yml"
+
+    ```yaml
+    spring:
+      cache:
+        type: redis
+      data:
+        redis:
+          host: redis-cluster.internal
+          port: 6379
+          password: ${REDIS_PASSWORD}
+          timeout: 2000ms
+          lettuce:
+            pool:
+              max-active: 16
+              max-idle: 8
+              min-idle: 4
+              max-wait: 2000ms
+    ```
+
+=== "Full Configuration"
+
+    ```java
+    @Configuration
+    @EnableCaching
+    public class RedisCacheConfig {
+
+        @Bean
+        public RedisCacheManager cacheManager(RedisConnectionFactory factory) {
+            // JSON serializer with type information
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.activateDefaultTyping(
+                mapper.getPolymorphicTypeValidator(),
+                ObjectMapper.DefaultTyping.NON_FINAL);
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+            GenericJackson2JsonRedisSerializer jsonSerializer = 
+                new GenericJackson2JsonRedisSerializer(mapper);
+
+            RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(30))
+                .disableCachingNullValues()
+                .serializeKeysWith(SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(SerializationPair.fromSerializer(jsonSerializer))
+                .prefixCacheNameWith("ecommerce::");
+
+            // Per-cache TTL configuration
+            Map<String, RedisCacheConfiguration> perCacheConfig = Map.of(
+                "products",       defaults.entryTtl(Duration.ofHours(2)),
+                "users",          defaults.entryTtl(Duration.ofMinutes(15)),
+                "inventory",      defaults.entryTtl(Duration.ofSeconds(30)),
+                "orderSummary",   defaults.entryTtl(Duration.ofMinutes(10)),
+                "priceCalc",      defaults.entryTtl(Duration.ofMinutes(5))
+            );
+
+            return RedisCacheManager.builder(factory)
+                .cacheDefaults(defaults)
+                .withInitialCacheConfigurations(perCacheConfig)
+                .transactionAware()  // align cache ops with @Transactional
+                .build();
+        }
+    }
+    ```
+
+### EhCache 3 — Tiered Storage
 
 ```xml
 <dependency>
     <groupId>org.ehcache</groupId>
     <artifactId>ehcache</artifactId>
+    <classifier>jakarta</classifier>
 </dependency>
 <dependency>
     <groupId>javax.cache</groupId>
@@ -193,489 +515,78 @@ spring:
       config: classpath:ehcache.xml
 ```
 
-### Provider Comparison
-
-| Feature | ConcurrentHashMap | Caffeine | Redis | EhCache |
-|---|---|---|---|---|
-| Distributed | No | No | Yes | No (clustered mode exists) |
-| TTL / Expiry | No | Yes | Yes | Yes |
-| Size-based eviction | No | Yes (LFU) | Manual | Yes (LRU/LFU) |
-| Off-heap storage | No | No | N/A (external) | Yes |
-| Persistence | No | No | Yes (RDB/AOF) | Yes (disk tier) |
-| Speed | Fastest (~ns) | Very fast (~ns) | Fast (~ms, network) | Fast (~ns local) |
-| Multi-instance safe | No | No | Yes | No |
-| Best for | Dev / tests | Single-node prod | Multi-node prod | Single-node + overflow |
+```xml
+<!-- ehcache.xml -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.ehcache.org/v3">
+    <cache alias="products">
+        <expiry>
+            <ttl unit="minutes">60</ttl>
+        </expiry>
+        <resources>
+            <heap unit="entries">1000</heap>
+            <offheap unit="MB">100</offheap>
+            <disk unit="GB">1</disk>
+        </resources>
+    </cache>
+</config>
+```
 
 ---
 
-## Cache Key Generation
+## Caffeine Deep Dive
 
-### Default SpEL-based Keys
+### Configuration Options
 
-Spring uses method parameters as the key by default. Override with `key` attribute using SpEL.
-
-```java
-// Single param — param itself is the key
-@Cacheable("users")
-public User getUser(Long id) { ... }
-
-// Multiple params — default key = SimpleKey(param1, param2, ...)
-@Cacheable("orders")
-public List<Order> find(Long userId, String status) { ... }
-
-// Explicit SpEL key
-@Cacheable(value = "orders", key = "#userId + ':' + #status")
-public List<Order> find(Long userId, String status) { ... }
-
-// Access object fields
-@Cacheable(value = "users", key = "#request.email")
-public User findByRequest(UserRequest request) { ... }
-```
-
-### Custom KeyGenerator
-
-Implement `KeyGenerator` for complex or reusable key logic.
-
-```java
-@Component("prefixKeyGenerator")
-public class PrefixKeyGenerator implements KeyGenerator {
-    @Override
-    public Object generate(Object target, Method method, Object... params) {
-        return target.getClass().getSimpleName() + ":" 
-            + method.getName() + ":" 
-            + Arrays.stream(params).map(Object::toString).collect(Collectors.joining(":"));
-    }
-}
-```
-
-```java
-@Cacheable(value = "reports", keyGenerator = "prefixKeyGenerator")
-public Report generate(String region, int quarter) { ... }
-```
-
-### `key` vs `keyGenerator`
-
-| Attribute | Scope | Use When |
+| Option | What It Does | When to Use |
 |---|---|---|
-| `key` | Per-method SpEL expression | Simple, one-off key logic |
-| `keyGenerator` | Reusable bean | Shared key strategy across services |
+| `maximumSize(n)` | Evict when n entries reached (W-TinyLFU) | Always set this — prevents OOM |
+| `maximumWeight(n)` | Evict based on weighted entry size | When entries vary greatly in memory cost |
+| `expireAfterWrite(d)` | TTL from time of creation/update | Data has known staleness tolerance |
+| `expireAfterAccess(d)` | TTL from last read or write | Session-like data (idle timeout) |
+| `refreshAfterWrite(d)` | Async refresh after duration (requires `CacheLoader`) | Hot data that should never be stale |
+| `recordStats()` | Enable hit/miss/eviction counters | Production monitoring |
+| `weakKeys()` / `weakValues()` | Allow GC to collect entries | Memory-sensitive caches |
 
-You cannot use both on the same annotation. Pick one.
+### Refresh-Ahead Pattern with Caffeine
 
----
-
-## Conditional Caching
-
-### `condition` — Evaluated BEFORE method execution
-
-Controls whether the cache is even consulted. If `false`, method runs and result is not cached.
-
-```java
-// Only cache products with id > 10
-@Cacheable(value = "products", key = "#id", condition = "#id > 10")
-public Product getById(Long id) { ... }
-
-// Only cache when flag is true
-@Cacheable(value = "config", condition = "#useCache")
-public Config getConfig(String name, boolean useCache) { ... }
-```
-
-### `unless` — Evaluated AFTER method execution
-
-Controls whether the result gets stored. Has access to `#result`.
-
-```java
-// Don't cache null results
-@Cacheable(value = "products", key = "#id", unless = "#result == null")
-public Product getById(Long id) { ... }
-
-// Don't cache empty collections
-@Cacheable(value = "orders", unless = "#result.isEmpty()")
-public List<Order> getOrders(Long userId) { ... }
-
-// Don't cache errors / specific values
-@Cacheable(value = "prices", unless = "#result.amount <= 0")
-public Price getPrice(String sku) { ... }
-```
-
-### Combining Both
-
-```java
-@Cacheable(
-    value = "users",
-    key = "#email",
-    condition = "#email != null",     // skip cache lookup if email is null
-    unless = "#result?.active == false" // don't cache inactive users
-)
-public User findByEmail(String email) { ... }
-```
-
----
-
-## TTL and Eviction Policies
-
-### Caffeine Spec Options
-
-```yaml
-spring:
-  cache:
-    caffeine:
-      spec: maximumSize=500,expireAfterWrite=5m,expireAfterAccess=2m,recordStats
-```
-
-| Spec Key | Meaning |
-|---|---|
-| `maximumSize=N` | Evict when N entries reached (W-TinyLFU) |
-| `maximumWeight=N` | Evict based on weighted size |
-| `expireAfterWrite=Xm` | TTL from write time |
-| `expireAfterAccess=Xm` | TTL from last read/write |
-| `recordStats` | Enable hit/miss/eviction stats |
-
-### Caffeine Per-Cache TTL (Programmatic)
+This is the killer feature. Instead of serving stale data OR blocking on refresh, Caffeine serves the stale value while asynchronously refreshing in the background.
 
 ```java
 @Bean
 public CacheManager cacheManager() {
     CaffeineCacheManager manager = new CaffeineCacheManager();
-    manager.setCacheSpecification("maximumSize=100,expireAfterWrite=5m");
-    manager.registerCustomCache("sessions",
-        Caffeine.newBuilder().expireAfterWrite(Duration.ofMinutes(30)).maximumSize(10_000).build());
-    manager.registerCustomCache("static-data",
-        Caffeine.newBuilder().expireAfterWrite(Duration.ofHours(24)).maximumSize(50).build());
+    manager.registerCustomCache("products",
+        Caffeine.newBuilder()
+            .maximumSize(10_000)
+            .expireAfterWrite(Duration.ofHours(1))     // hard TTL
+            .refreshAfterWrite(Duration.ofMinutes(45)) // soft refresh
+            .recordStats()
+            .build());
     return manager;
 }
 ```
 
-### Redis TTL
+!!! tip "💡 One-liner for interviews"
+    "`refreshAfterWrite` returns stale data immediately while triggering an async reload — zero latency spikes, always-fresh data for the next caller."
 
-Set per-cache TTL via `RedisCacheConfiguration`:
-
-```java
-@Bean
-public RedisCacheManager cacheManager(RedisConnectionFactory factory) {
-    RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
-        .entryTtl(Duration.ofMinutes(30))
-        .disableCachingNullValues();
-
-    Map<String, RedisCacheConfiguration> perCache = Map.of(
-        "sessions", defaults.entryTtl(Duration.ofMinutes(5)),
-        "products", defaults.entryTtl(Duration.ofHours(2)),
-        "static-config", defaults.entryTtl(Duration.ofDays(1))
-    );
-
-    return RedisCacheManager.builder(factory)
-        .cacheDefaults(defaults)
-        .withInitialCacheConfigurations(perCache)
-        .build();
-}
-```
-
-### Size-Based Eviction
-
-- **Caffeine:** `maximumSize` triggers W-TinyLFU eviction (frequency + recency).
-- **Redis:** Use `maxmemory-policy` in `redis.conf` (e.g., `allkeys-lru`, `volatile-ttl`).
-- **EhCache:** Configure heap/offheap/disk tiers with size limits.
-
----
-
-## Cache Patterns
-
-### Cache-Aside (Lazy Loading)
-
-Application manages the cache explicitly. Read: check cache, miss triggers DB read + cache store. Write: update DB, then invalidate cache.
-
-This is what `@Cacheable` + `@CacheEvict` implements.
-
-```mermaid
-flowchart LR
-    subgraph Read["Read Path"]
-        direction LR
-        R1[/"Request"/] --> RC{"Cache?"}
-        RC -->|hit| RR(["Return cached"])
-        RC -->|miss| RD{{"Query DB"}} --> RS{{"Store in cache"}} --> RR
-    end
-    
-    subgraph Write["Write Path"]
-        direction LR
-        W1[/"Update"/] --> WD{{"Write to DB"}}
-        WD --> WC(["Invalidate/Update cache"])
-    end
-
-    style RR fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
-    style WC fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
-```
-
-**Pros:** Only caches what's actually requested. Simple.  
-**Cons:** First request always slow (cold cache). Potential for stale data between invalidation and next read.
-
-### Write-Through
-
-Every write goes to cache AND database synchronously. Cache always has latest data.
-
-```java
-@CachePut(value = "products", key = "#product.id")
-public Product save(Product product) {
-    return productRepository.save(product);  // DB + cache updated atomically
-}
-```
-
-**Pros:** Cache never stale. Reads always hit cache.  
-**Cons:** Write latency increases. All data cached even if never read.
-
-### Write-Behind (Write-Back)
-
-Write goes to cache immediately. Database is updated asynchronously in the background (batched).
-
-Not natively supported by Spring Cache abstraction. Requires custom implementation or libraries like EhCache's write-behind.
-
-```java
-// Conceptual — not Spring's built-in
-@CachePut(value = "events", key = "#event.id")
-public Event record(Event event) {
-    asyncWriter.enqueue(event);  // writes to DB later in batch
-    return event;
-}
-```
-
-**Pros:** Ultra-fast writes. Batching reduces DB load.  
-**Cons:** Risk of data loss if cache crashes before flush. Complexity.
-
-### Pattern Comparison
-
-| Pattern | Read Perf | Write Perf | Consistency | Complexity |
-|---|---|---|---|---|
-| Cache-Aside | Miss = slow | Fast (invalidate only) | Eventual | Low |
-| Write-Through | Always fast | Slower (dual write) | Strong | Medium |
-| Write-Behind | Always fast | Fastest | Weak | High |
-
----
-
-## Redis Caching Deep Dive
-
-### RedisCacheManager Configuration
-
-```java
-@Configuration
-@EnableCaching
-public class RedisCacheConfig {
-
-    @Bean
-    public RedisCacheConfiguration defaultCacheConfig() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.activateDefaultTyping(
-            mapper.getPolymorphicTypeValidator(),
-            ObjectMapper.DefaultTyping.NON_FINAL);
-        mapper.registerModule(new JavaTimeModule());
-
-        return RedisCacheConfiguration.defaultCacheConfig()
-            .entryTtl(Duration.ofMinutes(30))
-            .disableCachingNullValues()
-            .serializeKeysWith(
-                SerializationPair.fromSerializer(new StringRedisSerializer()))
-            .serializeValuesWith(
-                SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(mapper)));
-    }
-
-    @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory factory) {
-        Map<String, RedisCacheConfiguration> configs = Map.of(
-            "products", defaultCacheConfig().entryTtl(Duration.ofHours(1)),
-            "users", defaultCacheConfig().entryTtl(Duration.ofMinutes(15)),
-            "sessions", defaultCacheConfig().entryTtl(Duration.ofMinutes(5))
-        );
-
-        return RedisCacheManager.builder(factory)
-            .cacheDefaults(defaultCacheConfig())
-            .withInitialCacheConfigurations(configs)
-            .transactionAware()
-            .build();
-    }
-}
-```
-
-### Serialization: JSON vs JDK
-
-| Aspect | GenericJackson2JsonRedisSerializer | JdkSerializationRedisSerializer |
-|---|---|---|
-| Human-readable in Redis | Yes (JSON) | No (binary) |
-| Performance | Slightly slower | Faster |
-| Class evolution | Tolerant (add fields OK) | Fragile (serialVersionUID) |
-| Cross-language | Yes | Java only |
-| Size | Larger (field names) | Smaller |
-| Debugging | Easy (`redis-cli` readable) | Painful |
-
-!!! tip "Recommendation"
-    Use JSON serialization. The debugging and evolvability benefits far outweigh the slight perf cost.
-
-### TTL Per Cache
-
-```java
-// Different TTL for different caches
-Map<String, RedisCacheConfiguration> configs = Map.of(
-    "hot-data", defaults.entryTtl(Duration.ofSeconds(30)),
-    "warm-data", defaults.entryTtl(Duration.ofMinutes(10)),
-    "cold-data", defaults.entryTtl(Duration.ofHours(6))
-);
-```
-
----
-
-## Gotchas and Pitfalls
-
-### Self-Invocation (Proxy Bypass)
-
-`@Cacheable` relies on Spring AOP proxies. Calling a cached method from within the same class bypasses the proxy. Cache is never consulted.
-
-```java
-@Service
-public class OrderService {
-
-    // THIS DOES NOT CACHE — self-invocation!
-    public OrderSummary getSummary(Long orderId) {
-        Order order = getOrder(orderId);  // direct call, no proxy
-        return buildSummary(order);
-    }
-
-    @Cacheable("orders")
-    public Order getOrder(Long orderId) {
-        return repository.findById(orderId).orElseThrow();
-    }
-}
-```
-
-!!! danger "Fix Options"
-    1. **Inject self:** `@Lazy @Autowired private OrderService self;` then call `self.getOrder(id)`.
-    2. **Extract to another service:** Move the cached method to a separate bean.
-    3. **Use AspectJ weaving** (compile-time or load-time) instead of JDK proxies.
-
-### Caching Null Values
-
-By default, `null` results ARE cached. This can mask bugs or return stale nulls.
-
-```java
-// Option 1: unless clause
-@Cacheable(value = "users", unless = "#result == null")
-public User findById(Long id) { ... }
-
-// Option 2: Redis global setting
-RedisCacheConfiguration.defaultCacheConfig().disableCachingNullValues();
-// Throws IllegalArgumentException if method returns null
-```
-
-### Cache Key Collisions
-
-Different methods sharing the same cache name can collide if keys overlap.
-
-```java
-// COLLISION! Both use cache "data" with key = param
-@Cacheable(value = "data", key = "#id")
-public User getUser(Long id) { ... }
-
-@Cacheable(value = "data", key = "#id")
-public Product getProduct(Long id) { ... }
-// getUser(1) and getProduct(1) share the same cache entry!
-```
-
-**Fix:** Use distinct cache names or prefix keys.
-
-### Serialization with Lombok
-
-`@Data` / `@Value` classes work fine. But `@Builder` without a default constructor breaks Jackson deserialization.
-
-```java
-// BROKEN with Jackson for Redis cache
-@Value
-@Builder
-public class Product {
-    Long id;
-    String name;
-}
-
-// FIXED — add JsonDeserialize + JsonPOJOBuilder
-@Value
-@Builder
-@JsonDeserialize(builder = Product.ProductBuilder.class)
-public class Product {
-    Long id;
-    String name;
-
-    @JsonPOJOBuilder(withPrefix = "")
-    public static class ProductBuilder { }
-}
-```
-
-### Private Methods
-
-`@Cacheable` on private methods does nothing. Spring AOP proxies only intercept public methods on the proxy interface.
-
-### @Transactional Interaction
-
-`@Cacheable` stores the result even if the surrounding transaction rolls back. The cache update happens outside the transaction boundary.
-
-**Fix:** Use `TransactionAwareCacheDecorator` or evict on rollback.
-
----
-
-## Cache Warming Strategies
-
-### @PostConstruct
-
-Load critical data at startup.
-
-```java
-@Service
-public class ConfigService {
-
-    @Autowired
-    private ConfigRepository repository;
-    
-    @Autowired
-    private CacheManager cacheManager;
-
-    @PostConstruct
-    public void warmCache() {
-        Cache cache = cacheManager.getCache("config");
-        repository.findAll().forEach(c -> cache.put(c.getKey(), c));
-        log.info("Config cache warmed with {} entries", repository.count());
-    }
-}
-```
-
-### ApplicationReadyEvent
-
-Runs after full context initialization (safer for complex dependencies).
+### Stats Recording for Monitoring
 
 ```java
 @Component
-public class CacheWarmer implements ApplicationListener<ApplicationReadyEvent> {
+public class CacheStatsReporter {
 
-    @Autowired private ProductService productService;
+    @Autowired private CacheManager cacheManager;
 
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-        productService.getTopProducts().forEach(p -> 
-            productService.getById(p.getId())  // triggers @Cacheable
-        );
-        log.info("Product cache warmed");
-    }
-}
-```
-
-### Scheduled Refresh
-
-Periodically refresh cache before TTL expires. Prevents cache misses in production.
-
-```java
-@Service
-public class PriceCacheRefresher {
-
-    @Autowired private PriceService priceService;
-
-    @Scheduled(fixedRate = 300_000)  // every 5 minutes
-    public void refreshPrices() {
-        priceService.getAllActiveSkus().forEach(sku -> {
-            priceService.evictPrice(sku);
-            priceService.getPrice(sku);  // re-populates cache
+    @Scheduled(fixedRate = 60_000)
+    public void reportStats() {
+        cacheManager.getCacheNames().forEach(name -> {
+            Cache cache = cacheManager.getCache(name);
+            if (cache != null && cache.getNativeCache() instanceof com.github.benmanes.caffeine.cache.Cache<?,?> caffeineCache) {
+                CacheStats stats = caffeineCache.stats();
+                log.info("Cache [{}] hitRate={:.2f}% evictions={} size={}",
+                    name, stats.hitRate() * 100, stats.evictionCount(), caffeineCache.estimatedSize());
+            }
         });
     }
 }
@@ -683,194 +594,1070 @@ public class PriceCacheRefresher {
 
 ---
 
-## Monitoring with Micrometer
+## Redis Cache Deep Dive
 
-### Enable Cache Metrics
+### Serialization Comparison
+
+| Serializer | Readable? | Performance | Compatibility | Size |
+|---|---|---|---|---|
+| `JdkSerializationRedisSerializer` | No (binary) | Fast | Java only, fragile across versions | Smallest |
+| `Jackson2JsonRedisSerializer` | Yes | Medium | Fixed type, cross-language | Medium |
+| `GenericJackson2JsonRedisSerializer` | Yes (with `@class`) | Medium | Polymorphic, cross-language | Largest |
+| `StringRedisSerializer` | Yes | Fastest | Strings only | Smallest |
+
+!!! example "🎯 Interview Tip"
+    "Always use JSON serialization for Redis cache values. The 10-15% performance overhead is nothing compared to the debugging hours saved when you can `redis-cli GET` a key and actually read the JSON."
+
+### Redis Cluster Considerations
+
+```java
+@Bean
+public LettuceConnectionFactory redisConnectionFactory() {
+    RedisClusterConfiguration clusterConfig = new RedisClusterConfiguration(
+        List.of("redis-1:6379", "redis-2:6379", "redis-3:6379"));
+    clusterConfig.setMaxRedirects(3);
+
+    LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
+        .commandTimeout(Duration.ofMillis(2000))
+        .readFrom(ReadFrom.REPLICA_PREFERRED)  // Read from replicas for cache reads
+        .build();
+
+    return new LettuceConnectionFactory(clusterConfig, clientConfig);
+}
+```
+
+### Connection Pool Tuning
+
+| Parameter | Default | Production Recommendation | Why |
+|---|---|---|---|
+| `max-active` | 8 | 16-32 | Enough concurrent connections for peak load |
+| `max-idle` | 8 | 8-16 | Keep warm connections ready |
+| `min-idle` | 0 | 4-8 | Avoid cold-start latency |
+| `max-wait` | -1 (infinite) | 2000ms | Fail fast rather than queue indefinitely |
+
+!!! warning "🔥 Production War Story"
+    A service with `max-active=8` (default) under 200 RPS started queueing all requests waiting for Redis connections. P99 latency went from 5ms to 30 seconds. The fix was increasing `max-active` to 32 and setting `max-wait=2000ms` to fail fast instead of queueing.
+
+---
+
+## Production Patterns
+
+### Cache-Aside (Most Common with Spring)
+
+The application is responsible for reading from and writing to the cache. This is what `@Cacheable` + `@CacheEvict` implements.
+
+```java
+@Service
+public class ProductCatalogService {
+
+    @Cacheable(value = "products", key = "#productId", unless = "#result == null")
+    public Product getProduct(Long productId) {
+        return productRepository.findById(productId).orElse(null);
+    }
+
+    @CacheEvict(value = "products", key = "#product.id")
+    public Product updateProduct(Product product) {
+        return productRepository.save(product);
+    }
+}
+```
+
+**Pros:** Only caches what's actually accessed. Simple mental model.  
+**Cons:** First request always slow (cold miss). Brief inconsistency window between DB write and cache eviction.
+
+### Write-Through
+
+Every write updates both the cache and the database. The cache always has the latest data.
+
+```java
+@Service
+public class InventoryService {
+
+    @CachePut(value = "inventory", key = "#sku")
+    public InventoryLevel updateStock(String sku, int newQuantity) {
+        InventoryLevel level = new InventoryLevel(sku, newQuantity, Instant.now());
+        inventoryRepository.save(level);
+        return level;  // This exact object goes into the cache
+    }
+
+    @Cacheable(value = "inventory", key = "#sku")
+    public InventoryLevel getStock(String sku) {
+        return inventoryRepository.findBySku(sku);
+    }
+}
+```
+
+**Pros:** Cache never stale (within the same application instance). Reads always fast.  
+**Cons:** Every write is slower (dual-write). Caches data that may never be read.
+
+### Write-Behind (Async)
+
+Write to cache immediately, flush to database asynchronously in batches.
+
+```java
+@Service
+public class EventTrackingService {
+
+    private final BlockingQueue<UserEvent> writeQueue = new LinkedBlockingQueue<>(10_000);
+
+    @CachePut(value = "userEvents", key = "#event.userId + ':' + #event.eventType")
+    public UserEvent trackEvent(UserEvent event) {
+        writeQueue.offer(event);  // Async — DB write happens later
+        return event;
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void flushToDatabase() {
+        List<UserEvent> batch = new ArrayList<>();
+        writeQueue.drainTo(batch, 500);
+        if (!batch.isEmpty()) {
+            eventRepository.saveAll(batch);
+            log.info("Flushed {} events to database", batch.size());
+        }
+    }
+}
+```
+
+**Pros:** Ultra-fast writes. Batching reduces DB pressure.  
+**Cons:** Data loss risk if cache crashes before flush. Eventually consistent.
+
+### Multi-Level Cache (Local + Distributed)
+
+Use Caffeine as L1 (fast, local) and Redis as L2 (shared, durable). This eliminates network calls for hot data while maintaining consistency across instances.
+
+```java
+@Configuration
+@EnableCaching
+public class MultiLevelCacheConfig {
+
+    @Bean
+    @Primary
+    public CacheManager cacheManager(RedisConnectionFactory redisFactory) {
+        return new MultiLevelCacheManager(
+            caffeineCacheManager(),
+            redisCacheManager(redisFactory)
+        );
+    }
+
+    private CaffeineCacheManager caffeineCacheManager() {
+        CaffeineCacheManager manager = new CaffeineCacheManager();
+        manager.setCaffeine(Caffeine.newBuilder()
+            .maximumSize(1_000)
+            .expireAfterWrite(Duration.ofMinutes(5))  // Short L1 TTL
+            .recordStats());
+        return manager;
+    }
+
+    private RedisCacheManager redisCacheManager(RedisConnectionFactory factory) {
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ofMinutes(60));  // Longer L2 TTL
+        return RedisCacheManager.builder(factory).cacheDefaults(config).build();
+    }
+}
+```
+
+```java
+// Custom CacheManager that checks L1 then L2
+public class MultiLevelCacheManager implements CacheManager {
+    private final CacheManager l1;  // Caffeine
+    private final CacheManager l2;  // Redis
+
+    @Override
+    public Cache getCache(String name) {
+        return new MultiLevelCache(l1.getCache(name), l2.getCache(name));
+    }
+
+    // MultiLevelCache: get() checks L1 then L2, put() writes to both
+}
+```
+
+!!! example "🎯 Interview Tip"
+    "Multi-level caching gives you nanosecond reads from L1 for the hottest data, with L2 as a shared fallback. The key challenge is keeping L1 in sync across instances — use short L1 TTLs or Redis pub/sub for invalidation."
+
+### Pattern Comparison
+
+| Pattern | Read Latency | Write Latency | Consistency | Complexity | Spring Support |
+|---|---|---|---|---|---|
+| Cache-Aside | Miss = slow | Fast (evict) | Eventual | Low | `@Cacheable` + `@CacheEvict` |
+| Write-Through | Always fast | Slower (dual-write) | Strong (single node) | Medium | `@CachePut` |
+| Write-Behind | Always fast | Fastest | Weak | High | Custom implementation |
+| Multi-Level | Fastest (L1 hit) | Medium | Tunable | High | Custom `CacheManager` |
+
+---
+
+## Cache Invalidation Strategies
+
+!!! tip "💡 One-liner for interviews"
+    "There are only two hard things in Computer Science: cache invalidation and naming things." — Phil Karlton
+
+### TTL-Based (Time-to-Live)
+
+Set it and forget it. Data expires after a fixed duration regardless of changes.
+
+```java
+// Redis: 30-minute TTL
+RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(30));
+
+// Caffeine: 10-minute TTL
+Caffeine.newBuilder().expireAfterWrite(Duration.ofMinutes(10));
+```
+
+**When to use:** Data where some staleness is acceptable (product descriptions, blog posts, config).  
+**Gotcha:** Too short = poor hit rate. Too long = stale data. Find the sweet spot.
+
+### Event-Based (On Write/Update/Delete)
+
+Invalidate immediately when the source of truth changes.
+
+```java
+@Service
+public class ProductService {
+
+    @Cacheable("products")
+    public Product getProduct(Long id) { return repo.findById(id).orElseThrow(); }
+
+    @Caching(evict = {
+        @CacheEvict(value = "products", key = "#product.id"),
+        @CacheEvict(value = "productsByCategory", key = "#product.categoryId"),
+        @CacheEvict(value = "productSearch", allEntries = true)
+    })
+    public Product updateProduct(Product product) { return repo.save(product); }
+}
+```
+
+### Event-Driven (Microservices)
+
+In distributed systems, use messaging to propagate invalidation across services.
+
+```java
+// Service A: Publishes product update event
+@CachePut(value = "products", key = "#product.id")
+public Product updateProduct(Product product) {
+    Product saved = repo.save(product);
+    kafkaTemplate.send("product-events", new ProductUpdatedEvent(saved.getId()));
+    return saved;
+}
+
+// Service B: Listens and invalidates its local cache
+@KafkaListener(topics = "product-events")
+public void onProductUpdated(ProductUpdatedEvent event) {
+    Cache cache = cacheManager.getCache("products");
+    if (cache != null) {
+        cache.evict(event.getProductId());
+        log.info("Evicted product {} from local cache due to upstream update", event.getProductId());
+    }
+}
+```
+
+### Version-Based
+
+Include a version or timestamp in the cache key. When data changes, increment the version — old keys naturally become unreachable and expire via TTL.
+
+```java
+@Cacheable(value = "productPage", key = "#productId + ':v' + #version")
+public ProductPageDTO getProductPage(Long productId, int version) {
+    return buildExpensiveProductPage(productId);
+}
+```
+
+### Pattern-Based Eviction (Redis)
+
+Use Redis `SCAN` to evict by pattern. Useful for evicting all keys related to an entity.
+
+```java
+public void evictByPattern(String pattern) {
+    RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
+    ScanOptions options = ScanOptions.scanOptions().match(pattern).count(100).build();
+    Cursor<byte[]> cursor = connection.scan(options);
+    while (cursor.hasNext()) {
+        connection.del(cursor.next());
+    }
+}
+
+// Evict all product-related caches for product 42
+evictByPattern("ecommerce::product*42*");
+```
+
+---
+
+## The Self-Invocation Problem
+
+This is the #1 reason `@Cacheable` "doesn't work" in production.
+
+### The Problem
+
+```java
+@Service
+public class OrderService {
+
+    // BROKEN — cache is NEVER consulted here!
+    public OrderSummary getOrderSummary(Long orderId) {
+        Order order = getOrder(orderId);  // ← Direct call, bypasses proxy
+        return buildSummary(order);
+    }
+
+    @Cacheable("orders")
+    public Order getOrder(Long orderId) {
+        return orderRepository.findById(orderId).orElseThrow();
+    }
+}
+```
+
+**Why it happens:** `@Cacheable` works via AOP proxy. When you call `this.getOrder()`, you're calling the method directly on the target object, completely bypassing the proxy that handles caching.
+
+```mermaid
+flowchart LR
+    subgraph Working["External Call (works)"]
+        Client1[Controller] -->|"via proxy"| Proxy1[AOP Proxy]
+        Proxy1 -->|"checks cache"| Target1[OrderService.getOrder]
+    end
+    
+    subgraph Broken["Self-Invocation (broken)"]
+        Target2[getOrderSummary] -->|"this.getOrder()"| Target3[getOrder]
+        Proxy2[AOP Proxy] -.->|"bypassed!"| Target3
+    end
+
+    style Proxy2 fill:#FEE2E2,stroke:#EF4444,color:#1E40AF
+```
+
+### Solutions
+
+=== "Self-Injection (Recommended)"
+
+    ```java
+    @Service
+    public class OrderService {
+
+        @Lazy
+        @Autowired
+        private OrderService self;  // Inject proxy reference
+
+        public OrderSummary getOrderSummary(Long orderId) {
+            Order order = self.getOrder(orderId);  // Goes through proxy!
+            return buildSummary(order);
+        }
+
+        @Cacheable("orders")
+        public Order getOrder(Long orderId) {
+            return orderRepository.findById(orderId).orElseThrow();
+        }
+    }
+    ```
+
+=== "Separate Service (Cleanest)"
+
+    ```java
+    @Service
+    public class OrderCacheService {
+        @Cacheable("orders")
+        public Order getOrder(Long orderId) {
+            return orderRepository.findById(orderId).orElseThrow();
+        }
+    }
+
+    @Service
+    public class OrderService {
+        @Autowired private OrderCacheService cacheService;
+
+        public OrderSummary getOrderSummary(Long orderId) {
+            Order order = cacheService.getOrder(orderId);  // External call
+            return buildSummary(order);
+        }
+    }
+    ```
+
+=== "AopContext (Less Clean)"
+
+    ```java
+    // Requires: @EnableAspectJAutoProxy(exposeProxy = true)
+    public OrderSummary getOrderSummary(Long orderId) {
+        OrderService proxy = (OrderService) AopContext.currentProxy();
+        Order order = proxy.getOrder(orderId);
+        return buildSummary(order);
+    }
+    ```
+
+!!! danger "⚠️ What breaks"
+    This also applies to `@Transactional`, `@Async`, `@Retryable` — any annotation that works via AOP proxy. If your cache hit rate is suspiciously low, check for self-invocation first.
+
+---
+
+## Cache Stampede / Thundering Herd
+
+### The Problem
+
+A hot cache key expires. 1,000 concurrent requests arrive simultaneously. All see a cache miss. All hit the database at once. Database dies.
+
+```mermaid
+sequenceDiagram
+    participant T1 as Thread 1
+    participant T2 as Thread 2
+    participant TN as Thread N...
+    participant Cache
+    participant DB
+
+    Note over Cache: Key "product:42" expires
+
+    T1->>Cache: GET product:42
+    T2->>Cache: GET product:42
+    TN->>Cache: GET product:42
+    Cache-->>T1: MISS
+    Cache-->>T2: MISS
+    Cache-->>TN: MISS
+    
+    T1->>DB: SELECT * FROM products WHERE id=42
+    T2->>DB: SELECT * FROM products WHERE id=42
+    TN->>DB: SELECT * FROM products WHERE id=42
+    Note over DB: 1000 identical queries!<br/>Database overwhelmed!
+```
+
+### Solutions
+
+=== "sync=true (Spring Built-in)"
+
+    ```java
+    // Only ONE thread computes; others wait for the result
+    @Cacheable(value = "products", key = "#id", sync = true)
+    public Product getProduct(Long id) {
+        return productRepository.findById(id).orElseThrow();
+    }
+    ```
+    
+    **How it works:** The underlying cache implementation uses a lock per key. First thread computes; others block on `Cache.get(key, Callable)`.
+    
+    **Limitation:** Only works within a single JVM. In a distributed system, you still get N nodes hitting the DB simultaneously.
+
+=== "Distributed Lock (Redis)"
+
+    ```java
+    @Cacheable(value = "products", key = "#id")
+    public Product getProduct(Long id) {
+        return productRepository.findById(id).orElseThrow();
+    }
+
+    // Wrapper with distributed locking for critical paths
+    public Product getProductSafe(Long id) {
+        Product cached = cacheManager.getCache("products").get(id, Product.class);
+        if (cached != null) return cached;
+
+        String lockKey = "lock:product:" + id;
+        Boolean acquired = redisTemplate.opsForValue()
+            .setIfAbsent(lockKey, "locked", Duration.ofSeconds(10));
+
+        if (Boolean.TRUE.equals(acquired)) {
+            try {
+                Product product = productRepository.findById(id).orElseThrow();
+                cacheManager.getCache("products").put(id, product);
+                return product;
+            } finally {
+                redisTemplate.delete(lockKey);
+            }
+        } else {
+            // Wait briefly and retry from cache
+            Thread.sleep(100);
+            return cacheManager.getCache("products").get(id, Product.class);
+        }
+    }
+    ```
+
+=== "Probabilistic Early Refresh"
+
+    ```java
+    // Refresh the cache BEFORE TTL expires with some probability
+    // As expiry approaches, refresh probability increases
+    @Cacheable(value = "products", key = "#id")
+    public Product getProduct(Long id) {
+        return productRepository.findById(id).orElseThrow();
+    }
+
+    // Caffeine's refreshAfterWrite handles this elegantly
+    Caffeine.newBuilder()
+        .maximumSize(10_000)
+        .expireAfterWrite(Duration.ofMinutes(60))      // Hard expiry
+        .refreshAfterWrite(Duration.ofMinutes(50))     // Start refreshing at 50m
+        .build();
+    ```
+
+=== "Jittered TTL"
+
+    ```java
+    // Randomize TTL to prevent synchronized expiration
+    @Bean
+    public RedisCacheManager cacheManager(RedisConnectionFactory factory) {
+        return RedisCacheManager.builder(factory)
+            .cacheDefaults(RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(30)))  // Base TTL
+            .build();
+    }
+
+    // Or programmatically with jitter:
+    Duration baseTtl = Duration.ofMinutes(30);
+    Duration jitter = Duration.ofMinutes(ThreadLocalRandom.current().nextInt(0, 10));
+    Duration finalTtl = baseTtl.plus(jitter);  // 30-40 minutes, random
+    ```
+
+!!! warning "🔥 Production War Story"
+    A flash sale page cached product details with a 5-minute TTL. At exactly T+5:00, 50,000 users simultaneously got cache misses. The database connection pool was exhausted in 200ms. The entire site went down for 3 minutes. Fix: `sync=true` + jittered TTLs + pre-warming before the sale started.
+
+---
+
+## Common Problems & Solutions
+
+### Problem: Serialization Errors with Redis
+
+```java
+// BROKEN — Hibernate lazy proxy cannot be serialized
+@Cacheable("orders")
+public Order getOrder(Long id) {
+    return orderRepository.findById(id).orElseThrow();
+    // Order.customer is a lazy-loaded proxy → SerializationException!
+}
+
+// FIXED — Use DTOs, not entities
+@Cacheable("orders")
+public OrderDTO getOrder(Long id) {
+    Order order = orderRepository.findById(id).orElseThrow();
+    return OrderDTO.from(order);  // Eagerly maps all fields
+}
+```
+
+### Problem: Cache Key Collision
+
+```java
+// COLLISION — both use cache "data" with numeric key
+@Cacheable(value = "data", key = "#id")
+public User getUser(Long id) { ... }      // data::1 → User
+
+@Cacheable(value = "data", key = "#id")
+public Product getProduct(Long id) { ... } // data::1 → Product  CONFLICT!
+
+// FIXED — separate cache names or prefixed keys
+@Cacheable(value = "users", key = "#id")
+public User getUser(Long id) { ... }
+
+@Cacheable(value = "products", key = "#id")
+public Product getProduct(Long id) { ... }
+```
+
+### Problem: Stale Cache After Database Update
+
+```java
+// RACE CONDITION — another thread reads between DB write and evict
+public Product updateProduct(Product product) {
+    productRepository.save(product);          // Step 1: DB updated
+    // <-- Thread B reads stale cache here!
+    cacheManager.getCache("products").evict(product.getId());  // Step 2: Cache evicted
+    return product;
+}
+
+// BETTER — use @CachePut for atomic update or evict BEFORE DB write
+@CachePut(value = "products", key = "#product.id")
+public Product updateProduct(Product product) {
+    return productRepository.save(product);  // Atomic: method returns, cache updates
+}
+```
+
+### Problem: Memory Leak with Unbounded Caches
+
+```java
+// DANGEROUS — no size limit, no TTL
+@Cacheable("searchResults")  // with SimpleCacheManager
+public List<Product> search(String query) { ... }
+// 10,000 unique queries = 10,000 cached result sets = OOM
+
+// FIXED — always configure bounds
+Caffeine.newBuilder()
+    .maximumSize(1_000)           // Hard limit on entries
+    .expireAfterWrite(Duration.ofMinutes(5))  // Hard limit on time
+    .build();
+```
+
+### Problem: @Cacheable on Private/Void Methods
+
+```java
+// DOES NOTHING — private method, proxy can't intercept
+@Cacheable("data")
+private Data loadData(Long id) { ... }
+
+// DOES NOTHING — void return, nothing to cache
+@Cacheable("notifications")
+public void sendNotification(Long userId) { ... }
+
+// FIXED — public method with return value
+@Cacheable("data")
+public Data loadData(Long id) { ... }
+```
+
+### Problem: @Transactional + @Cacheable Interaction
+
+```java
+// DANGER — cache updated even if transaction rolls back!
+@Transactional
+@Cacheable("accounts")
+public Account getAccount(Long id) {
+    Account account = repo.findById(id).orElseThrow();
+    auditService.logAccess(id);  // If this throws → rollback, but cache has data
+    return account;
+}
+
+// FIXED — use transaction-aware cache manager
+RedisCacheManager.builder(factory)
+    .transactionAware()  // Cache writes deferred until transaction commits
+    .build();
+```
+
+---
+
+## Cache Warming Strategies
+
+### Startup Warming with ApplicationReadyEvent
+
+```java
+@Component
+@Slf4j
+public class CacheWarmer {
+
+    @Autowired private ProductService productService;
+    @Autowired private ConfigService configService;
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void warmCaches() {
+        log.info("Starting cache warm-up...");
+        
+        Instant start = Instant.now();
+
+        // Warm top 100 products (covers 80% of traffic)
+        productService.getTopProducts(100).forEach(p -> 
+            productService.getProduct(p.getId()));
+
+        // Warm all configuration (small dataset, always needed)
+        configService.getAllConfigs();
+
+        Duration elapsed = Duration.between(start, Instant.now());
+        log.info("Cache warm-up complete in {}ms", elapsed.toMillis());
+    }
+}
+```
+
+### Scheduled Refresh (Prevent Expiration)
+
+```java
+@Service
+public class CacheRefreshService {
+
+    @Autowired private ProductService productService;
+
+    // Refresh 5 minutes BEFORE TTL expires (TTL = 60m, refresh at 55m)
+    @Scheduled(fixedRate = 55 * 60 * 1000)
+    public void refreshProductCache() {
+        log.info("Pre-emptive cache refresh starting");
+        productService.getHotProductIds().forEach(id -> {
+            try {
+                productService.evictProduct(id);
+                productService.getProduct(id);  // Re-populates cache
+            } catch (Exception e) {
+                log.warn("Failed to refresh product {}: {}", id, e.getMessage());
+            }
+        });
+    }
+}
+```
+
+---
+
+## Monitoring & Observability
+
+### Micrometer Integration
 
 ```yaml
 management:
   endpoints:
     web:
       exposure:
-        include: metrics,caches
+        include: metrics,caches,health
   metrics:
     enable:
       cache: true
+    tags:
+      application: ecommerce-api
 ```
 
-### Caffeine + Micrometer
+### Key Metrics to Monitor
+
+| Metric | Meaning | Alert Threshold |
+|---|---|---|
+| `cache.gets{result=hit}` | Successful cache lookups | N/A (higher = better) |
+| `cache.gets{result=miss}` | Cache misses | Spike = problem |
+| `cache.puts` | New entries added | Spike after deploy = cold cache |
+| `cache.evictions` | Entries removed (size/TTL) | Sustained high = cache too small |
+| `cache.size` | Current entry count | Near max = consider increasing |
+
+### Hit Rate Calculation
+
+```
+hit_ratio = hits / (hits + misses)
+```
+
+| Hit Rate | Assessment | Action |
+|---|---|---|
+| > 95% | Excellent | Cache is working perfectly |
+| 80-95% | Good | Normal for most workloads |
+| 50-80% | Concerning | Check TTL, cache size, key distribution |
+| < 50% | Cache is useless | Rethink strategy — wrong data being cached |
+
+### Prometheus/Grafana Dashboard Query
+
+```promql
+# Hit rate over 5 minutes
+sum(rate(cache_gets_total{result="hit", application="ecommerce-api"}[5m])) by (cache)
+/
+sum(rate(cache_gets_total{application="ecommerce-api"}[5m])) by (cache)
+
+# Eviction rate (indicates cache pressure)
+rate(cache_evictions_total{application="ecommerce-api"}[5m])
+```
+
+### Caffeine Stats with Actuator
 
 ```java
 @Bean
-public CacheManager cacheManager(MeterRegistry registry) {
+public CacheManager cacheManager(MeterRegistry meterRegistry) {
     CaffeineCacheManager manager = new CaffeineCacheManager();
-    manager.setCacheSpecification("maximumSize=1000,expireAfterWrite=10m,recordStats");
-    // Micrometer auto-binds when recordStats is enabled
+    manager.setCacheSpecification("maximumSize=10000,expireAfterWrite=10m,recordStats");
+    // Spring Boot auto-binds Caffeine stats to Micrometer when recordStats is enabled
     return manager;
 }
 ```
 
-### Key Metrics
-
-| Metric | Meaning |
-|---|---|
-| `cache.gets{result=hit}` | Cache hit count |
-| `cache.gets{result=miss}` | Cache miss count |
-| `cache.puts` | Entries added |
-| `cache.evictions` | Entries evicted |
-| `cache.size` | Current entry count |
-
-### Calculating Hit Ratio
-
-```
-hit_ratio = cache.gets{result=hit} / (cache.gets{result=hit} + cache.gets{result=miss})
-```
-
-Target: > 90% for read-heavy caches. Below 50% means the cache is not effective.
-
-### Prometheus / Grafana Query
-
-```promql
-rate(cache_gets_total{result="hit", cache="products"}[5m]) 
-/ 
-rate(cache_gets_total{cache="products"}[5m])
-```
+Access via: `GET /actuator/metrics/cache.gets?tag=cache:products&tag=result:hit`
 
 ---
 
-## Fun Example: Caching a Weather API
+## E-Commerce Caching Example (Full Implementation)
 
-A weather service that caches external API responses. Shows the full cache hit/miss flow.
+A complete, production-ready caching setup for an e-commerce platform.
 
-=== "WeatherService.java"
+=== "CacheConfig.java"
+
+    ```java
+    @Configuration
+    @EnableCaching
+    @Slf4j
+    public class ECommerceCacheConfig {
+
+        @Bean
+        @Primary
+        public CacheManager caffeineCacheManager() {
+            CaffeineCacheManager manager = new CaffeineCacheManager();
+            
+            // Product catalog — large, long TTL, high hit rate expected
+            manager.registerCustomCache("products",
+                Caffeine.newBuilder()
+                    .maximumSize(50_000)
+                    .expireAfterWrite(Duration.ofHours(2))
+                    .refreshAfterWrite(Duration.ofHours(1))
+                    .recordStats()
+                    .build());
+
+            // Price calculations — smaller, shorter TTL (prices change often)
+            manager.registerCustomCache("prices",
+                Caffeine.newBuilder()
+                    .maximumSize(10_000)
+                    .expireAfterWrite(Duration.ofMinutes(5))
+                    .recordStats()
+                    .build());
+
+            // User sessions — access-based expiry (idle timeout)
+            manager.registerCustomCache("sessions",
+                Caffeine.newBuilder()
+                    .maximumSize(100_000)
+                    .expireAfterAccess(Duration.ofMinutes(30))
+                    .recordStats()
+                    .build());
+
+            // Inventory — very short TTL (real-time-ish)
+            manager.registerCustomCache("inventory",
+                Caffeine.newBuilder()
+                    .maximumSize(20_000)
+                    .expireAfterWrite(Duration.ofSeconds(30))
+                    .recordStats()
+                    .build());
+
+            return manager;
+        }
+    }
+    ```
+
+=== "ProductService.java"
+
+    ```java
+    @Service
+    @CacheConfig(cacheNames = "products")
+    @Slf4j
+    public class ProductService {
+
+        @Autowired private ProductRepository productRepository;
+
+        @Cacheable(key = "#productId", unless = "#result == null", sync = true)
+        public ProductDTO getProduct(Long productId) {
+            log.debug("Cache MISS — loading product {} from DB", productId);
+            return productRepository.findById(productId)
+                .map(ProductDTO::from)
+                .orElse(null);
+        }
+
+        @Cacheable(key = "'category:' + #categoryId + ':page:' + #page")
+        public Page<ProductDTO> getByCategory(Long categoryId, int page) {
+            return productRepository.findByCategoryId(categoryId, PageRequest.of(page, 20))
+                .map(ProductDTO::from);
+        }
+
+        @Caching(
+            put = @CachePut(key = "#result.id"),
+            evict = @CacheEvict(value = "productSearch", allEntries = true)
+        )
+        public ProductDTO updateProduct(UpdateProductCommand command) {
+            Product product = productRepository.findById(command.getId()).orElseThrow();
+            product.update(command);
+            return ProductDTO.from(productRepository.save(product));
+        }
+
+        @CacheEvict(key = "#productId")
+        public void evictProduct(Long productId) {
+            log.debug("Evicted product {} from cache", productId);
+        }
+    }
+    ```
+
+=== "PriceService.java"
 
     ```java
     @Service
     @Slf4j
-    public class WeatherService {
+    public class PriceService {
 
-        private final RestClient restClient;
+        @Autowired private PriceRepository priceRepository;
+        @Autowired private DiscountEngine discountEngine;
 
-        public WeatherService(RestClient.Builder builder) {
-            this.restClient = builder.baseUrl("https://api.weather.example.com").build();
+        @Cacheable(value = "prices", key = "#sku + ':' + #currency",
+                   unless = "#result == null")
+        public PriceDTO calculatePrice(String sku, Currency currency) {
+            log.debug("Cache MISS — calculating price for {} in {}", sku, currency);
+            
+            BigDecimal basePrice = priceRepository.getBasePrice(sku, currency);
+            BigDecimal discount = discountEngine.calculateDiscount(sku);
+            BigDecimal finalPrice = basePrice.subtract(discount);
+            
+            return new PriceDTO(sku, currency, basePrice, discount, finalPrice);
         }
 
-        @Cacheable(value = "weather", key = "#city", unless = "#result == null")
-        public WeatherData getWeather(String city) {
-            log.info("CACHE MISS — calling external weather API for: {}", city);
-            return restClient.get()
-                .uri("/v1/current?city={city}", city)
-                .retrieve()
-                .body(WeatherData.class);
-        }
-
-        @CacheEvict(value = "weather", key = "#city")
-        public void evictWeather(String city) {
-            log.info("Evicted weather cache for: {}", city);
-        }
-
-        @Scheduled(fixedRate = 600_000)  // refresh every 10 min
-        @CacheEvict(value = "weather", allEntries = true)
-        public void refreshAllWeather() {
-            log.info("Cleared all weather cache — next requests will fetch fresh data");
+        @CacheEvict(value = "prices", allEntries = true)
+        @EventListener(PriceUpdateEvent.class)
+        public void onPriceUpdate(PriceUpdateEvent event) {
+            log.info("Prices updated — evicting entire price cache");
         }
     }
     ```
 
-=== "WeatherController.java"
+=== "InventoryService.java"
 
     ```java
-    @RestController
-    @RequestMapping("/api/weather")
-    public class WeatherController {
+    @Service
+    @Slf4j
+    public class InventoryService {
 
-        @Autowired private WeatherService weatherService;
+        @Autowired private InventoryRepository inventoryRepository;
 
-        @GetMapping("/{city}")
-        public WeatherData getWeather(@PathVariable String city) {
-            long start = System.currentTimeMillis();
-            WeatherData data = weatherService.getWeather(city);
-            long elapsed = System.currentTimeMillis() - start;
-            log.info("Response for {} in {}ms", city, elapsed);
-            return data;
+        // 30-second TTL — we accept 30s staleness for inventory
+        @Cacheable(value = "inventory", key = "#sku", sync = true)
+        public InventoryDTO getStock(String sku) {
+            return InventoryDTO.from(inventoryRepository.findBySku(sku));
+        }
+
+        // Always evict on stock change — don't wait for TTL
+        @CacheEvict(value = "inventory", key = "#sku")
+        public void decrementStock(String sku, int quantity) {
+            inventoryRepository.decrement(sku, quantity);
         }
     }
     ```
 
-=== "Cache Config"
+---
 
-    ```java
+## Conditional Caching
+
+### `condition` vs `unless`
+
+| Attribute | Evaluated | Can Access `#result`? | Effect When `false` |
+|---|---|---|---|
+| `condition` | BEFORE method | No | Cache not consulted, method always runs, result not stored |
+| `unless` | AFTER method | Yes | Method runs, result is NOT stored in cache |
+
+```java
+// Only consult cache for premium users (condition)
+@Cacheable(value = "recommendations",
+    key = "#userId",
+    condition = "#userTier == T(UserTier).PREMIUM")
+public List<Product> getRecommendations(Long userId, UserTier userTier) { ... }
+
+// Cache the result unless it's an empty list (unless)
+@Cacheable(value = "orders",
+    key = "#userId",
+    unless = "#result.isEmpty()")
+public List<Order> getRecentOrders(Long userId) { ... }
+
+// Combined: only cache for valid users, skip empty results
+@Cacheable(value = "wishlist",
+    key = "#userId",
+    condition = "#userId != null",
+    unless = "#result == null || #result.items.isEmpty()")
+public Wishlist getWishlist(Long userId) { ... }
+```
+
+---
+
+## Testing Caches
+
+### Verifying Cache Behavior
+
+```java
+@SpringBootTest
+class ProductServiceCacheTest {
+
+    @Autowired private ProductService productService;
+    @Autowired private CacheManager cacheManager;
+    @MockBean private ProductRepository productRepository;
+
+    @BeforeEach
+    void clearCache() {
+        cacheManager.getCache("products").clear();
+    }
+
+    @Test
+    void shouldCacheProductOnFirstCall() {
+        when(productRepository.findById(1L)).thenReturn(Optional.of(testProduct()));
+
+        // First call — cache miss, hits repository
+        productService.getProduct(1L);
+        
+        // Second call — cache hit, should NOT hit repository again
+        productService.getProduct(1L);
+
+        verify(productRepository, times(1)).findById(1L);  // Only called once!
+    }
+
+    @Test
+    void shouldEvictOnUpdate() {
+        when(productRepository.findById(1L)).thenReturn(Optional.of(testProduct()));
+        
+        productService.getProduct(1L);  // Populate cache
+        
+        assertNotNull(cacheManager.getCache("products").get(1L));  // Cached
+
+        productService.evictProduct(1L);  // Evict
+
+        assertNull(cacheManager.getCache("products").get(1L));  // Gone
+    }
+}
+```
+
+### Disabling Cache in Tests
+
+```java
+@TestConfiguration
+public class NoCacheTestConfig {
     @Bean
-    public CacheManager weatherCacheManager() {
-        CaffeineCacheManager manager = new CaffeineCacheManager("weather");
-        manager.setCaffeine(Caffeine.newBuilder()
-            .maximumSize(200)
-            .expireAfterWrite(Duration.ofMinutes(10))
-            .recordStats());
-        return manager;
+    @Primary
+    public CacheManager noOpCacheManager() {
+        return new NoOpCacheManager();  // All operations are no-ops
     }
-    ```
-
-=== "Request Flow"
-
-    ```
-    GET /api/weather/Tokyo
-    → Log: "CACHE MISS — calling external weather API for: Tokyo"
-    → Log: "Response for Tokyo in 320ms"
-    → External API called, result cached
-
-    GET /api/weather/Tokyo   (within 10 min)
-    → Log: "Response for Tokyo in 1ms"
-    → Served from cache. No external call.
-
-    GET /api/weather/London
-    → Log: "CACHE MISS — calling external weather API for: London"
-    → Log: "Response for London in 280ms"
-    → New city, cache miss, external call made.
-    ```
+}
+```
 
 ---
 
 ## Interview Questions
 
-??? question "1. What is the difference between @Cacheable and @CachePut?"
-    `@Cacheable` checks the cache first. If the key exists, the method body is skipped entirely. `@CachePut` always executes the method and writes the result to the cache. Use `@Cacheable` for reads. Use `@CachePut` for writes where you want the cache updated with the new value.
+??? question "How does @Cacheable work internally?"
+    Spring creates an AOP proxy around the bean. When a `@Cacheable` method is called through the proxy, the `CacheInterceptor` first computes the cache key (using `KeyGenerator` or SpEL), then calls `Cache.get(key)`. On hit, it returns the cached value without invoking the method. On miss, it invokes the method, stores the result via `Cache.put(key, value)`, and returns. The proxy is typically CGLIB (for class-based) or JDK dynamic proxy (for interface-based).
 
-??? question "2. How do you set different TTL per cache in Spring Boot?"
-    With **Redis**: create a `Map<String, RedisCacheConfiguration>` with per-cache TTLs and pass it to `RedisCacheManager.builder().withInitialCacheConfigurations(map)`. With **Caffeine**: use `CaffeineCacheManager.registerCustomCache()` to register caches with individual `Caffeine` builder specs.
+??? question "@Cacheable vs @CachePut — when to use each?"
+    `@Cacheable`: reads. Method is skipped if cache has data. Think "lazy loading." `@CachePut`: writes. Method ALWAYS executes and the result updates the cache. Think "write-through." Never use `@Cacheable` on methods with side effects — if cache hits, the side effect won't execute.
 
-??? question "3. What is the cache stampede problem and how do you solve it?"
-    When a hot cache entry expires, many concurrent requests simultaneously miss the cache and hit the database. Solutions: (1) Lock-based population — only one thread fetches, others wait. (2) Pre-emptive refresh — refresh before actual expiry. (3) Jittered TTLs — randomize expiry to spread load. (4) Caffeine's `refreshAfterWrite` with `AsyncLoadingCache`.
+??? question "How do you handle cache invalidation in microservices?"
+    Four approaches: (1) **Short TTLs** — accept eventual consistency, simplest. (2) **Event-driven** — publish domain events (Kafka/RabbitMQ), consumers evict their local caches. (3) **Redis pub/sub** — lightweight notification channel for cache invalidation across instances. (4) **Spring Cloud Bus** — broadcast eviction commands to all instances. Choose based on consistency requirements and infrastructure complexity.
 
-??? question "4. Why doesn't @Cacheable work on private methods?"
-    Spring Cache uses AOP proxies (JDK dynamic proxies or CGLIB). Proxies can only intercept public method calls made through the proxy reference. Private methods are called directly on the target object, bypassing the proxy entirely. Fix: make the method public, or use AspectJ compile-time weaving.
+??? question "What is cache stampede and how do you prevent it?"
+    When a hot key expires, many concurrent threads simultaneously miss the cache and hit the database. Prevention: (1) `sync=true` — only one thread computes, others wait. (2) Distributed lock (Redis `SETNX`) — prevents cross-node stampede. (3) `refreshAfterWrite` (Caffeine) — proactive refresh before expiry. (4) Jittered TTLs — randomize expiry to spread load. (5) Never-expire + background refresh — hot keys always in cache.
 
-??? question "5. Why doesn't caching work when calling a method from within the same class?"
-    Same reason — self-invocation bypasses the proxy. `this.someMethod()` calls the target directly. The proxy never intercepts it. Fix: inject the bean into itself (`@Lazy` to break circular dependency), extract to a separate service, or use `AopContext.currentProxy()`.
+??? question "How do you implement multi-level caching in Spring Boot?"
+    Create a custom `CacheManager` that wraps two providers: Caffeine (L1, local, nanoseconds) and Redis (L2, distributed, milliseconds). On `get`: check L1, if miss check L2, if miss compute and store in both. On `put`: write to both. On `evict`: remove from both. Use short L1 TTL (1-5 min) to limit staleness. Optionally use Redis pub/sub to proactively invalidate L1 across instances.
 
-??? question "6. How do you avoid caching null values?"
-    Two approaches: (1) `@Cacheable(unless = "#result == null")` — method runs but null is not stored. (2) `RedisCacheConfiguration.defaultCacheConfig().disableCachingNullValues()` — throws `IllegalArgumentException` if null is returned.
+??? question "Why might @Cacheable not work?"
+    Six reasons: (1) **Self-invocation** — method called from same class bypasses proxy. (2) **Private method** — AOP can only intercept public methods. (3) **Void return** — nothing to cache. (4) **`condition` evaluates to false** — cache not consulted. (5) **Exception thrown** — result not cached. (6) **`@EnableCaching` missing** — no cache infrastructure active.
 
-??? question "7. How do you handle cache invalidation in a microservices environment?"
-    Options: (1) Redis pub/sub — publish eviction events across instances. (2) Spring Cloud Bus — broadcast `@CacheEvict` events. (3) Short TTLs — accept eventual consistency. (4) Event-driven architecture — consume domain events (Kafka/RabbitMQ) to trigger evictions.
+??? question "How does Spring resolve cache keys by default?"
+    `SimpleKeyGenerator`: no params → `SimpleKey.EMPTY`. One param → param itself. Multiple params → `new SimpleKey(param1, param2, ...)` using `hashCode`/`equals`. Override with `key` (SpEL per method) or `keyGenerator` (reusable bean). Cannot use both on the same annotation.
 
-??? question "8. What serialization issues occur with Redis caching and Lombok?"
-    `@Builder` classes without a no-arg constructor fail Jackson deserialization. `@Value` (immutable) classes need `@JsonDeserialize(builder = ...)`. Lazy-loaded JPA proxies serialize as Hibernate proxy objects instead of actual entities. Fix: use DTOs for cache values, not JPA entities.
+??? question "What serialization issues occur with Redis caching?"
+    (1) **Hibernate lazy proxies** — serialize as proxy objects, not actual entities. Fix: use DTOs. (2) **Lombok @Builder without no-arg constructor** — Jackson deserialization fails. Fix: add `@JsonDeserialize(builder=...)`. (3) **LocalDateTime** — requires `JavaTimeModule` registration. (4) **Polymorphic types** — need `activateDefaultTyping` for correct deserialization. (5) **Class evolution** — JDK serialization breaks on field changes. Fix: use JSON.
 
-??? question "9. Can you use @Cacheable with reactive (WebFlux) applications?"
-    Standard `@Cacheable` does not work with `Mono`/`Flux` — it caches the Publisher object, not the emitted value. Use Reactor's `CacheMono`/`CacheFlux` from `reactor-extra`, or manually integrate with `ReactiveRedisTemplate`.
+??? question "Can you use @Cacheable with reactive (WebFlux) applications?"
+    Standard `@Cacheable` caches the `Mono`/`Flux` publisher object, NOT the emitted values. This breaks completely. Solutions: (1) Use `CacheMono`/`CacheFlux` from `reactor-extra`. (2) Use `ReactiveRedisTemplate` with manual cache logic. (3) Use `Mono.cache()` operator for simple in-memory caching of individual publishers.
 
-??? question "10. How do you monitor cache effectiveness in production?"
-    Enable Micrometer metrics. Key metrics: `cache.gets{result=hit}`, `cache.gets{result=miss}`, `cache.evictions`. Calculate hit ratio. Alert if ratio drops below threshold. For Caffeine, enable `recordStats`. Expose via `/actuator/metrics/cache.gets`.
+??? question "What is the difference between `condition` and `unless`?"
+    `condition` is evaluated BEFORE method execution — controls whether the cache is consulted at all. Cannot access `#result`. When false, method always runs, result never cached. `unless` is evaluated AFTER method execution — controls whether the result is stored. CAN access `#result`. When true, result is NOT stored. Use `condition` for input-based filtering, `unless` for output-based filtering.
 
-??? question "11. What is the difference between `condition` and `unless` in @Cacheable?"
-    `condition` is evaluated BEFORE method execution — controls whether cache is consulted at all. `unless` is evaluated AFTER method execution — controls whether the result is stored. `condition` cannot access `#result`. `unless` can. Both use SpEL.
+??? question "How do you monitor cache effectiveness in production?"
+    (1) Enable `recordStats` on Caffeine or use Spring Boot Actuator cache metrics. (2) Key metrics: hit rate (`cache.gets{result=hit}` / total), eviction rate, size. (3) Alert on hit rate below 80% — means cache is not effective. (4) Monitor P99 latency — cache misses should correlate with latency spikes. (5) Use Prometheus + Grafana dashboards for visibility.
 
-??? question "12. How do you warm a cache at application startup?"
-    Three strategies: (1) `@PostConstruct` — load data immediately after bean creation. (2) `ApplicationReadyEvent` listener — run after full context is ready (safer). (3) `@Scheduled` refresh — periodic reload. Choose based on data size and startup time tolerance.
+??? question "How do you design caching for a high-traffic e-commerce checkout?"
+    Layered approach: (1) Product catalog — long TTL (hours), local Caffeine cache, high hit rate. (2) Pricing — short TTL (minutes), event-driven eviction on price changes. (3) Inventory — very short TTL (seconds) or no cache during checkout (real-time). (4) User cart — session-scoped, Redis for cross-device access. (5) Order summary — write-through on creation, short TTL. Never cache payment/security data.
 
-??? question "13. How does Spring resolve cache keys by default?"
-    No params → `SimpleKey.EMPTY`. One param → that param directly. Multiple params → `new SimpleKey(param1, param2, ...)`. The `SimpleKey` class implements proper `hashCode()`/`equals()`. Override with `key` (SpEL) or `keyGenerator` (bean) attributes.
+??? question "What is the difference between cache-aside and write-through patterns?"
+    **Cache-aside:** Application manages cache explicitly. Reads check cache → miss → DB → store. Writes update DB → evict cache. Simple, but briefly inconsistent after writes. **Write-through:** Every write updates both cache AND DB (via `@CachePut`). Cache always current. But: slower writes (dual-write), caches data that may never be read. Cache-aside is more common; write-through when read-after-write consistency is critical.
 
-??? question "14. What is the difference between cache-aside and write-through patterns?"
-    **Cache-aside:** Application manages cache explicitly. Reads check cache then DB. Writes update DB and invalidate cache. **Write-through:** Every write updates both cache and DB synchronously. Cache always has latest data. Cache-aside has simpler writes but potential stale reads. Write-through has consistent reads but slower writes.
+---
+
+## Quick Reference
+
+### Caffeine Spec Syntax
+
+```
+maximumSize=10000,expireAfterWrite=10m,expireAfterAccess=5m,recordStats
+```
+
+### SpEL Key Expressions
+
+| Expression | Meaning |
+|---|---|
+| `#paramName` | Method parameter by name |
+| `#p0`, `#a0` | First parameter by index |
+| `#result` | Return value (only in `unless`) |
+| `#root.method.name` | Method name |
+| `#root.target` | Target object |
+| `#root.targetClass` | Target class |
+| `#root.args[0]` | First argument |
+
+### Decision Matrix: Which Provider?
+
+```mermaid
+flowchart TD
+    Start[Need caching?] --> Q1{Multiple app instances?}
+    Q1 -->|Yes| Redis[Use Redis]
+    Q1 -->|No| Q2{Data > JVM heap?}
+    Q2 -->|Yes| EhCache[Use EhCache 3 with disk tier]
+    Q2 -->|No| Q3{Production?}
+    Q3 -->|Yes| Caffeine[Use Caffeine]
+    Q3 -->|No| Simple[ConcurrentHashMap is fine]
+    
+    style Redis fill:#DBEAFE,stroke:#3B82F6,color:#1E40AF
+    style Caffeine fill:#ECFDF5,stroke:#6EE7B7,color:#1E40AF
+    style EhCache fill:#FEF3C7,stroke:#FCD34D,color:#1E40AF
+    style Simple fill:#F3F4F6,stroke:#9CA3AF,color:#1E40AF
+```
+
+---
+
+!!! tip "💡 One-liner for interviews"
+    "In production, I use Caffeine for local single-node caching with TTL and size bounds, Redis for distributed multi-node caching with per-cache TTL configuration, and I always monitor hit rates with Micrometer to prove the cache is actually helping."
