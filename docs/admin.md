@@ -89,12 +89,27 @@ hide:
 
 <script>
 (function() {
+  var adminInitialized = false;
+  var maxRetries = 30;
+  var retryCount = 0;
+
   function initAdmin() {
-    if (typeof initFirebase === 'undefined') {
-      setTimeout(initAdmin, 300);
+    if (adminInitialized) return;
+    if (typeof initFirebase === 'undefined' || typeof auth === 'undefined') {
+      retryCount++;
+      if (retryCount < maxRetries) {
+        setTimeout(initAdmin, 200);
+      } else {
+        var gate = document.getElementById('admin-gate');
+        if (gate) {
+          gate.style.display = 'block';
+          gate.innerHTML = '<h3>Dashboard Unavailable</h3><p style="color: var(--vtn-text-muted);">Auth system failed to load. Try refreshing the page (Ctrl+Shift+R).</p>';
+        }
+      }
       return;
     }
 
+    adminInitialized = true;
     initFirebase().then(function() {
       auth.onAuthStateChanged(function(user) {
         var gate = document.getElementById('admin-gate');
@@ -121,7 +136,7 @@ hide:
         gate.style.display = 'none';
         content.style.display = 'block';
         status.textContent = 'Admin: ' + user.email;
-        loadMetrics();
+        loadAdminMetrics();
       });
     }).catch(function(e) {
       var gate = document.getElementById('admin-gate');
@@ -130,7 +145,8 @@ hide:
     });
   }
 
-  function loadMetrics() {
+  window.loadAdminMetrics = loadAdminMetrics;
+  function loadAdminMetrics() {
     var brandColor = getComputedStyle(document.documentElement).getPropertyValue('--vtn-brand').trim() || '#B45309';
 
     db.collection('users').get().then(function(usersSnap) {
@@ -273,10 +289,35 @@ hide:
     });
   }
 
+  // Run on initial page load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAdmin);
   } else {
     initAdmin();
   }
+
+  // Re-run on MkDocs Material instant navigation (SPA-style page load)
+  if (typeof document$ !== 'undefined') {
+    document$.subscribe(function() {
+      if (document.getElementById('admin-panel')) {
+        adminInitialized = false;
+        retryCount = 0;
+        initAdmin();
+      }
+    });
+  }
+
+  // Also listen for location change as fallback
+  var lastUrl = location.href;
+  new MutationObserver(function() {
+    if (location.href !== lastUrl) {
+      lastUrl = location.href;
+      if (document.getElementById('admin-panel')) {
+        adminInitialized = false;
+        retryCount = 0;
+        initAdmin();
+      }
+    }
+  }).observe(document.querySelector('body'), { childList: true, subtree: true });
 })();
 </script>

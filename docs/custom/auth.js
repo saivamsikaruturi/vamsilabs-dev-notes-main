@@ -780,6 +780,7 @@ if (document.readyState === 'loading') {
 if (typeof document$ !== 'undefined') {
   document$.subscribe(() => {
     setTimeout(initProgressAndDashboard, 50);
+    setTimeout(initAdminIfOnPage, 100);
   });
 } else {
   let lastUrl = location.href;
@@ -787,6 +788,56 @@ if (typeof document$ !== 'undefined') {
     if (location.href !== lastUrl) {
       lastUrl = location.href;
       setTimeout(initProgressAndDashboard, 100);
+      setTimeout(initAdminIfOnPage, 150);
     }
   }).observe(document.body, { childList: true, subtree: true });
+}
+
+// Admin dashboard initialization (handles instant navigation)
+function initAdminIfOnPage() {
+  const panel = document.getElementById('admin-panel');
+  if (!panel) return;
+  if (panel.dataset.initialized === 'true') return;
+
+  if (typeof initFirebase === 'undefined') return;
+
+  panel.dataset.initialized = 'true';
+  initFirebase().then(function() {
+    auth.onAuthStateChanged(function(user) {
+      const gate = document.getElementById('admin-gate');
+      const content = document.getElementById('admin-content');
+      const status = document.getElementById('admin-status');
+
+      if (!gate || !content || !status) return;
+
+      if (!user) {
+        gate.style.display = 'block';
+        content.style.display = 'none';
+        status.textContent = 'Not signed in';
+        return;
+      }
+
+      if (!ADMIN_EMAILS.includes(user.email)) {
+        gate.style.display = 'block';
+        gate.innerHTML = '<h3>Access Denied</h3><p style="color: var(--vtn-text-muted);">Your account (' + user.email + ') does not have admin permissions.</p>';
+        content.style.display = 'none';
+        status.textContent = 'Unauthorized';
+        return;
+      }
+
+      gate.style.display = 'none';
+      content.style.display = 'block';
+      status.textContent = 'Admin: ' + user.email;
+
+      if (typeof window.loadAdminMetrics === 'function') {
+        window.loadAdminMetrics();
+      }
+    });
+  }).catch(function() {
+    const gate = document.getElementById('admin-gate');
+    if (gate) {
+      gate.style.display = 'block';
+      gate.innerHTML = '<h3>Dashboard Unavailable</h3><p style="color: var(--vtn-text-muted);">Firebase failed to load. Try refreshing.</p>';
+    }
+  });
 }
