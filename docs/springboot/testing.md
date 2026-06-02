@@ -1,3 +1,7 @@
+---
+description: "Complete guide to Spring Boot testing — @SpringBootTest, MockMvc, @DataJpaTest, Testcontainers, and best practices for unit and integration tests."
+---
+
 # Spring Boot Testing
 
 > **Write tests that give you confidence — from fast unit tests to full integration tests that prove your app works end-to-end.**

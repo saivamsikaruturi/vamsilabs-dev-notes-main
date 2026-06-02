@@ -1,3 +1,7 @@
+---
+description: "Master Java garbage collection — G1, ZGC, Shenandoah algorithms, GC tuning strategies, and how to diagnose memory leaks in production systems."
+---
+
 # Garbage Collection in Java
 
 Garbage Collection (GC) is one of the most critical topics for FAANG interviews. It separates engineers who can merely write Java from those who can diagnose production outages, tune JVM performance, and make informed decisions about memory-intensive systems. Understanding GC internals is essential for system design discussions involving latency SLAs, throughput requirements, and capacity planning.

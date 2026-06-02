@@ -1,3 +1,7 @@
+---
+description: "CAP theorem explained — consistency, availability, and partition tolerance trade-offs in distributed systems with real-world examples from GitHub and DynamoDB."
+---
+
 # CAP Theorem
 
 !!! danger "Real Incident: GitHub, October 2018"

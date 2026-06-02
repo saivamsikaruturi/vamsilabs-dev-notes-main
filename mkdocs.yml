@@ -106,6 +106,8 @@ markdown_extensions:
   - pymdownx.tilde
 
 hooks:
+  - hooks/seo_auto_description.py
+  - hooks/reading_time.py
   - hooks/mermaid_compact.py
   - hooks/seo_structured_data.py
 
@@ -133,6 +135,7 @@ plugins:
 
 nav:
   - Home: index.md
+  - About: about.md
   - Start:
       - Learning Path: learning.md
       - Shortcuts: shortcuts.md
@@ -159,7 +162,7 @@ nav:
           - Wrapper Classes: java/WrapperClasses.md
           - Enums: java/Enums.md
           - Interfaces & Abstract Classes: java/Interfaces.md
-          - Inner Classes: java/InnerClasses.md
+          - Inner Classes: java/innerclasses.md
           - Casting & instanceof: java/CastingAndInstanceof.md
           - equals & hashCode: java/EqualsHashCode.md
           - Object Class Methods: java/ObjectClassMethods.md
@@ -252,7 +255,7 @@ nav:
           - Auto Configuration: springboot/AutoConfiguration.md
           - Annotations: springboot/Annotations.md
           - IoC & DI: springboot/SpringIOC.md
-          - Types of DI: springboot/TypesOfDi.md
+          - Types of DI: springboot/typesofdi.md
           - Bean Lifecycle & Scopes: springboot/bean-lifecycle.md
           - Circular Dependencies: springboot/circular-dependencies.md
           - Custom Starters & Bean Processors: springboot/custom-starter-bean-processors.md
@@ -358,6 +361,13 @@ nav:
       - LLD Roadmap: lld/lld-roadmap.md
       - SOLID Principles: solidprinciples/solidprinciples.md
       - Clean Architecture: misc/clean-architecture.md
+      - LLD Problems:
+          - Parking Lot System: lld/parking-lot.md
+          - Elevator System: lld/elevator-system.md
+          - Online Bookstore: lld/online-book-store.md
+          - Snake Game: lld/snake-game.md
+          - Notification Service: lld/notification-service.md
+          - Movie Ticket Booking: lld/movie-ticket-booking.md
       - Design Patterns:
           - Introduction: designpatterns/dp.md
           - Creational Patterns:
@@ -425,7 +435,26 @@ nav:
       - API Design:
           - REST API Design: apidesign/apidesign.md
           - GraphQL: graphql/graphql.md
+          - gRPC & Protocol Buffers: systemdesign/grpc.md
           - Rate Limiting: ratelimiting.md
+      - Infrastructure & Performance:
+          - Database Indexing: systemdesign/database-indexing.md
+          - Connection Pooling: systemdesign/connection-pooling.md
+          - Object Storage (S3 Patterns): systemdesign/object-storage.md
+          - Observability (Metrics, Logs, Traces): systemdesign/observability.md
+          - Multi-Region Architecture: systemdesign/multi-region.md
+      - Comparisons & Quick Reference: systemdesign/comparisons.md
+      - 5-Minute Summaries:
+          - Load Balancing: systemdesign/summaries/load-balancing-summary.md
+          - Distributed Caching: systemdesign/summaries/caching-summary.md
+          - CDN: systemdesign/summaries/cdn-summary.md
+          - DNS: systemdesign/summaries/dns-summary.md
+          - Message Queues: systemdesign/summaries/message-queues-summary.md
+          - Database Sharding: systemdesign/summaries/database-sharding-summary.md
+          - CAP Theorem: systemdesign/summaries/cap-theorem-summary.md
+          - WebSockets & Real-Time: systemdesign/summaries/websockets-summary.md
+          - Consistent Hashing: systemdesign/summaries/consistent-hashing-summary.md
+          - Rate Limiting: systemdesign/summaries/rate-limiting-summary.md
       - Case Studies:
           - systemdesign/case-studies/index.md
           - URL Shortener: systemdesign/case-studies/url-shortener.md
@@ -445,7 +474,7 @@ nav:
       - Neo4j: databases/neo4j.md
       - Kafka: kafka-messaging/kafka.md
       - Security:
-          - OAuth 2.0: security/Oauth.md
+          - OAuth 2.0: security/oauth.md
           - JWT: security/JWT.md
       - Testing:
           - JUnit 5: junit/junit.md

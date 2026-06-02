@@ -1,3 +1,7 @@
+---
+description: "Event driven architecture explained — event sourcing, CQRS, message brokers, eventual consistency, and building loosely coupled scalable microservices."
+---
+
 # ⚡ Event-Driven Architecture
 
 > **Services communicate by producing and consuming events — enabling loose coupling, scalability, and real-time processing.**

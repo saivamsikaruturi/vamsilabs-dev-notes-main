@@ -1,3 +1,7 @@
+---
+description: "Master OOPs concepts in Java — encapsulation, inheritance, polymorphism, and abstraction explained with real-world examples and interview questions."
+---
+
 # Object-Oriented Programming in Java
 
 > "Bad OOP doesn't just make code ugly — it makes systems fail at 2 AM on Black Friday."

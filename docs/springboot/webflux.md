@@ -1,3 +1,7 @@
+---
+description: "Learn Spring WebFlux reactive programming — Mono, Flux, non-blocking I/O, backpressure, and when to choose WebFlux over Spring MVC for microservices."
+---
+
 # Spring WebFlux & Reactive Programming
 
 > Non-blocking, event-driven microservices. Thousands of concurrent connections on minimal threads. Built for I/O-bound workloads at scale.

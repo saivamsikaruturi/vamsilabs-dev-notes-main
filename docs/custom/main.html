@@ -36,9 +36,13 @@
     "jobTitle": "Senior Software Engineer",
     "worksFor": {
       "@type": "Organization",
-      "name": "Walmart Global Tech"
+      "name": "Salesforce"
     },
-    "knowsAbout": ["Java", "Spring Boot", "Microservices", "System Design", "Distributed Systems", "Kafka", "Docker", "Kubernetes"]
+    "alumniOf": [
+      {"@type": "Organization", "name": "Walmart Global Tech"},
+      {"@type": "Organization", "name": "Siemens"}
+    ],
+    "knowsAbout": ["Java", "Spring Boot", "Microservices", "System Design", "Distributed Systems", "Kafka", "Docker", "Kubernetes", "JVM Internals", "Performance Engineering"]
   },
   "potentialAction": {
     "@type": "SearchAction",
@@ -59,7 +63,10 @@
   "author": {
     "@type": "Person",
     "name": "Vamsi Karuturi",
-    "url": "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
+    "jobTitle": "Senior Software Engineer",
+    "worksFor": {"@type": "Organization", "name": "Salesforce"},
+    "url": "https://vamsilabs.netlify.app/about/",
+    "sameAs": "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
   },
   "publisher": {
     "@type": "Organization",
@@ -202,6 +209,20 @@
 {% endblock %}
 
 {% block content %}
+<!-- Page meta info: reading time + difficulty + author -->
+{% if page and page.meta and page.meta.reading_time %}
+{% set path = page.url | default('') %}
+{% set is_home = path == '' or path == 'index.html' %}
+{% if not is_home %}
+<div class="vtn-page-meta">
+  <span class="vtn-reading-time">{{ page.meta.reading_time }}</span>
+  {% if page.meta.difficulty %}
+  <span class="vtn-difficulty vtn-difficulty--{{ page.meta.difficulty }}">{{ page.meta.difficulty | upper }}</span>
+  {% endif %}
+  <span class="vtn-author-byline">By <a href="/about/">Vamsi Karuturi</a> · Senior Engineer at Salesforce</span>
+</div>
+{% endif %}
+{% endif %}
 <!-- Login gate — shown on non-home pages for unauthenticated users -->
 <div id="vtn-login-gate" style="display:none;">
   <div class="vtn-login-gate-card">

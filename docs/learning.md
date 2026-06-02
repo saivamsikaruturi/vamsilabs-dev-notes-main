@@ -1,3 +1,7 @@
+---
+description: "8-month Java backend engineer roadmap for FAANG interviews — structured phases from Java fundamentals to system design, with weekly schedules and resources."
+---
+
 # Learning Path
 
 A structured roadmap for Java backend engineers targeting FAANG-level roles. Follow the phases sequentially — each builds on the previous.

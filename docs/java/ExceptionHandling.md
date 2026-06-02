@@ -1,3 +1,7 @@
+---
+description: "Complete guide to exception handling in Java — checked vs unchecked exceptions, try-with-resources, custom exceptions, and best practices for production code."
+---
+
 # Exception Handling in Java
 
 Exceptions are events that **disrupt the normal flow** of a program. Proper exception handling is the difference between a service that crashes at 3 AM and one that degrades gracefully.

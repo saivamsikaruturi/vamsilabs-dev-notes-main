@@ -1,3 +1,7 @@
+---
+description: "Circuit breaker pattern for microservices — prevent cascading failures with Resilience4j, fallback strategies, and half-open state recovery mechanisms."
+---
+
 # 🔌 Circuit Breaker Pattern
 
 > **Prevent cascading failures in distributed systems by detecting failures and stopping requests to unhealthy services.**

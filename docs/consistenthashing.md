@@ -1,3 +1,7 @@
+---
+description: "Consistent hashing explained — how distributed systems like DynamoDB and Cassandra distribute data across nodes with minimal redistribution on scaling."
+---
+
 # Consistent Hashing
 
 !!! danger "Real Incident: Memcached at Facebook, 2010"

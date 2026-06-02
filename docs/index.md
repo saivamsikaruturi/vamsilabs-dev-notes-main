@@ -10,9 +10,9 @@ hide:
 
 # Crack the System Design & Java Interview.
 
-<p class="vtn-subtitle">Deep-dive notes from an engineer at a top tech company. Not generic theory — real patterns, tradeoffs, and code used in production at scale.</p>
+<p class="vtn-subtitle">Deep-dive notes from a Senior Engineer at Salesforce (ex-Walmart, Siemens). Not generic theory — real patterns, tradeoffs, and code used in production at scale.</p>
 
-<p class="vtn-author">by <strong>Vamsi Karuturi</strong> · Senior Software Engineer</p>
+<p class="vtn-author">by <a href="/about/"><strong>Vamsi Karuturi</strong></a> · Senior Software Engineer at Salesforce</p>
 
 <div class="vtn-stats">
   <div class="vtn-stat">
@@ -458,6 +458,8 @@ Admin Dashboard
     <span>Netflix</span>
     <span>Uber</span>
     <span>Stripe</span>
+    <span>Salesforce</span>
+    <span>Walmart</span>
   </div>
 </div>
 

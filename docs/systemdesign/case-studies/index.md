@@ -34,6 +34,40 @@ Each case study combines the building blocks from other pages (partitioning, rep
 
 ---
 
+## Company-Wise: What Gets Asked Where
+
+| Company | Frequently Asked System Design Topics | Focus Area |
+|---|---|---|
+| **Google** | Search Autocomplete, Web Crawler, YouTube, Google Maps, Google Drive, Distributed File System (GFS), Pub/Sub (Kafka-like) | Scale (billions of users), distributed systems depth, data pipelines |
+| **Amazon** | E-commerce Order Processing, Warehouse Management, Recommendation Engine, Delivery Routing, Rate Limiter, DynamoDB-like KV Store | Availability over consistency, event-driven, operational excellence |
+| **Meta** | News Feed, Chat/Messenger, Instagram Stories, Live Video, Notification System, Social Graph, Content Moderation | Fan-out at scale, real-time, graph traversal, content ranking |
+| **Microsoft** | File Storage (OneDrive), Teams (Chat + Video), Search Engine (Bing), Azure Load Balancer, Distributed Cache, Calendar System | Enterprise-grade reliability, multi-tenant, Windows ecosystem |
+| **Apple** | iMessage, iCloud Storage, App Store (Search + Distribution), AirDrop, Find My Device, Media Streaming (Apple Music) | Privacy-first design, end-to-end encryption, device sync |
+| **Netflix** | Video Streaming, CDN Design, Recommendation Engine, A/B Testing Platform, Chaos Engineering, Microservices Gateway | Availability, adaptive bitrate, global CDN, fault tolerance |
+| **Uber** | Ride Matching, ETA Estimation, Surge Pricing, Driver Location Tracking, Payment System, Food Delivery (Uber Eats) | Geospatial, real-time matching, dynamic pricing, supply-demand |
+| **Stripe** | Payment Processing, Idempotency System, API Rate Limiter, Webhook Delivery, Ledger/Accounting, Fraud Detection | Exactly-once processing, financial consistency, API design |
+| **Salesforce** | Multi-Tenant Platform, CRM Data Model, Workflow Automation Engine, Real-Time Event Bus, API Gateway (Governor Limits), Metadata-Driven Architecture | Multi-tenancy at scale, metadata-driven, tenant isolation, platform extensibility |
+| **Walmart** | Inventory Management, Order Fulfillment (Store Pickup + Ship), Price Matching Engine, Cart/Checkout at Scale, Supply Chain Optimization, Real-Time Stock Updates | High-volume transactions, inventory consistency, omnichannel (online + 4700 stores) |
+
+---
+
+### Key Differences by Company Culture
+
+| Company | What They Optimize For | Red Flag in Your Answer |
+|---|---|---|
+| **Google** | Scalability + elegance | Not discussing billion-user scale |
+| **Amazon** | Availability + operational simplicity | Choosing consistency over availability |
+| **Meta** | Move fast, real-time, social graph | Over-engineering for small scale |
+| **Microsoft** | Enterprise reliability, backward compat | Ignoring multi-tenant concerns |
+| **Apple** | Privacy, UX, device-first | Sending unencrypted user data |
+| **Netflix** | Resilience, graceful degradation | Single point of failure in design |
+| **Uber** | Real-time, geospatial, supply/demand | Ignoring location-based challenges |
+| **Stripe** | Correctness, idempotency, API UX | Allowing double-charges or data loss |
+| **Salesforce** | Multi-tenancy, platform thinking | Single-tenant architecture, no governor limits |
+| **Walmart** | Inventory accuracy, omnichannel | Ignoring in-store + online integration |
+
+---
+
 ## Common Patterns Across All Designs
 
 | Pattern | Where It Appears |

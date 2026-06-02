@@ -1,3 +1,7 @@
+---
+description: "Apache Kafka tutorial — topics, partitions, consumer groups, exactly-once semantics, and building event-driven architectures for high-throughput systems."
+---
+
 # Apache Kafka
 
 > **The de-facto standard for event streaming in distributed systems. If you're interviewing for any backend role at a top tech company, you will be asked about Kafka.**

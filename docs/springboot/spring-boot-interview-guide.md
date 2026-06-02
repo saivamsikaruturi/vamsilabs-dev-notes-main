@@ -140,7 +140,7 @@ public class AppConfig {
 ### Go Deeper
 
 - [Spring IoC Container](SpringIOC.md)
-- [Types of Dependency Injection](TypesOfDi.md)
+- [Types of Dependency Injection](typesofdi.md)
 - [Bean Lifecycle](bean-lifecycle.md)
 - [Circular Dependencies](circular-dependencies.md)
 - [Configuration Properties](configuration-properties.md)
@@ -435,7 +435,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 - [Security Filter Chain Internals](security-filter-chain.md)
 - [Method Security & OAuth2](method-security-oauth2.md)
 - [JWT](../security/JWT.md)
-- [OAuth 2.0](../security/Oauth.md)
+- [OAuth 2.0](../security/oauth.md)
 
 ---
 

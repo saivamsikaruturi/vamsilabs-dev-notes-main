@@ -1,3 +1,7 @@
+---
+description: "Learn how HashMap works internally in Java — hashing, bucket collisions, treeification, rehashing, and why interviewers love this topic."
+---
+
 # HashMap Internals
 
 > **"If you can't explain how HashMap works internally, you haven't really learned Java." — Every FAANG interviewer, ever.**

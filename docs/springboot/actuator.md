@@ -1,3 +1,7 @@
+---
+description: "Learn Spring Boot Actuator — health checks, custom metrics, Prometheus integration, and production monitoring endpoints with configuration examples."
+---
+
 # Spring Boot Actuator
 
 > **Production-ready monitoring and management endpoints. Health checks, metrics, environment info, runtime diagnostics — without touching application code.**

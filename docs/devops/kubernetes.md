@@ -1,3 +1,7 @@
+---
+description: "Kubernetes tutorial — pods, deployments, services, networking, RBAC, Helm charts, and production operations for senior DevOps and SRE interview preparation."
+---
+
 # Kubernetes (K8s)
 
 > **Master Kubernetes from cluster internals to production operations.** Covers architecture, scheduling algorithms, networking model, storage, RBAC, Helm, debugging playbooks, and every question that comes up at senior-level DevOps and SRE interviews.
@@ -209,6 +213,72 @@ flowchart TB
     <span>Namespace</span>
   </div>
 </div>
+
+---
+
+### Nodes & Pods — The Physical View
+
+A **Node** is a physical or virtual machine in the cluster. Each node runs multiple **Pods**, and each pod contains one or more **Containers**. This is the fundamental deployment unit hierarchy:
+
+```mermaid
+flowchart TB
+    subgraph NODE1["Node 1 (Worker)"]
+        direction TB
+        subgraph P1["Pod: order-api"]
+            C1["container 1<br/><small>order-service :8080</small>"]
+            C2["container 2<br/><small>envoy-sidecar :15001</small>"]
+        end
+        subgraph P2["Pod: payment-api"]
+            C3["container 3<br/><small>payment-service :8080</small>"]
+        end
+        subgraph P3["Pod: cart-api"]
+            C4["container 4<br/><small>cart-service :8080</small>"]
+            C5["container 5<br/><small>redis-cache :6379</small>"]
+        end
+    end
+
+    subgraph NODE2["Node 2 (Worker)"]
+        direction TB
+        subgraph P4["Pod: user-api"]
+            C6["container 6<br/><small>user-service :8080</small>"]
+        end
+        subgraph P5["Pod: notification-api"]
+            C7["container 7<br/><small>notification-svc :8080</small>"]
+            C8["container 8<br/><small>kafka-consumer :9092</small>"]
+        end
+        subgraph P6["Pod: search-api"]
+            C9["container 9<br/><small>search-service :8080</small>"]
+        end
+    end
+
+    style NODE1 fill:#FFCDD2,stroke:#E53935,color:#B71C1C
+    style NODE2 fill:#E8EAF6,stroke:#5C6BC0,color:#1A237E
+    style P1 fill:#EF9A9A,stroke:#E53935,color:#B71C1C
+    style P2 fill:#EF9A9A,stroke:#E53935,color:#B71C1C
+    style P3 fill:#EF9A9A,stroke:#E53935,color:#B71C1C
+    style P4 fill:#9FA8DA,stroke:#5C6BC0,color:#1A237E
+    style P5 fill:#9FA8DA,stroke:#5C6BC0,color:#1A237E
+    style P6 fill:#9FA8DA,stroke:#5C6BC0,color:#1A237E
+```
+
+**Key relationships:**
+
+| Concept | What it is | Analogy |
+|---------|-----------|---------|
+| **Cluster** | Collection of all nodes | The entire data center |
+| **Node** | A machine (VM or bare-metal) running kubelet | A single server rack |
+| **Pod** | Smallest deployable unit — one or more containers sharing network/storage | A sealed apartment (containers inside share walls) |
+| **Container** | A single running process (your Docker image) | One room in the apartment |
+
+**Why Pods wrap Containers (not deploy containers directly):**
+
+- Containers in the same pod share `localhost` — no network hop between sidecar and main app
+- Shared volumes — log shipper reads files written by the app container
+- Atomic scheduling — "these two containers MUST be on the same node"
+- Lifecycle coupling — if the main container dies, the whole pod restarts
+
+!!! tip "Rule of Thumb"
+    **One container per pod** is the default. Only add multiple containers when they are tightly coupled (sidecar pattern). If two containers can be deployed/scaled independently, they belong in separate pods.
 
 ---
 

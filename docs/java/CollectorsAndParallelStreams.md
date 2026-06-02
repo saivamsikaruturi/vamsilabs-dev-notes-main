@@ -1,3 +1,7 @@
+---
+description: "Master Java Stream API collectors and parallel streams — groupingBy, partitioning, custom collectors, and parallel performance tuning with examples."
+---
+
 # Collectors & Parallel Streams
 
 > "The Stream API is not just about filtering and mapping — **Collectors** shape data into the exact structure you need, and **parallel streams** unlock multi-core performance without manual threading. Mastering both separates senior engineers from juniors in FAANG interviews."

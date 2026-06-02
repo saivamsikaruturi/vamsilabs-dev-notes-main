@@ -1,3 +1,7 @@
+---
+description: "Saga pattern for microservices — orchestration vs choreography, compensating transactions, failure handling, and implementing distributed transactions reliably."
+---
+
 # 🎭 Saga Design Pattern
 
 > **Manage distributed transactions across multiple microservices using a sequence of local transactions with compensating actions for rollback.**

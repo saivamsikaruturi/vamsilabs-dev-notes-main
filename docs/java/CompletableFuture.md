@@ -1,3 +1,7 @@
+---
+description: "Master CompletableFuture in Java — async composition, exception handling, thenApply vs thenCompose, and real-world patterns for non-blocking microservices."
+---
+
 # CompletableFuture — Async Programming in Java
 
 `CompletableFuture` is Java's way of writing **non-blocking, asynchronous code** without callback hell. It's used heavily in microservices for parallel API calls, async event processing, and non-blocking I/O.

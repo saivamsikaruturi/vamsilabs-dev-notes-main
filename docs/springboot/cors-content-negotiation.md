@@ -1,3 +1,7 @@
+---
+description: "Spring Boot CORS configuration and content negotiation — fix cross-origin errors, configure allowed origins, and handle JSON/XML response types with code examples."
+---
+
 # CORS Configuration & Content Negotiation
 
 > **Two things that seem trivial until they silently break your entire frontend-backend integration: CORS and content type resolution.**

@@ -1,3 +1,7 @@
+---
+description: "Design a notification system — push notifications, email, SMS delivery pipeline, deduplication, rate limiting, and priority queues at Facebook scale."
+---
+
 # Notification System
 
 !!! danger "Real Incident: Facebook Duplicate Push Notification Storm, 2019"

@@ -1,3 +1,7 @@
+---
+description: "Load balancer system design — L4 vs L7 balancing, algorithms (round robin, least connections, consistent hashing), health checks, and high availability patterns."
+---
+
 # Load Balancing
 
 !!! danger "Real Incident: Reddit, 2023"

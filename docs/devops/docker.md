@@ -1,3 +1,7 @@
+---
+description: "Docker tutorial — containers, images, Dockerfile best practices, networking, volumes, Docker Compose, and CI/CD pipeline integration for developers."
+---
+
 # Docker
 
 > **Master containerization from kernel internals to production orchestration.** Covers Linux namespaces, cgroups, image layering, networking, storage, Compose, CI/CD pipelines, and every interview question that comes up at senior-level interviews.

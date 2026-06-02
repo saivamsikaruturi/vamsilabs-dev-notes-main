@@ -1,3 +1,7 @@
+---
+description: "Message queue system design — Kafka vs RabbitMQ, event streaming patterns, ordering guarantees, and building reliable async communication between services."
+---
+
 # Message Queues & Event Streaming
 
 !!! danger "Real Incident: LinkedIn, 2010"

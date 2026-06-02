@@ -1,3 +1,7 @@
+---
+description: "Understand JVM architecture — class loading, memory areas, JIT compilation, and garbage collection internals explained for senior Java developers."
+---
+
 # JVM Internals — How Java Really Works
 
 The Java Virtual Machine (JVM) is what makes Java **platform-independent**. Your `.java` file compiles to `.class` bytecode, and the JVM executes it on any OS. Understanding JVM internals is essential for debugging performance issues, memory leaks, and class loading problems.

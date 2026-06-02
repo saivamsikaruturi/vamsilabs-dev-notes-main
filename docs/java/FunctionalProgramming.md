@@ -1,3 +1,7 @@
+---
+description: "Learn functional programming in Java — lambdas, pure functions, immutability, Optional, and functional interfaces with interview-focused examples."
+---
+
 # Functional Programming in Java
 
 !!! tip "Interview Relevance"

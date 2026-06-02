@@ -1,3 +1,7 @@
+---
+description: "Complete guide to microservices architecture — service decomposition, inter-service communication, data management, and deployment patterns for scalable systems."
+---
+
 # Microservices Architecture
 
 > **An architectural style that structures an application as a collection of small, autonomous services modeled around a business domain.**

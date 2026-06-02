@@ -1,3 +1,7 @@
+---
+description: "Deep dive into Java strings — String Pool, immutability, StringBuilder vs StringBuffer, comparison methods, and common interview questions explained."
+---
+
 # Strings in Java
 
 Strings are the most used data type in Java. Understanding how they work internally — immutability, String Pool, and comparison — is critical for interviews and writing efficient code.

@@ -1,3 +1,7 @@
+---
+description: "Understand Spring IoC container and dependency injection — bean lifecycle, scopes, @Autowired, and how Spring wires your application together."
+---
+
 # IoC and Dependency Injection
 
 > **The foundation of Spring — understand this and everything else clicks.**

@@ -1,3 +1,7 @@
+---
+description: "Guide to Java virtual threads (Project Loom) — lightweight concurrency, structured concurrency, and how to handle millions of threads in Java 21+."
+---
+
 # Virtual Threads & Structured Concurrency (Java 21+)
 
 > **Write simple blocking code that scales like reactive — one million concurrent threads with zero thread pool tuning.**

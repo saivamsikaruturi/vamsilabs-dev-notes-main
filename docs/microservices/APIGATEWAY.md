@@ -1,3 +1,7 @@
+---
+description: "API gateway pattern explained — routing, authentication, rate limiting, and request aggregation for microservices with Spring Cloud Gateway examples."
+---
+
 # 🚪 API Gateway Pattern
 
 > **A single entry point for all client requests that routes, filters, and secures traffic to downstream microservices.**

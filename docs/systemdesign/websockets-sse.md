@@ -1,3 +1,7 @@
+---
+description: "WebSocket vs SSE vs long polling — compare real-time communication protocols, learn when to use each, and see system design trade-offs with examples."
+---
+
 # Long Polling, WebSockets & SSE
 
 > **The three ways to push data from server to client — choose wrong and you waste 40% of your infrastructure budget.**

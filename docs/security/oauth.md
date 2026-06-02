@@ -1,3 +1,7 @@
+---
+description: "OAuth 2.0 and OpenID Connect explained — authorization code flow, PKCE, refresh tokens, and SSO implementation. Complete guide with sequence diagrams."
+---
+
 # OAuth 2.0 & OpenID Connect
 
 !!! abstract "Why Auth Matters in System Design"

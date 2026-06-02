@@ -1,3 +1,7 @@
+---
+description: "Master Spring Security — authentication, authorization, filter chain, JWT, OAuth2, and Spring Boot 3 security configuration with practical examples."
+---
+
 # Spring Security
 
 > **Authentication, authorization, and filter chain internals for Spring Boot 3 / Spring Security 6.**
@@ -886,5 +890,5 @@ curl http://localhost:8080/api/orders \
 - [Security Filter Chain Internals](security-filter-chain.md) — How filters are ordered and invoked
 - [Method Security & OAuth2](method-security-oauth2.md) — Fine-grained access control
 - [JWT](../security/JWT.md) — Token structure, signing, and validation
-- [OAuth 2.0](../security/Oauth.md) — Authorization flows and grant types
+- [OAuth 2.0](../security/oauth.md) — Authorization flows and grant types
 - [Filters, Interceptors & AOP](filters-interceptors-aop.md) — Request processing pipeline layers

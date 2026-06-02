@@ -1,3 +1,7 @@
+---
+description: "Complete reference for Spring Boot annotations — @Component, @Service, @RestController, @Configuration, and 40+ annotations explained with use cases."
+---
+
 # Spring Boot Annotations
 
 > **Think of annotations as sticky notes you slap onto classes and methods. At startup, Spring reads every sticky note, follows the instructions, and wires your application together. No XML. No manual plumbing. Just metadata-driven configuration.**

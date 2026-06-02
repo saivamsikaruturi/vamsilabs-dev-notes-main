@@ -1,3 +1,7 @@
+---
+description: "Master Java generics — type parameters, bounded types, wildcards, type erasure, and generic methods explained with interview-ready examples."
+---
+
 # Generics in Java
 
 Generics allow you to write **type-safe, reusable code** that works with any object type. Without generics, you'd cast everything from `Object` and pray for no `ClassCastException` at runtime.

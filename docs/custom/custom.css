@@ -4103,6 +4103,149 @@ pre.mermaid svg,
   margin-top: 0.8em;
 }
 
+/* === Page Meta (Reading Time + Difficulty) === */
+.vtn-page-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--vtn-border);
+}
+.vtn-reading-time {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--vtn-text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.vtn-reading-time::before {
+  content: "\23F1";
+  font-size: 0.85rem;
+}
+.vtn-difficulty {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.vtn-difficulty--l1 {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+}
+.vtn-difficulty--l2 {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+.vtn-difficulty--l3 {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+[data-md-color-scheme="slate"] .vtn-difficulty--l1 {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+[data-md-color-scheme="slate"] .vtn-difficulty--l2 {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+[data-md-color-scheme="slate"] .vtn-difficulty--l3 {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+.vtn-author-byline {
+  font-size: 0.75rem;
+  color: var(--vtn-text-muted);
+  margin-left: auto;
+}
+.vtn-author-byline a {
+  color: var(--vtn-brand, #B45309);
+  text-decoration: none;
+  font-weight: 600;
+}
+.vtn-author-byline a:hover {
+  text-decoration: underline;
+}
+.vtn-about-card {
+  background: linear-gradient(135deg, var(--vtn-surface) 0%, var(--vtn-bg-alt) 100%);
+  border: 1px solid var(--vtn-border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+.vtn-about-card h2 {
+  margin-top: 0;
+}
+
+/* === Newsletter Signup === */
+.vtn-newsletter {
+  background: linear-gradient(135deg, var(--vtn-bg-alt), var(--vtn-bg));
+  border: 2px solid var(--vtn-border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 3rem 0;
+  text-align: center;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.vtn-newsletter h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: var(--vtn-text);
+}
+.vtn-newsletter p {
+  margin: 0 0 1.2rem;
+  font-size: 0.85rem;
+  color: var(--vtn-text-muted);
+}
+.vtn-newsletter-form {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.vtn-newsletter-input {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: 1.5px solid var(--vtn-border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  background: var(--vtn-surface);
+  color: var(--vtn-text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.vtn-newsletter-input:focus {
+  border-color: var(--vtn-brand);
+}
+.vtn-newsletter-btn {
+  padding: 0.6rem 1.2rem;
+  background: var(--vtn-brand);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.vtn-newsletter-btn:hover {
+  background: var(--vtn-brand-dark);
+  transform: translateY(-1px);
+}
+
 /* === Giscus Comments === */
 .giscus-wrapper {
   max-width: 800px;

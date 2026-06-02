@@ -1,3 +1,7 @@
+---
+description: "Design patterns in Java explained — Singleton, Factory, Observer, Strategy, Builder, and other GoF patterns with real-world examples and interview questions."
+---
+
 # Design Patterns
 
 !!! tip "Interview Priority — The 8 Patterns That Actually Get Asked"

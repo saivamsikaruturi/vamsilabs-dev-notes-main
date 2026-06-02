@@ -1,3 +1,7 @@
+---
+description: "Complete guide to database sharding — horizontal partitioning strategies, shard key selection, rebalancing, and real-world examples from Instagram and Discord."
+---
+
 # Database Sharding
 
 !!! danger "Real Incident: Instagram, 2012"

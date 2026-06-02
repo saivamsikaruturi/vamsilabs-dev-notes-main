@@ -1,3 +1,7 @@
+---
+description: "Design a URL shortener like bit.ly — system design interview walkthrough covering encoding, database schema, caching strategy, and scaling to billions of links."
+---
+
 # URL Shortener (bit.ly)
 
 !!! danger "Real Incident: bit.ly Global Outage, 2014"

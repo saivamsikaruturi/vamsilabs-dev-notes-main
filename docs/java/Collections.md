@@ -1,3 +1,7 @@
+---
+description: "Complete guide to Java Collections Framework — List, Set, Map, Queue internals, performance comparisons, and when to use each collection in interviews."
+---
+
 # Java Collections Framework
 
 The Collections Framework is a unified architecture for storing and manipulating groups of objects. It's one of the most asked topics in Java interviews.

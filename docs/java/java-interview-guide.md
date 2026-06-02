@@ -71,7 +71,7 @@ The type system, memory semantics, object lifecycle, OOP. Interviewers use these
 - [Immutable Classes](ImmutableClasses.md) — Design patterns for immutability
 - [Exception Handling](ExceptionHandling.md) — Checked vs unchecked, best practices
 - [Enums](Enums.md) — Type-safe constants, enum methods
-- [Inner Classes](InnerClasses.md) — Static nested, anonymous, local classes
+- [Inner Classes](innerclasses.md) — Static nested, anonymous, local classes
 - [Interfaces](Interfaces.md) — Default methods, functional interfaces
 
 ---

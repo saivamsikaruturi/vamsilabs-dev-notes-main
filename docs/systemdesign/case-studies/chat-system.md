@@ -1,3 +1,7 @@
+---
+description: "Design a chat system like WhatsApp — system design covering WebSocket connections, message delivery, read receipts, group chat, and scaling to billions of users."
+---
+
 # Chat System (WhatsApp / Slack Scale)
 
 !!! danger "Real Incident: WhatsApp Outage, October 4, 2021 (6 hours)"

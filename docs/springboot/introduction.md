@@ -1,3 +1,7 @@
+---
+description: "Spring Boot tutorial for beginners and experienced developers — auto-configuration, starters, embedded servers, and building production-ready applications."
+---
+
 # Spring Boot
 
 ## What is Spring Boot?
@@ -286,7 +290,7 @@ Spring manages all your objects (called **beans**) in an **Application Context**
 !!! tip "Constructor Injection is Preferred"
     Always use **constructor injection** (not `@Autowired` on fields). Constructor injection makes dependencies explicit, supports immutability (`final` fields), and makes testing easier — you can pass mocks directly through the constructor without reflection.
 
-→ Deep dive: [IoC & Dependency Injection](SpringIOC.md) | [Types of DI](TypesOfDi.md)
+→ Deep dive: [IoC & Dependency Injection](SpringIOC.md) | [Types of DI](typesofdi.md)
 
 ---
 
@@ -672,7 +676,7 @@ logging:
 | Auto Configuration — how it works internally | [Auto Configuration](AutoConfiguration.md) |
 | All Spring Boot Annotations explained | [Annotations](Annotations.md) |
 | IoC & Dependency Injection deep dive | [Spring IoC](SpringIOC.md) |
-| Types of Dependency Injection | [Types of DI](TypesOfDi.md) |
+| Types of Dependency Injection | [Types of DI](typesofdi.md) |
 | Bean Lifecycle & Scopes | [Bean Lifecycle](bean-lifecycle.md) |
 | REST API Best Practices | [REST APIs](restapibestpractices.md) |
 | Exception Handling | [Exception Handling](exceptionhandling.md) |

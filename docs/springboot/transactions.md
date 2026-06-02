@@ -1,3 +1,7 @@
+---
+description: "Deep dive into Spring Boot transactions — @Transactional propagation, isolation levels, rollback rules, and common pitfalls that cause data corruption."
+---
+
 # Transactions (@Transactional)
 
 > **Ensure all-or-nothing database operations — if any step fails, everything rolls back to a consistent state.**

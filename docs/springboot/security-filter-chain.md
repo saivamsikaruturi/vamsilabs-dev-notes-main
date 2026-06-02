@@ -1,3 +1,7 @@
+---
+description: "Spring Security filter chain internals explained — how requests flow through DelegatingFilterProxy, SecurityFilterChain, and custom filters. With diagrams and code."
+---
+
 # Spring Security Filter Chain Internals
 
 > "Security is not a product, but a chain of decisions — each filter in the chain is a gate that either lets the request pass or stops it dead."

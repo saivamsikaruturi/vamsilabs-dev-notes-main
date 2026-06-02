@@ -404,6 +404,31 @@ Beyond technical knowledge, how you communicate matters significantly:
 
 ---
 
+## Company-Wise Topics: What Gets Asked Where
+
+| Company | Top System Design Questions | What They Care About |
+|---|---|---|
+| **Google** | Search Autocomplete, Web Crawler, YouTube, Google Maps, Google Drive, GFS, Pub/Sub | Billion-user scale, distributed systems depth, elegant data pipelines |
+| **Amazon** | E-commerce Orders, Warehouse Mgmt, Recommendations, Rate Limiter, KV Store | Availability > consistency, event-driven, operational excellence |
+| **Meta** | News Feed, Messenger, Instagram Stories, Live Video, Notifications, Social Graph | Fan-out at scale, real-time delivery, content ranking |
+| **Microsoft** | OneDrive, Teams (Chat + Video), Bing Search, Azure LB, Distributed Cache | Enterprise reliability, multi-tenant, backward compatibility |
+| **Apple** | iMessage, iCloud, App Store, AirDrop, Find My, Apple Music | Privacy-first (E2E encryption), device sync, UX-driven |
+| **Netflix** | Video Streaming, CDN Design, Recommendations, A/B Testing, Chaos Engineering | Availability, adaptive bitrate, global CDN, fault tolerance |
+| **Uber** | Ride Matching, ETA, Surge Pricing, Location Tracking, Payment, Food Delivery | Geospatial, real-time matching, dynamic pricing |
+| **Stripe** | Payment Processing, Idempotency, Rate Limiter, Webhooks, Ledger, Fraud Detection | Exactly-once, financial correctness, API design |
+| **Salesforce** | Multi-Tenant Platform, CRM Data Model, Workflow Engine, Event Bus, API Gateway, Metadata-Driven Architecture | Multi-tenancy at scale, governor limits, tenant isolation, platform extensibility |
+| **Walmart** | Inventory Mgmt, Order Fulfillment, Price Matching, Cart/Checkout, Supply Chain, Real-Time Stock | Inventory accuracy, omnichannel (online + 4700 stores), high-volume transactions |
+
+!!! tip "How to Adapt Your Answer by Company"
+    - **Google/Meta**: Start with scale numbers (DAU, QPS). They expect you to handle billions.
+    - **Amazon**: Emphasize availability, event-driven architecture, and operational simplicity.
+    - **Stripe/Salesforce**: Focus on correctness, idempotency, and multi-tenant isolation.
+    - **Netflix/Uber**: Highlight resilience patterns (circuit breakers, graceful degradation, chaos testing).
+    - **Walmart**: Address inventory consistency across online + physical stores.
+    - **Apple/Microsoft**: Privacy, encryption, and enterprise-grade reliability.
+
+---
+
 ## See Also
 
 - [Microservices Architecture](../microservices/microservices.md) — Decomposition patterns, service communication, and operational concerns

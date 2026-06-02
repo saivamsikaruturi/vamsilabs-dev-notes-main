@@ -1,3 +1,7 @@
+---
+description: "Deep dive into Java multithreading — threads, synchronization, locks, executors, and concurrent collections with practical examples for interviews."
+---
+
 # Multithreading in Java
 
 Multithreading is the foundation of concurrent programming in Java. It allows multiple tasks to execute simultaneously within a single process, enabling efficient CPU utilization, responsive applications, and high-throughput systems.

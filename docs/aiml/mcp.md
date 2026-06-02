@@ -1,3 +1,7 @@
+---
+description: "Model Context Protocol (MCP) explained — how AI agents connect to tools, APIs, and data sources. Architecture, implementation, and real-world use cases."
+---
+
 # Model Context Protocol (MCP)
 
 ## What is MCP

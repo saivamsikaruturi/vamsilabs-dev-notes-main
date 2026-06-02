@@ -1,3 +1,7 @@
+---
+description: "CDN system design explained — edge caching, cache invalidation, pull vs push CDNs, and how content delivery networks handle millions of requests per second."
+---
+
 # CDN (Content Delivery Network)
 
 !!! danger "Real Incident: Reddit Hug of Death"

@@ -1,3 +1,7 @@
+---
+description: "Distributed caching deep dive — Redis vs Memcached, cache-aside patterns, eviction policies, cache stampede prevention, and scaling to millions of requests."
+---
+
 # Distributed Caching
 
 !!! danger "Real Incident: Instagram, 2018"

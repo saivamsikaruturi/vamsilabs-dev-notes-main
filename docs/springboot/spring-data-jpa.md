@@ -1,3 +1,7 @@
+---
+description: "Complete Spring Data JPA guide — repositories, query methods, @Query, pagination, auditing, and performance optimization for production applications."
+---
+
 # Spring Data JPA
 
 > **Zero SQL for common operations. Custom queries when you need them. Production-grade data handling.**

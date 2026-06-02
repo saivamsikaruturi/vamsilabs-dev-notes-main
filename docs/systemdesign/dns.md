@@ -1,3 +1,7 @@
+---
+description: "DNS system design deep dive — resolution process, caching hierarchy, record types, and how DNS infrastructure scales to handle billions of queries daily."
+---
+
 # DNS Deep Dive
 
 !!! danger "Real Incident: Dyn DDoS Attack (October 2016)"
