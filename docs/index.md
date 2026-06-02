@@ -1,4 +1,6 @@
 ---
+title: "VamsiLabs — Vamsi Karuturi | Java & System Design Interview Prep"
+description: "VamsiLabs by Vamsi Karuturi — 300+ deep-dive Java, Spring Boot & System Design interview prep articles. Senior Backend Engineer at Salesforce (ex-Walmart, Siemens). Production patterns, not generic theory."
 hide:
   - navigation
   - toc
@@ -12,7 +14,7 @@ hide:
 
 <p class="vtn-subtitle">Deep-dive notes from a Senior Engineer at Salesforce (ex-Walmart, Siemens). Not generic theory — real patterns, tradeoffs, and code used in production at scale.</p>
 
-<p class="vtn-author">by <a href="/about/"><strong>Vamsi Karuturi</strong></a> · Senior Software Engineer at Salesforce</p>
+<p class="vtn-author">by <a href="/about/"><strong>Vamsi Karuturi</strong></a> · Senior Backend Engineer at Salesforce</p>
 
 <div class="vtn-stats">
   <div class="vtn-stat">

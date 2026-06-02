@@ -507,7 +507,8 @@ function renderMarkCompleteButton() {
 
   const path = currentPagePath();
   const isHomepage = path === '/' || path === '/index.html';
-  if (!currentUser || isHomepage) {
+  const isAbout = path === '/about/' || path === '/about';
+  if (!currentUser || isHomepage || isAbout) {
     wrapper.style.display = 'none';
     return;
   }

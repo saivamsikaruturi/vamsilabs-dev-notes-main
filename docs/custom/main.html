@@ -21,28 +21,40 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ (page.title | e) if page and page.title else 'VamsiLabs Dev Notes' }} — VamsiLabs">
 <meta name="twitter:description" content="{{ (page.meta.description if page and page.meta and page.meta.description else config.site_description) | e }}">
-<!-- Structured Data: WebSite + Person -->
+<!-- Structured Data: WebSite + Person (Entity Graph for brand search) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "VamsiLabs Dev Notes",
+  "name": "VamsiLabs — Vamsi Karuturi's Engineering Notes",
+  "alternateName": ["VamsiLabs", "VamsiLabs Dev Notes", "Vamsi Karuturi Blog"],
   "url": "https://vamsilabs.netlify.app",
-  "description": "FAANG-level Java, Spring Boot, and System Design interview prep",
+  "description": "Technical notes by Vamsi Karuturi — Senior Backend Engineer at Salesforce. FAANG-level Java, Spring Boot, and System Design interview prep.",
   "author": {
     "@type": "Person",
+    "@id": "https://vamsilabs.netlify.app/about/#vamsi-karuturi",
     "name": "Vamsi Karuturi",
-    "url": "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/",
-    "jobTitle": "Senior Software Engineer",
+    "givenName": "Vamsi",
+    "familyName": "Karuturi",
+    "url": "https://vamsilabs.netlify.app/about/",
+    "image": "https://vamsilabs.netlify.app/custom/vamsi-profile.png",
+    "jobTitle": "Senior Backend Engineer",
     "worksFor": {
       "@type": "Organization",
-      "name": "Salesforce"
+      "name": "Salesforce",
+      "url": "https://www.salesforce.com"
     },
     "alumniOf": [
       {"@type": "Organization", "name": "Walmart Global Tech"},
-      {"@type": "Organization", "name": "Siemens"}
+      {"@type": "Organization", "name": "Siemens"},
+      {"@type": "Organization", "name": "Capgemini"}
     ],
-    "knowsAbout": ["Java", "Spring Boot", "Microservices", "System Design", "Distributed Systems", "Kafka", "Docker", "Kubernetes", "JVM Internals", "Performance Engineering"]
+    "knowsAbout": ["Java", "Spring Boot", "Microservices", "System Design", "Distributed Systems", "Kafka", "Docker", "Kubernetes", "JVM Internals", "Performance Engineering", "AI Agent Orchestration", "MCP"],
+    "sameAs": [
+      "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/",
+      "https://github.com/saivamsikaruturi",
+      "https://topmate.io/vamsi_krishna13/"
+    ]
   },
   "potentialAction": {
     "@type": "SearchAction",
@@ -62,11 +74,16 @@
   "url": "{{ page.canonical_url }}",
   "author": {
     "@type": "Person",
+    "@id": "https://vamsilabs.netlify.app/about/#vamsi-karuturi",
     "name": "Vamsi Karuturi",
-    "jobTitle": "Senior Software Engineer",
+    "jobTitle": "Senior Backend Engineer",
     "worksFor": {"@type": "Organization", "name": "Salesforce"},
     "url": "https://vamsilabs.netlify.app/about/",
-    "sameAs": "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/"
+    "sameAs": [
+      "https://www.linkedin.com/in/vamsi-karuturi-2a117215b/",
+      "https://github.com/saivamsikaruturi",
+      "https://topmate.io/vamsi_krishna13/"
+    ]
   },
   "publisher": {
     "@type": "Organization",
@@ -219,7 +236,7 @@
   {% if page.meta.difficulty %}
   <span class="vtn-difficulty vtn-difficulty--{{ page.meta.difficulty }}">{{ page.meta.difficulty | upper }}</span>
   {% endif %}
-  <span class="vtn-author-byline">By <a href="/about/">Vamsi Karuturi</a> · Senior Engineer at Salesforce</span>
+  <span class="vtn-author-byline">By <a href="/about/">Vamsi Karuturi</a> · Senior Backend Engineer at Salesforce</span>
 </div>
 {% endif %}
 {% endif %}
@@ -874,9 +891,9 @@ function showGateSuccess(msg) {
 <div class="giscus-wrapper" id="giscus-container"></div>
 <script>
 (function() {
-  // Don't show comments on homepage
+  // Don't show comments on homepage or about page
   var path = window.location.pathname.replace(/\/+$/, '');
-  if (path === '' || path === '/index.html' || path === '/index') return;
+  if (path === '' || path === '/index.html' || path === '/index' || path === '/about') return;
 
   var script = document.createElement('script');
   script.src = 'https://giscus.app/client.js';

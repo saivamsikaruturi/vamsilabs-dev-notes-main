@@ -1,5 +1,5 @@
-site_name: "VamsiLabs Dev Notes"
-site_description: "FAANG-level Java, Spring Boot & System Design interview prep — 100+ deep-dive topics with Mermaid diagrams, production code examples, and interview questions."
+site_name: "VamsiLabs | Dev Notes"
+site_description: "Technical notes by Vamsi Karuturi — Senior Backend Engineer at Salesforce. FAANG-level Java, Spring Boot & System Design interview prep with 300+ deep-dive topics."
 site_author: "Vamsi Karuturi"
 site_url: "https://vamsilabs.netlify.app"
 
@@ -143,6 +143,23 @@ nav:
       - Interview Preparation Strategy: interviewquestions.md
       - DSA: dsa.md
       - Behavioral (Amazon LPs): behavioral/behavioral.md
+  - Interviews:
+      - Career Strategy: interview/career-strategy.md
+      - Coding Scenarios & Challenges: interview/coding-scenarios.md
+      - Scenario-Based Questions: interview/java-scenarios.md
+      - Core Java Q&A: interview/java-core.md
+      - Java Strings Q&A: interview/java-strings.md
+      - Java Collections Q&A: interview/java-collections.md
+      - Java Multithreading Q&A: interview/java-multithreading.md
+      - Java 8+ Features Q&A: interview/java8-features.md
+      - Spring Boot Q&A: interview/spring-boot.md
+      - Hibernate & JPA Q&A: interview/hibernate-jpa.md
+      - Microservices Q&A: interview/microservices.md
+      - SQL Q&A: interview/sql.md
+      - System Design Q&A: interview/system-design.md
+      - Design Patterns Q&A: interview/design-patterns.md
+      - REST API Q&A: interview/rest-api.md
+      - Coding Problems & Solutions: interview/company-coding.md
   - Java:
       - "Core Concepts & Questions": java/java-interview-guide.md
       - Core Java:
@@ -509,23 +526,6 @@ nav:
       - TypeScript: typescript/introduction.md
       - Rust: rust/introduction.md
       - Ruby: ruby/introduction.md
-  - Interviews:
-      - Career Strategy: interview/career-strategy.md
-      - Coding Scenarios & Challenges: interview/coding-scenarios.md
-      - Scenario-Based Questions: interview/java-scenarios.md
-      - Core Java Q&A: interview/java-core.md
-      - Java Strings Q&A: interview/java-strings.md
-      - Java Collections Q&A: interview/java-collections.md
-      - Java Multithreading Q&A: interview/java-multithreading.md
-      - Java 8+ Features Q&A: interview/java8-features.md
-      - Spring Boot Q&A: interview/spring-boot.md
-      - Hibernate & JPA Q&A: interview/hibernate-jpa.md
-      - Microservices Q&A: interview/microservices.md
-      - SQL Q&A: interview/sql.md
-      - System Design Q&A: interview/system-design.md
-      - Design Patterns Q&A: interview/design-patterns.md
-      - REST API Q&A: interview/rest-api.md
-      - Coding Problems & Solutions: interview/company-coding.md
 
 extra:
   social:

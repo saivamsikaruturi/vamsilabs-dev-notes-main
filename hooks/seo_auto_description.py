@@ -27,6 +27,7 @@ def _extract_description(markdown: str) -> str:
     skip_next = False
     in_code_block = False
     in_admonition = False
+    in_html_block = False
 
     for line in lines:
         if line.strip().startswith("```"):
@@ -43,6 +44,15 @@ def _extract_description(markdown: str) -> str:
                 continue
             else:
                 in_admonition = False
+
+        stripped = line.strip()
+        if re.match(r"<(div|span|section|script|style|svg|button|input|form|img|a\s)", stripped, re.IGNORECASE):
+            in_html_block = True
+            continue
+        if in_html_block:
+            if re.match(r"</(div|span|section|script|style|svg|button|form)>", stripped, re.IGNORECASE):
+                in_html_block = False
+            continue
 
         if line.startswith("#"):
             skip_next = False
