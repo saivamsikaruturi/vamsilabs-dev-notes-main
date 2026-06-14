@@ -622,6 +622,255 @@ function showGateSuccess(msg) {
   });
 })();
 </script>
+<!-- Flashcard Mode Toggle -->
+<script>
+(function() {
+  var FLASHCARD_KEY = 'vtn-flashcard-mode';
+
+  function createFlashcardToggle() {
+    var path = window.location.pathname.replace(/\/+$/, '');
+    if (path === '' || path === '/index.html' || path === '/index' || path === '/about') return;
+
+    var btn = document.createElement('button');
+    btn.id = 'vtn-flashcard-toggle';
+    btn.className = 'vtn-flashcard-toggle';
+    btn.title = 'Toggle Flashcard Mode';
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="12" y1="10" x2="12" y2="20"/></svg>';
+    btn.onclick = toggleFlashcardMode;
+    document.body.appendChild(btn);
+
+    if (localStorage.getItem(FLASHCARD_KEY) === 'true') {
+      activateFlashcardMode();
+      btn.classList.add('active');
+    }
+  }
+
+  function toggleFlashcardMode() {
+    var btn = document.getElementById('vtn-flashcard-toggle');
+    var isActive = localStorage.getItem(FLASHCARD_KEY) === 'true';
+    if (isActive) {
+      deactivateFlashcardMode();
+      localStorage.setItem(FLASHCARD_KEY, 'false');
+      btn.classList.remove('active');
+    } else {
+      activateFlashcardMode();
+      localStorage.setItem(FLASHCARD_KEY, 'true');
+      btn.classList.add('active');
+    }
+  }
+
+  function activateFlashcardMode() {
+    document.body.classList.add('vtn-flashcard-active');
+    var content = document.querySelector('.md-typeset');
+    if (!content) return;
+
+    var elements = content.querySelectorAll('p, ul, ol, pre, table, .highlight, .admonition, blockquote, div.arithmatex');
+    var inAnswer = false;
+    var currentQuestion = null;
+
+    for (var i = 0; i < elements.length; i++) {
+      var el = elements[i];
+      var text = el.textContent.trim();
+
+      if (el.tagName === 'P' && (text.match(/^\*?\*?Q[:\s]/) || text.match(/^Q[:\s]/))) {
+        inAnswer = true;
+        currentQuestion = el;
+        el.classList.add('vtn-flashcard-question');
+        continue;
+      }
+
+      if (inAnswer) {
+        el.setAttribute('data-flashcard-hidden', 'true');
+      }
+    }
+
+    // Wrap hidden elements into answer groups
+    var hiddenEls = content.querySelectorAll('[data-flashcard-hidden]');
+    var currentWrapper = null;
+    var lastQuestion = null;
+
+    for (var j = 0; j < hiddenEls.length; j++) {
+      var hel = hiddenEls[j];
+      var prev = hel.previousElementSibling;
+      while (prev && !prev.classList.contains('vtn-flashcard-question') && !prev.classList.contains('vtn-flashcard-answer')) {
+        prev = prev.previousElementSibling;
+      }
+
+      if (!currentWrapper || (prev && prev.classList.contains('vtn-flashcard-question') && prev !== lastQuestion)) {
+        lastQuestion = prev;
+        currentWrapper = document.createElement('div');
+        currentWrapper.className = 'vtn-flashcard-answer';
+        currentWrapper.innerHTML = '<span class="vtn-flashcard-reveal-hint">Click to reveal answer</span>';
+        currentWrapper.onclick = function() { this.classList.toggle('revealed'); };
+        hel.parentNode.insertBefore(currentWrapper, hel);
+      }
+      currentWrapper.appendChild(hel);
+    }
+  }
+
+  function deactivateFlashcardMode() {
+    document.body.classList.remove('vtn-flashcard-active');
+    var wrappers = document.querySelectorAll('.vtn-flashcard-answer');
+    for (var i = 0; i < wrappers.length; i++) {
+      var wrapper = wrappers[i];
+      var parent = wrapper.parentNode;
+      var hint = wrapper.querySelector('.vtn-flashcard-reveal-hint');
+      if (hint) hint.remove();
+      while (wrapper.firstChild) {
+        parent.insertBefore(wrapper.firstChild, wrapper);
+      }
+      parent.removeChild(wrapper);
+    }
+    var questions = document.querySelectorAll('.vtn-flashcard-question');
+    for (var q = 0; q < questions.length; q++) {
+      questions[q].classList.remove('vtn-flashcard-question');
+    }
+    var hidden = document.querySelectorAll('[data-flashcard-hidden]');
+    for (var h = 0; h < hidden.length; h++) {
+      hidden[h].removeAttribute('data-flashcard-hidden');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createFlashcardToggle);
+  } else {
+    createFlashcardToggle();
+  }
+})();
+</script>
+<!-- Code Playground — Inline Execution via Piston API -->
+<script>
+(function() {
+  var PISTON_URL = 'https://emkc.org/api/v2/piston/execute';
+
+  function addRunButtons() {
+    var wrappers = document.querySelectorAll('.language-java.highlight, .language-python.highlight');
+    for (var i = 0; i < wrappers.length; i++) {
+      var wrapper = wrappers[i];
+      var pre = wrapper.querySelector('pre');
+      var codeEl = pre ? pre.querySelector('code') : null;
+      if (!pre || !codeEl) continue;
+      if (wrapper.querySelector('.vtn-run-btn')) continue;
+
+      if (getComputedStyle(wrapper).position === 'static') {
+        wrapper.style.position = 'relative';
+      }
+
+      var lang = wrapper.classList.contains('language-java') ? 'java' : 'python';
+      var btn = document.createElement('button');
+      btn.className = 'vtn-run-btn';
+      btn.innerHTML = '▶ Run';
+      btn.setAttribute('data-lang', lang);
+
+      btn.addEventListener('click', (function(codeElement, language, wrapperEl) {
+        return function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var clickedBtn = e.currentTarget;
+          var code = codeElement.textContent;
+
+          // Create or find output panel
+          var outputId = 'vtn-output-' + Array.from(document.querySelectorAll('.vtn-run-btn')).indexOf(clickedBtn);
+          var output = wrapperEl.parentElement.querySelector('.vtn-code-output[data-id="' + outputId + '"]');
+          if (!output) {
+            output = document.createElement('div');
+            output.className = 'vtn-code-output';
+            output.setAttribute('data-id', outputId);
+            wrapperEl.parentElement.insertBefore(output, wrapperEl.nextSibling);
+          }
+
+          output.style.display = 'block';
+          output.innerHTML = '<span class="vtn-output-label">Output</span><pre class="vtn-output-pre">Running...</pre>';
+          clickedBtn.innerHTML = '⏳';
+          clickedBtn.disabled = true;
+
+          var payload = {
+            language: language === 'java' ? 'java' : 'python',
+            version: language === 'java' ? '15.0.2' : '3.10.0',
+            files: [{ content: code }]
+          };
+
+          fetch(PISTON_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var result = '';
+            if (data.run) {
+              result = (data.run.stdout || '') + (data.run.stderr || '');
+              if (!result.trim()) result = '(No output)';
+            } else if (data.compile && data.compile.stderr) {
+              result = 'Compilation Error:\n' + data.compile.stderr;
+            } else {
+              result = 'Error: ' + JSON.stringify(data);
+            }
+            output.innerHTML = '<span class="vtn-output-label">Output</span><pre class="vtn-output-pre">' +
+              result.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
+              '</pre><button class="vtn-output-close" onclick="this.parentElement.style.display=\'none\'">✕</button>';
+          })
+          .catch(function(err) {
+            output.innerHTML = '<span class="vtn-output-label">Output</span><pre class="vtn-output-pre">Error: Could not reach execution server.\n' + err.message + '</pre>' +
+              '<button class="vtn-output-close" onclick="this.parentElement.style.display=\'none\'">✕</button>';
+          })
+          .finally(function() {
+            clickedBtn.innerHTML = '▶ Run';
+            clickedBtn.disabled = false;
+          });
+        };
+      })(codeEl, lang, wrapper));
+
+      wrapper.appendChild(btn);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(addRunButtons, 300); });
+  } else {
+    setTimeout(addRunButtons, 300);
+  }
+
+  if (typeof document$ !== 'undefined') {
+    document$.subscribe(function() { setTimeout(addRunButtons, 300); });
+  } else {
+    var observer = new MutationObserver(function(muts) {
+      for (var i = 0; i < muts.length; i++) {
+        if (muts[i].addedNodes.length) { setTimeout(addRunButtons, 200); return; }
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      observer.observe(document.querySelector('.md-content') || document.body, { childList: true, subtree: true });
+    });
+  }
+})();
+</script>
+<!-- ELI5 Mode Toggle -->
+<script>
+(function() {
+  var path = window.location.pathname.replace(/\/+$/, '');
+  if (path === '' || path === '/index.html' || path === '/index' || path === '/about') return;
+
+  var btn = document.createElement('button');
+  btn.className = 'vtn-eli5-toggle';
+  btn.innerHTML = '🧒 ELI5';
+  btn.title = 'Toggle simple explanations';
+  document.body.appendChild(btn);
+
+  var active = localStorage.getItem('vtn-eli5-mode') === 'true';
+  if (active) {
+    document.body.classList.add('eli5-active');
+    btn.classList.add('active');
+  }
+
+  btn.addEventListener('click', function() {
+    active = !active;
+    localStorage.setItem('vtn-eli5-mode', active ? 'true' : 'false');
+    document.body.classList.toggle('eli5-active', active);
+    btn.classList.toggle('active', active);
+  });
+})();
+</script>
 {{ super() }}
 <script>
 (function() {
@@ -887,31 +1136,365 @@ function showGateSuccess(msg) {
   </button>
 </div>
 
-<!-- Giscus Comments -->
-<div class="giscus-wrapper" id="giscus-container"></div>
+<!-- Newsletter Signup -->
+<div class="vtn-newsletter" id="vtn-newsletter" style="display:none;">
+  <h3>5-Minute System Design — Weekly</h3>
+  <p>One system design concept explained in 5 minutes. Join 500+ engineers leveling up.</p>
+  <div class="vtn-newsletter-form">
+    <input type="email" class="vtn-newsletter-input" id="newsletter-email" placeholder="your@email.com">
+    <button class="vtn-newsletter-btn" onclick="subscribeNewsletter()">Subscribe</button>
+  </div>
+  <div class="vtn-newsletter-status" id="newsletter-status" style="display:none;"></div>
+</div>
 <script>
 (function() {
-  // Don't show comments on homepage or about page
+  var path = window.location.pathname.replace(/\/+$/, '');
+  if (path === '' || path === '/index.html' || path === '/index' || path === '/about') return;
+  var el = document.getElementById('vtn-newsletter');
+  if (el) el.style.display = '';
+})();
+
+function subscribeNewsletter() {
+  var emailInput = document.getElementById('newsletter-email');
+  var status = document.getElementById('newsletter-status');
+  var email = emailInput.value.trim();
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.style.display = 'block';
+    status.textContent = 'Please enter a valid email address.';
+    status.style.color = '#dc2626';
+    return;
+  }
+
+  status.style.display = 'block';
+  status.textContent = 'Subscribing...';
+  status.style.color = 'var(--vtn-text-muted)';
+
+  initFirebase().then(function() {
+    var user = auth.currentUser;
+    var data = {
+      email: email,
+      subscribed_at: firebase.firestore.FieldValue.serverTimestamp(),
+      source: window.location.pathname
+    };
+    if (user) data.uid = user.uid;
+    return db.collection('newsletter_subscribers').doc(email.replace(/[.#$/\[\]]/g, '_')).set(data, { merge: true });
+  }).then(function() {
+    status.textContent = 'You\'re in! Watch your inbox for system design insights.';
+    status.style.color = '#16a34a';
+    emailInput.value = '';
+  }).catch(function(err) {
+    status.textContent = 'Something went wrong. Please try again.';
+    status.style.color = '#dc2626';
+    console.error('Newsletter subscribe error:', err);
+  });
+}
+</script>
+
+<!-- Feedback + Discussion Section -->
+<div class="vtn-feedback-discussion" id="vtn-feedback-discussion" style="display:none;">
+  <div class="vtn-feedback-divider"></div>
+  <div class="vtn-feedback-widget" id="vtn-feedback-widget">
+    <span class="vtn-feedback-label">Was this helpful?</span>
+    <div class="vtn-feedback-buttons">
+      <button class="vtn-feedback-btn" data-vote="yes" onclick="submitFeedback('yes')" aria-label="Yes, helpful">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        Yes
+      </button>
+      <button class="vtn-feedback-btn" data-vote="no" onclick="submitFeedback('no')" aria-label="Needs more detail">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/></svg>
+        Needs more
+      </button>
+    </div>
+    <div class="vtn-feedback-thanks" id="vtn-feedback-thanks" style="display:none;">Thanks for your feedback!</div>
+  </div>
+  <div class="vtn-discussion-section">
+    <span class="vtn-discussion-label">Discussion</span>
+    <div class="vtn-comments" id="vtn-comments">
+      <div class="vtn-comment-form" id="vtn-comment-form" style="display:none;">
+        <div class="vtn-comment-form-header">
+          <img class="vtn-comment-avatar" id="vtn-comment-avatar" src="" alt="">
+          <span class="vtn-comment-username" id="vtn-comment-username"></span>
+        </div>
+        <textarea class="vtn-comment-input" id="vtn-comment-input" placeholder="Ask a question or share your thoughts..." rows="3"></textarea>
+        <div class="vtn-comment-form-footer">
+          <span class="vtn-comment-hint">Markdown supported</span>
+          <button class="vtn-comment-submit" id="vtn-comment-submit" onclick="postComment()">Post</button>
+        </div>
+      </div>
+      <div class="vtn-comment-signin" id="vtn-comment-signin">
+        <span>Sign in to join the discussion</span>
+        <button class="vtn-comment-signin-btn" onclick="commentSignIn()">Sign In</button>
+      </div>
+      <div class="vtn-comment-list" id="vtn-comment-list">
+        <div class="vtn-comment-loading" id="vtn-comment-loading">Loading comments...</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
   var path = window.location.pathname.replace(/\/+$/, '');
   if (path === '' || path === '/index.html' || path === '/index' || path === '/about') return;
 
-  var script = document.createElement('script');
-  script.src = 'https://giscus.app/client.js';
-  script.setAttribute('data-repo', 'saivamsikaruturi/vamsilabs-dev-notes-main');
-  script.setAttribute('data-repo-id', 'REPO_ID_PLACEHOLDER');
-  script.setAttribute('data-category', 'Comments');
-  script.setAttribute('data-category-id', 'CATEGORY_ID_PLACEHOLDER');
-  script.setAttribute('data-mapping', 'pathname');
-  script.setAttribute('data-strict', '0');
-  script.setAttribute('data-reactions-enabled', '1');
-  script.setAttribute('data-emit-metadata', '0');
-  script.setAttribute('data-input-position', 'top');
-  script.setAttribute('data-theme', 'preferred_color_scheme');
-  script.setAttribute('data-lang', 'en');
-  script.setAttribute('data-loading', 'lazy');
-  script.crossOrigin = 'anonymous';
-  script.async = true;
-  document.getElementById('giscus-container').appendChild(script);
+  var container = document.getElementById('vtn-feedback-discussion');
+  if (container) container.style.display = '';
+
+  initFirebase().then(function() {
+    loadComments();
+    auth.onAuthStateChanged(function(user) {
+      var form = document.getElementById('vtn-comment-form');
+      var signin = document.getElementById('vtn-comment-signin');
+      if (user) {
+        form.style.display = '';
+        signin.style.display = 'none';
+        var avatar = document.getElementById('vtn-comment-avatar');
+        var username = document.getElementById('vtn-comment-username');
+        avatar.src = user.photoURL || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32"%3E%3Crect fill="%23B45309" width="32" height="32" rx="16"/%3E%3Ctext x="16" y="21" text-anchor="middle" fill="white" font-size="14">' + (user.displayName || user.email || '?').charAt(0).toUpperCase() + '%3C/text%3E%3C/svg%3E';
+        username.textContent = user.displayName || user.email.split('@')[0];
+      } else {
+        form.style.display = 'none';
+        signin.style.display = '';
+      }
+    });
+  }).catch(function() {
+    var loading = document.getElementById('vtn-comment-loading');
+    if (loading) loading.textContent = '';
+  });
+})();
+
+function commentSignIn() {
+  initFirebase().then(function() { signInWithGoogle(); }).catch(function() {});
+}
+
+function getPageId() {
+  return window.location.pathname.replace(/[.#$/\[\]]/g, '_').replace(/\/+$/, '').replace(/^_/, '');
+}
+
+function postComment(parentId) {
+  var input = parentId
+    ? document.querySelector('[data-reply-input="' + parentId + '"]')
+    : document.getElementById('vtn-comment-input');
+  var text = input.value.trim();
+  if (!text) return;
+
+  var user = auth.currentUser;
+  if (!user) return;
+
+  var submitBtn = parentId
+    ? input.parentElement.querySelector('.vtn-comment-submit')
+    : document.getElementById('vtn-comment-submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Posting...';
+
+  var comment = {
+    text: text,
+    author: user.displayName || user.email.split('@')[0],
+    authorEmail: user.email,
+    authorPhoto: user.photoURL || '',
+    uid: user.uid,
+    page: window.location.pathname,
+    parentId: parentId || null,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    likes: 0,
+    likedBy: []
+  };
+
+  db.collection('page_comments').add(comment).then(function() {
+    input.value = '';
+    if (parentId) {
+      var replyForm = input.closest('.vtn-reply-form');
+      if (replyForm) replyForm.style.display = 'none';
+    }
+    loadComments();
+  }).catch(function(err) {
+    console.error('Comment post error:', err);
+  }).finally(function() {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Post';
+  });
+}
+
+function loadComments() {
+  var pageId = window.location.pathname;
+  db.collection('page_comments')
+    .where('page', '==', pageId)
+    .orderBy('createdAt', 'asc')
+    .get()
+    .then(function(snapshot) {
+      var comments = [];
+      snapshot.forEach(function(doc) {
+        comments.push(Object.assign({ id: doc.id }, doc.data()));
+      });
+      renderComments(comments);
+    })
+    .catch(function(err) {
+      console.error('Load comments error:', err);
+      var loading = document.getElementById('vtn-comment-loading');
+      if (loading) loading.textContent = 'Unable to load comments.';
+    });
+}
+
+function renderComments(comments) {
+  var list = document.getElementById('vtn-comment-list');
+  var topLevel = comments.filter(function(c) { return !c.parentId; });
+  var replies = comments.filter(function(c) { return c.parentId; });
+
+  var count = comments.length;
+  var countLabel = count === 0 ? '' : '(' + count + ')';
+  var label = document.querySelector('.vtn-discussion-label');
+  if (label) label.textContent = 'Discussion ' + countLabel;
+
+  if (comments.length === 0) {
+    list.innerHTML = '<div class="vtn-comment-empty">No comments yet. Be the first to share your thoughts!</div>';
+    return;
+  }
+
+  var html = '';
+  topLevel.forEach(function(c) {
+    html += buildCommentHtml(c);
+    var childReplies = replies.filter(function(r) { return r.parentId === c.id; });
+    if (childReplies.length > 0) {
+      html += '<div class="vtn-comment-replies">';
+      childReplies.forEach(function(r) { html += buildCommentHtml(r, true); });
+      html += '</div>';
+    }
+  });
+  list.innerHTML = html;
+}
+
+function buildCommentHtml(c, isReply) {
+  var user = auth.currentUser;
+  var initial = (c.author || '?').charAt(0).toUpperCase();
+  var avatar = c.authorPhoto
+    ? '<img class="vtn-comment-avatar" src="' + c.authorPhoto + '" alt="">'
+    : '<div class="vtn-comment-avatar vtn-comment-avatar--initial">' + initial + '</div>';
+  var time = c.createdAt ? timeAgo(c.createdAt.toDate()) : 'just now';
+  var isOwner = user && user.uid === c.uid;
+  var hasLiked = user && c.likedBy && c.likedBy.indexOf(user.uid) !== -1;
+
+  var actions = '<div class="vtn-comment-actions">';
+  actions += '<button class="vtn-comment-action' + (hasLiked ? ' liked' : '') + '" onclick="likeComment(\'' + c.id + '\')">';
+  actions += '<svg width="14" height="14" viewBox="0 0 24 24" fill="' + (hasLiked ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+  actions += (c.likes || 0) > 0 ? ' ' + c.likes : '';
+  actions += '</button>';
+  if (!isReply) {
+    actions += '<button class="vtn-comment-action" onclick="showReplyForm(\'' + c.id + '\')">Reply</button>';
+  }
+  if (isOwner) {
+    actions += '<button class="vtn-comment-action vtn-comment-action--delete" onclick="deleteComment(\'' + c.id + '\')">Delete</button>';
+  }
+  actions += '</div>';
+
+  var replyForm = !isReply ? '<div class="vtn-reply-form" id="reply-form-' + c.id + '" style="display:none;"><textarea class="vtn-comment-input vtn-reply-input" data-reply-input="' + c.id + '" placeholder="Write a reply..." rows="2"></textarea><div class="vtn-comment-form-footer"><button class="vtn-comment-submit" onclick="postComment(\'' + c.id + '\')">Post</button><button class="vtn-comment-action" onclick="hideReplyForm(\'' + c.id + '\')">Cancel</button></div></div>' : '';
+
+  return '<div class="vtn-comment' + (isReply ? ' vtn-comment--reply' : '') + '">'
+    + '<div class="vtn-comment-header">' + avatar
+    + '<span class="vtn-comment-author">' + escapeHtml(c.author) + '</span>'
+    + '<span class="vtn-comment-time">' + time + '</span></div>'
+    + '<div class="vtn-comment-body">' + escapeHtml(c.text) + '</div>'
+    + actions + replyForm + '</div>';
+}
+
+function showReplyForm(commentId) {
+  var form = document.getElementById('reply-form-' + commentId);
+  if (form) form.style.display = '';
+}
+
+function hideReplyForm(commentId) {
+  var form = document.getElementById('reply-form-' + commentId);
+  if (form) form.style.display = 'none';
+}
+
+function likeComment(commentId) {
+  var user = auth.currentUser;
+  if (!user) { commentSignIn(); return; }
+
+  var ref = db.collection('page_comments').doc(commentId);
+  ref.get().then(function(doc) {
+    var data = doc.data();
+    var likedBy = data.likedBy || [];
+    var idx = likedBy.indexOf(user.uid);
+    if (idx === -1) {
+      likedBy.push(user.uid);
+    } else {
+      likedBy.splice(idx, 1);
+    }
+    return ref.update({ likedBy: likedBy, likes: likedBy.length });
+  }).then(function() { loadComments(); });
+}
+
+function deleteComment(commentId) {
+  if (!confirm('Delete this comment?')) return;
+  db.collection('page_comments').doc(commentId).delete().then(function() { loadComments(); });
+}
+
+function timeAgo(date) {
+  var seconds = Math.floor((new Date() - date) / 1000);
+  if (seconds < 60) return 'just now';
+  var minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return minutes + 'm ago';
+  var hours = Math.floor(minutes / 60);
+  if (hours < 24) return hours + 'h ago';
+  var days = Math.floor(hours / 24);
+  if (days < 30) return days + 'd ago';
+  return date.toLocaleDateString();
+}
+
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function submitFeedback(vote) {
+  var widget = document.getElementById('vtn-feedback-widget');
+  var thanks = document.getElementById('vtn-feedback-thanks');
+  var buttons = widget.querySelectorAll('.vtn-feedback-btn');
+
+  buttons.forEach(function(btn) {
+    btn.disabled = true;
+    if (btn.getAttribute('data-vote') === vote) {
+      btn.classList.add('selected');
+    }
+  });
+  thanks.style.display = '';
+
+  // Store in Firebase if available
+  if (typeof initFirebase === 'function') {
+    initFirebase().then(function() {
+      var user = typeof auth !== 'undefined' && auth.currentUser;
+      var data = {
+        page: window.location.pathname,
+        vote: vote,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      if (user) data.uid = user.uid;
+      var docId = (window.location.pathname + '_' + (user ? user.uid : 'anon_' + Date.now())).replace(/[.#$/\[\]]/g, '_');
+      db.collection('page_feedback').doc(docId).set(data, { merge: true });
+    }).catch(function() {});
+  }
+
+  // Also store locally so we don't re-prompt
+  try { localStorage.setItem('vtn-feedback-' + window.location.pathname, vote); } catch(e) {}
+}
+
+// Restore previous feedback state
+(function() {
+  try {
+    var prev = localStorage.getItem('vtn-feedback-' + window.location.pathname);
+    if (prev) {
+      var widget = document.getElementById('vtn-feedback-widget');
+      if (!widget) return;
+      var buttons = widget.querySelectorAll('.vtn-feedback-btn');
+      var thanks = document.getElementById('vtn-feedback-thanks');
+      buttons.forEach(function(btn) {
+        btn.disabled = true;
+        if (btn.getAttribute('data-vote') === prev) btn.classList.add('selected');
+      });
+      if (thanks) thanks.style.display = '';
+    }
+  } catch(e) {}
 })();
 </script>
 {% endblock %}

@@ -618,4 +618,42 @@ Avoid these pitfalls that trip up even experienced candidates:
 
 ---
 
+---
+
+## Quick Quiz
+
+??? question "Q1: Is Java pass-by-value or pass-by-reference?"
+    - [x] A) Always pass-by-value — object references are copied, not the objects themselves
+    - [ ] B) Pass-by-reference for objects, pass-by-value for primitives
+    - [ ] C) Pass-by-reference for all types
+    - [ ] D) It depends on whether the parameter is final
+
+    **Answer: A)** Java is always pass-by-value. When you pass an object, the reference (pointer) is copied — the callee gets its own copy of the reference pointing to the same object. The callee can mutate the object but cannot reassign the caller's reference. This is why swapping two objects inside a method has no effect on the caller.
+
+??? question "Q2: Why does `Integer.valueOf(127) == Integer.valueOf(127)` return true, but `Integer.valueOf(128) == Integer.valueOf(128)` return false?"
+    - [ ] A) Because 128 exceeds the maximum value of Integer
+    - [ ] B) Because `==` only works for values less than 128
+    - [x] C) Because Java caches Integer objects from -128 to 127; values outside this range create new objects
+    - [ ] D) Because `valueOf` behaves differently for even and odd numbers
+
+    **Answer: C)** Java maintains an internal Integer cache for values -128 to 127. `Integer.valueOf()` returns cached instances in that range, so `==` returns true (same object). Outside that range, new objects are created, and `==` compares references (different objects) rather than values. Always use `.equals()` for wrapper type comparison.
+
+??? question "Q3: What is the key consequence of Java's type erasure for generics?"
+    - [ ] A) Generic types cannot be used with primitive types
+    - [x] B) Generic type information is removed at runtime — `List<String>` and `List<Integer>` are the same class at runtime
+    - [ ] C) Generics make code slower due to extra runtime type checking
+    - [ ] D) You cannot create subclasses of generic types
+
+    **Answer: B)** Type erasure means generics exist only at compile time. At runtime, `List<String>` becomes raw `List`. Consequences: you cannot use `instanceof` with parameterized types, cannot create generic arrays (`new T[]`), and cannot retrieve the type parameter at runtime without a `Class<T>` token. The compiler inserts casts to maintain type safety.
+
+??? question "Q4: What does the `final` keyword mean when applied to a reference variable?"
+    - [ ] A) The object it references becomes immutable
+    - [ ] B) The variable cannot be accessed from other classes
+    - [x] C) The reference cannot be reassigned, but the object it points to can still be mutated
+    - [ ] D) The variable is stored on the stack instead of the heap
+
+    **Answer: C)** `final` on a variable means the reference cannot point to a different object after initialization. However, the object itself is NOT immutable — you can still call mutating methods on it (e.g., `final List<String> list = new ArrayList<>(); list.add("item");` is perfectly valid). To achieve true immutability, you need final class + private final fields + no setters + defensive copies.
+
+---
+
 *Last updated: May 2026. Covers Java 8 through Java 21.*

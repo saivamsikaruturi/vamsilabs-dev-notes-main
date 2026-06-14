@@ -110,6 +110,9 @@ hooks:
   - hooks/reading_time.py
   - hooks/mermaid_compact.py
   - hooks/seo_structured_data.py
+  - hooks/related_pages.py
+  - hooks/difficulty_badge.py
+  - hooks/eli5_mode.py
 
 plugins:
   - search:
@@ -141,9 +144,23 @@ nav:
       - Shortcuts: shortcuts.md
       - Git: git.md
       - Interview Preparation Strategy: interviewquestions.md
-      - DSA: dsa.md
       - Behavioral (Amazon LPs): behavioral/behavioral.md
+  - DSA Patterns:
+      - dsa/index.md
+      - Arrays & Hashing: dsa/arrays-hashing.md
+      - Two Pointers & Sliding Window: dsa/two-pointers-sliding-window.md
+      - Binary Search: dsa/binary-search.md
+      - Stacks & Queues: dsa/stacks-queues.md
+      - Linked Lists: dsa/linked-lists.md
+      - Trees: dsa/trees.md
+      - Graphs: dsa/graphs.md
+      - Dynamic Programming: dsa/dynamic-programming.md
+      - Heaps & Greedy: dsa/heaps-greedy.md
+      - Backtracking: dsa/backtracking.md
   - Interviews:
+      - "Spring Boot Interview Questions 2025": interview/spring-boot-questions.md
+      - "Java Multithreading Interview Questions": interview/java-multithreading-questions.md
+      - "Switching to Spring Boot (Experienced Devs)": interview/spring-boot-transition.md
       - Career Strategy: interview/career-strategy.md
       - Coding Scenarios & Challenges: interview/coding-scenarios.md
       - Scenario-Based Questions: interview/java-scenarios.md
@@ -379,12 +396,18 @@ nav:
       - SOLID Principles: solidprinciples/solidprinciples.md
       - Clean Architecture: misc/clean-architecture.md
       - LLD Problems:
+          - LRU Cache: lld/lru-cache.md
           - Parking Lot System: lld/parking-lot.md
+          - ATM System: lld/atm-system.md
+          - Library Management System: lld/library-management.md
           - Elevator System: lld/elevator-system.md
           - Online Bookstore: lld/online-book-store.md
           - Snake Game: lld/snake-game.md
           - Notification Service: lld/notification-service.md
           - Movie Ticket Booking: lld/movie-ticket-booking.md
+          - Splitwise (Expense Sharing): lld/splitwise.md
+          - Vending Machine: lld/vending-machine.md
+          - Rate Limiter: lld/rate-limiter.md
       - Design Patterns:
           - Introduction: designpatterns/dp.md
           - Creational Patterns:
@@ -460,7 +483,9 @@ nav:
           - Object Storage (S3 Patterns): systemdesign/object-storage.md
           - Observability (Metrics, Logs, Traces): systemdesign/observability.md
           - Multi-Region Architecture: systemdesign/multi-region.md
+      - Cheat Sheet: systemdesign/cheat-sheet.md
       - Comparisons & Quick Reference: systemdesign/comparisons.md
+      - Weekly Challenges: systemdesign/weekly-challenges.md
       - 5-Minute Summaries:
           - Load Balancing: systemdesign/summaries/load-balancing-summary.md
           - Distributed Caching: systemdesign/summaries/caching-summary.md
@@ -484,6 +509,10 @@ nav:
           - Rate Limiter: systemdesign/case-studies/rate-limiter.md
           - Payment System: systemdesign/case-studies/payment-system.md
           - Search Autocomplete: systemdesign/case-studies/search-autocomplete.md
+          - Distributed Cache: systemdesign/case-studies/distributed-cache.md
+          - Web Crawler: systemdesign/case-studies/web-crawler.md
+          - File Storage (Google Drive): systemdesign/case-studies/file-storage.md
+          - E-Commerce (Amazon Scale): systemdesign/case-studies/e-commerce.md
   - Data:
       - SQL Fundamentals: databases/sql.md
       - PostgreSQL: postgresql/postgresql.md

@@ -4,6 +4,13 @@ description: "Master Java garbage collection — G1, ZGC, Shenandoah algorithms,
 
 # Garbage Collection in Java
 
+!!! eli5 "In Simple Terms 🧒"
+    GC is like a cleaning crew that throws away objects no one is using anymore. Imagine your
+    desk (memory) keeps getting cluttered with sticky notes (objects). The cleaning crew checks
+    which notes you're still looking at, and throws away the rest. Young sticky notes get checked
+    often (minor GC), while old important ones get checked less frequently (major GC). If your
+    desk gets completely full and nothing can be thrown away, you get an "out of memory" error.
+
 Garbage Collection (GC) is one of the most critical topics for FAANG interviews. It separates engineers who can merely write Java from those who can diagnose production outages, tune JVM performance, and make informed decisions about memory-intensive systems. Understanding GC internals is essential for system design discussions involving latency SLAs, throughput requirements, and capacity planning.
 
 ---
@@ -789,3 +796,39 @@ jcmd <pid> GC.heap_info       # Heap region info (no GC triggered)
 
 ??? question "8. How can you identify a memory leak in a Java application? Walk through your approach."
     (1) **Symptom**: Old Gen usage grows over time, Full GCs become more frequent, eventually OOM. (2) **Confirm**: Monitor with `jstat -gcutil` — if Old Gen usage after Full GC keeps increasing, it's a leak. (3) **Capture**: Take heap dumps at intervals: `jmap -dump:live,format=b,file=heap1.hprof <pid>`, wait, take another. (4) **Analyze**: Open in Eclipse MAT, use "Leak Suspects" report. Look at dominator tree and histogram diff between dumps. (5) **Common culprits**: Static maps/caches without eviction, unclosed database connections, event listeners never deregistered, ThreadLocal not cleaned up, class loader leaks in web containers.
+
+---
+
+## Quick Quiz
+
+??? question "Q1: What is the Generational Hypothesis that Java GC is based on?"
+    - [ ] A) Objects in Java are always allocated in the Old Generation first
+    - [ ] B) All objects have the same lifespan regardless of type
+    - [x] C) Most objects die young, and references from old objects to young objects are rare
+    - [ ] D) Garbage collection should always scan the entire heap
+
+    **Answer: C)** The Generational Hypothesis observes that most objects are short-lived (temporary variables, iterators, request-scoped objects) and that old-to-young references are uncommon. Java exploits this by focusing GC effort on the Young Generation where most garbage exists, making Minor GCs fast and frequent while expensive Full GCs remain rare.
+
+??? question "Q2: What is the default GC algorithm in Java 9 and later?"
+    - [ ] A) Serial GC
+    - [ ] B) Parallel GC
+    - [x] C) G1 GC (Garbage-First)
+    - [ ] D) ZGC
+
+    **Answer: C)** G1 GC became the default garbage collector starting with Java 9. It divides the heap into equal-sized regions and prioritizes collecting regions with the most garbage first. It aims to meet a configurable pause time target (`-XX:MaxGCPauseMillis`) by selecting only enough regions to fit within that budget.
+
+??? question "Q3: When would you choose ZGC over G1 GC?"
+    - [ ] A) When maximum throughput is more important than latency
+    - [ ] B) When running on small heaps under 1GB
+    - [x] C) When you need sub-millisecond GC pauses regardless of heap size (e.g., trading systems)
+    - [ ] D) When running batch processing jobs
+
+    **Answer: C)** ZGC guarantees sub-millisecond pauses (<1ms) regardless of heap size (supports up to 16TB). It achieves this through colored pointers and load barriers that enable fully concurrent compaction. Choose ZGC for latency-critical systems like trading platforms or real-time services. G1 is better for general-purpose workloads where 50-200ms pauses are acceptable and maximum throughput matters more.
+
+??? question "Q4: What does it mean when Old Generation usage keeps increasing even after Full GC events?"
+    - [ ] A) The application needs more CPU cores
+    - [ ] B) The GC algorithm is misconfigured
+    - [x] C) There is likely a memory leak — objects are referenced but never used or released
+    - [ ] D) The Young Generation is too small
+
+    **Answer: C)** If Old Gen usage after Full GC keeps rising over time (the "floor" increases), objects are being retained that should have been garbage collected — this is the classic memory leak pattern. Common causes include static collections without eviction, unclosed resources, listeners never deregistered, and ThreadLocal variables not cleaned up in thread pools. Diagnose with heap dumps and Eclipse MAT.

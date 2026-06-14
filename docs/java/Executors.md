@@ -653,3 +653,39 @@ try {
     - `shutdownNow()`: Attempts to **interrupt** running tasks and returns the list of tasks that were waiting in the queue (never executed). There's no guarantee running tasks will stop — they must check `Thread.interrupted()`.
 
     Best practice: Call `shutdown()` first, wait with a timeout, then escalate to `shutdownNow()` if tasks don't finish.
+
+---
+
+## Quick Quiz
+
+??? question "Q1: In a ThreadPoolExecutor, what happens when the work queue is full and active threads are less than maximumPoolSize?"
+    - [ ] A) The task is rejected immediately
+    - [ ] B) The oldest task in the queue is dropped
+    - [x] C) A new non-core thread is created to execute the task
+    - [ ] D) The submitting thread blocks until space is available
+
+    **Answer: C)** ThreadPoolExecutor only creates threads beyond corePoolSize when the queue is full. This is counterintuitive — the pool fills the queue FIRST, then scales up threads. Only when both the queue is full AND max threads are exhausted does the rejection policy trigger.
+
+??? question "Q2: Which rejection policy provides natural back-pressure by slowing down the producer?"
+    - [ ] A) AbortPolicy
+    - [x] B) CallerRunsPolicy
+    - [ ] C) DiscardPolicy
+    - [ ] D) DiscardOldestPolicy
+
+    **Answer: B)** `CallerRunsPolicy` executes the rejected task in the submitting thread itself. This means the thread that called `submit()` (e.g., the HTTP request handler) is busy running the task, so it cannot submit more work — naturally throttling the producer without losing any tasks.
+
+??? question "Q3: Why is `Executors.newFixedThreadPool()` considered dangerous in production?"
+    - [ ] A) It creates too many threads and causes context-switching overhead
+    - [ ] B) It does not support Callable tasks
+    - [x] C) It uses an unbounded LinkedBlockingQueue that can grow until OutOfMemoryError
+    - [ ] D) It does not allow custom thread names
+
+    **Answer: C)** `newFixedThreadPool()` uses an unbounded `LinkedBlockingQueue`. Under sustained load, if tasks arrive faster than they complete, the queue grows indefinitely in memory without any rejection ever happening. Always use `ThreadPoolExecutor` directly with a bounded `ArrayBlockingQueue` and an explicit rejection policy in production.
+
+??? question "Q4: What is the formula for sizing a thread pool for I/O-bound tasks?"
+    - [ ] A) threads = number of CPU cores
+    - [ ] B) threads = number of CPU cores / 2
+    - [x] C) threads = cores * (1 + waitTime / computeTime)
+    - [ ] D) threads = total available RAM / thread stack size
+
+    **Answer: C)** For I/O-bound tasks, most threads are blocked waiting for network/disk. The formula `threads = cores * (1 + waitTime / computeTime)` accounts for this. Example: 8 cores with tasks that spend 80% waiting gives `8 * (1 + 80/20) = 40 threads`. For CPU-bound tasks, use `cores + 1`. With Java 21 virtual threads, sizing is unnecessary for I/O-bound work.

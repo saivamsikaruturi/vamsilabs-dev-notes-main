@@ -396,6 +396,44 @@ while (it.hasNext()) {
 
 ---
 
+---
+
+## Quick Quiz
+
+??? question "Q1: Which collection would you choose for O(1) random access by index with fast iteration?"
+    - [x] A) ArrayList
+    - [ ] B) LinkedList
+    - [ ] C) HashSet
+    - [ ] D) TreeSet
+
+    **Answer: A)** ArrayList is backed by a contiguous dynamic array, providing O(1) random access via `get(index)`. LinkedList requires O(n) traversal. HashSet and TreeSet do not support index-based access at all.
+
+??? question "Q2: What is the key difference between HashSet and LinkedHashSet?"
+    - [ ] A) LinkedHashSet uses a linked list instead of hashing
+    - [ ] B) HashSet maintains insertion order but LinkedHashSet does not
+    - [x] C) LinkedHashSet maintains insertion order while HashSet has no ordering guarantee
+    - [ ] D) LinkedHashSet allows duplicate elements
+
+    **Answer: C)** LinkedHashSet wraps a LinkedHashMap internally, maintaining a doubly-linked list that preserves insertion order during iteration. HashSet (backed by HashMap) provides no ordering guarantees. Both ensure uniqueness.
+
+??? question "Q3: What happens when you modify a collection while iterating over it with a fail-fast iterator?"
+    - [ ] A) The modification is silently ignored
+    - [x] B) A ConcurrentModificationException is thrown
+    - [ ] C) The iterator restarts from the beginning
+    - [ ] D) The JVM terminates the thread
+
+    **Answer: B)** Fail-fast iterators (used by ArrayList, HashMap, HashSet, etc.) detect structural modifications via a modification counter. If the collection is modified outside the iterator during iteration, they throw `ConcurrentModificationException`. The safe alternative is to use `Iterator.remove()` or a fail-safe collection like ConcurrentHashMap.
+
+??? question "Q4: Which data structure backs PriorityQueue, and what is its time complexity for insertion?"
+    - [ ] A) Red-black tree with O(log n) insertion
+    - [x] B) Binary min-heap with O(log n) insertion
+    - [ ] C) Sorted array with O(n) insertion
+    - [ ] D) Hash table with O(1) insertion
+
+    **Answer: B)** PriorityQueue is backed by a binary min-heap implemented as an array. Insertion (offer/add) is O(log n) due to heap sift-up. Peek is O(1) since the minimum is always at the root. It is NOT a sorted structure — only the head is guaranteed to be the smallest element.
+
+---
+
 ## See Also
 
 - [HashMap Internals](HashMapInternals.md) — Hashing, buckets, treeification, and resizing

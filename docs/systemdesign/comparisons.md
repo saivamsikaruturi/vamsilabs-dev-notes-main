@@ -1,6 +1,21 @@
+---
+description: "System design comparison tables for interviews — TCP vs UDP, SQL vs NoSQL, Kafka vs RabbitMQ, REST vs gRPC vs GraphQL, Redis vs Memcached, Docker vs Kubernetes, and 10+ more side-by-side trade-off analyses."
+---
+
 # System Design Comparisons — Quick Reference
 
 > **The page interviewers wish you'd memorized.** Every system design decision is a trade-off. This page gives you the table to pull from memory when the interviewer asks "why X over Y?"
+
+## Quick Navigation
+
+| Category | Comparisons |
+|----------|-------------|
+| **Networking** | [TCP vs UDP](#tcp-vs-udp) | [Polling vs WebSocket vs SSE](#polling-vs-websocket-vs-sse) |
+| **Data & Storage** | [SQL vs NoSQL](#sql-vs-nosql) | [Redis vs Memcached](#redis-vs-memcached) |
+| **APIs & Communication** | [REST vs gRPC vs GraphQL](#rest-vs-grpc-vs-graphql) | [Kafka vs RabbitMQ vs SQS](#kafka-vs-rabbitmq-vs-sqs) |
+| **Architecture** | [Monolith vs Microservices](#monolith-vs-microservices) | [Monolith vs Microservices vs Serverless](#monolith-vs-microservices-vs-serverless) |
+| **Infrastructure** | [Horizontal vs Vertical Scaling](#horizontal-vs-vertical-scaling) | [L4 vs L7 Load Balancer](#load-balancer-l4-vs-l7) | [Docker vs Kubernetes](#docker-vs-kubernetes) |
+| **Replication & Distribution** | [Leader-Follower vs Leader-Leader](#leader-follower-vs-leader-leader-replication) | [Consistent Hashing vs Range Partitioning](#consistent-hashing-vs-range-partitioning) | [Push vs Pull CDN](#push-vs-pull-cdn) |
 
 ---
 
@@ -201,6 +216,48 @@
 
 ---
 
+## Docker vs Kubernetes
+
+| Aspect | Docker | Kubernetes |
+|---|---|---|
+| **What it is** | Container runtime (build & run containers) | Container orchestrator (manage clusters of containers) |
+| **Scope** | Single host | Multi-host cluster |
+| **Scaling** | Manual (`docker run` more instances) | Automatic (HPA, replicas, auto-scaling) |
+| **Networking** | Bridge network, port mapping | Service mesh, DNS-based service discovery |
+| **Load balancing** | Not built-in (use external) | Built-in (Services, Ingress) |
+| **Self-healing** | None (container dies = stays dead) | Auto-restart, reschedule on healthy nodes |
+| **Rolling updates** | Manual | Declarative (zero-downtime deployments) |
+| **Complexity** | Low (learn in a day) | High (weeks to master) |
+| **Best for** | Local dev, single-server apps, CI/CD builds | Production orchestration at scale |
+
+Docker builds and runs containers. Kubernetes decides *where* and *how many* containers run across a cluster, handles failures, scaling, networking, and deployments. You need Docker (or a container runtime) before you need Kubernetes. Think of Docker as "the engine" and Kubernetes as "the fleet manager."
+
+!!! tip "Interview Tip"
+    "Docker is necessary but not sufficient for production. Once you have more than a few services across multiple hosts, you need orchestration (Kubernetes) for scheduling, self-healing, service discovery, and rolling deployments. For small apps, Docker Compose on a single host is fine."
+
+---
+
+## Monolith vs Microservices vs Serverless
+
+| Aspect | Monolith | Microservices | Serverless (FaaS) |
+|---|---|---|---|
+| **Deployment** | All-or-nothing | Independent per service | Per function |
+| **Scaling** | Scale entire app | Scale individual services | Auto-scales per request (to zero) |
+| **Cold start** | None (always running) | None (always running) | 100ms-10s (problematic for latency-sensitive) |
+| **Cost model** | Always paying (servers running) | Always paying (servers running) | Pay per invocation (zero traffic = zero cost) |
+| **Max execution time** | Unlimited | Unlimited | Limited (AWS Lambda: 15 min) |
+| **State** | In-memory state easy | Stateless services + external state | Stateless only |
+| **Complexity** | Low (one codebase) | High (distributed systems) | Medium (event wiring, vendor lock-in) |
+| **Vendor lock-in** | None | Low | High (AWS Lambda, Azure Functions, GCP Cloud Functions) |
+| **Best for** | Startups, MVPs, small teams | Large orgs, complex domains | Event-driven tasks, sporadic workloads, glue code |
+
+The progression is not always linear. Many production systems use a **hybrid**: a monolith or microservices for core request handling, with serverless for async tasks (image processing, webhooks, scheduled jobs) where pay-per-use and auto-scaling to zero provide cost advantages.
+
+!!! tip "Interview Tip"
+    "Serverless shines for event-driven, bursty workloads (file processing, webhooks, cron jobs). It fails for long-running processes, low-latency requirements (cold starts), or high-throughput steady-state workloads (cheaper to run a server). Most teams use serverless alongside services, not instead of them."
+
+---
+
 ## Decision Framework
 
 ```mermaid
@@ -236,3 +293,39 @@ flowchart TD
     style RabbitMQ fill:#f97316,color:#fff
     style SQS fill:#06b6d4,color:#fff
 ```
+
+---
+
+## Quick Quiz
+
+??? question "Q1: When should you choose Kafka over RabbitMQ for messaging?"
+    - [ ] A) When you need complex routing logic like topic exchanges and headers-based routing
+    - [x] B) When you need event replay, message retention, and millions of messages per second throughput
+    - [ ] C) When you want zero operational complexity
+    - [ ] D) When messages should be consumed exactly once without additional configuration
+
+    **Answer: B)** Kafka is a distributed log that retains messages for configurable periods (days or forever), supports offset-based replay, and handles millions of messages per second. RabbitMQ is better for complex routing (exchanges, bindings) and traditional task queues where consumed messages are gone. Use Kafka for event streaming and data pipelines; RabbitMQ for task distribution and RPC patterns.
+
+??? question "Q2: What is the primary advantage of horizontal scaling over vertical scaling?"
+    - [ ] A) It requires no code changes
+    - [ ] B) It is always cheaper per unit of capacity
+    - [x] C) It has no theoretical upper limit and can scale without downtime
+    - [ ] D) It provides better single-request latency
+
+    **Answer: C)** Vertical scaling hits a hardware ceiling (there is a maximum machine size), and often requires downtime to resize. Horizontal scaling adds more machines — theoretically unlimited — and can be done live without downtime. The trade-off is distributed systems complexity (data consistency, networking, service discovery). Vertical is simpler; horizontal is necessary for true scale.
+
+??? question "Q3: In what scenario would you choose a SQL database over NoSQL?"
+    - [x] A) When you need ACID transactions, complex JOINs, and strong consistency
+    - [ ] B) When you need horizontal write scalability across hundreds of nodes
+    - [ ] C) When your schema changes frequently and is unpredictable
+    - [ ] D) When storing time-series data with billions of append-only writes per day
+
+    **Answer: A)** SQL databases excel at ACID transactions, referential integrity, and complex multi-table JOINs — essential for domains like banking, e-commerce orders, and inventory management. NoSQL is better when you need horizontal write scale, flexible schema, or specific access patterns (key-value, document, graph). Many systems use both: SQL for transactional data, NoSQL for read-heavy views.
+
+??? question "Q4: What is the key difference between REST and gRPC for inter-service communication?"
+    - [ ] A) REST uses HTTP while gRPC uses raw TCP sockets
+    - [ ] B) gRPC only works with Java while REST is language-agnostic
+    - [x] C) gRPC uses HTTP/2 with binary Protobuf encoding, making it faster with strict contracts, while REST uses JSON over HTTP
+    - [ ] D) REST supports streaming but gRPC does not
+
+    **Answer: C)** gRPC uses HTTP/2 (always) with Protocol Buffers (binary, 10x smaller payloads) and requires strict `.proto` contracts. REST typically uses JSON (text) over HTTP/1.1 or 2. gRPC is ideal for internal microservice communication (fast, typed, bidirectional streaming). REST is preferred for public-facing APIs (universally understood, browser-native, easy to debug with curl).

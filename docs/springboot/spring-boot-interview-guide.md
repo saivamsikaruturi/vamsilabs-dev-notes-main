@@ -1034,6 +1034,44 @@ Beyond the core Spring Boot questions, FAANG interviewers often bridge into:
 
 ---
 
+---
+
+## Quick Quiz
+
+??? question "Q1: What does @ConditionalOnMissingBean ensure in Spring Boot auto-configuration?"
+    - [ ] A) The bean is always created regardless of existing beans
+    - [x] B) The auto-configured bean is only created if no bean of that type already exists
+    - [ ] C) It removes any existing bean before creating the new one
+    - [ ] D) It logs a warning if a bean is missing
+
+    **Answer: B)** `@ConditionalOnMissingBean` ensures that the auto-configured default bean is only registered when the developer has NOT provided their own explicit `@Bean` definition. This is how Spring Boot's "opinionated defaults with easy overrides" works — your explicit beans always take priority.
+
+??? question "Q2: Why does @Transactional NOT work when a bean calls its own method internally (self-invocation)?"
+    - [ ] A) Because @Transactional only works on public static methods
+    - [ ] B) Because the JVM does not support nested transactions
+    - [x] C) Because Spring uses proxy-based AOP, and self-calls bypass the proxy
+    - [ ] D) Because @Transactional requires a separate thread for each call
+
+    **Answer: C)** Spring creates a proxy around the bean to intercept calls and apply transactional behavior. When a method calls another method on the same instance (`this.method()`), it bypasses the proxy entirely — the transaction advice is never triggered. Solutions include injecting self (`@Lazy private MyService self`) or using `TransactionTemplate`.
+
+??? question "Q3: What are the three annotations combined by @SpringBootApplication?"
+    - [x] A) @Configuration, @EnableAutoConfiguration, @ComponentScan
+    - [ ] B) @Component, @Autowired, @Service
+    - [ ] C) @SpringBootConfiguration, @EnableWebMvc, @ComponentScan
+    - [ ] D) @Configuration, @EnableScheduling, @EnableAsync
+
+    **Answer: A)** `@SpringBootApplication` is a convenience annotation combining `@Configuration` (marks it as a config source), `@EnableAutoConfiguration` (triggers auto-configuration), and `@ComponentScan` (scans the package and sub-packages for components). Understanding this helps you control scanning scope and auto-config behavior.
+
+??? question "Q4: What is the N+1 problem in Spring Data JPA?"
+    - [ ] A) A bug where JPA creates N+1 database connections
+    - [ ] B) A situation where N+1 entities are loaded into memory simultaneously
+    - [x] C) Loading a parent entity triggers N additional queries to fetch each child relationship separately
+    - [ ] D) A constraint that limits JPA repositories to N+1 methods
+
+    **Answer: C)** The N+1 problem occurs when loading N parent entities causes N additional queries (one per parent) to lazily fetch their children. For example, loading 100 orders then accessing each order's items generates 101 queries. Fix with `JOIN FETCH`, `@EntityGraph`, `@BatchSize`, or DTO projections.
+
+---
+
 ## See Also
 
 - [Java Interview Guide](../java/java-interview-guide.md)

@@ -4,6 +4,13 @@ description: "Circuit Breaker Pattern — the definitive guide to preventing cas
 
 # Circuit Breaker Pattern
 
+!!! eli5 "In Simple Terms 🧒"
+    A circuit breaker is like a fuse in your house. When too much electricity flows through
+    (too many failures), the fuse blows (circuit opens) to protect your appliances from
+    catching fire. You stop sending electricity until you fix the problem. After a while, you
+    carefully test if things work again (half-open state). If the test passes, normal power
+    resumes. Without the fuse, one broken appliance could burn down the whole house.
+
 A circuit breaker is the difference between a 5-minute blip and a 2-hour cascading outage. Without one, every thread blocks waiting for a slow downstream, exhausting the thread pool, taking down the entire service — and then the next service upstream does the same thing. Your entire platform collapses like dominoes because one database connection pool in a payment provider hit its limit.
 
 !!! tip "💡 One-liner for interviews"
@@ -1729,6 +1736,44 @@ flowchart TD
 | **Bulkhead** | Resource exhaustion | Limit concurrency | Prevent one service consuming all threads |
 | **Rate Limiter** | Overloading downstream | Control request rate | External APIs with quotas |
 | **TimeLimiter** | Thread blocking | Enforce deadline | Prevent indefinite waits |
+
+---
+
+---
+
+## Quick Quiz
+
+??? question "Q1: What are the three states of a circuit breaker, in the order of a typical failure-recovery cycle?"
+    - [ ] A) OPEN -> CLOSED -> HALF_OPEN
+    - [ ] B) HALF_OPEN -> OPEN -> CLOSED
+    - [x] C) CLOSED -> OPEN -> HALF_OPEN (then back to CLOSED or OPEN)
+    - [ ] D) CLOSED -> HALF_OPEN -> OPEN
+
+    **Answer: C)** A circuit breaker starts CLOSED (normal operation, monitoring failures). When the failure rate exceeds the threshold, it transitions to OPEN (all requests rejected immediately). After a wait duration, it moves to HALF_OPEN where limited trial requests test recovery. If trials succeed, it returns to CLOSED. If they fail, it goes back to OPEN.
+
+??? question "Q2: Why is 'slow' worse than 'down' when it comes to downstream service failures?"
+    - [ ] A) Slow services use more bandwidth
+    - [x] B) A slow service holds threads hostage waiting for timeouts, exhausting the caller's thread pool
+    - [ ] C) Slow responses are harder to parse
+    - [ ] D) Slow services cannot be detected by health checks
+
+    **Answer: B)** A service returning errors in 5ms is easy to handle — the thread is freed immediately. A service hanging for 30 seconds before timing out holds the caller's thread hostage the entire time. With a thread pool of 200 threads and 30s timeouts, only 7 concurrent slow requests can eventually exhaust the pool, taking down the entire caller service.
+
+??? question "Q3: What is the correct decoration order for Retry and CircuitBreaker in Resilience4j?"
+    - [ ] A) Retry wraps CircuitBreaker (Retry is outermost)
+    - [x] B) CircuitBreaker wraps Retry (CircuitBreaker is outermost, Retry is closest to the actual call)
+    - [ ] C) They should never be used together
+    - [ ] D) The order does not matter
+
+    **Answer: B)** The correct execution flow is `CircuitBreaker -> Retry -> Actual Call`. If all retries for a single invocation fail, that counts as ONE failure for the circuit breaker. If Retry were outermost, it would retry against an OPEN circuit — pointless retries against guaranteed rejections. Always add `CallNotPermittedException` to retry's `ignoreExceptions`.
+
+??? question "Q4: What is the purpose of `minimumNumberOfCalls` in circuit breaker configuration?"
+    - [ ] A) It sets the maximum number of concurrent calls allowed
+    - [ ] B) It defines how many calls must succeed before closing the circuit
+    - [x] C) It prevents the circuit from evaluating failure rate until enough calls have been recorded
+    - [ ] D) It limits the total number of calls per second
+
+    **Answer: C)** Without `minimumNumberOfCalls`, a single failed request could produce a 100% failure rate and immediately trip the circuit. This parameter ensures a statistically meaningful sample is collected before evaluation — for example, with `minimumNumberOfCalls: 10`, the circuit will not evaluate (or trip) until at least 10 calls have been recorded in the sliding window.
 
 ---
 

@@ -4,6 +4,13 @@ description: "CDN system design explained — edge caching, cache invalidation, 
 
 # CDN (Content Delivery Network)
 
+!!! eli5 "In Simple Terms 🧒"
+    A CDN is like having copies of a popular book in every city library instead of just one
+    central warehouse. When someone wants to read it, they go to their nearest library (edge
+    server) instead of driving across the country. If their local library doesn't have it yet,
+    it borrows a copy from the warehouse and keeps it for the next person. This way, everyone
+    gets their book fast, and the warehouse doesn't get overwhelmed.
+
 !!! danger "Real Incident: Reddit Hug of Death"
     A blog goes viral on Reddit. Origin server in Virginia normally handles 50 req/s. Reddit sends 50,000 req/s. Server dies in 30 seconds. With a CDN: 95% of requests served from 300+ edge locations, origin sees 2,500 req/s — easily manageable. **A CDN is the difference between going viral and going down.**
 
@@ -219,3 +226,39 @@ Large companies use multiple CDNs:
 | Cache hit rate target? | 95%+ for static, 80%+ for semi-dynamic |
 | CDN latency improvement? | 200-400ms → 10-50ms (serves from nearest PoP) |
 | Edge compute use? | Auth validation, A/B routing, personalization, rate limiting |
+
+---
+
+## Quick Quiz
+
+??? question "Q1: What is the best cache invalidation strategy for static assets like JavaScript and CSS files?"
+    - [ ] A) Short TTL with stale-while-revalidate
+    - [ ] B) Purge API calls on every deployment
+    - [x] C) Content-hashed URLs with infinite TTL (e.g., `bundle.a1b2c3.js`)
+    - [ ] D) No caching — always fetch from origin
+
+    **Answer: C)** Content-hashed URLs are the gold standard for static assets. The URL IS the version — `bundle.a1b2c3.js` always returns the same content, so you can set an infinite TTL with zero invalidation complexity. A new build produces a new hash, which is a new URL, so browsers and CDNs automatically fetch the new version.
+
+??? question "Q2: What is the difference between a Pull CDN and a Push CDN?"
+    - [ ] A) Pull CDN requires the client to download content manually
+    - [x] B) Pull CDN fetches from origin on cache miss; Push CDN requires you to upload content proactively
+    - [ ] C) Push CDN is faster because it uses HTTP/2
+    - [ ] D) Pull CDN does not cache content at all
+
+    **Answer: B)** In a Pull (origin-pull) CDN, the edge server fetches content from your origin only when a request comes in and the cache is empty (cache miss). In a Push CDN, you proactively upload content to the CDN before users request it. Pull is correct for 90% of use cases. Push is for predictable large content like Netflix pre-positioning a new series on release day.
+
+??? question "Q3: What is the purpose of a shield/mid-tier cache layer in a CDN architecture?"
+    - [ ] A) To encrypt traffic between edge and origin
+    - [ ] B) To serve as a backup origin server
+    - [x] C) To coalesce cache misses so only one request reaches the origin even if many edges miss simultaneously
+    - [ ] D) To store user authentication tokens
+
+    **Answer: C)** The shield layer sits between edge PoPs and the origin. If 50 edge locations all get a cache miss for the same resource simultaneously, the shield coalesces them into a single request to the origin. Without a shield, the origin would get hammered with 50 identical requests during a cache miss storm.
+
+??? question "Q4: Which type of content should NEVER be cached at the CDN layer?"
+    - [ ] A) JavaScript files
+    - [ ] B) Public API responses
+    - [x] C) Authenticated, personalized responses (e.g., user dashboard data)
+    - [ ] D) Images and videos
+
+    **Answer: C)** Authenticated and personalized content must not be cached at the CDN because it is specific to individual users. Caching it could serve one user's data to another — a serious security and privacy violation. Only cache GET/HEAD requests for public, non-personalized content at the CDN layer. Personalized data should be cached at the application layer instead.

@@ -4,6 +4,13 @@ description: "Deep dive into Java multithreading — threads, synchronization, l
 
 # Multithreading in Java
 
+!!! eli5 "In Simple Terms 🧒"
+    Threads are like multiple workers in a kitchen. Each worker (thread) can chop vegetables,
+    stir a pot, or wash dishes at the same time — making dinner ready faster. But if two
+    workers try to use the same knife at once, things go wrong (race condition). So they use
+    rules like "only one person uses the knife at a time" (synchronization). The head chef
+    (JVM) manages all the workers and makes sure the kitchen runs smoothly.
+
 Multithreading is the foundation of concurrent programming in Java. It allows multiple tasks to execute simultaneously within a single process, enabling efficient CPU utilization, responsive applications, and high-throughput systems.
 
 !!! tip "Modern Java (21+): Start Here"
@@ -1538,6 +1545,44 @@ JFR captures: lock contention events, thread state transitions, blocking times, 
 
 ??? question "10. How do you size a thread pool for a microservice that makes database calls (avg 50ms) and serves 5000 req/s with 8 CPU cores?"
     **Calculation**: Each request blocks ~50ms on DB. At 5000 req/s, we need 5000 × 0.05 = **250 concurrent threads** just to sustain throughput (Little's Law: L = λ × W). With 8 cores and I/O ratio of ~50ms wait / ~2ms compute: `threads = 8 × (1 + 50/2) = 208`. Rounding up: **~250 threads** for the I/O pool. But with virtual threads (Java 21): just use `newVirtualThreadPerTaskExecutor()` — no sizing needed, each request gets a virtual thread that unmounts during the 50ms DB wait. **Key pitfalls**: unbounded pools (OOM under spike), too-small pools (request queuing → latency), shared pool for CPU + I/O work (mutual interference). Use separate pools: small fixed pool for CPU work, larger pool (or virtual threads) for I/O.
+
+---
+
+---
+
+## Quick Quiz
+
+??? question "Q1: Which thread state does a thread enter when it calls `Thread.sleep(1000)`?"
+    - [ ] A) BLOCKED
+    - [ ] B) WAITING
+    - [x] C) TIMED_WAITING
+    - [ ] D) RUNNABLE
+
+    **Answer: C)** `Thread.sleep(ms)` puts the thread into the TIMED_WAITING state because it has a timeout. WAITING is for indefinite waits like `wait()` without a timeout. BLOCKED is specifically for waiting to acquire a monitor lock.
+
+??? question "Q2: What does the `volatile` keyword guarantee in Java?"
+    - [ ] A) Atomicity of compound operations like `counter++`
+    - [x] B) Visibility of writes to other threads and ordering (no reordering around volatile access)
+    - [ ] C) Mutual exclusion like `synchronized`
+    - [ ] D) Thread-safe lazy initialization without any other mechanism
+
+    **Answer: B)** Volatile guarantees visibility (a write by one thread is immediately visible to others) and ordering (prevents instruction reordering across volatile accesses). It does NOT provide atomicity for compound operations — `counter++` (read-increment-write) is still unsafe with volatile alone.
+
+??? question "Q3: What is the key advantage of virtual threads (Java 21) over platform threads for I/O-bound workloads?"
+    - [ ] A) They run faster because they bypass the OS scheduler
+    - [ ] B) They can perform CPU-bound work in parallel more efficiently
+    - [x] C) When they block on I/O, the carrier thread is freed to run other virtual threads
+    - [ ] D) They share the same stack memory to reduce total memory usage
+
+    **Answer: C)** When a virtual thread blocks on I/O, the JVM saves its stack (continuation) to the heap and unmounts it from the carrier thread. The carrier is then free to run other virtual threads. This allows millions of concurrent I/O-bound tasks without thousands of OS threads sitting idle.
+
+??? question "Q4: In a producer-consumer pattern using `wait()`/`notifyAll()`, why must the wait condition be checked in a `while` loop instead of an `if` statement?"
+    - [ ] A) Because `if` is not allowed inside a `synchronized` block
+    - [ ] B) Because `wait()` can only be called from inside a `while` loop
+    - [x] C) Because spurious wakeups can occur and the condition may still be false after being notified
+    - [ ] D) Because `notifyAll()` only works with `while` loops
+
+    **Answer: C)** The JVM specification allows spurious wakeups — a thread may wake from `wait()` without being explicitly notified. Additionally, with `notifyAll()`, multiple threads wake up but only one may get to act. A `while` loop ensures the condition is re-checked before proceeding, preventing logic errors.
 
 ---
 

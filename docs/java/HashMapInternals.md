@@ -4,6 +4,13 @@ description: "Learn how HashMap works internally in Java — hashing, bucket col
 
 # HashMap Internals
 
+!!! eli5 "In Simple Terms 🧒"
+    Think of HashMap like a library with numbered shelves. When you want to store a book,
+    you use a magic formula (hash function) to decide which shelf it goes on. If two books
+    end up on the same shelf, they form a queue. If the library gets too full (75% capacity),
+    it doubles in size and re-shelves everything. Looking up a book is instant because you
+    just run the formula again to find the right shelf.
+
 > **"If you can't explain how HashMap works internally, you haven't really learned Java." — Every FAANG interviewer, ever.**
 
 ---
@@ -543,6 +550,44 @@ flowchart LR
     **Step 5 — Thread safety:** "HashMap is NOT thread-safe. Java 7 had infinite loops on concurrent resize. Java 8 fixed that but still has race conditions. Use ConcurrentHashMap — lock-free reads via volatile, per-bucket locking for writes."
 
     **Step 6 — Contract:** "equals/hashCode contract is critical. If you override equals, you MUST override hashCode. Mutable keys are memory leaks."
+
+---
+
+---
+
+## Quick Quiz
+
+??? question "Q1: What is the default initial capacity of HashMap in Java?"
+    - [ ] A) 8
+    - [x] B) 16
+    - [ ] C) 32
+    - [ ] D) 64
+
+    **Answer: B)** HashMap starts with an initial capacity of 16 buckets. The capacity must always be a power of 2 to enable the fast `(n-1) & hash` bucket index calculation.
+
+??? question "Q2: At what chain length does a HashMap bucket convert from a linked list to a red-black tree?"
+    - [ ] A) 4 nodes
+    - [ ] B) 6 nodes
+    - [x] C) 8 nodes
+    - [ ] D) 16 nodes
+
+    **Answer: C)** When a bucket's linked list grows to 8 nodes (and the table capacity is at least 64), HashMap converts the list to a red-black tree, improving worst-case lookup from O(n) to O(log n).
+
+??? question "Q3: Why does Java 8 HashMap use `h ^ (h >>> 16)` as its hash spreading function?"
+    - [ ] A) To ensure hash codes are always positive
+    - [x] B) To mix upper bits into lower bits since small tables only use lower bits for indexing
+    - [ ] C) To make the hash code compatible with ConcurrentHashMap
+    - [ ] D) To reduce the hash code to 16 bits
+
+    **Answer: B)** With a small table (e.g., capacity 16), only the lower 4 bits of the hash determine the bucket index. XOR-ing the upper 16 bits into the lower 16 ensures that differences in high bits influence bucket selection, reducing collisions for keys whose hashCodes differ only in upper bits.
+
+??? question "Q4: During a resize, how does Java 8 HashMap determine a node's new bucket position?"
+    - [ ] A) It recomputes hashCode() for every key
+    - [ ] B) It uses `hash % newCapacity` modulo division
+    - [x] C) It checks one extra bit of the hash — if 0 the node stays, if 1 it moves to `oldIndex + oldCapacity`
+    - [ ] D) It randomly redistributes nodes across all buckets
+
+    **Answer: C)** Since capacity always doubles (e.g., 16 to 32), the new index depends on one additional bit of the hash (`hash & oldCap`). If that bit is 0, the node stays at its current index. If 1, it moves to `index + oldCapacity`. This avoids recomputing the full hash for every entry.
 
 ---
 
