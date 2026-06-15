@@ -160,6 +160,9 @@ nav:
   - Interviews:
       - "Spring Boot Interview Questions 2025": interview/spring-boot-questions.md
       - "Java Multithreading Interview Questions": interview/java-multithreading-questions.md
+      - "Java Collections Interview Questions": interview/java-collections-questions.md
+      - "Microservices Interview Questions": interview/microservices-questions.md
+      - "LLD Interview Questions (Java)": interview/lld-interview-questions.md
       - "Switching to Spring Boot (Experienced Devs)": interview/spring-boot-transition.md
       - Career Strategy: interview/career-strategy.md
       - Coding Scenarios & Challenges: interview/coding-scenarios.md
