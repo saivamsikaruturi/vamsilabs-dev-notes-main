@@ -981,22 +981,36 @@ body,
   .md-content {
     padding: 0 0.5rem;
   }
+  /* Hero: do NOT use negative margins at 550px — let 600px block handle it */
   .vtn-hero {
-    margin-left: -0.5rem;
-    margin-right: -0.5rem;
-    padding: 2.5rem 1.5rem 2rem;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 1.75rem 1.25rem 1.5rem !important;
     border-radius: var(--vtn-radius);
+    width: 100% !important;
+    box-sizing: border-box;
+    overflow: hidden;
   }
   .vtn-hero h1 {
-    font-size: 1.6rem !important;
-    line-height: 1.15 !important;
+    font-size: 1.35rem !important;
+    line-height: 1.2 !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .vtn-hero .vtn-subtitle {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    overflow-wrap: break-word;
   }
   .vtn-hero .vtn-stats {
-    gap: 1.5rem;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.5rem !important;
+    margin-top: 1rem !important;
   }
+  .vtn-hero .vtn-stat { padding-right: 0 !important; min-width: 0 !important; }
+  .vtn-hero .vtn-stat-number { font-size: 1.2rem !important; }
+  .vtn-hero .vtn-stat-label { font-size: 0.6rem !important; }
+  .vtn-hero .vtn-stat::after { display: none !important; }
 }
 
 /* ==========================================================================
@@ -5443,5 +5457,171 @@ body.eli5-active .vtn-eli5-banner {
 .vtn-output-close:hover {
   color: #ef4444;
   background: rgba(239, 68, 68, 0.1);
+}
+
+/* ==========================================================================
+   MOBILE FIXES — 390px (iPhone 14 / modern phones)
+   ========================================================================== */
+
+/* --- Prevent ALL horizontal overflow globally --- */
+@media screen and (max-width: 600px) {
+  html, body { overflow-x: hidden; }
+
+  /* Tables: scroll horizontally instead of breaking layout */
+  .md-typeset table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    font-size: 0.78rem;
+  }
+  .md-typeset table td,
+  .md-typeset table th {
+    min-width: 60px;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  /* Code blocks: scroll instead of overflow */
+  .md-typeset pre,
+  .md-typeset code,
+  .highlight pre {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    font-size: 0.75rem;
+    white-space: pre;
+  }
+
+  /* Mermaid / diagram containers */
+  .mermaid, .mermaid-wrapper, .md-typeset .mermaid {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  /* Hero headline — shrink to fit 390px without clipping */
+  .vtn-hero h1 {
+    font-size: 1.4rem !important;
+    line-height: 1.2 !important;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Hero: remove negative margins that bleed beyond 390px viewport */
+  .vtn-hero {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 1.75rem 1.25rem 1.5rem !important;
+    overflow: hidden;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .vtn-hero * {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+  }
+  .vtn-hero h1,
+  .vtn-hero .vtn-subtitle,
+  .vtn-hero .vtn-author,
+  .vtn-hero p {
+    padding-right: 0.5rem;
+  }
+
+  /* Hero stats: 3-column single row (fits all 3 stats at 390px) */
+  .vtn-hero .vtn-stats {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.5rem !important;
+    margin-top: 1rem !important;
+  }
+  .vtn-hero .vtn-stat {
+    padding-right: 0 !important;
+    min-width: 0 !important;
+  }
+  .vtn-hero .vtn-stat-number {
+    font-size: 1.2rem !important;
+  }
+  .vtn-hero .vtn-stat-label {
+    font-size: 0.6rem !important;
+  }
+  .vtn-hero .vtn-stat::after { display: none !important; }
+
+  /* CTA buttons: stack vertically */
+  .vtn-hero-actions {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .vtn-hero-actions .vtn-cta,
+  .vtn-hero-actions .vtn-cta-secondary {
+    width: 100%;
+    text-align: center;
+    font-size: 0.88rem;
+    padding: 0.7rem 1rem;
+  }
+
+  /* Path cards: full width on mobile */
+  .vtn-paths {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem;
+  }
+
+  /* Topic grid cards: 1 column on mobile */
+  .vtn-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.6rem;
+  }
+
+  /* Featured deep dive cards: 1 column */
+  .vtn-featured {
+    grid-template-columns: 1fr !important;
+    gap: 0.6rem;
+  }
+
+  /* Nav header: hide Sign In button text truncation */
+  .md-header__button[for="__drawer"] { margin-right: 0.25rem; }
+
+  /* Breadcrumbs: allow wrapping */
+  .md-nav__path { flex-wrap: wrap; }
+
+  /* What's New banner: wrap text cleanly */
+  .vtn-whats-new {
+    font-size: 0.78rem;
+    padding: 0.6rem 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* Tech stack logos: wrap */
+  .vtn-tech-logos {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+  }
+
+  /* Section titles: smaller on mobile */
+  .vtn-section-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* LLD / roadmap phase diagrams */
+  .vtn-roadmap, .vtn-phases, [class*="phase"] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Interview Q pages: ensure headings don't overflow */
+  .md-typeset h2, .md-typeset h3 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Admonitions / callout boxes */
+  .md-typeset .admonition,
+  .md-typeset details {
+    font-size: 0.82rem;
+  }
 }
 
