@@ -2140,6 +2140,7 @@ pre.mermaid svg,
   align-items: center;
   gap: 0.5rem;
   padding: 0.65rem 1.4rem;
+  min-height: 44px;
   font-size: 0.88rem;
   font-weight: 600;
   font-family: var(--vtn-font-body);
@@ -4138,48 +4139,14 @@ pre.mermaid svg,
   content: "\23F1";
   font-size: 0.85rem;
 }
-.vtn-difficulty {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
-.vtn-difficulty--l1 {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid #6ee7b7;
-}
-.vtn-difficulty--l2 {
-  background: #fef3c7;
-  color: #92400e;
-  border: 1px solid #fcd34d;
-}
-.vtn-difficulty--l3 {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
-}
-[data-md-color-scheme="slate"] .vtn-difficulty--l1 {
-  background: rgba(16, 185, 129, 0.15);
-  color: #6ee7b7;
-  border-color: rgba(16, 185, 129, 0.3);
-}
-[data-md-color-scheme="slate"] .vtn-difficulty--l2 {
-  background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  border-color: rgba(245, 158, 11, 0.3);
-}
-[data-md-color-scheme="slate"] .vtn-difficulty--l3 {
-  background: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
-  border-color: rgba(239, 68, 68, 0.3);
-}
 .vtn-author-byline {
   font-size: 0.75rem;
   color: var(--vtn-text-muted);
   margin-left: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
 }
 .vtn-author-byline a {
   color: var(--vtn-brand, #B45309);
@@ -4878,6 +4845,10 @@ body:has(.vtn-about-page) .vtn-mark-complete-wrapper {
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--vtn-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 .vtn-comment-input {
   width: 100%;
@@ -5047,84 +5018,6 @@ body:has(.vtn-about-page) .vtn-mark-complete-wrapper {
 
 /* === Company Tags === */
 
-/* === Flashcard Mode === */
-.vtn-flashcard-toggle {
-  position: fixed;
-  bottom: 100px;
-  right: 24px;
-  z-index: 1000;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--vtn-surface, #fff);
-  border: 2px solid var(--vtn-border, #e5e5e5);
-  color: var(--vtn-text-muted, #666);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: all 0.2s ease;
-}
-.vtn-flashcard-toggle:hover {
-  border-color: var(--vtn-brand);
-  color: var(--vtn-brand);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-.vtn-flashcard-toggle.active {
-  background: var(--vtn-brand);
-  border-color: var(--vtn-brand);
-  color: #fff;
-}
-.vtn-flashcard-question {
-  border-left: 3px solid var(--vtn-brand);
-  padding-left: 0.75rem;
-  font-weight: 600;
-}
-.vtn-flashcard-answer {
-  position: relative;
-  cursor: pointer;
-  border-radius: 8px;
-  padding: 1rem;
-  margin: 0.5rem 0 1.5rem;
-  background: rgba(180, 83, 9, 0.04);
-  border: 1px dashed var(--vtn-border);
-  overflow: hidden;
-}
-.vtn-flashcard-answer > *:not(.vtn-flashcard-reveal-hint) {
-  filter: blur(5px);
-  opacity: 0.3;
-  transition: all 0.3s ease;
-  pointer-events: none;
-}
-.vtn-flashcard-answer.revealed > * {
-  filter: none;
-  opacity: 1;
-  pointer-events: auto;
-}
-.vtn-flashcard-reveal-hint {
-  display: block;
-  text-align: center;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--vtn-brand);
-  padding: 0.5rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  background: rgba(255,255,255,0.9);
-  border-radius: 4px;
-  padding: 0.3rem 0.8rem;
-}
-[data-md-color-scheme="slate"] .vtn-flashcard-reveal-hint {
-  background: rgba(30,30,30,0.9);
-}
-.vtn-flashcard-answer.revealed .vtn-flashcard-reveal-hint {
-  display: none;
-}
 .vtn-newsletter-status {
   margin-top: 0.75rem;
   font-size: 0.82rem;
@@ -5148,7 +5041,6 @@ body:has(.vtn-about-page) .vtn-mark-complete-wrapper {
   .vtn-newsletter-container,
   .giscus-wrapper,
   .vtn-mark-complete-btn,
-  .vtn-flashcard-toggle,
   .md-header-nav,
   .md-footer-meta,
   .md-footer-nav,
@@ -5264,101 +5156,6 @@ body:has(.vtn-about-page) .vtn-mark-complete-wrapper {
   }
 }
 
-/* ==========================================================================
-   ELI5 MODE — Simple Explanations Toggle
-   ========================================================================== */
-
-.vtn-eli5-toggle {
-  position: fixed;
-  bottom: 155px;
-  right: 20px;
-  z-index: 99;
-  background: var(--vtn-surface);
-  border: 2px solid var(--vtn-border);
-  border-radius: 30px;
-  padding: 0.5rem 1rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  font-family: var(--vtn-font-body);
-}
-.vtn-eli5-toggle:hover {
-  border-color: var(--vtn-brand);
-  transform: translateY(-2px);
-}
-.vtn-eli5-toggle.active {
-  background: #8B5CF6;
-  color: #fff;
-  border-color: #8B5CF6;
-}
-
-/* ELI5 admonitions - hidden by default, shown in ELI5 mode */
-.md-typeset .admonition.eli5,
-.md-typeset details.eli5 {
-  display: none;
-  border-color: #8B5CF6;
-  border-left-color: #8B5CF6;
-  background: rgba(139, 92, 246, 0.05);
-}
-.md-typeset .admonition.eli5 .admonition-title,
-.md-typeset details.eli5 summary {
-  background: rgba(139, 92, 246, 0.1) !important;
-}
-.md-typeset .admonition.eli5 .admonition-title::before,
-.md-typeset details.eli5 summary::before {
-  background-color: #8B5CF6 !important;
-}
-body.eli5-active .md-typeset .admonition.eli5,
-body.eli5-active .md-typeset details.eli5 {
-  display: block;
-}
-
-/* Dark mode adjustments for ELI5 */
-[data-md-color-scheme="slate"] .md-typeset .admonition.eli5,
-[data-md-color-scheme="slate"] .md-typeset details.eli5 {
-  background: rgba(139, 92, 246, 0.08);
-  border-color: #A78BFA;
-  border-left-color: #A78BFA;
-}
-[data-md-color-scheme="slate"] .md-typeset .admonition.eli5 .admonition-title,
-[data-md-color-scheme="slate"] .md-typeset details.eli5 summary {
-  background: rgba(139, 92, 246, 0.15) !important;
-}
-
-/* ELI5 banner when mode is active */
-.vtn-eli5-banner {
-  display: none;
-  padding: 0.5rem 1rem;
-  background: rgba(139, 92, 246, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: var(--vtn-radius-sm);
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: #7C3AED;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-body.eli5-active .vtn-eli5-banner {
-  display: block;
-}
-[data-md-color-scheme="slate"] .vtn-eli5-banner {
-  color: #C4B5FD;
-  background: rgba(139, 92, 246, 0.12);
-  border-color: rgba(139, 92, 246, 0.3);
-}
-
-/* Print: hide ELI5 toggle */
-@media print {
-  .vtn-eli5-toggle,
-  .vtn-eli5-banner {
-    display: none !important;
-  }
-}
 
 /* ==========================================================================
    CODE PLAYGROUND — RUN BUTTON
@@ -5622,6 +5419,93 @@ body.eli5-active .vtn-eli5-banner {
   .md-typeset .admonition,
   .md-typeset details {
     font-size: 0.82rem;
+  }
+
+  /* Page meta row: wrap on mobile, hide byline on very small screens */
+  .vtn-page-meta {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .vtn-author-byline {
+    max-width: 100%;
+    margin-left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Newsletter: stack input + button vertically */
+  .vtn-newsletter {
+    padding: 1.25rem 1rem;
+  }
+  .vtn-newsletter-form {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .vtn-newsletter-btn {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 0.88rem;
+  }
+
+  /* Feedback buttons: ensure they stay side-by-side */
+  .vtn-feedback-widget {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .vtn-feedback-buttons {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .vtn-feedback-btn {
+    min-height: 40px;
+    padding: 0.45rem 1rem;
+  }
+
+  /* Mark complete: full width on mobile */
+  .vtn-mark-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  /* Code blocks: bump font slightly for readability */
+  .md-typeset pre > code {
+    font-size: 0.78rem;
+  }
+
+  /* Mermaid diagrams: ensure font readable */
+  .mermaid svg text,
+  .mermaid svg .label {
+    font-size: 11px !important;
+  }
+
+  /* Table cells: reduce min-width */
+  .md-typeset table td,
+  .md-typeset table th {
+    min-width: 48px;
+  }
+
+  /* Q&A question blocks: reduce left padding on mobile */
+  .md-typeset p.vtn-question {
+    padding: 0.6rem 0.75rem;
+  }
+
+  /* Hero stats: tabular number alignment */
+  .vtn-hero .vtn-stat-number {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Header sign in button: readable font size */
+  .vtn-header-signin {
+    font-size: 0.82rem !important;
+    padding: 0.4rem 0.75rem !important;
+  }
+
+  /* Discussion section: reduce padding */
+  .vtn-feedback-discussion {
+    padding: 0 0.25rem;
   }
 }
 

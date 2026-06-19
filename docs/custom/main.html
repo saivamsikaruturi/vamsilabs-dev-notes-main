@@ -233,9 +233,6 @@
 {% if not is_home %}
 <div class="vtn-page-meta">
   <span class="vtn-reading-time">{{ page.meta.reading_time }}</span>
-  {% if page.meta.difficulty %}
-  <span class="vtn-difficulty vtn-difficulty--{{ page.meta.difficulty }}">{{ page.meta.difficulty | upper }}</span>
-  {% endif %}
   <span class="vtn-author-byline">By <a href="/about/">Vamsi Karuturi</a> · Senior Backend Engineer at Salesforce</span>
 </div>
 {% endif %}
@@ -622,122 +619,6 @@ function showGateSuccess(msg) {
   });
 })();
 </script>
-<!-- Flashcard Mode Toggle -->
-<script>
-(function() {
-  var FLASHCARD_KEY = 'vtn-flashcard-mode';
-
-  function createFlashcardToggle() {
-    var path = window.location.pathname.replace(/\/+$/, '');
-    if (path === '' || path === '/index.html' || path === '/index' || path === '/about') return;
-
-    var btn = document.createElement('button');
-    btn.id = 'vtn-flashcard-toggle';
-    btn.className = 'vtn-flashcard-toggle';
-    btn.title = 'Toggle Flashcard Mode';
-    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="12" y1="10" x2="12" y2="20"/></svg>';
-    btn.onclick = toggleFlashcardMode;
-    document.body.appendChild(btn);
-
-    if (localStorage.getItem(FLASHCARD_KEY) === 'true') {
-      activateFlashcardMode();
-      btn.classList.add('active');
-    }
-  }
-
-  function toggleFlashcardMode() {
-    var btn = document.getElementById('vtn-flashcard-toggle');
-    var isActive = localStorage.getItem(FLASHCARD_KEY) === 'true';
-    if (isActive) {
-      deactivateFlashcardMode();
-      localStorage.setItem(FLASHCARD_KEY, 'false');
-      btn.classList.remove('active');
-    } else {
-      activateFlashcardMode();
-      localStorage.setItem(FLASHCARD_KEY, 'true');
-      btn.classList.add('active');
-    }
-  }
-
-  function activateFlashcardMode() {
-    document.body.classList.add('vtn-flashcard-active');
-    var content = document.querySelector('.md-typeset');
-    if (!content) return;
-
-    var elements = content.querySelectorAll('p, ul, ol, pre, table, .highlight, .admonition, blockquote, div.arithmatex');
-    var inAnswer = false;
-    var currentQuestion = null;
-
-    for (var i = 0; i < elements.length; i++) {
-      var el = elements[i];
-      var text = el.textContent.trim();
-
-      if (el.tagName === 'P' && (text.match(/^\*?\*?Q[:\s]/) || text.match(/^Q[:\s]/))) {
-        inAnswer = true;
-        currentQuestion = el;
-        el.classList.add('vtn-flashcard-question');
-        continue;
-      }
-
-      if (inAnswer) {
-        el.setAttribute('data-flashcard-hidden', 'true');
-      }
-    }
-
-    // Wrap hidden elements into answer groups
-    var hiddenEls = content.querySelectorAll('[data-flashcard-hidden]');
-    var currentWrapper = null;
-    var lastQuestion = null;
-
-    for (var j = 0; j < hiddenEls.length; j++) {
-      var hel = hiddenEls[j];
-      var prev = hel.previousElementSibling;
-      while (prev && !prev.classList.contains('vtn-flashcard-question') && !prev.classList.contains('vtn-flashcard-answer')) {
-        prev = prev.previousElementSibling;
-      }
-
-      if (!currentWrapper || (prev && prev.classList.contains('vtn-flashcard-question') && prev !== lastQuestion)) {
-        lastQuestion = prev;
-        currentWrapper = document.createElement('div');
-        currentWrapper.className = 'vtn-flashcard-answer';
-        currentWrapper.innerHTML = '<span class="vtn-flashcard-reveal-hint">Click to reveal answer</span>';
-        currentWrapper.onclick = function() { this.classList.toggle('revealed'); };
-        hel.parentNode.insertBefore(currentWrapper, hel);
-      }
-      currentWrapper.appendChild(hel);
-    }
-  }
-
-  function deactivateFlashcardMode() {
-    document.body.classList.remove('vtn-flashcard-active');
-    var wrappers = document.querySelectorAll('.vtn-flashcard-answer');
-    for (var i = 0; i < wrappers.length; i++) {
-      var wrapper = wrappers[i];
-      var parent = wrapper.parentNode;
-      var hint = wrapper.querySelector('.vtn-flashcard-reveal-hint');
-      if (hint) hint.remove();
-      while (wrapper.firstChild) {
-        parent.insertBefore(wrapper.firstChild, wrapper);
-      }
-      parent.removeChild(wrapper);
-    }
-    var questions = document.querySelectorAll('.vtn-flashcard-question');
-    for (var q = 0; q < questions.length; q++) {
-      questions[q].classList.remove('vtn-flashcard-question');
-    }
-    var hidden = document.querySelectorAll('[data-flashcard-hidden]');
-    for (var h = 0; h < hidden.length; h++) {
-      hidden[h].removeAttribute('data-flashcard-hidden');
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createFlashcardToggle);
-  } else {
-    createFlashcardToggle();
-  }
-})();
-</script>
 <!-- Code Playground — Inline Execution via Piston API -->
 <script>
 (function() {
@@ -843,32 +724,6 @@ function showGateSuccess(msg) {
       observer.observe(document.querySelector('.md-content') || document.body, { childList: true, subtree: true });
     });
   }
-})();
-</script>
-<!-- ELI5 Mode Toggle -->
-<script>
-(function() {
-  var path = window.location.pathname.replace(/\/+$/, '');
-  if (path === '' || path === '/index.html' || path === '/index' || path === '/about') return;
-
-  var btn = document.createElement('button');
-  btn.className = 'vtn-eli5-toggle';
-  btn.innerHTML = '🧒 ELI5';
-  btn.title = 'Toggle simple explanations';
-  document.body.appendChild(btn);
-
-  var active = localStorage.getItem('vtn-eli5-mode') === 'true';
-  if (active) {
-    document.body.classList.add('eli5-active');
-    btn.classList.add('active');
-  }
-
-  btn.addEventListener('click', function() {
-    active = !active;
-    localStorage.setItem('vtn-eli5-mode', active ? 'true' : 'false');
-    document.body.classList.toggle('eli5-active', active);
-    btn.classList.toggle('active', active);
-  });
 })();
 </script>
 {{ super() }}
