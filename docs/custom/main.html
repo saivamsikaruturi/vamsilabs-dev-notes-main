@@ -1174,12 +1174,17 @@ function loadComments() {
   var pageId = window.location.pathname;
   db.collection('page_comments')
     .where('page', '==', pageId)
-    .orderBy('createdAt', 'asc')
     .get()
     .then(function(snapshot) {
       var comments = [];
       snapshot.forEach(function(doc) {
         comments.push(Object.assign({ id: doc.id }, doc.data()));
+      });
+      // Sort client-side to avoid requiring a Firestore composite index
+      comments.sort(function(a, b) {
+        var ta = a.createdAt ? a.createdAt.toMillis() : 0;
+        var tb = b.createdAt ? b.createdAt.toMillis() : 0;
+        return ta - tb;
       });
       renderComments(comments);
     })

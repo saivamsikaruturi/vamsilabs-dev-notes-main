@@ -11,6 +11,11 @@ hide:
   <span id="admin-status" style="font-size: 0.8rem; color: var(--vtn-text-muted);">Checking access...</span>
 </div>
 
+<!-- Loading state shown immediately while Firebase initializes -->
+<div id="admin-loading" style="text-align: center; padding: 3rem; color: var(--vtn-text-muted); font-size: 0.9rem;">
+  Loading dashboard...
+</div>
+
 <!-- Access Gate (hidden by default, shown only if not signed in) -->
 <div id="admin-gate" style="display:none; text-align: center; padding: 3rem;">
   <h3>Admin Access Required</h3>
@@ -100,7 +105,9 @@ hide:
       if (retryCount < maxRetries) {
         setTimeout(initAdmin, 200);
       } else {
+        var loading = document.getElementById('admin-loading');
         var gate = document.getElementById('admin-gate');
+        if (loading) loading.style.display = 'none';
         if (gate) {
           gate.style.display = 'block';
           gate.innerHTML = '<h3>Dashboard Unavailable</h3><p style="color: var(--vtn-text-muted);">Auth system failed to load. Try refreshing the page (Ctrl+Shift+R).</p>';
@@ -112,10 +119,12 @@ hide:
     adminInitialized = true;
     initFirebase().then(function() {
       auth.onAuthStateChanged(function(user) {
+        var loading = document.getElementById('admin-loading');
         var gate = document.getElementById('admin-gate');
         var content = document.getElementById('admin-content');
         var status = document.getElementById('admin-status');
 
+        if (loading) loading.style.display = 'none';
         if (!gate || !content || !status) return;
 
         if (!user) {
@@ -139,9 +148,11 @@ hide:
         loadAdminMetrics();
       });
     }).catch(function(e) {
+      var loading = document.getElementById('admin-loading');
       var gate = document.getElementById('admin-gate');
+      if (loading) loading.style.display = 'none';
       if (gate) gate.innerHTML = '<h3>Dashboard Unavailable</h3><p style="color: var(--vtn-text-muted);">Firebase failed to load.</p>';
-      gate.style.display = 'block';
+      if (gate) gate.style.display = 'block';
     });
   }
 
