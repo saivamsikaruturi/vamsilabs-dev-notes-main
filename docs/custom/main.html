@@ -1130,11 +1130,14 @@ function postComment(parentId) {
   var input = parentId
     ? document.querySelector('[data-reply-input="' + parentId + '"]')
     : document.getElementById('vtn-comment-input');
-  var text = input.value.trim();
+  var text = input ? input.value.trim() : '';
   if (!text) return;
 
-  var user = auth.currentUser;
-  if (!user) return;
+  var user = (typeof auth !== 'undefined' && auth) ? auth.currentUser : null;
+  if (!user) {
+    commentSignIn();
+    return;
+  }
 
   var submitBtn = parentId
     ? input.parentElement.querySelector('.vtn-comment-submit')
@@ -1164,6 +1167,12 @@ function postComment(parentId) {
     loadComments();
   }).catch(function(err) {
     console.error('Comment post error:', err);
+    var loading = document.getElementById('vtn-comment-loading');
+    if (loading) {
+      loading.textContent = 'Failed to post comment. Please try again.';
+      loading.style.display = 'block';
+      setTimeout(function() { loading.style.display = 'none'; }, 4000);
+    }
   }).finally(function() {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Post';
