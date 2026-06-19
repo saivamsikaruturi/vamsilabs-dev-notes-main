@@ -158,11 +158,18 @@ nav:
       - Heaps & Greedy: dsa/heaps-greedy.md
       - Backtracking: dsa/backtracking.md
   - Interviews:
+      - "Spring Boot Production Troubleshooting Guide": interview/spring-boot-production.md
       - "Spring Boot Interview Questions 2025": interview/spring-boot-questions.md
+      - "Virtual Threads & Project Loom — Java 21 Deep Dive": interview/virtual-threads.md
       - "Java Multithreading Interview Questions": interview/java-multithreading-questions.md
       - "Java Collections Interview Questions": interview/java-collections-questions.md
       - "Microservices Interview Questions": interview/microservices-questions.md
       - "LLD Interview Questions (Java)": interview/lld-interview-questions.md
+      - "Kafka Interview Questions": interview/kafka-questions.md
+      - "Kubernetes Interview Questions": interview/kubernetes-questions.md
+      - "Java 8 Features Interview Questions": interview/java8-questions.md
+      - "Hibernate & JPA Interview Questions": interview/hibernate-jpa-questions.md
+      - "SQL Interview Questions": interview/sql-questions.md
       - "Switching to Spring Boot (Experienced Devs)": interview/spring-boot-transition.md
       - Career Strategy: interview/career-strategy.md
       - Coding Scenarios & Challenges: interview/coding-scenarios.md
