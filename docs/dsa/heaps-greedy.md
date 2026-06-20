@@ -1,8 +1,9 @@
 ---
-description: "Heaps & Greedy Algorithms — FAANG interview patterns for priority queues, top-K problems, interval scheduling, and greedy proofs with Java implementations and step-by-step walkthroughs."
+title: "Heaps & Greedy Algorithms — LeetCode 347, Top K Problems, Java Solutions (2026)"
+description: "Master Heaps (Priority Queue) and Greedy algorithms for FAANG coding interviews — LeetCode 347 Top K Frequent Elements, interval scheduling, merge K sorted lists. Java code + complexity analysis. Pattern-based approach."
 ---
 
-# Heaps & Greedy Algorithms
+# Heaps & Greedy Algorithms — Top K & Scheduling Problems
 
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">Pattern</span>

@@ -1,8 +1,9 @@
 ---
-description: "Complete guide to microservices architecture — service decomposition, inter-service communication, data management, and deployment patterns for scalable systems."
+title: "Microservices Architecture — Complete System Design Guide (2026) FAANG Interview Prep"
+description: "Master microservices for system design interviews — service decomposition, inter-service communication (gRPC vs REST), Saga pattern, resilience (Circuit Breaker), observability. Real patterns from Netflix, Uber, Amazon scale. By Salesforce engineer."
 ---
 
-# Microservices Architecture
+# Microservices Architecture — Design, Communication, Data Management
 
 > **An architectural style that structures an application as a collection of small, autonomous services modeled around a business domain.**
 

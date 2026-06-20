@@ -1,8 +1,9 @@
 ---
-description: "Deep dive into Java multithreading — threads, synchronization, locks, executors, and concurrent collections with practical examples for interviews."
+title: "Java Multithreading Interview Guide — Threads, Locks, Executors, Virtual Threads (2026)"
+description: "Complete Java multithreading guide — synchronized, ReentrantLock, ThreadLocal, ExecutorService, Virtual Threads (Java 21), deadlock prevention. Real FAANG interview questions with production examples. Senior Engineer's deep dive."
 ---
 
-# Multithreading in Java
+# Java Multithreading — Threads, Synchronization, Locks & Concurrency
 
 !!! eli5 "In Simple Terms 🧒"
     Threads are like multiple workers in a kitchen. Each worker (thread) can chop vegetables,

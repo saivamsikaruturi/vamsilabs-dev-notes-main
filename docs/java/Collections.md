@@ -1,8 +1,9 @@
 ---
-description: "Complete guide to Java Collections Framework — List, Set, Map, Queue internals, performance comparisons, and when to use each collection in interviews."
+title: "Java Collections Framework — ArrayList vs HashMap Internals, Interview Guide (2026)"
+description: "Master Java Collections for interviews — ArrayList, HashMap, HashSet, LinkedList internals, performance O(n) analysis, fail-fast iterators, ConcurrentHashMap. Real FAANG questions with code examples by Salesforce engineer."
 ---
 
-# Java Collections Framework
+# Java Collections Framework — List, Set, Map, Queue Internals
 
 The Collections Framework is a unified architecture for storing and manipulating groups of objects. It's one of the most asked topics in Java interviews.
 

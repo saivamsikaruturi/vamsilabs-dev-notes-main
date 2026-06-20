@@ -1,8 +1,9 @@
 ---
-description: "Deep dive into Spring Boot transactions — @Transactional propagation, isolation levels, rollback rules, UnexpectedRollbackException, readOnly gotchas, connection timing, timeouts, and testing strategies."
+title: "Spring Boot @Transactional — Propagation, Isolation Levels, Common Pitfalls (2026)"
+description: "Master Spring @Transactional for interviews — 7 propagation types, 5 isolation levels, self-invocation trap, UnexpectedRollbackException, readOnly optimization. Real production examples from Salesforce. Spring Boot 3 compatible."
 ---
 
-# Transactions (@Transactional)
+# Spring Boot @Transactional Deep Dive — Propagation, Isolation & Gotchas
 
 > **One-liner for interviews:** "A transaction ensures all-or-nothing execution — either every database operation in a unit of work commits together, or none of them do, leaving the system in a consistent state."
 

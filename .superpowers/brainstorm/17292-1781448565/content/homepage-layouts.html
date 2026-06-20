@@ -1,0 +1,121 @@
+<h2>Homepage Redesign — Two Approaches</h2>
+<p class="subtitle">Both solve "where do I start?" — pick the direction that feels right</p>
+
+<div class="split" style="gap:20px;margin-top:16px;align-items:start;">
+
+  <!-- Option A -->
+  <div class="option" data-choice="a" onclick="toggleSelect(this)" style="cursor:pointer;border-radius:10px;overflow:hidden;">
+    <div style="background:#10b98111;border:2px solid #10b981;border-radius:10px;overflow:hidden;">
+      <div style="background:#10b981;color:#000;font-weight:700;padding:8px 14px;font-size:0.85rem;display:flex;align-items:center;gap:8px;">
+        <span style="background:#000;color:#10b981;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;">A</span>
+        Role-Based Entry (Recommended)
+      </div>
+      <div style="padding:14px;">
+        <!-- Mockup -->
+        <div style="background:#0d0d1a;border-radius:8px;padding:12px;font-size:0.78rem;">
+          <div style="text-align:center;padding:10px 0 14px;">
+            <div style="font-size:1rem;font-weight:700;color:#fff;">VamsiLabs Dev Notes</div>
+            <div style="color:#aaa;font-size:0.72rem;margin-top:2px;">FAANG-level Java, Spring Boot & System Design interview prep</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid #333;border-radius:6px;padding:10px;margin-bottom:10px;">
+            <div style="color:#10b981;font-size:0.72rem;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">I am preparing for...</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+              <div style="background:#10b98122;border:1px solid #10b981;border-radius:5px;padding:8px;text-align:center;">
+                <div style="font-size:1.2rem;">☕</div>
+                <div style="color:#10b981;font-size:0.68rem;font-weight:600;margin-top:3px;">Java / Backend</div>
+              </div>
+              <div style="background:#7c3aed22;border:1px solid #7c3aed;border-radius:5px;padding:8px;text-align:center;">
+                <div style="font-size:1.2rem;">🏗️</div>
+                <div style="color:#7c3aed;font-size:0.68rem;font-weight:600;margin-top:3px;">System Design</div>
+              </div>
+              <div style="background:#06b6d422;border:1px solid #06b6d4;border-radius:5px;padding:8px;text-align:center;">
+                <div style="font-size:1.2rem;">🧩</div>
+                <div style="color:#06b6d4;font-size:0.68rem;font-weight:600;margin-top:3px;">LLD / OOP</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div style="background:#1a1a2e;border:1px solid #333;border-radius:5px;padding:8px;">
+              <div style="color:#f59e0b;font-size:0.68rem;font-weight:700;">🔥 Most visited</div>
+              <div style="color:#ccc;font-size:0.7rem;margin-top:3px;">Java Interview Guide</div>
+              <div style="color:#ccc;font-size:0.7rem;">Spring Boot Deep Dive</div>
+              <div style="color:#ccc;font-size:0.7rem;">System Design 101</div>
+            </div>
+            <div style="background:#1a1a2e;border:1px solid #333;border-radius:5px;padding:8px;">
+              <div style="color:#10b981;font-size:0.68rem;font-weight:700;">✨ New this week</div>
+              <div style="color:#ccc;font-size:0.7rem;margin-top:3px;">DSA Patterns</div>
+              <div style="color:#ccc;font-size:0.7rem;">LLD: ATM System</div>
+              <div style="color:#ccc;font-size:0.7rem;">Circuit Breaker Guide</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px;">
+          <div style="font-size:0.78rem;color:#10b981;font-weight:600;margin-bottom:4px;">Why this works:</div>
+          <ul style="font-size:0.75rem;color:#ccc;margin:0;padding-left:16px;line-height:1.7;">
+            <li>Visitor self-selects path in 2 seconds</li>
+            <li>No overwhelming nav — guided funnel</li>
+            <li>"Most visited" adds social proof</li>
+            <li>Works for both first-timers and return visitors</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="option" data-choice="b" onclick="toggleSelect(this)" style="cursor:pointer;border-radius:10px;overflow:hidden;">
+    <div style="background:#7c3aed11;border:2px solid #7c3aed;border-radius:10px;overflow:hidden;">
+      <div style="background:#7c3aed;color:#fff;font-weight:700;padding:8px 14px;font-size:0.85rem;display:flex;align-items:center;gap:8px;">
+        <span style="background:#fff;color:#7c3aed;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;">B</span>
+        Featured Content Hero
+      </div>
+      <div style="padding:14px;">
+        <!-- Mockup -->
+        <div style="background:#0d0d1a;border-radius:8px;padding:12px;font-size:0.78rem;">
+          <div style="background:linear-gradient(135deg,#7c3aed22,#06b6d422);border:1px solid #7c3aed44;border-radius:6px;padding:12px;text-align:center;margin-bottom:10px;">
+            <div style="font-size:0.95rem;font-weight:700;color:#fff;">The Free FAANG Interview Prep Hub</div>
+            <div style="color:#aaa;font-size:0.7rem;margin-top:3px;">Java · Spring Boot · System Design · LLD · DSA</div>
+            <div style="margin-top:10px;display:flex;gap:8px;justify-content:center;">
+              <div style="background:#7c3aed;color:#fff;padding:5px 12px;border-radius:4px;font-size:0.7rem;font-weight:600;">→ Start Learning Path</div>
+              <div style="background:#1a1a2e;border:1px solid #555;color:#ccc;padding:5px 12px;border-radius:4px;font-size:0.7rem;">Browse Topics</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+            <div style="background:#1a1a2e;border:1px solid #333;border-radius:5px;padding:8px;">
+              <div style="color:#f59e0b;font-size:0.7rem;font-weight:600;margin-bottom:4px;">☕ Java Mastery</div>
+              <div style="color:#aaa;font-size:0.67rem;">Collections → Multithreading → JVM → Java 21</div>
+            </div>
+            <div style="background:#1a1a2e;border:1px solid #333;border-radius:5px;padding:8px;">
+              <div style="color:#7c3aed;font-size:0.7rem;font-weight:600;margin-bottom:4px;">🏗️ System Design</div>
+              <div style="color:#aaa;font-size:0.67rem;">14 case studies · Fundamentals · Cheat Sheets</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div style="background:#1a1a2e;border:1px solid #333;border-radius:5px;padding:8px;">
+              <div style="color:#10b981;font-size:0.7rem;font-weight:600;margin-bottom:4px;">🧩 LLD &amp; OOP</div>
+              <div style="color:#aaa;font-size:0.67rem;">12 problems · SOLID · Design Patterns</div>
+            </div>
+            <div style="background:#1a1a2e;border:1px solid #333;border-radius:5px;padding:8px;">
+              <div style="color:#06b6d4;font-size:0.7rem;font-weight:600;margin-bottom:4px;">🧠 DSA Patterns</div>
+              <div style="color:#aaa;font-size:0.67rem;">10 patterns · Arrays → DP → Graphs</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px;">
+          <div style="font-size:0.78rem;color:#7c3aed;font-weight:600;margin-bottom:4px;">Why this works:</div>
+          <ul style="font-size:0.75rem;color:#ccc;margin:0;padding-left:16px;line-height:1.7;">
+            <li>Strong value prop headline above the fold</li>
+            <li>Topic cards show breadth immediately</li>
+            <li>Single primary CTA (Learning Path)</li>
+            <li>Closer to how Baeldung / ByteByteGo look</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:16px;background:#1a1a2e;border:1px solid #333;border-radius:8px;padding:12px;font-size:0.8rem;color:#aaa;">
+  <strong style="color:#fff;">My recommendation:</strong> Option A (Role-Based Entry). Visitors self-select their path in 2 clicks — it's personalized without being complex. Option B is safer/familiar but less differentiating.
+</div>

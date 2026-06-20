@@ -1,4 +1,9 @@
-# Clean Architecture
+---
+title: "Clean Architecture — Dependency Rule, 4 Layers & Uncle Bob's Design Explained (2026)"
+description: "Master Clean Architecture for FAANG interviews — Dependency Rule explained, 4 layers (Entities, Use Cases, Interface Adapters, Frameworks), real Java & Spring Boot examples with diagrams. By Salesforce Senior Engineer."
+---
+
+# Clean Architecture — Dependency Rule, 4 Layers & Uncle Bob's Design Explained
 
 !!! tip "Why This Matters for Senior Interviews"
     At FAANG companies, senior and staff engineers are expected to design systems that are **maintainable, testable, and adaptable** to changing requirements. Clean Architecture questions assess whether you can reason about **separation of concerns**, **dependency management**, and **long-term system evolution** — skills that distinguish senior engineers from mid-level developers.

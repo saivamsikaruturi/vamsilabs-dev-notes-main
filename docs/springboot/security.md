@@ -1,8 +1,9 @@
 ---
-description: "The definitive Spring Security interview prep — authentication, authorization, JWT, OAuth2, filter chain internals, and production war stories. Spring Boot 3 / Spring Security 6."
+title: "Spring Security Deep Dive — JWT, OAuth2, Filter Chain Internals (2026)"
+description: "Complete Spring Security guide for interviews — authentication vs authorization, SecurityFilterChain, JWT implementation, OAuth2, method security, @PreAuthorize. Spring Boot 3 / Spring Security 6 by Salesforce Senior Engineer."
 ---
 
-# Spring Security
+# Spring Security — Authentication, JWT, OAuth2 & Filter Chain Explained
 
 Spring Security is that module everyone copies from Stack Overflow without understanding. In interviews, 90% of candidates can't explain how a request gets authenticated end-to-end. They paste a `SecurityFilterChain` bean, slap `@PreAuthorize` on a method, and pray it works. Let me take you through it the way I'd explain it to a teammate before their Amazon interview — starting from first principles, building up to production-grade JWT auth, and covering every gotcha I've seen trip up senior engineers.
 

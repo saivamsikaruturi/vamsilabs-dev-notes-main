@@ -1,8 +1,9 @@
 ---
-description: "Data Structures & Algorithms — complete FAANG interview prep with pattern-based learning, Java implementations, step-by-step problem walkthroughs, and complexity analysis for 12 core patterns."
+title: "12 Coding Patterns to Crack FAANG DSA Interviews (2026) — Java LeetCode Solutions"
+description: "Master Data Structures & Algorithms with 12 coding patterns covering 300+ LeetCode problems. Two Pointers, Sliding Window, Binary Search, DP, Graphs — Java code, diagrams, FAANG interview prep by Salesforce engineer."
 ---
 
-# Data Structures & Algorithms
+# 12 DSA Coding Patterns for FAANG Interviews — LeetCode in Java
 
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">Interview Prep</span>

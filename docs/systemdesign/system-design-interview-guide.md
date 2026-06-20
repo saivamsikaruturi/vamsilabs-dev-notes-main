@@ -1,8 +1,9 @@
 ---
-description: "Complete system design interview guide for FAANG companies. Covers CAP theorem, load balancing, database sharding, caching, message queues, 10+ case studies, and a structured interview framework."
+title: "System Design Interview Guide 2026 — FAANG Step-by-Step Framework & Patterns"
+description: "Master system design interviews for FAANG — complete framework (requirements, capacity, API, data model, architecture), scalability patterns, CAP theorem, load balancing, caching, database sharding. Real interviewer tips from Salesforce Senior Engineer."
 ---
 
-# Complete System Design Interview Guide — FAANG Level
+# System Design Interview Guide — FAANG Framework & Case Studies 2026
 
 > **The systematic approach to system design interviews.** Learn the building blocks, then apply them to real case studies. This guide links 30+ deep-dive topics organized by concept, giving you a structured path from fundamentals to interview-ready confidence.
 

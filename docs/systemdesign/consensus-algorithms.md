@@ -1,8 +1,9 @@
 ---
-description: "Understand Raft consensus algorithm and Paxos — leader election, log replication, split-brain prevention, and how distributed systems achieve agreement."
+title: "Raft & Paxos Consensus Algorithms Explained — Leader Election, Log Replication (2026)"
+description: "Master Raft consensus algorithm and Paxos for system design interviews — leader election, log replication, split-brain prevention explained with diagrams. Used by Kubernetes, etcd, Kafka, ZooKeeper. FAANG interview prep."
 ---
 
-# Consensus Algorithms (Raft & Paxos)
+# Raft & Paxos Consensus Algorithms — Leader Election, Log Replication Explained
 
 > **How do distributed systems agree on a single truth when machines crash, networks partition, and messages get lost? Consensus is the hardest problem in distributed computing.**
 
