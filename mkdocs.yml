@@ -117,6 +117,7 @@ hooks:
 plugins:
   - search:
       separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - meta  # Enable reading page metadata from frontmatter
   - glightbox:
       touchNavigation: true
       loop: false
