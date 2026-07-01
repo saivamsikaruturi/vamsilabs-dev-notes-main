@@ -1,3 +1,8 @@
+---
+title: "Spring Boot Interview Questions — Top 40 with Answers (2026)"
+description: "Top 40 Spring Boot interview questions with answers. Auto-configuration, IoC/DI, @Transactional propagation, AOP, Spring Security, JPA, testing — asked at FAANG, Salesforce, Amazon, and top Java shops."
+---
+
 # Top 40 Spring Boot Interview Questions & Answers
 
 !!! tip "Interview Prep"

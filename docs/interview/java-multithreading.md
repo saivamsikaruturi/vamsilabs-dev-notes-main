@@ -1,3 +1,8 @@
+---
+title: "Java Multithreading Interview Questions — Top 40 with Answers (2026)"
+description: "Top 40 Java multithreading and concurrency interview questions with answers. Threads, synchronization, locks, thread pools, ExecutorService, CompletableFuture, volatile, deadlocks, virtual threads — asked at FAANG."
+---
+
 # Top 40 Java Multithreading & Concurrency Interview Questions
 
 A comprehensive Q&A covering threads, synchronization, locks, executors, concurrent collections, and modern concurrency features through Java 21. Each answer is concise and interview-ready.

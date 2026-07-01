@@ -1,3 +1,8 @@
+---
+title: "Java Collections Interview Questions — Top 40 with Answers (2026)"
+description: "Top 40 Java Collections Framework interview questions with answers. HashMap internals, ArrayList vs LinkedList, fail-fast vs fail-safe iterators, ConcurrentHashMap — asked at FAANG and top Java shops."
+---
+
 # Top 40 Java Collections Interview Questions & Answers
 
 ---

@@ -160,10 +160,10 @@ nav:
       - Backtracking: dsa/backtracking.md
   - Interviews:
       - "Spring Boot Production Troubleshooting Guide": interview/spring-boot-production.md
-      - "Spring Boot Interview Questions 2025": interview/spring-boot-questions.md
+      - "Spring Boot Interview Questions": interview/spring-boot.md
       - "Virtual Threads & Project Loom — Java 21 Deep Dive": interview/virtual-threads.md
-      - "Java Multithreading Interview Questions": interview/java-multithreading-questions.md
-      - "Java Collections Interview Questions": interview/java-collections-questions.md
+      - "Java Multithreading Interview Questions": interview/java-multithreading.md
+      - "Java Collections Interview Questions": interview/java-collections.md
       - "Microservices Interview Questions": interview/microservices-questions.md
       - "LLD Interview Questions (Java)": interview/lld-interview-questions.md
       - "Kafka Interview Questions": interview/kafka-questions.md
@@ -177,10 +177,7 @@ nav:
       - Scenario-Based Questions: interview/java-scenarios.md
       - Core Java Q&A: interview/java-core.md
       - Java Strings Q&A: interview/java-strings.md
-      - Java Collections Q&A: interview/java-collections.md
-      - Java Multithreading Q&A: interview/java-multithreading.md
       - Java 8+ Features Q&A: interview/java8-features.md
-      - Spring Boot Q&A: interview/spring-boot.md
       - Hibernate & JPA Q&A: interview/hibernate-jpa.md
       - Microservices Q&A: interview/microservices.md
       - SQL Q&A: interview/sql.md
@@ -497,17 +494,6 @@ nav:
       - Cheat Sheet: systemdesign/cheat-sheet.md
       - Comparisons & Quick Reference: systemdesign/comparisons.md
       - Weekly Challenges: systemdesign/weekly-challenges.md
-      - 5-Minute Summaries:
-          - Load Balancing: systemdesign/summaries/load-balancing-summary.md
-          - Distributed Caching: systemdesign/summaries/caching-summary.md
-          - CDN: systemdesign/summaries/cdn-summary.md
-          - DNS: systemdesign/summaries/dns-summary.md
-          - Message Queues: systemdesign/summaries/message-queues-summary.md
-          - Database Sharding: systemdesign/summaries/database-sharding-summary.md
-          - CAP Theorem: systemdesign/summaries/cap-theorem-summary.md
-          - WebSockets & Real-Time: systemdesign/summaries/websockets-summary.md
-          - Consistent Hashing: systemdesign/summaries/consistent-hashing-summary.md
-          - Rate Limiting: systemdesign/summaries/rate-limiting-summary.md
       - Case Studies:
           - systemdesign/case-studies/index.md
           - URL Shortener: systemdesign/case-studies/url-shortener.md

@@ -1,6 +1,6 @@
 ---
-title: "VamsiLabs — Vamsi Karuturi | Java & System Design Interview Prep"
-description: "VamsiLabs by Vamsi Karuturi — 300+ deep-dive Java, Spring Boot & System Design interview prep articles. Senior Backend Engineer at Salesforce (ex-Walmart, Siemens). Production patterns, not generic theory."
+title: "Java & System Design — FAANG Interview Prep"
+description: "300+ deep-dive Java, Spring Boot & System Design interview prep articles by a Senior Backend Engineer at Salesforce. Production patterns, real code, no generic theory."
 hide:
   - navigation
   - toc

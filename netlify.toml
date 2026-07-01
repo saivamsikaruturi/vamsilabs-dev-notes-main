@@ -101,3 +101,80 @@ status = 301
 from = "/java/InnerClasses"
 to = "/java/innerclasses/"
 status = 301
+
+# Cannibalization fixes — merged stub pages redirect to the deep canonical
+[[redirects]]
+from = "/interview/spring-boot-questions/*"
+to = "/interview/spring-boot/"
+status = 301
+
+[[redirects]]
+from = "/interview/java-collections-questions/*"
+to = "/interview/java-collections/"
+status = 301
+
+[[redirects]]
+from = "/interview/java-multithreading-questions/*"
+to = "/interview/java-multithreading/"
+status = 301
+
+[[redirects]]
+from = "/codinginterviewquestions/*"
+to = "/dsa/"
+status = 301
+
+# Deleted thin "5-minute summary" pages — redirect to their full topic pages
+[[redirects]]
+from = "/systemdesign/summaries/load-balancing-summary/*"
+to = "/loadbalancer/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/caching-summary/*"
+to = "/distributedCaching/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/cdn-summary/*"
+to = "/systemdesign/cdn/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/dns-summary/*"
+to = "/systemdesign/dns/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/message-queues-summary/*"
+to = "/systemdesign/message-queues/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/database-sharding-summary/*"
+to = "/systemdesign/database-sharding/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/cap-theorem-summary/*"
+to = "/capTheorem/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/websockets-summary/*"
+to = "/systemdesign/websockets-sse/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/consistent-hashing-summary/*"
+to = "/consistenthashing/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/rate-limiting-summary/*"
+to = "/ratelimiting/"
+status = 301
+
+[[redirects]]
+from = "/systemdesign/summaries/*"
+to = "/systemdesign/cheat-sheet/"
+status = 301
