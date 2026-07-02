@@ -438,7 +438,6 @@ function isComplete(path) {
 }
 
 async function markPageComplete(path) {
-  if (!currentUser || !db) return;
   let normalized = path || currentPagePath();
   if (!normalized.endsWith('/')) normalized += '/';
 
@@ -448,21 +447,26 @@ async function markPageComplete(path) {
     page: normalized,
     title: document.title.replace(' - Vamsi Tech Notes', ''),
     learningPath: pathId,
-    completedAt: firebase.firestore.FieldValue.serverTimestamp()
+    completedAt: Date.now()
   };
 
   progressCache.set(normalized, data);
   saveLocalProgress();
   renderProgressUI();
 
-  try {
-    await db.collection('users').doc(currentUser.uid)
-      .collection('progress').doc(slug).set(data);
-  } catch (e) {}
+  // Bonus: sync to Firebase when signed in
+  if (currentUser && db) {
+    try {
+      await db.collection('users').doc(currentUser.uid)
+        .collection('progress').doc(slug).set({
+          ...data,
+          completedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    } catch (e) {}
+  }
 }
 
 async function unmarkPageComplete(path) {
-  if (!currentUser || !db) return;
   let normalized = path || currentPagePath();
   if (!normalized.endsWith('/')) normalized += '/';
 
@@ -471,10 +475,12 @@ async function unmarkPageComplete(path) {
   saveLocalProgress();
   renderProgressUI();
 
-  try {
-    await db.collection('users').doc(currentUser.uid)
-      .collection('progress').doc(slug).delete();
-  } catch (e) {}
+  if (currentUser && db) {
+    try {
+      await db.collection('users').doc(currentUser.uid)
+        .collection('progress').doc(slug).delete();
+    } catch (e) {}
+  }
 }
 
 function toggleMarkComplete() {
@@ -508,7 +514,7 @@ function renderMarkCompleteButton() {
   const path = currentPagePath();
   const isHomepage = path === '/' || path === '/index.html';
   const isAbout = path === '/about/' || path === '/about';
-  if (!currentUser || isHomepage || isAbout) {
+  if (isHomepage || isAbout) {
     wrapper.style.display = 'none';
     return;
   }
@@ -540,7 +546,7 @@ function renderPathProgress() {
     let bar = card.querySelector('.vtn-path-progress');
     if (!bar) return;
 
-    if (!currentUser || !progressLoaded) {
+    if (!progressLoaded) {
       bar.style.display = 'none';
       return;
     }
@@ -564,7 +570,7 @@ function renderPathProgress() {
 }
 
 function renderSidebarCheckmarks() {
-  if (!currentUser || !progressLoaded) return;
+  if (!progressLoaded) return;
   document.querySelectorAll('.md-nav__link').forEach(link => {
     const href = link.getAttribute('href');
     if (!href || href.startsWith('#')) return;
@@ -688,11 +694,6 @@ const TOPIC_SECTIONS = {
 function renderProgressDashboard() {
   const dashboard = document.getElementById('progress-dashboard');
   if (!dashboard) return;
-
-  if (!currentUser) {
-    dashboard.style.display = 'none';
-    return;
-  }
 
   dashboard.style.display = 'block';
 
