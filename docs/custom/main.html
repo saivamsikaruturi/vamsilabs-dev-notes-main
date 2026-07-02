@@ -666,29 +666,49 @@ function subscribeNewsletter() {
   if (path === '' || path === '/index.html' || path === '/index' || path === '/about') return;
 
   var container = document.getElementById('vtn-feedback-discussion');
-  if (container) container.style.display = '';
+  if (!container) return;
+  container.style.display = '';
 
-  initFirebase().then(function() {
-    loadComments();
-    auth.onAuthStateChanged(function(user) {
-      var form = document.getElementById('vtn-comment-form');
-      var signin = document.getElementById('vtn-comment-signin');
-      if (user) {
-        form.style.display = '';
-        signin.style.display = 'none';
-        var avatar = document.getElementById('vtn-comment-avatar');
-        var username = document.getElementById('vtn-comment-username');
-        avatar.src = user.photoURL || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32"%3E%3Crect fill="%23B45309" width="32" height="32" rx="16"/%3E%3Ctext x="16" y="21" text-anchor="middle" fill="white" font-size="14">' + (user.displayName || user.email || '?').charAt(0).toUpperCase() + '%3C/text%3E%3C/svg%3E';
-        username.textContent = user.displayName || user.email.split('@')[0];
-      } else {
-        form.style.display = 'none';
-        signin.style.display = '';
-      }
+  // Only load Firebase when the user scrolls near the comments section.
+  // Avoids the 60KB SDK cost for readers who never engage with comments.
+  var loaded = false;
+  function boot() {
+    if (loaded) return;
+    loaded = true;
+    initFirebase().then(function() {
+      loadComments();
+      auth.onAuthStateChanged(function(user) {
+        var form = document.getElementById('vtn-comment-form');
+        var signin = document.getElementById('vtn-comment-signin');
+        if (user) {
+          form.style.display = '';
+          signin.style.display = 'none';
+          var avatar = document.getElementById('vtn-comment-avatar');
+          var username = document.getElementById('vtn-comment-username');
+          avatar.src = user.photoURL || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32"%3E%3Crect fill="%23B45309" width="32" height="32" rx="16"/%3E%3Ctext x="16" y="21" text-anchor="middle" fill="white" font-size="14">' + (user.displayName || user.email || '?').charAt(0).toUpperCase() + '%3C/text%3E%3C/svg%3E';
+          username.textContent = user.displayName || user.email.split('@')[0];
+        } else {
+          form.style.display = 'none';
+          signin.style.display = '';
+        }
+      });
+    }).catch(function() {
+      var loading = document.getElementById('vtn-comment-loading');
+      if (loading) loading.textContent = '';
     });
-  }).catch(function() {
-    var loading = document.getElementById('vtn-comment-loading');
-    if (loading) loading.textContent = '';
-  });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { boot(); io.disconnect(); }
+      });
+    }, { rootMargin: '400px' });
+    io.observe(container);
+  } else {
+    // Older browsers: load after 3s idle
+    setTimeout(boot, 3000);
+  }
 })();
 
 function commentSignIn() {
@@ -977,30 +997,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Listen for auth state changes
-  initFirebase().then(() => {
-    auth.onAuthStateChanged(function(user) {
-      const signinBtn = document.getElementById('header-signin-btn');
-      const userBtn = document.getElementById('header-user-btn');
-      const avatar = document.getElementById('header-user-avatar');
-      const name = document.getElementById('header-user-name');
-      const email = document.getElementById('header-dropdown-email');
+  // Only load Firebase eagerly if the user has previously signed in.
+  // First-time visitors never fetch the ~60KB Firebase SDK on page load.
+  var wasSignedIn = false;
+  try { wasSignedIn = localStorage.getItem('vtn-signed-in') === '1'; } catch(e) {}
+  if (wasSignedIn) {
+    initFirebase().then(() => {
+      auth.onAuthStateChanged(function(user) {
+        const signinBtn = document.getElementById('header-signin-btn');
+        const userBtn = document.getElementById('header-user-btn');
+        const avatar = document.getElementById('header-user-avatar');
+        const name = document.getElementById('header-user-name');
+        const email = document.getElementById('header-dropdown-email');
 
-      if (user) {
-        signinBtn.style.display = 'none';
-        userBtn.style.display = 'inline-flex';
-        if (user.photoURL) avatar.src = user.photoURL;
-        name.textContent = user.displayName || user.email.split('@')[0];
-        email.textContent = user.email;
-      } else {
-        signinBtn.style.display = 'inline-flex';
-        userBtn.style.display = 'none';
-      }
-    });
-  }).catch(() => {});
+        if (user) {
+          signinBtn.style.display = 'none';
+          userBtn.style.display = 'inline-flex';
+          if (user.photoURL) avatar.src = user.photoURL;
+          name.textContent = user.displayName || user.email.split('@')[0];
+          email.textContent = user.email;
+        } else {
+          signinBtn.style.display = 'inline-flex';
+          userBtn.style.display = 'none';
+          try { localStorage.removeItem('vtn-signed-in'); } catch(e) {}
+        }
+      });
+    }).catch(() => {});
+  }
 });
 
 function headerSignIn() {
+  // Actual sign-in flow — this is where Firebase gets loaded for first-timers
+  try { localStorage.setItem('vtn-signed-in', '1'); } catch(e) {}
   signInWithGoogle();
 }
 
