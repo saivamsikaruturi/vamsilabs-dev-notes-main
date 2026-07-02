@@ -1,3 +1,8 @@
+---
+title: "Serialization in Java — Java Interview Guide (2026)"
+description: "Serialization converts an object into a byte stream so it can be saved to a file, sent over a network, or stored in a cache. Deserialization is the..."
+---
+
 # Serialization in Java
 
 Serialization converts an **object into a byte stream** so it can be saved to a file, sent over a network, or stored in a cache. Deserialization is the reverse — converting bytes back into an object.

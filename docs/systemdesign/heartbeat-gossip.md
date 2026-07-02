@@ -1,3 +1,8 @@
+---
+title: "Heartbeat & Gossip Protocol — System Design Interview (2026)"
+description: "Every distributed system needs to answer: \"How do you know if a node is alive or dead?\" This appears in:"
+---
+
 # Heartbeat & Gossip Protocol
 
 !!! danger "Real Incident: Cassandra at Netflix, 2013"

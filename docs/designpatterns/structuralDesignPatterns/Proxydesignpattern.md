@@ -1,3 +1,8 @@
+---
+title: ":shield: Proxy Design Pattern — Design Patterns Java (2026)"
+description: "HighResolutionImage ..|> Image : implements ImageProxy ..|> Image : implements ImageProxy --> HighResolutionImage : lazy delegates to ```"
+---
+
 # :shield: Proxy Design Pattern
 
 > **Provide a surrogate or placeholder for another object to control access to it.**

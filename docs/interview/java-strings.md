@@ -1,3 +1,8 @@
+---
+title: "Top 30 Java String Interview Questions & Answers (2026)"
+description: "Master the most frequently asked Java String interview questions -- from immutability and the String Pool to modern Java text blocks and performance..."
+---
+
 # Top 30 Java String Interview Questions & Answers
 
 Master the most frequently asked Java String interview questions -- from immutability and the String Pool to modern Java text blocks and performance internals.

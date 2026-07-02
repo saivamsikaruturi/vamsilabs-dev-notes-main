@@ -1,4 +1,5 @@
 ---
+title: "CORS Configuration & Content Negotiation — Spring Boot Interview Guide (2026)"
 description: "Spring Boot CORS configuration and content negotiation — fix cross-origin errors, configure allowed origins, and handle JSON/XML response types with code examples."
 ---
 

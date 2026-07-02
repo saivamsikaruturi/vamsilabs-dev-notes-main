@@ -1,3 +1,8 @@
+---
+title: "Bean Lifecycle & Scopes — The Complete Interview Guide (2026)"
+description: "You know when you put @Service on a class and magically it works? Here's what Spring actually does behind the scenes — there are 11 steps between your..."
+---
+
 # Bean Lifecycle & Scopes — The Complete Interview Guide
 
 You know when you put `@Service` on a class and magically it works? Here's what Spring actually does behind the scenes — there are **11 steps** between your class file and a working bean, and interviewers love asking about every single one of them.

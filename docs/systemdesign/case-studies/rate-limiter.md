@@ -1,3 +1,8 @@
+---
+title: "Design a Distributed Rate Limiter — Token Bucket, Sliding Window (System Design)"
+description: "Design a distributed rate limiter — system design interview covering token bucket vs leaky bucket vs sliding window algorithms, Redis-based implementations, retry-after headers, thundering herd prevention, and scaling to API gateways."
+---
+
 # Distributed Rate Limiter
 
 !!! danger "Real Incident: GitHub API Abuse, 2018"

@@ -1,4 +1,5 @@
 ---
+title: "File Storage System (Google Drive / Dropbox) — System Design Interview (2026)"
 description: "Design a distributed file storage system like Google Drive or Dropbox — system design interview walkthrough covering file chunking, content-addressable storage, delta sync, deduplication, and scaling to 500M users."
 ---
 

@@ -1,3 +1,8 @@
+---
+title: "CI/CD Pipelines (2026)"
+description: "on: push: branches: [main, develop] pull_request: branches: [main]"
+---
+
 # CI/CD Pipelines
 
 ## What is CI/CD?

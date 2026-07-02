@@ -1,3 +1,8 @@
+---
+title: "Top 35 Java 8+ Features Interview Questions & Answers (2026)"
+description: "Why: Before Java 8, passing behavior required verbose anonymous inner classes. Lambdas enable functional-style programming and make APIs like Streams..."
+---
+
 # Top 35 Java 8+ Features Interview Questions & Answers
 
 ---

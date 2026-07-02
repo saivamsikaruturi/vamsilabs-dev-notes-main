@@ -1,3 +1,8 @@
+---
+title: "Circular Dependencies — Spring Boot Interview Guide (2026)"
+description: "A circular dependency occurs when Bean A depends on Bean B, and Bean B depends back on Bean A (directly or transitively)."
+---
+
 # Circular Dependencies
 
 > **Your app fails to start with `BeanCurrentlyInCreationException` — here is why, how Spring tries to help, and how to fix it properly.**

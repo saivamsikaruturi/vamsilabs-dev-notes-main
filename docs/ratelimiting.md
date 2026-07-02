@@ -1,4 +1,5 @@
 ---
+title: "Rate Limiting — System Design (2026)"
 description: "Rate limiting system design — token bucket, sliding window algorithms, distributed rate limiting with Redis, and API throttling strategies for production systems."
 ---
 

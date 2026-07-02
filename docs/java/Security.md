@@ -1,3 +1,8 @@
+---
+title: "Java Security and Cryptography — Java Interview Guide (2026)"
+description: "Java ships with a battle-tested security framework built into the platform. From hashing passwords to encrypting data in transit, the java.security and..."
+---
+
 # Java Security and Cryptography
 
 Java ships with a battle-tested security framework built into the platform. From hashing passwords to encrypting data in transit, the `java.security` and `javax.crypto` packages give you everything you need without third-party libraries. This is a **high-value interview topic** -- senior engineers are expected to understand encryption modes, key management, and secure coding practices.

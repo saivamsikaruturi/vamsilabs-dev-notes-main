@@ -1,3 +1,8 @@
+---
+title: "Method Overloading vs Overriding — Java Interview Guide (2026)"
+description: "public class CreditCardProcessor extends PaymentProcessor { // BUG: This is an OVERLOAD, not an override! // Missing @Override — compiler stays silent...."
+---
+
 # Method Overloading vs Overriding
 
 ## The Bug That Ships to Production

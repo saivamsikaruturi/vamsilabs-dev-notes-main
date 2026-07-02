@@ -1,3 +1,8 @@
+---
+title: "Leader Election — System Design Interview (2026)"
+description: "Any time you design a system with replication, the interviewer will ask: \"What happens when the leader dies?\" You need to reason about:"
+---
+
 # Leader Election
 
 !!! danger "Real Incident: Split-Brain at GitHub, 2018"

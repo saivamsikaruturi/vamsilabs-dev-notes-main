@@ -1,3 +1,8 @@
+---
+title: "🎯 Strategy Design Pattern — Design Patterns Java (2026)"
+description: "You need different variants of an algorithm within an object, and you want to switch between them at runtime. Without Strategy:"
+---
+
 # 🎯 Strategy Design Pattern
 
 > **Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from the clients that use it.**

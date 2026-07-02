@@ -1,4 +1,5 @@
 ---
+title: "Linked Lists — Coding Interview (2026)"
 description: "Master Linked List problems for FAANG interviews — 5 core techniques (dummy head, two pointers, reversal, merge, in-place), Floyd's cycle detection proof, LRU Cache, and 12 must-solve problems with Java code."
 ---
 

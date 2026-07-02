@@ -1,3 +1,8 @@
+---
+title: "Database Indexing Deep Dive — System Design Interview (2026)"
+description: "Every system design involves databases, and indexes are the #1 performance lever. Interviewers want to hear:"
+---
+
 # Database Indexing Deep Dive
 
 !!! danger "Real Incident: Shopify Black Friday 2020"

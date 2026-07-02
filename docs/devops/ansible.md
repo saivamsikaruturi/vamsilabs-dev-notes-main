@@ -1,3 +1,8 @@
+---
+title: "Ansible — DevOps Guide (2026)"
+description: "Ansible is the most widely adopted configuration management and automation tool in the DevOps ecosystem. It uses a simple, human-readable YAML syntax,..."
+---
+
 # Ansible
 
 ## Why Ansible Matters

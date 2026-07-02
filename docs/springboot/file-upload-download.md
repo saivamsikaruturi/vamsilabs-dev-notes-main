@@ -1,3 +1,8 @@
+---
+title: "File Upload & Download in Spring Boot (2026)"
+description: "Spring's MultipartFile interface wraps uploaded file data, providing access to the filename, content type, size, input stream, and bytes."
+---
+
 # File Upload & Download in Spring Boot
 
 > **Handle multipart uploads, stream large files efficiently, and serve downloads safely — covering configuration, storage strategies, resumable uploads, and security hardening.**

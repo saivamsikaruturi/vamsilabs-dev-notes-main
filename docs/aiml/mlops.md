@@ -1,3 +1,8 @@
+---
+title: "MLOps & Production AI — AI/ML for Engineers (2026)"
+description: "MLOps = DevOps principles applied to Machine Learning systems. It bridges the gap between \"my model works in a notebook\" and \"my model serves 10M..."
+---
+
 # MLOps & Production AI
 
 > **Training a model is like building a race car in a garage. MLOps is everything needed to win actual races — fuel, pit stops, tire changes, telemetry, and keeping the engine alive at 200 mph.**

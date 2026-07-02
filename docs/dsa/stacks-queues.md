@@ -1,4 +1,5 @@
 ---
+title: "Stacks & Queues — Coding Interview (2026)"
 description: "Stacks & Queues for FAANG interviews — monotonic stack patterns, sliding window deque, solved walkthroughs for Largest Rectangle in Histogram, and 15 curated practice problems with Java implementations."
 ---
 

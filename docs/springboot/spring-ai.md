@@ -1,3 +1,8 @@
+---
+title: "Spring AI — Build AI-Powered Applications — Spring Boot Interview Guide (2026)"
+description: "subgraph Providers[\"AI Providers (swappable)\"] OAI[\"OpenAI (GPT-4)\"] ANT[\"Anthropic (Claude)\"] OLL[\"Ollama (local)\"] end"
+---
+
 # Spring AI — Build AI-Powered Applications
 
 > **Integrate LLMs, embeddings, vector databases, and AI agents into Spring Boot with the same familiar programming model you already know.**

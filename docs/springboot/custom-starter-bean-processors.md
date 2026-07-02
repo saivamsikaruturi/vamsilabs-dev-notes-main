@@ -1,3 +1,8 @@
+---
+title: "Custom Starters, BeanPostProcessor & BeanFactoryPostProcessor — Spring Boot Interview Guide (2026)"
+description: "The recommended structure separates auto-configuration logic from the dependency aggregation:"
+---
+
 # Custom Starters, BeanPostProcessor & BeanFactoryPostProcessor
 
 > **Your team is spending weeks writing boilerplate config for each microservice — the same DataSource setup, the same metrics wiring, the same notification client. Custom starters eliminate this entirely: write once, auto-configure everywhere.**

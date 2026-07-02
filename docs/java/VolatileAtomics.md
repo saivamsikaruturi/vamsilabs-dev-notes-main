@@ -1,3 +1,8 @@
+---
+title: "volatile, Atomic Classes & CAS in Java — Java Interview Guide (2026)"
+description: "These are the low-level building blocks of thread-safe code. Understanding them separates senior engineers from juniors in concurrency interviews."
+---
+
 # volatile, Atomic Classes & CAS in Java
 
 These are the **low-level building blocks** of thread-safe code. Understanding them separates senior engineers from juniors in concurrency interviews.

@@ -1,3 +1,8 @@
+---
+title: "Testcontainers — Real Integration Tests — Spring Boot Interview Guide (2026)"
+description: "subgraph Containers[\"Docker Containers (auto-managed)\"] PG[\"PostgreSQL 16\"] RD[\"Redis 7\"] KF[\"Kafka 3.6\"] end"
+---
+
 # Testcontainers — Real Integration Tests
 
 > **Stop mocking databases. Spin up real PostgreSQL, Redis, Kafka in Docker during tests — same as production, zero flaky mocks.**

@@ -1,4 +1,5 @@
 ---
+title: "Design a Movie Ticket Booking System — Low-Level Design Interview (2026)"
 description: "Design a Movie Ticket Booking System — complete OOP low-level design with seat locking, concurrent booking, payment timeout, Java implementation, and interview walkthrough."
 ---
 

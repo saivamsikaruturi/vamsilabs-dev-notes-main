@@ -1,4 +1,5 @@
 ---
+title: "Design an Elevator System — Low-Level Design Interview (2026)"
 description: "Design an Elevator System — complete OOP low-level design with state machine, scheduling algorithms, class diagrams, Java implementation, and interview walkthrough."
 ---
 

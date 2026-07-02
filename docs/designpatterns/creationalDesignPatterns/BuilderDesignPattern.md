@@ -1,3 +1,8 @@
+---
+title: "🔨 Builder Design Pattern — Design Patterns Java (2026)"
+description: "// Approach 2: JavaBean setters — object is mutable and can be used half-configured HttpRequest request2 = new HttpRequest();..."
+---
+
 # 🔨 Builder Design Pattern
 
 > **Separate the construction of a complex object from its representation so that the same construction process can create different representations.**

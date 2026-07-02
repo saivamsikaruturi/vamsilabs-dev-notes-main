@@ -1,3 +1,8 @@
+---
+title: "📋 Service Discovery & Registry — Microservices Interview (2026)"
+description: "subgraph ServerSide[\"Server-Side Discovery\"] direction LR C2[[\"Order Service\"]] -->|\"1. Request\"| LB{{\"Load Balancer\"}} LB -->|\"2. Query\"| R2[(\"Service..."
+---
+
 # 📋 Service Discovery & Registry
 
 > **A mechanism that allows microservices to find and communicate with each other dynamically without hardcoded addresses.**

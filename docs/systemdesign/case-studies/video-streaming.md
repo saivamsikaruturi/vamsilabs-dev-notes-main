@@ -1,3 +1,8 @@
+---
+title: "Design a Video Streaming Platform — YouTube/Netflix Scale (System Design)"
+description: "Design a video streaming platform like YouTube or Netflix — system design interview covering HLS/DASH adaptive bitrate, CDN distribution, transcoding pipelines, recommendation systems, and serving 1.9B users / 15% of global internet traffic."
+---
+
 # Video Streaming Platform (YouTube / Netflix)
 
 !!! danger "Real Incident: YouTube Global Outage, October 16, 2018"

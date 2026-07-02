@@ -1,3 +1,8 @@
+---
+title: "Java Reference Types (Strong, Soft, Weak, Phantom) — Java Interview Guide (2026)"
+description: "Java's GC doesn't just ask \"is this object reachable?\" — it asks \"HOW is it reachable?\" The reference type determines the object's survival priority..."
+---
+
 # Java Reference Types (Strong, Soft, Weak, Phantom)
 
 > **Understanding reference types is the difference between an app that gracefully handles memory pressure and one that OOMs in production at 3 AM.**

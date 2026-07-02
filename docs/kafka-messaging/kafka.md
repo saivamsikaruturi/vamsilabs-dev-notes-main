@@ -1,4 +1,5 @@
 ---
+title: "Apache Kafka (2026)"
 description: "Apache Kafka tutorial — topics, partitions, consumer groups, exactly-once semantics, and building event-driven architectures for high-throughput systems."
 ---
 

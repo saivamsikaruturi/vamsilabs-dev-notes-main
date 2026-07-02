@@ -1,4 +1,5 @@
 ---
+title: "Saga Design Pattern — Microservices Interview (2026)"
 description: "Saga pattern for microservices — orchestration vs choreography, state machines, crash recovery, compensating transaction failures, isolation problems, and production-ready implementations with Temporal.io."
 ---
 

@@ -1,4 +1,5 @@
 ---
+title: "Career Strategy for Java Backend Engineers — FAANG Interview (2026)"
 description: "Complete career strategy guide for Java developers. Resume writing, salary negotiation, interview day tips, and career roadmaps for 2-10+ years experience."
 ---
 

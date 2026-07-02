@@ -1,3 +1,8 @@
+---
+title: "Marker Interfaces vs Annotations — Java Interview Guide (2026)"
+description: "A marker interface is an empty interface (no methods, no fields) that signals a capability or contract to the JVM, compiler, or framework. Classes that..."
+---
+
 # Marker Interfaces vs Annotations
 
 > **"A marker interface defines a type that is implemented by instances of the marked class; marker annotations do not." — Joshua Bloch, Effective Java Item 41**

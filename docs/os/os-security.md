@@ -1,3 +1,8 @@
+---
+title: "OS Security & Endpoint Protection — Operating Systems (2026)"
+description: "How operating systems enforce security — and how security products like Microsoft Defender leverage OS primitives to detect, prevent, and respond to..."
+---
+
 # OS Security & Endpoint Protection
 
 How operating systems enforce security — and how security products like Microsoft Defender leverage OS primitives to detect, prevent, and respond to threats.

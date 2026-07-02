@@ -1,4 +1,5 @@
 ---
+title: "Domain-Driven Design (DDD) — Microservices Interview (2026)"
 description: "Domain-Driven Design (DDD) interview guide. Bounded contexts, aggregates, entities, value objects, event sourcing, and how DDD maps to microservices architecture."
 ---
 

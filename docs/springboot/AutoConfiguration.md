@@ -1,3 +1,8 @@
+---
+title: "Spring Boot Auto-Configuration (2026)"
+description: "You add spring-boot-starter-data-jpa to your pom.xml, and suddenly you have a DataSource, an EntityManagerFactory, and transaction management — all..."
+---
+
 # Spring Boot Auto-Configuration
 
 You add `spring-boot-starter-data-jpa` to your `pom.xml`, and suddenly you have a `DataSource`, an `EntityManagerFactory`, and transaction management — all without writing a single line of config. Magic? No. Here's exactly what happens under the hood, why it exists, and how to master it for interviews and production systems.

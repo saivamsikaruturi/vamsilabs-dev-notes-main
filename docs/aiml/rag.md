@@ -1,3 +1,8 @@
+---
+title: "RAG & Vector Databases — AI/ML for Engineers (2026)"
+description: "RAG solves all three. Think of it as giving the AI an open-book exam instead of relying on memorization."
+---
+
 # RAG & Vector Databases
 
 ## Why RAG Exists

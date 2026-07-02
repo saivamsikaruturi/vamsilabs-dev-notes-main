@@ -1,4 +1,5 @@
 ---
+title: "Java Scenario-Based Interview Questions (2026)"
 description: "Scenario-based Java interview questions covering multithreading, OOP design, and real-world production problems. For 5+ years experienced developers preparing for FAANG."
 ---
 

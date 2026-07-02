@@ -1,3 +1,8 @@
+---
+title: "🔄 State Design Pattern — Design Patterns Java (2026)"
+description: "An object's behavior depends on its state, and it must change behavior at runtime:"
+---
+
 # 🔄 State Design Pattern
 
 > **Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.**

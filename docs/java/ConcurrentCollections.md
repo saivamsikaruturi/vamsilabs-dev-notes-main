@@ -1,3 +1,8 @@
+---
+title: "Concurrent Collections in Java — Java Interview Guide (2026)"
+description: "Regular collections (ArrayList, HashMap, HashSet) are not thread-safe. When multiple threads read and write to them simultaneously, you get corrupted..."
+---
+
 # Concurrent Collections in Java
 
 Regular collections (`ArrayList`, `HashMap`, `HashSet`) are **not thread-safe**. When multiple threads read and write to them simultaneously, you get corrupted data or `ConcurrentModificationException`. Concurrent collections solve this problem.

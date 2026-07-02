@@ -1,4 +1,5 @@
 ---
+title: "Message Queues & Event Streaming — System Design Interview (2026)"
 description: "Message queue system design — Kafka vs RabbitMQ, event streaming patterns, ordering guarantees, and building reliable async communication between services."
 ---
 

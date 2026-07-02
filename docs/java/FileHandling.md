@@ -1,3 +1,8 @@
+---
+title: "File Handling in Java — Java Interview Guide (2026)"
+description: "File handling means reading from and writing to files on your computer using Java. This is how programs save data permanently — even after the program..."
+---
+
 # File Handling in Java
 
 ## What is File Handling?

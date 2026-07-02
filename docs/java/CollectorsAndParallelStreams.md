@@ -1,4 +1,5 @@
 ---
+title: "Collectors & Parallel Streams — Java Interview Guide (2026)"
 description: "Master Java Stream API collectors and parallel streams — groupingBy, partitioning, custom collectors, and parallel performance tuning with examples."
 ---
 

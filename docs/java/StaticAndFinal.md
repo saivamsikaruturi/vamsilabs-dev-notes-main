@@ -1,3 +1,8 @@
+---
+title: "Static & Final Keywords in Java — Java Interview Guide (2026)"
+description: "Understanding static and final is fundamental to writing correct, performant, and thread-safe Java. Misusing these keywords is one of the most common..."
+---
+
 # Static & Final Keywords in Java
 
 Understanding `static` and `final` is fundamental to writing correct, performant, and thread-safe Java. Misusing these keywords is one of the most common sources of subtle production bugs.

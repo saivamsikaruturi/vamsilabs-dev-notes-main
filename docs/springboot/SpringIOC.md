@@ -1,5 +1,6 @@
 ---
-description: "Master Spring IoC and Dependency Injection for interviews — deep internals, real production code, and the exact answers senior engineers give."
+title: "IoC and Dependency Injection — Spring Boot Interview Guide (2026)"
+description: "IoC means you surrender control of when and how your objects are created. Instead of your OrderService doing new PaymentService(), a container creates..."
 ---
 
 # IoC and Dependency Injection

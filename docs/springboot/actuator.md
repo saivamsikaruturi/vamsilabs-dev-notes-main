@@ -1,4 +1,5 @@
 ---
+title: "Spring Boot Actuator (2026)"
 description: "Master Spring Boot Actuator — health checks, Micrometer metrics, Prometheus/Grafana monitoring, Kubernetes probes, custom endpoints, and production security. The complete guide with interview questions."
 ---
 

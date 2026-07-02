@@ -1,5 +1,6 @@
 ---
-description: "Learn how HashMap works internally in Java — hashing, bucket collisions, treeification, rehashing, and why interviewers love this topic."
+title: "HashMap Internals — Java Interview Guide (2026)"
+description: "subgraph TABLE[\"Node[] table (cap=16)\"] direction TB B0[\"[0] null\"] B1[\"[1] null\"] B2[\"[2] K:A → V:1\"] B3[\"[3] null\"] B4[\"[4] K:B → V:2\"] B5[\"[5] K:C →..."
 ---
 
 # HashMap Internals

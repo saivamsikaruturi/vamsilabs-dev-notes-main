@@ -1,3 +1,8 @@
+---
+title: "Collections Compared — Key Differences — Java Interview Guide (2026)"
+description: "Interviewers love asking \"what's the difference between X and Y?\" for Java collections. This page covers every important comparison you need to know."
+---
+
 # Collections Compared — Key Differences
 
 Interviewers love asking "what's the difference between X and Y?" for Java collections. This page covers every important comparison you need to know.

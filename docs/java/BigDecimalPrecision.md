@@ -1,3 +1,8 @@
+---
+title: "BigDecimal, BigInteger & Numeric Precision — Java Interview Guide (2026)"
+description: "// Real financial damage: double price = 0.10; double quantity = 3; System.out.println(price * quantity); // 0.30000000000000004 — overcharge!"
+---
+
 # BigDecimal, BigInteger & Numeric Precision
 
 > **"If you use `double` for money, you will lose money." — Joshua Bloch, Effective Java**

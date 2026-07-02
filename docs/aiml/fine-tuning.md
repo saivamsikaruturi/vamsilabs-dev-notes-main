@@ -1,3 +1,8 @@
+---
+title: "Fine-Tuning LLMs — AI/ML for Engineers (2026)"
+description: "Fine-tuning is teaching an old model new tricks. You take a pre-trained LLM and specialize it on your domain. Think of it like hiring a brilliant..."
+---
+
 # Fine-Tuning LLMs
 
 Fine-tuning is teaching an old model new tricks. You take a pre-trained LLM and specialize it on your domain. Think of it like hiring a brilliant generalist and giving them domain-specific training.

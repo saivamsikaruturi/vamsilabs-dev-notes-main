@@ -1,3 +1,8 @@
+---
+title: "🔤 Interpreter Design Pattern — Design Patterns Java (2026)"
+description: "EqualsExpression ..|> Expression GreaterThanExpression ..|> Expression ContainsExpression ..|> Expression AndExpression ..|> Expression OrExpression..."
+---
+
 # 🔤 Interpreter Design Pattern
 
 > **Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences in the language.**

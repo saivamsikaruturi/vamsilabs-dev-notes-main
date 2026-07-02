@@ -1,3 +1,8 @@
+---
+title: "HTTP Clients: RestTemplate vs WebClient vs RestClient — Spring Boot Interview Guide (2026)"
+description: "Root cause: Synchronous blocking + finite thread pool + slow downstream = total service unavailability."
+---
+
 # HTTP Clients: RestTemplate vs WebClient vs RestClient
 
 > "The right HTTP client is the one that matches your application's concurrency model. Choose wrong, and you'll learn about thread pool exhaustion at 3 AM."

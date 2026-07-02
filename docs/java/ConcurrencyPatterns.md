@@ -1,3 +1,8 @@
+---
+title: "Concurrency Patterns & Advanced Threading — Java Interview Guide (2026)"
+description: "Java concurrency goes far beyond synchronized and Thread.start(). Production systems at scale rely on battle-tested concurrency patterns to coordinate..."
+---
+
 # Concurrency Patterns & Advanced Threading
 
 Java concurrency goes far beyond `synchronized` and `Thread.start()`. Production systems at scale rely on **battle-tested concurrency patterns** to coordinate threads safely, maximize throughput, and avoid subtle bugs. This page covers every major concurrency pattern you will encounter in senior-level interviews and real-world distributed systems.

@@ -1,3 +1,8 @@
+---
+title: "Pass-by-Value in Java — Java Interview Guide (2026)"
+description: "subgraph HEAP[\"Heap\"] direction TB H1[\"Dog: 'Rex'@ 0x1234\"] end"
+---
+
 # Pass-by-Value in Java
 
 > "Java is **ALWAYS** pass-by-value. Period. The confusion is about **WHAT** is passed."

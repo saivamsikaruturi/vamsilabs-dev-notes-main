@@ -1,3 +1,8 @@
+---
+title: "this and super Keywords in Java — Java Interview Guide (2026)"
+description: "These two keywords control how you reference the current object and the parent class. They're fundamental to understanding inheritance, constructor..."
+---
+
 # `this` and `super` Keywords in Java
 
 These two keywords control how you reference the **current object** and the **parent class**. They're fundamental to understanding inheritance, constructor chaining, and method overriding.

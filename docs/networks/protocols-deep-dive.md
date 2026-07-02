@@ -1,3 +1,8 @@
+---
+title: "Network Protocols Deep Dive — Networking (2026)"
+description: "Production-level understanding of protocols you'll work with daily in network security product development."
+---
+
 # Network Protocols Deep Dive
 
 Production-level understanding of protocols you'll work with daily in network security product development.

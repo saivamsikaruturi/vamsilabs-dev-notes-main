@@ -1,3 +1,8 @@
+---
+title: "Iterator & Iterable — Fail-Fast vs Fail-Safe — Java Interview Guide (2026)"
+description: "Any class implementing Iterable can be used with the enhanced for-loop (for-each)."
+---
+
 # Iterator & Iterable — Fail-Fast vs Fail-Safe
 
 !!! danger "Production War Story"

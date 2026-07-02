@@ -1,3 +1,8 @@
+---
+title: "Method Security & OAuth2 — Spring Boot Interview Guide (2026)"
+description: "Evaluates a SpEL expression before the method runs. If the expression returns false, an AccessDeniedException is thrown."
+---
+
 # Method Security & OAuth2
 
 > "URL-based security tells you *where* the gate is; method security tells you *who* is allowed through each door inside the building."

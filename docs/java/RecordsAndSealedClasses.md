@@ -1,3 +1,8 @@
+---
+title: "Records & Sealed Classes — Java Interview Guide (2026)"
+description: "subgraph RECORD[\"Java Record\"] direction TB R1[\"Components\"] R2[\"All generated\"] R3[\"Immutable\"] R4[\"1-3 lines\"] end"
+---
+
 # Records & Sealed Classes
 
 > **"Records and sealed classes together give Java what Kotlin has had for years — but with the JVM's full type safety at compile time." — Brian Goetz, Java Language Architect**

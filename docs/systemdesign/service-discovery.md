@@ -1,3 +1,8 @@
+---
+title: "Service Discovery — System Design Interview (2026)"
+description: "Any microservices design triggers: \"How does Service A find Service B?\" This appears in:"
+---
+
 # Service Discovery
 
 !!! danger "Real Incident: Netflix AWS Outage, 2012"

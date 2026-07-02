@@ -1,3 +1,8 @@
+---
+title: "🗃️ Database Migrations with Flyway & Liquibase — Spring Boot Interview Guide (2026)"
+description: "subgraph DB[\"Database State\"] Current[\"Current schema =V1 + V2 + V3 + V4applied in order\"] end"
+---
+
 # 🗃️ Database Migrations with Flyway & Liquibase
 
 > **Version control your database schema — every change is tracked, reproducible, and deployable just like application code.**

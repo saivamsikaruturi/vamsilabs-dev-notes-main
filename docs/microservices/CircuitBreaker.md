@@ -1,4 +1,5 @@
 ---
+title: "Circuit Breaker Pattern — Microservices Interview (2026)"
 description: "Circuit Breaker Pattern — the definitive guide to preventing cascading failures in microservices with Resilience4j, bulkhead isolation, rate limiting, fallback strategies, and production tuning."
 ---
 

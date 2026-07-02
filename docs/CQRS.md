@@ -1,3 +1,8 @@
+---
+title: "CQRS (Command Query Responsibility Segregation) — System Design (2026)"
+description: "In a traditional CRUD architecture, the same data model handles both reads and writes. This works for simple applications but breaks down when:"
+---
+
 # CQRS (Command Query Responsibility Segregation)
 
 !!! tip "Why CQRS Appears in System Design Interviews"

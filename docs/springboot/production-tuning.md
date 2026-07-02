@@ -1,3 +1,8 @@
+---
+title: "Production Performance Tuning — Spring Boot Interview Guide (2026)"
+description: "subgraph Pool[\"HikariCP Pool (max=10)\"] C1[\"Conn 1 (active)\"] & C2[\"Conn 2 (active)\"] & C3[\"Conn 3 (idle)\"] end"
+---
+
 # Production Performance Tuning
 
 > **The difference between "works in dev" and "survives Black Friday" — real numbers, real formulas, real configs.**

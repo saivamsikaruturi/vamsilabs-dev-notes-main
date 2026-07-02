@@ -1,3 +1,8 @@
+---
+title: "Types of Dependency Injection in Spring — Spring Boot Interview Guide (2026)"
+description: "There are 3 ways to inject dependencies in Spring. One of them is recommended by the Spring team. One is acceptable in specific cases. And one... the..."
+---
+
 # Types of Dependency Injection in Spring
 
 There are 3 ways to inject dependencies in Spring. One of them is recommended by the Spring team. One is acceptable in specific cases. And one... the Spring team themselves called "evil." Let me explain why.

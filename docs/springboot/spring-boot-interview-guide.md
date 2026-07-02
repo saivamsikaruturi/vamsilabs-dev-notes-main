@@ -1,4 +1,5 @@
 ---
+title: "Complete Spring Boot Interview Guide — From Basics to Production (2026)"
 description: "Complete Spring Boot interview guide for senior developers. Covers IoC, auto-configuration, JPA, Security, transactions, microservices patterns, and 50+ must-know questions for FAANG interviews."
 ---
 

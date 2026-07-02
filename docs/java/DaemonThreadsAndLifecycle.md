@@ -1,3 +1,8 @@
+---
+title: "Daemon Threads & Thread Lifecycle — Java Interview Guide (2026)"
+description: "Every Java thread passes through a well-defined set of states managed by the JVM and OS scheduler."
+---
+
 # Daemon Threads & Thread Lifecycle
 
 !!! danger "The Silent Data Corruptor"

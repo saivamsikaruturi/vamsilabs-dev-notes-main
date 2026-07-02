@@ -1,3 +1,8 @@
+---
+title: ":gift: Decorator Design Pattern — Design Patterns Java (2026)"
+description: "PlainPizza ..|> Pizza : implements PizzaDecorator ..|> Pizza : implements PizzaDecorator o-- Pizza : wraps CheeseDecorator --|> PizzaDecorator :..."
+---
+
 # :gift: Decorator Design Pattern
 
 > **Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.**

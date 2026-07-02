@@ -1,4 +1,5 @@
 ---
+title: "Weekly System Design Challenges (2026)"
 description: "Weekly system design challenges with problem statements, constraints, hints, and solution outlines. Practice designing URL shorteners, rate limiters, chat apps, and more."
 ---
 

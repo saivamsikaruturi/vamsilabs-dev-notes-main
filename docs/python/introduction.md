@@ -1,3 +1,8 @@
+---
+title: "Python — Complete Guide for Java Developers (2026)"
+description: "A comprehensive Python reference designed for experienced Java developers. Every concept is mapped to its Java equivalent so you can leverage what you..."
+---
+
 # Python — Complete Guide for Java Developers
 
 A comprehensive Python reference designed for experienced Java developers. Every concept is mapped to its Java equivalent so you can leverage what you already know.

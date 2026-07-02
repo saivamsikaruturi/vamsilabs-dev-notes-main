@@ -1,3 +1,8 @@
+---
+title: "🏗️ Microservices Design Principles — Microservices Interview (2026)"
+description: "The industry standard for building cloud-native microservices:"
+---
+
 # 🏗️ Microservices Design Principles
 
 > **The 12-Factor App methodology, Domain-Driven Design boundaries, and key principles that separate production-grade microservices from toy projects.**

@@ -1,3 +1,8 @@
+---
+title: "Thread Pools & Executors — Java Interview Guide (2026)"
+description: "Creating threads manually for every task is the naive approach — and it breaks down at scale."
+---
+
 # Thread Pools & Executors
 
 !!! tip "Why This Matters in Interviews"

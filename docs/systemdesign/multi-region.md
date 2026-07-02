@@ -1,3 +1,8 @@
+---
+title: "Multi-Region Architecture — System Design Interview (2026)"
+description: "Any system design targeting 99.99%+ availability or serving global users needs multi-region discussion. Interviewers want to hear:"
+---
+
 # Multi-Region Architecture
 
 !!! danger "Real Incident: AWS US-EAST-1 Outage (December 2021)"

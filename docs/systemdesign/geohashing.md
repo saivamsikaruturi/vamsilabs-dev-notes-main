@@ -1,3 +1,8 @@
+---
+title: "Geohashing & Spatial Indexing — System Design Interview (2026)"
+description: "Any system involving location — ride-sharing, food delivery, dating apps, store locators, real-time tracking — requires spatial indexing. Interviewers..."
+---
+
 # Geohashing & Spatial Indexing
 
 !!! danger "Real Incident: Uber Driver Matching at Scale"

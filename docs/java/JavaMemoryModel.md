@@ -1,3 +1,8 @@
+---
+title: "Java Memory Model (JMM) — Java Interview Guide (2026)"
+description: "The JMM (defined in JSR-133, Java 5+) is a contract between the programmer, the JVM, and the hardware. It specifies:"
+---
+
 # Java Memory Model (JMM)
 
 !!! tip "Why JMM is a FAANG Interview Favorite"

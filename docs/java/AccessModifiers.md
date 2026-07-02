@@ -1,3 +1,8 @@
+---
+title: "Access Modifiers in Java — Java Interview Guide (2026)"
+description: "Access modifiers control who can see and use your classes, methods, and variables. Getting this wrong leads to broken encapsulation, security issues,..."
+---
+
 # Access Modifiers in Java
 
 Access modifiers control **who can see and use** your classes, methods, and variables. Getting this wrong leads to broken encapsulation, security issues, and tightly coupled code.

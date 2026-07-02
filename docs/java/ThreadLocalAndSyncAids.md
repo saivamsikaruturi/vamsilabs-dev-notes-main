@@ -1,3 +1,8 @@
+---
+title: "ThreadLocal & Synchronization Aids — Java Interview Guide (2026)"
+description: "subgraph Coordination[\"Coordination Aids\"] CDL[\"CountDownLatchWait for N\"] CB[\"CyclicBarrierMeet then go\"] SEM[\"SemaphoreN permits\"]..."
+---
+
 # ThreadLocal & Synchronization Aids
 
 > "Shared mutable state is the root of all evil in concurrent programming. ThreadLocal eliminates sharing; synchronization aids coordinate it."

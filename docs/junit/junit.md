@@ -1,3 +1,8 @@
+---
+title: "Testing in Java — JUnit 5, Mockito & TDD (2026)"
+description: "The testing pyramid guides how to distribute test effort across different levels. Unit tests form the base — they are fast, isolated, and numerous...."
+---
+
 # Testing in Java — JUnit 5, Mockito & TDD
 
 !!! tip "Why Testing Knowledge Matters for Senior Roles"

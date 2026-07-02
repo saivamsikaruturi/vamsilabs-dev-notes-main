@@ -1,3 +1,8 @@
+---
+title: "Low-Level Design — Complete Roadmap (2026)"
+description: "The solutions show the END state. The thought process matters more: \"I identified that parking spot selection is an algorithm that could change →..."
+---
+
 # Low-Level Design — Complete Roadmap
 
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">

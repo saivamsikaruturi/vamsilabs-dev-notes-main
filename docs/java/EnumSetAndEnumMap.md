@@ -1,3 +1,8 @@
+---
+title: "EnumSet & EnumMap — Internals and Usage — Java Interview Guide (2026)"
+description: "EnumSet is an abstract class with two concrete implementations chosen at creation time based on the number of enum constants:"
+---
+
 # EnumSet & EnumMap — Internals and Usage
 
 > **"Use EnumSet instead of bit fields." — Joshua Bloch, Effective Java Item 36**

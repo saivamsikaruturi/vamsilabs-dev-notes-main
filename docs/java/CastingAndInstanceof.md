@@ -1,3 +1,8 @@
+---
+title: "Type Casting, instanceof & Type Checking in Java — Java Interview Guide (2026)"
+description: "Upcasting moves up the hierarchy (subclass to superclass). The compiler does it implicitly because a Dog IS-A Animal — no information is lost."
+---
+
 # Type Casting, instanceof & Type Checking in Java
 
 > **"Every ClassCastException is a design smell — it means your type system told you something at compile time that you chose to ignore at runtime."**

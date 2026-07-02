@@ -1,4 +1,5 @@
 ---
+title: "Spring WebFlux & Reactive Programming — Spring Boot Interview Guide (2026)"
 description: "Learn Spring WebFlux reactive programming — Mono, Flux, non-blocking I/O, backpressure, and when to choose WebFlux over Spring MVC for microservices."
 ---
 

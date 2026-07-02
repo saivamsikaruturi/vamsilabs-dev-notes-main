@@ -1,3 +1,8 @@
+---
+title: "Java Agents & Instrumentation — Java Interview Guide (2026)"
+description: "Ever wonder how Spring \"magically\" creates proxies, Hibernate lazy-loads entities without you writing proxy code, Mockito generates mocks at runtime,..."
+---
+
 # Java Agents & Instrumentation
 
 Ever wonder how Spring "magically" creates proxies, Hibernate lazy-loads entities without you writing proxy code, Mockito generates mocks at runtime, or APM tools like Datadog instrument your application without a single code change? The answer is **Java Agents and bytecode manipulation**. Understanding this mechanism demystifies the "magic" behind virtually every serious Java framework.

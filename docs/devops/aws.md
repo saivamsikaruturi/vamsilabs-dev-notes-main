@@ -1,3 +1,8 @@
+---
+title: "AWS (Amazon Web Services) for Backend Engineers — DevOps Guide (2026)"
+description: "Virtual servers in the cloud. You pick instance type, OS, and networking."
+---
+
 # AWS (Amazon Web Services) for Backend Engineers
 
 > **A comprehensive reference of core AWS services, architecture patterns, and interview-ready knowledge for Java/backend engineers targeting FAANG roles.**

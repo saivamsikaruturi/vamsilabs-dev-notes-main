@@ -1,3 +1,8 @@
+---
+title: "Gradle — Modern Build Tool for Java — Java Interview Guide (2026)"
+description: "Gradle is a flexible, fast build automation tool used by Android, Spring Boot, and many large-scale Java projects. It uses Groovy or Kotlin DSL instead..."
+---
+
 # Gradle — Modern Build Tool for Java
 
 Gradle is a **flexible, fast build automation tool** used by Android, Spring Boot, and many large-scale Java projects. It uses **Groovy or Kotlin DSL** instead of XML (unlike Maven).

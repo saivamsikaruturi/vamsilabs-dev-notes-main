@@ -1,3 +1,8 @@
+---
+title: "ConcurrentHashMap Internals — Java Interview Guide (2026)"
+description: "In Java 7, ConcurrentHashMap used a Segment array. Each Segment is essentially a mini-HashMap with its own ReentrantLock. The default was 16 segments,..."
+---
+
 # ConcurrentHashMap Internals
 
 > **"ConcurrentHashMap is the most important class in java.util.concurrent — if you understand it, you understand modern lock-free design." — Doug Lea**

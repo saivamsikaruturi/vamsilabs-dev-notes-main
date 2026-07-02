@@ -1,4 +1,5 @@
 ---
+title: "Distributed Cache (Redis / Memcached) — System Design Interview (2026)"
 description: "Design a distributed cache like Redis or Memcached — system design interview walkthrough covering consistent hashing, eviction policies, replication, cache patterns, and scaling to 10M reads/sec across 100TB of data."
 ---
 

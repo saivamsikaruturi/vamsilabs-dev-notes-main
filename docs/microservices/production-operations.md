@@ -1,3 +1,8 @@
+---
+title: "Production Operations & Reliability — Microservices Interview (2026)"
+description: "subgraph BlueGreen[\"Blue-Green\"] B1[\"v1 (Blue) ✅\"] -.->|\"switch traffic\"| B2[\"v2 (Green) ✅\"] end"
+---
+
 # Production Operations & Reliability
 
 > **What separates "it works on my machine" from "it handles 10K requests/second at 3am on Black Friday" — the operations knowledge that distinguishes senior engineers.**

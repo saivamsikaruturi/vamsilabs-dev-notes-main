@@ -1,3 +1,8 @@
+---
+title: "🚪 API Gateway Patterns (Advanced) — Microservices Interview (2026)"
+description: "subgraph GW_Internal[\"Gateway Responsibilities\"] Auth[\"🔐 Authentication\"] RL[\"⏱️ Rate Limiting\"] LB[\"⚖️ Load Balancing\"] CB[\"🔌 Circuit Breaking\"]..."
+---
+
 # 🚪 API Gateway Patterns (Advanced)
 
 > **Beyond basic routing — rate limiting, authentication, request aggregation, and production-grade gateway configuration with Spring Cloud Gateway.**

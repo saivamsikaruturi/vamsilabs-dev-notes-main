@@ -1,4 +1,5 @@
 ---
+title: "SQL — The Complete Interview Guide (2026)"
 description: "Complete SQL interview guide covering joins, window functions, query optimization, indexing internals, transactions, and 30+ real-world scenario questions for senior engineers."
 ---
 

@@ -1,3 +1,8 @@
+---
+title: "Annotations in Java — Java Interview Guide (2026)"
+description: "Annotations are metadata attached to code elements (classes, methods, fields, parameters). They don't change what the code does directly, but they tell..."
+---
+
 # Annotations in Java
 
 Annotations are **metadata** attached to code elements (classes, methods, fields, parameters). They don't change what the code does directly, but they tell the compiler, frameworks, and tools **how to process** the code.

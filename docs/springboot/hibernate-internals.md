@@ -1,4 +1,5 @@
 ---
+title: "Hibernate & JPA Internals — Deep Dive — Spring Boot Interview Guide (2026)"
 description: "Deep dive into Hibernate & JPA internals — persistence context, dirty checking, proxies, L2 cache, equals/hashCode landmine, batch processing, collection gotchas, action queue ordering, and soft deletes."
 ---
 

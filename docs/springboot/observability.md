@@ -1,3 +1,8 @@
+---
+title: "Spring Boot Observability (2026)"
+description: "Plain text logs (INFO: order processed) are impossible to query at scale. Structured JSON logs let you filter, aggregate, and correlate in Loki,..."
+---
+
 # Spring Boot Observability
 
 > **Logging, Metrics, and Distributed Tracing — the three pillars that let you understand what your system is doing in production without attaching a debugger.**

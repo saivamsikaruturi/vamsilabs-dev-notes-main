@@ -1,4 +1,5 @@
 ---
+title: "Arrays & Hashing — Coding Interview (2026)"
 description: "Arrays & Hashing — the most foundational FAANG interview pattern. Complete guide with HashMap internals, prefix sums, reusable Java templates, solved LeetCode walkthroughs, and pattern recognition for Two Sum, Group Anagrams, Subarray Sum Equals K."
 ---
 

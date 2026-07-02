@@ -1,4 +1,5 @@
 ---
+title: "Load Balancing — System Design (2026)"
 description: "Load balancer system design — L4 vs L7 balancing, algorithms (round robin, least connections, consistent hashing), health checks, and high availability patterns."
 ---
 

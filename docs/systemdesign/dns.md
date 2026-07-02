@@ -1,4 +1,5 @@
 ---
+title: "DNS Deep Dive — System Design Interview (2026)"
 description: "DNS system design deep dive — resolution process, caching hierarchy, record types, and how DNS infrastructure scales to handle billions of queries daily."
 ---
 

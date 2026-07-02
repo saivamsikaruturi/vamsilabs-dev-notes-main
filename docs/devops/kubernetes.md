@@ -1,4 +1,5 @@
 ---
+title: "Kubernetes (K8s) — DevOps Guide (2026)"
 description: "Kubernetes tutorial — pods, deployments, services, networking, RBAC, Helm charts, and production operations for senior DevOps and SRE interview preparation."
 ---
 

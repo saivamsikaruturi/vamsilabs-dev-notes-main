@@ -1,3 +1,8 @@
+---
+title: "Design Patterns in Spring Boot (2026)"
+description: "What it is: One instance per container. All dependents share the same object reference."
+---
+
 # Design Patterns in Spring Boot
 
 > Interview-ready reference. Each pattern: what it is, how Spring uses it internally, when to apply it yourself, code, and gotchas.

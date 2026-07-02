@@ -1,3 +1,8 @@
+---
+title: "AI Agents & Tool Use — AI/ML for Engineers (2026)"
+description: "Frameworks mentioned here: LangChain, CrewAI, AutoGen, Claude's tool use. You don't need to know them beforehand — this page explains the concepts, not..."
+---
+
 # AI Agents & Tool Use
 
 > **From chatbot to autonomous systems — how LLMs become agents that think, plan, use tools, and get things done.**

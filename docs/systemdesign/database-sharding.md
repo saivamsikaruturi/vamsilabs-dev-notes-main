@@ -1,4 +1,5 @@
 ---
+title: "Database Sharding — System Design Interview (2026)"
 description: "Complete guide to database sharding — horizontal partitioning strategies, shard key selection, rebalancing, and real-world examples from Instagram and Discord."
 ---
 

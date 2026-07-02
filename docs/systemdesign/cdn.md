@@ -1,4 +1,5 @@
 ---
+title: "CDN (Content Delivery Network) — System Design Interview (2026)"
 description: "CDN system design explained — edge caching, cache invalidation, pull vs push CDNs, and how content delivery networks handle millions of requests per second."
 ---
 

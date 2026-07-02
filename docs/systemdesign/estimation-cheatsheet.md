@@ -1,3 +1,8 @@
+---
+title: "System Design Estimation Cheat Sheet (2026)"
+description: "Every system design answer should start with: \"Let me estimate the scale first.\""
+---
+
 # System Design Estimation Cheat Sheet
 
 !!! danger "Real Incident: Amazon EBS Outage, 2012"

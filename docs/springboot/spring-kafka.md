@@ -1,3 +1,8 @@
+---
+title: "Spring Kafka Integration — Spring Boot Interview Guide (2026)"
+description: "subgraph K[\"Kafka Cluster\"] direction TB T[\"Topic: orders\"] P0[\"Partition 0\"] P1[\"Partition 1\"] P2[\"Partition 2\"] T --> P0 T --> P1 T --> P2 end"
+---
+
 # Spring Kafka Integration
 
 > **Building event-driven microservices with Apache Kafka and Spring Boot — producers, consumers, error handling, and exactly-once delivery.**

@@ -1,3 +1,8 @@
+---
+title: "📨 Async Communication with Kafka — Microservices Interview (2026)"
+description: "subgraph CG[\"Consumer Group A\"] C1{{\"Consumer 1\"}} C2{{\"Consumer 2\"}} end"
+---
+
 # 📨 Async Communication with Kafka
 
 > **Decouple microservices using event-driven architecture — services communicate through events without waiting for responses.**

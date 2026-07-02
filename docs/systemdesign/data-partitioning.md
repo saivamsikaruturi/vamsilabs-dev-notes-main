@@ -1,3 +1,8 @@
+---
+title: "Data Partitioning — System Design Interview (2026)"
+description: "Partitioning is more fundamental than sharding — it's the STRATEGY, while sharding is one implementation. It appears when:"
+---
+
 # Data Partitioning
 
 !!! danger "Real Incident: Uber's Schemaless, 2014"

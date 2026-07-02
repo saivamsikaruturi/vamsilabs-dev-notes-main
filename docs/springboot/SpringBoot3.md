@@ -1,3 +1,8 @@
+---
+title: "Spring Boot 3 & Spring Framework 6 (2026)"
+description: "Spring Boot 3 requires Java 17 minimum. No negotiation. This unlocks language features that Spring itself now uses internally."
+---
+
 # Spring Boot 3 & Spring Framework 6
 
 > The biggest Spring upgrade in a decade. Java 17 minimum, Jakarta EE namespace, native images, observability baked in, virtual threads.

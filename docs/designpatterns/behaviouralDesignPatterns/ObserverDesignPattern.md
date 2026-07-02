@@ -1,3 +1,8 @@
+---
+title: "👁️ Observer Design Pattern — Design Patterns Java (2026)"
+description: "You have an object whose state changes matter to other objects, but:"
+---
+
 # 👁️ Observer Design Pattern
 
 > **Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.**

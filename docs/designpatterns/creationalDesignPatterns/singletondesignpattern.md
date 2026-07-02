@@ -1,3 +1,8 @@
+---
+title: "🎯 Singleton Design Pattern — Design Patterns Java (2026)"
+description: "In many applications, certain objects should exist only once:"
+---
+
 # 🎯 Singleton Design Pattern
 
 > **Ensure a class has only one instance and provide a global point of access to it.**

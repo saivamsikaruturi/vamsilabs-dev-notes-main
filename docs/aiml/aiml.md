@@ -1,3 +1,8 @@
+---
+title: "AI & Machine Learning — AI/ML for Engineers (2026)"
+description: "Think of it like cooking: AI is the kitchen, ML is learning recipes by tasting food, Deep Learning is a sous chef with incredible memory, GenAI is a..."
+---
+
 # AI & Machine Learning
 
 > **From linear regression to GPT — everything a software engineer needs to know about AI/ML, explained so a fresher gets it and a 10-year vet finds value.**

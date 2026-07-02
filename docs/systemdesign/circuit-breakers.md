@@ -1,3 +1,8 @@
+---
+title: "Circuit Breakers & Bulkheads — System Design Interview (2026)"
+description: "Any microservices design has dependencies. Interviewers test:"
+---
+
 # Circuit Breakers & Bulkheads
 
 !!! danger "Real Incident: Netflix Bookmark Service, 2012"

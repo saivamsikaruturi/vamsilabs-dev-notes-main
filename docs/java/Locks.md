@@ -1,3 +1,8 @@
+---
+title: "Locks in Java — The Complete Story — Java Interview Guide (2026)"
+description: "Follow Priya, a backend engineer at BookMyShow, as she discovers every locking mechanism in Java while building a ticket booking system that handles..."
+---
+
 # Locks in Java — The Complete Story
 
 *Follow Priya, a backend engineer at BookMyShow, as she discovers every locking mechanism in Java while building a ticket booking system that handles millions of concurrent users.*

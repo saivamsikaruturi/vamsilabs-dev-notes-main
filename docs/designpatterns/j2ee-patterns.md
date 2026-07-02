@@ -1,3 +1,8 @@
+---
+title: "J2EE Design Patterns — Enterprise Architecture Patterns (2026)"
+description: "subgraph BT[\"Business Tier\"] BD[\"Business Delegate\"] SL[\"Service Locator\"] SF[\"Session Facade\"] TO[\"Transfer Object\"] end"
+---
+
 # J2EE Design Patterns — Enterprise Architecture Patterns
 
 > **Why This Still Matters:** Every Spring annotation you use (`@Controller`, `@Service`, `@Repository`) maps directly to a J2EE pattern. Understanding the original patterns reveals why Spring works the way it does — and these patterns still appear in senior-level and architect interviews.

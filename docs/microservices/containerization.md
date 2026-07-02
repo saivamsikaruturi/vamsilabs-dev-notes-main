@@ -1,3 +1,8 @@
+---
+title: "🐳 Containerizing Microservices — Microservices Interview (2026)"
+description: "EXPOSE 8080 ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"] ```"
+---
+
 # 🐳 Containerizing Microservices
 
 > **Package, deploy, and orchestrate microservices using Docker and Kubernetes for consistent, scalable environments.**

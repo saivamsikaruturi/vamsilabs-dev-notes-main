@@ -1,4 +1,5 @@
 ---
+title: "Distributed Caching — System Design (2026)"
 description: "Distributed caching deep dive — Redis vs Memcached, cache-aside patterns, eviction policies, cache stampede prevention, and scaling to millions of requests."
 ---
 

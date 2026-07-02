@@ -1,3 +1,8 @@
+---
+title: "Interfaces & Abstract Classes in Java — Java Interview Guide (2026)"
+description: "Knowing when to use which is one of the most common interview questions. Both define contracts, but they serve different purposes."
+---
+
 # Interfaces & Abstract Classes in Java
 
 Knowing **when to use which** is one of the most common interview questions. Both define contracts, but they serve different purposes.

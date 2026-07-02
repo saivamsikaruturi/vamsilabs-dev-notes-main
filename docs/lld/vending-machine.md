@@ -1,4 +1,5 @@
 ---
+title: "Design a Vending Machine — Low-Level Design Interview (2026)"
 description: "Design a Vending Machine — complete State Pattern low-level design with state diagrams, class diagrams, change calculation, Java implementation, and interview walkthrough."
 ---
 

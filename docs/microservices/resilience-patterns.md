@@ -1,3 +1,8 @@
+---
+title: "Microservices Resilience Patterns — Circuit Breaker, Retry, Bulkhead, Rate Limiter (Java)"
+description: "Master resilience patterns for FAANG microservices interviews — Retry, Circuit Breaker, Bulkhead, Rate Limiter, Timeout, Fallback. Resilience4j code, Istio sidecar comparison, real production patterns from Salesforce."
+---
+
 # 🛡️ Resilience Patterns for Microservices
 
 > **Build fault-tolerant distributed systems that degrade gracefully — retry, circuit break, bulkhead, rate limit, and combine patterns to survive partial failures.**

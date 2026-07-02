@@ -1,3 +1,8 @@
+---
+title: "Linux for Backend Engineers — DevOps Guide (2026)"
+description: "find /var/log -name \".log\" -mtime -7 # Logs modified in last 7 days find . -type f -size +100M # Files larger than 100MB find . -name \".java\" -exec..."
+---
+
 # Linux for Backend Engineers
 
 !!! tip "Why Linux Skills Matter"

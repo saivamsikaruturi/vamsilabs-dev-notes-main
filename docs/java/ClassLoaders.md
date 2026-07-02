@@ -1,3 +1,8 @@
+---
+title: "Java ClassLoaders — Deep Dive for Interviews (2026)"
+description: "ClassLoaders are the gatekeepers of the JVM. Every class you use -- from java.lang.String to your own UserService -- is loaded into memory by a..."
+---
+
 # Java ClassLoaders — Deep Dive for Interviews
 
 ClassLoaders are the gatekeepers of the JVM. Every class you use -- from `java.lang.String` to your own `UserService` -- is loaded into memory by a ClassLoader. Understanding how they work is critical for debugging `ClassNotFoundException`, `NoClassDefFoundError`, and classloading conflicts in frameworks like Spring, Tomcat, and OSGi. This topic bridges JVM internals, application servers, and modular architecture.

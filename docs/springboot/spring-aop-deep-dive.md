@@ -1,3 +1,8 @@
+---
+title: "Spring AOP Deep Dive — Pointcuts, Advice & Proxy Mechanics — Spring Boot Interview Guide (2026)"
+description: "Spring AOP creates proxies to intercept method calls. The proxy type determines what can be advised."
+---
+
 # Spring AOP Deep Dive — Pointcuts, Advice & Proxy Mechanics
 
 > **Production Incident:** A team added `@Transactional` to a method called internally within the same class. Transactions silently stopped working. No errors, no logs — just data corruption discovered 3 days later. Understanding proxy mechanics would have prevented this.

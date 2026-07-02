@@ -1,5 +1,6 @@
 ---
-description: "Design a notification system — push notifications, email, SMS delivery pipeline, deduplication, rate limiting, and priority queues at Facebook scale."
+title: "Notification System — System Design Interview (2026)"
+description: "Priority Queues · Channel Isolation · Bloom Filter Deduplication · Rate Limiting (Token Bucket) · Dead Letter Queue · Exponential Backoff with Jitter ·..."
 ---
 
 # Notification System

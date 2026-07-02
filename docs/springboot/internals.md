@@ -1,3 +1,8 @@
+---
+title: "Spring Boot Internals Deep Dive (2026)"
+description: "When you call SpringApplication.run(MyApp.class, args), here's the precise sequence:"
+---
+
 # Spring Boot Internals Deep Dive
 
 > **Understand what happens under the hood — from `SpringApplication.run()` to a fully running application serving requests.**

@@ -1,3 +1,8 @@
+---
+title: "Comparable vs Comparator in Java — Java Interview Guide (2026)"
+description: "Both are used for sorting objects, but they serve different purposes. This is one of the most frequently asked Collections interview questions."
+---
+
 # Comparable vs Comparator in Java
 
 Both are used for **sorting objects**, but they serve different purposes. This is one of the most frequently asked Collections interview questions.

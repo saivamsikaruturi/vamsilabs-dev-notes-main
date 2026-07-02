@@ -1,3 +1,8 @@
+---
+title: "SOLID Principles — The FAANG Interview Guide (2026)"
+description: "SOLID is not academic theory. It's the lens through which FAANG interviewers evaluate whether you can write production-grade, maintainable, extensible..."
+---
+
 # SOLID Principles — The FAANG Interview Guide
 
 > "Any fool can write code that a computer can understand. Good programmers write code that humans can understand." — Martin Fowler

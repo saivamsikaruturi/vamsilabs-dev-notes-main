@@ -1,3 +1,8 @@
+---
+title: "🚶 Visitor Design Pattern — Design Patterns Java (2026)"
+description: "Paragraph ..|> DocumentElement Image ..|> DocumentElement Table ..|> DocumentElement HtmlExportVisitor ..|> DocumentVisitor MarkdownExportVisitor ..|>..."
+---
+
 # 🚶 Visitor Design Pattern
 
 > **Represent an operation to be performed on the elements of an object structure. Visitor lets you define a new operation without changing the classes of the elements on which it operates.**

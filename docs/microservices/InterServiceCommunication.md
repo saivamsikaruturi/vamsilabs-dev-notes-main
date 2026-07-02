@@ -1,4 +1,5 @@
 ---
+title: "Inter-Service Communication — Microservices Interview (2026)"
 description: "Inter-service communication in microservices — sync vs async, Outbox pattern, delivery semantics, backpressure, poison pills, schema evolution, consumer rebalancing, and distributed tracing."
 ---
 

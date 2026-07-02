@@ -1,3 +1,8 @@
+---
+title: "PriorityQueue & Heap Internals — Java Interview Guide (2026)"
+description: "A heap is a complete binary tree stored in an array that satisfies the heap property:"
+---
+
 # PriorityQueue & Heap Internals
 
 > **Using a sorted list for top-K?** That costs O(n log n). A heap gives you O(n log k) — the difference between TLE and accepted on LeetCode. PriorityQueue is Java's heap, and it shows up in Dijkstra's, merge-K-sorted, median-finder, and scheduling problems.

@@ -1,3 +1,8 @@
+---
+title: "REST API Best Practices for Spring Boot (2026)"
+description: "The URL is your API's front door. Get it wrong and every consumer pays the price forever."
+---
+
 # REST API Best Practices for Spring Boot
 
 > I've reviewed 200+ API designs in code reviews. The same 10 mistakes keep showing up. Most engineers know REST "basics" but crack under pressure when asked "why PUT over PATCH?" or "how do you version a breaking change without downtime?" Let me walk you through what production-grade REST actually looks like.

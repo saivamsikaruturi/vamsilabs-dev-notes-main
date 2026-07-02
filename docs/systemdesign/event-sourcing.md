@@ -1,3 +1,8 @@
+---
+title: "Event Sourcing — System Design Interview (2026)"
+description: "Event sourcing appears in designs for financial systems, audit-heavy domains, and any system needing \"time travel.\" Interviewers want to hear:"
+---
+
 # Event Sourcing
 
 !!! danger "Real Incident: LMAX Exchange — 6 Million Transactions/Second on a Single Thread"

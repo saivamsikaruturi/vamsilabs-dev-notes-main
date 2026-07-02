@@ -1,3 +1,8 @@
+---
+title: "Reactive Streams & Reactive Programming in Java — Java Interview Guide (2026)"
+description: "Reactive programming is a paradigm for building non-blocking, asynchronous, event-driven systems that can handle high concurrency with minimal threads...."
+---
+
 # Reactive Streams & Reactive Programming in Java
 
 Reactive programming is a paradigm for building **non-blocking, asynchronous, event-driven** systems that can handle high concurrency with minimal threads. It has become essential for modern microservices, real-time data pipelines, and high-throughput APIs. This page covers the Reactive Manifesto, the Reactive Streams specification, Project Reactor, RxJava, and everything you need to ace reactive programming interviews.

@@ -1,4 +1,5 @@
 ---
+title: "OAuth 2.0 & OpenID Connect — Security Guide (2026)"
 description: "OAuth 2.0 and OpenID Connect explained — authorization code flow, PKCE, refresh tokens, and SSO implementation. Complete guide with sequence diagrams."
 ---
 

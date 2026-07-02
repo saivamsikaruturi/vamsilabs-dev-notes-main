@@ -1,4 +1,5 @@
 ---
+title: "Design a Rate Limiter — Low-Level Design Interview (2026)"
 description: "Design a Rate Limiter — complete low-level design with multiple algorithms (Token Bucket, Sliding Window), class diagrams, Java implementation, and interview walkthrough."
 ---
 

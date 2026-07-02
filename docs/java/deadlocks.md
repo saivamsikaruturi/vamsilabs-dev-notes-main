@@ -1,3 +1,8 @@
+---
+title: "Deadlocks in Java — Java Interview Guide (2026)"
+description: "A deadlock occurs when two or more threads are blocked forever, each waiting for the other to release a lock."
+---
+
 # Deadlocks in Java
 
 A deadlock occurs when **two or more threads are blocked forever**, each waiting for the other to release a lock.

@@ -1,3 +1,8 @@
+---
+title: "Unique ID Generation in Distributed Systems — System Design Interview (2026)"
+description: "private final long machineId; private long lastTimestamp = -1; private long sequence = 0;"
+---
+
 # Unique ID Generation in Distributed Systems
 
 > **Generate 10,000+ unique, sortable, non-colliding IDs per second across hundreds of servers — without any coordination.**

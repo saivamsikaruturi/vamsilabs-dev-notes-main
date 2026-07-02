@@ -1,3 +1,8 @@
+---
+title: "🕸️ Service Mesh (Istio & Sidecar Pattern) — Microservices Interview (2026)"
+description: "subgraph WithMesh[\"✅ With Service Mesh\"] A2[[\"Service A(business logic only)\"]] PA{{\"Sidecar Proxy(handles everything)\"}} B2[[\"Service B(business logic..."
+---
+
 # 🕸️ Service Mesh (Istio & Sidecar Pattern)
 
 > **Add observability, security, and traffic management to microservices without changing application code — using a transparent infrastructure layer.**

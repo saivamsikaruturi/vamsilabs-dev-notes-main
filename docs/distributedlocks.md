@@ -1,3 +1,8 @@
+---
+title: "Distributed Locks — System Design (2026)"
+description: "Distributed lock = a mechanism that ensures only ONE process across multiple servers can access a shared resource at a time."
+---
+
 # Distributed Locks
 
 !!! danger "Real Incident: Ticket Booking System, 2019"

@@ -1,3 +1,8 @@
+---
+title: "Replication — System Design Interview (2026)"
+description: "Every system design interview involves a database. The moment you say \"we need high availability\" or \"we need to scale reads,\" replication is the..."
+---
+
 # Replication
 
 !!! danger "Real Incident: GitLab Database Loss, 2017"

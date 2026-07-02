@@ -1,4 +1,5 @@
 ---
+title: "Exception Handling in Java — Java Interview Guide (2026)"
 description: "Complete guide to exception handling in Java — checked vs unchecked exceptions, try-with-resources, custom exceptions, and best practices for production code."
 ---
 

@@ -1,4 +1,5 @@
 ---
+title: "Design an LRU Cache — Low-Level Design Interview (2026)"
 description: "Design an LRU Cache — complete low-level design with HashMap + Doubly Linked List, O(1) operations, thread-safe implementation, LFU variant, and FAANG interview walkthrough."
 ---
 

@@ -1,3 +1,8 @@
+---
+title: "Spring Data Redis — Spring Boot Interview Guide (2026)"
+description: "Spring Data Redis supports two client libraries. Lettuce is the default since Spring Boot 2.x."
+---
+
 # Spring Data Redis
 
 > Your most popular cache key just expired. 10,000 requests simultaneously hit the database to rebuild it. The database buckles. This is a cache stampede — and Redis is both the cause and the cure.

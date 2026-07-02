@@ -1,3 +1,8 @@
+---
+title: "Transformers & Large Language Models — AI/ML for Engineers (2026)"
+description: "Before 2017, sequence modeling meant RNNs and LSTMs. They processed tokens one-by-one, left to right. Like reading a book by looking at one word at a..."
+---
+
 # Transformers & Large Language Models
 
 > **From "Attention Is All You Need" to GPT-4o and Claude — how the transformer architecture revolutionized AI, explained so you can ace any interview AND build production systems.**

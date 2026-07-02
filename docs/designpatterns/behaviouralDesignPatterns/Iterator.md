@@ -1,3 +1,8 @@
+---
+title: "🔁 Iterator Design Pattern — Design Patterns Java (2026)"
+description: "NotificationList ..|> IterableCollection~T~ ForwardIterator ..|> Iterator~T~ ReverseIterator ..|> Iterator~T~ NotificationList ..> ForwardIterator :..."
+---
+
 # 🔁 Iterator Design Pattern
 
 > **Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.**

@@ -1,3 +1,8 @@
+---
+title: "Spring WebSocket & Real-Time Communication — Spring Boot Interview Guide (2026)"
+description: "Low-level API for when you need full control over the WebSocket lifecycle. No messaging abstractions — just raw frames."
+---
+
 # Spring WebSocket & Real-Time Communication
 
 > **Full-duplex, persistent connections for real-time features — chat, notifications, live dashboards, collaborative editing. One TCP connection replaces thousands of HTTP polls.**

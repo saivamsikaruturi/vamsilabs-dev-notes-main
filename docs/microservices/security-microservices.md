@@ -1,3 +1,8 @@
+---
+title: "🔐 Security in Microservices — Microservices Interview (2026)"
+description: "U->>App: Click \"Login\" App->>Auth: Redirect to /authorize Auth->>U: Show login page U->>Auth: Enter credentials Auth->>App: Authorization code..."
+---
+
 # 🔐 Security in Microservices
 
 > **Secure service-to-service communication, authenticate users across distributed systems, and protect APIs at scale.**

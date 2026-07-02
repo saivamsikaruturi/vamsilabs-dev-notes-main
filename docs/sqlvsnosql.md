@@ -1,3 +1,8 @@
+---
+title: "SQL vs NoSQL — System Design (2026)"
+description: "There is no \"best\" database. There's only the right tool for the data shape, access patterns, and scale requirements."
+---
+
 # SQL vs NoSQL
 
 !!! danger "Real Incident: MongoDB + E-commerce, 2014"

@@ -1,4 +1,5 @@
 ---
+title: "Java Interview Guide — FAANG & Top-Tier (2026)"
 description: "Complete Java interview guide for FAANG and top-tier companies. Covers Core Java, Collections, Concurrency, JVM internals, Streams, and 200+ interview questions for 3-10+ years experience."
 ---
 

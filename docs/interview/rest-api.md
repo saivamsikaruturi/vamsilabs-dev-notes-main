@@ -1,3 +1,8 @@
+---
+title: "Top 30 REST API Interview Questions & Answers (2026)"
+description: "Why it exists: Roy Fielding formalized REST in his 2000 dissertation to describe why the web scales so well. He distilled the web's architecture into..."
+---
+
 # Top 30 REST API Interview Questions & Answers
 
 ---

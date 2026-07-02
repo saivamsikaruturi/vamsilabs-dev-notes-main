@@ -1,3 +1,8 @@
+---
+title: "Object Storage (S3 Patterns) — System Design Interview (2026)"
+description: "Any system that handles files (images, videos, documents, backups, logs) needs object storage. Interviewers want to hear:"
+---
+
 # Object Storage (S3 Patterns)
 
 !!! danger "Real Incident: S3 Outage (February 2017)"

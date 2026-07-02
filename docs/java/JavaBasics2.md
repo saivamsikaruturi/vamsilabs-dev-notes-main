@@ -1,3 +1,8 @@
+---
+title: "Java Basics — Part 2: Methods, Memory & Strings — Java Interview Guide (2026)"
+description: "// Overloading: same name, different parameters public int add(int a, int b) { return a + b; } public double add(double a, double b) { return a + b; }..."
+---
+
 # Java Basics — Part 2: Methods, Memory & Strings
 
 > **Continuation from [Part 1: Language Fundamentals](JavaBasics.md) — Platform, Types, Variables, Operators, Control Flow, Arrays.**

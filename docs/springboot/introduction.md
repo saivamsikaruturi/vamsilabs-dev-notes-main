@@ -1,4 +1,5 @@
 ---
+title: "Introduction to Spring Boot (2026)"
 description: "Introduction to Spring Boot — auto-configuration, starters, embedded servers, startup internals, request lifecycle, and building production-ready applications from day one."
 ---
 

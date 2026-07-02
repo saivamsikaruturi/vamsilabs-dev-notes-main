@@ -1,3 +1,8 @@
+---
+title: "Java Date & Time API (java.time) — Java Interview Guide (2026)"
+description: "Java 8 introduced the java.time package (JSR-310) as a complete replacement for the broken java.util.Date and java.util.Calendar. Designed by the..."
+---
+
 # Java Date & Time API (java.time)
 
 Java 8 introduced the `java.time` package (JSR-310) as a complete replacement for the broken `java.util.Date` and `java.util.Calendar`. Designed by the creator of Joda-Time, this API is **immutable, thread-safe, and fluent**. Date/Time questions appear regularly in interviews -- understanding this API signals real-world Java maturity.

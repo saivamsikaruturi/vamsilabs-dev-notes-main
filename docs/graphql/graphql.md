@@ -1,3 +1,8 @@
+---
+title: "GraphQL (2026)"
+description: "GraphQL = a query language for APIs where the client specifies exactly what data it wants. One endpoint, flexible queries, no over/under-fetching."
+---
+
 # GraphQL
 
 !!! danger "Real Incident: Facebook iOS App, 2012"

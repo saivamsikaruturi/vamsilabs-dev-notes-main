@@ -1,3 +1,8 @@
+---
+title: "String Methods & Manipulation — Java Interview Guide (2026)"
+description: "Every method on String returns a new String object — the original is never modified:"
+---
+
 # String Methods & Manipulation
 
 > **"A string is not just a sequence of characters — it's one of the most optimized, security-critical, and interview-heavy classes in the entire JDK." — Effective Java, Joshua Bloch**

@@ -1,3 +1,8 @@
+---
+title: "Varargs & Heap Pollution — Java Interview Guide (2026)"
+description: "Variable arguments (varargs) allow a method to accept zero or more arguments of a specified type. Introduced in Java 5, varargs is syntactic sugar for..."
+---
+
 # Varargs & Heap Pollution
 
 > **"Varargs and generics do not interact well — this is a fundamental consequence of type erasure." — Joshua Bloch, Effective Java, Item 32**

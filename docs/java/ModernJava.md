@@ -1,3 +1,8 @@
+---
+title: "Modern Java (17-21) Features — Java Interview Guide (2026)"
+description: "Records are transparent carriers for immutable data. The compiler generates the canonical constructor, accessor methods, equals(), hashCode(), and..."
+---
+
 # Modern Java (17-21) Features
 
 !!! tip "Why This Matters for Interviews"

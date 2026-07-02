@@ -1,3 +1,8 @@
+---
+title: "Top 30 System Design Interview Questions & Approaches (2026)"
+description: "Use this page as a rapid-review reference before system design interviews. Each question covers requirements, high-level components, key decisions, and..."
+---
+
 # Top 30 System Design Interview Questions & Approaches
 
 Use this page as a rapid-review reference before system design interviews. Each question covers **requirements**, **high-level components**, **key decisions**, and (where helpful) a **mermaid architecture diagram**. Answers are concise on purpose -- they show you know the approach, not a full 45-minute deep dive.

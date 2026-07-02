@@ -1,3 +1,8 @@
+---
+title: "GraalVM Native Image & Spring AOT — Spring Boot Interview Guide (2026)"
+description: "When NOT to use: Long-running services where JIT optimization gives better steady-state throughput, or when heavy reflection/dynamic proxies are..."
+---
+
 # GraalVM Native Image & Spring AOT
 
 > **Start your Spring Boot app in 50ms with 50MB RAM — the cloud-native game changer for serverless, CLI tools, and high-density deployments.**

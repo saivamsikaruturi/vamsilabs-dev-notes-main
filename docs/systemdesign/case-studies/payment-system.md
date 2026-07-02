@@ -1,4 +1,5 @@
 ---
+title: "Payment System — System Design Interview (2026)"
 description: "Design a payment system — system design interview walkthrough covering idempotency, double-entry ledger, saga pattern, payment state machines, reconciliation, and scaling to $10B annual volume."
 ---
 

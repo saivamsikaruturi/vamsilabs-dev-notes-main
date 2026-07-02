@@ -1,3 +1,8 @@
+---
+title: "Spring Boot Exception Handling — The Production Playbook (2026)"
+description: "Exception handling is one of those things that separates a junior developer from a senior one. A junior catches Exception and returns 500. A senior..."
+---
+
 # Spring Boot Exception Handling — The Production Playbook
 
 Exception handling is one of those things that separates a junior developer from a senior one. A junior catches `Exception` and returns 500. A senior designs an error taxonomy that tells the client exactly what went wrong, helps ops debug at 3 AM, and never leaks internal details. Let me show you the production way.

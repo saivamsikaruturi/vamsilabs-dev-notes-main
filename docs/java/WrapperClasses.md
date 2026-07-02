@@ -1,3 +1,8 @@
+---
+title: "Wrapper Classes in Java — Java Interview Guide (2026)"
+description: "Wrapper classes convert primitive types into objects. This is essential because Java collections, generics, and many APIs only work with objects, not..."
+---
+
 # Wrapper Classes in Java
 
 Wrapper classes convert **primitive types into objects**. This is essential because Java collections, generics, and many APIs only work with objects, not primitives.

@@ -1,4 +1,5 @@
 ---
+title: "Switching to Spring Boot — Interview Guide for Experienced Devs (2026)"
 description: "Java & Spring Boot interview prep for experienced developers (8-15 years) transitioning from proprietary/consulting stacks. Covers what to prioritize, how to reframe your experience, and depth expectations at each interview round."
 ---
 

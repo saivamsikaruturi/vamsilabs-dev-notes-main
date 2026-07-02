@@ -1,3 +1,8 @@
+---
+title: "Pagination & Sorting with Spring Data — Spring Boot Interview Guide (2026)"
+description: "subgraph GOOD[\"With Pagination\"] API2[\"GET /products\n?page=0&size=20\"] --> DB2[\"SELECT ... LIMIT 20\nOFFSET 0\"] DB2 --> RES2[\"20 records\n+ metadata\"]..."
+---
+
 # Pagination & Sorting with Spring Data
 
 > **Never return unbounded result sets. Paginate everything. Your mobile clients and database will thank you.**

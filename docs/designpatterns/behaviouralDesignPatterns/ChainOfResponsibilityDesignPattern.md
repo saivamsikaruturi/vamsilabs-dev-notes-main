@@ -1,3 +1,8 @@
+---
+title: "🔗 Chain of Responsibility Design Pattern — Design Patterns Java (2026)"
+description: "You have a request that could be handled by multiple handlers, but:"
+---
+
 # 🔗 Chain of Responsibility Design Pattern
 
 > **Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request. Chain the receiving objects and pass the request along the chain until an object handles it.**

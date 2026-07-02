@@ -1,3 +1,8 @@
+---
+title: "Spring Boot Slice Testing & MockMvc (2026)"
+description: "subgraph Sliced[\"@WebMvcTest\"] direction TB WEB2[\"Web Layer\"] --> MOCK[\"@MockBean\nServices\"] end"
+---
+
 # Spring Boot Slice Testing & MockMvc
 
 > **Full @SpringBootTest takes ~15 min on large apps. Slice tests give the same confidence for a single layer in ~30 seconds.**

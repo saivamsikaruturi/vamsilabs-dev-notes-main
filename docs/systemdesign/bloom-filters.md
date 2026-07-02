@@ -1,3 +1,8 @@
+---
+title: "Bloom Filters — System Design Interview (2026)"
+description: "Bloom filters appear when you need to answer \"is X in this large set?\" at extreme scale with minimal memory. If you mention any of these in a design..."
+---
+
 # Bloom Filters
 
 !!! danger "Real Incident: Google Chrome Safe Browsing"

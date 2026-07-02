@@ -1,4 +1,5 @@
 ---
+title: "System Design Comparisons — Quick Reference (2026)"
 description: "System design comparison tables for interviews — TCP vs UDP, SQL vs NoSQL, Kafka vs RabbitMQ, REST vs gRPC vs GraphQL, Redis vs Memcached, Docker vs Kubernetes, and 10+ more side-by-side trade-off analyses."
 ---
 

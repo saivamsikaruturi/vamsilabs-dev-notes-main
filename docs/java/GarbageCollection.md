@@ -1,5 +1,6 @@
 ---
-description: "Master Java garbage collection — G1, ZGC, Shenandoah algorithms, GC tuning strategies, and how to diagnose memory leaks in production systems."
+title: "Garbage Collection in Java — Java Interview Guide (2026)"
+description: "Garbage Collection (GC) is one of the most critical topics for FAANG interviews. It separates engineers who can merely write Java from those who can..."
 ---
 
 # Garbage Collection in Java

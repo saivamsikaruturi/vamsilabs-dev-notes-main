@@ -1,4 +1,5 @@
 ---
+title: "Long Polling, WebSockets & SSE — System Design Interview (2026)"
 description: "WebSocket vs SSE vs long polling — compare real-time communication protocols, learn when to use each, and see system design trade-offs with examples."
 ---
 

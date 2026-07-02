@@ -1,4 +1,5 @@
 ---
+title: "Spring Security Filter Chain — The Complete Deep Dive — Spring Boot Interview Guide (2026)"
 description: "The definitive deep-dive into Spring Security's Filter Chain — from DelegatingFilterProxy to custom JWT filters. Complete filter order, production configs, debugging techniques, and interview mastery."
 ---
 

@@ -1,3 +1,8 @@
+---
+title: "⚙️ Configuration Management — Microservices Interview (2026)"
+description: "@Value(\"${feature.new-checkout.enabled:false}\") private boolean newCheckoutEnabled;"
+---
+
 # ⚙️ Configuration Management
 
 > **Externalize configuration from code — manage secrets, environment-specific settings, and feature flags across distributed services.**

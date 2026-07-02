@@ -1,4 +1,5 @@
 ---
+title: "Web Crawler (Googlebot Scale) — System Design Interview (2026)"
 description: "Design a web crawler at Googlebot scale — system design interview walkthrough covering URL frontier, politeness enforcement, deduplication via Bloom filters and SimHash, and scaling to 1 billion pages per day."
 ---
 

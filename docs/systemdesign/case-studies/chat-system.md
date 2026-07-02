@@ -1,4 +1,5 @@
 ---
+title: "Chat System (WhatsApp / Slack Scale) — System Design Interview (2026)"
 description: "Design a chat system like WhatsApp — system design covering WebSocket connections, message delivery, read receipts, group chat, and scaling to billions of users."
 ---
 

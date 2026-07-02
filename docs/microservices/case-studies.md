@@ -1,3 +1,8 @@
+---
+title: "Real-World Microservices Case Studies — Microservices Interview (2026)"
+description: "In August 2008, Netflix experienced a major database corruption that took down their DVD shipping service for three days. The single Oracle database..."
+---
+
 # Real-World Microservices Case Studies
 
 > **How the world's largest companies decomposed monoliths, what worked, what failed, and what you can learn from their $billion experiments.**

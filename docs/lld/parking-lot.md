@@ -1,4 +1,5 @@
 ---
+title: "Design a Parking Lot System — Low-Level Design Interview (2026)"
 description: "Design a Parking Lot System — complete OOP low-level design with class diagrams, SOLID principles, Java implementation, and interview walkthrough."
 ---
 

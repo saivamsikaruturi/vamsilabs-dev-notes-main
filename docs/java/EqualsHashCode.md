@@ -1,3 +1,8 @@
+---
+title: "equals() and hashCode() in Java — Java Interview Guide (2026)"
+description: "Getting equals() and hashCode() right is critical for HashMap, HashSet, and any hash-based collection. Getting them wrong causes silent bugs that are..."
+---
+
 # equals() and hashCode() in Java
 
 Getting `equals()` and `hashCode()` right is critical for **HashMap, HashSet, and any hash-based collection**. Getting them wrong causes silent bugs that are extremely hard to debug.

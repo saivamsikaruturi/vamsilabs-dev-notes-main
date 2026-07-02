@@ -1,5 +1,6 @@
 ---
-description: "Guide to Java virtual threads (Project Loom) — lightweight concurrency, structured concurrency, and how to handle millions of threads in Java 21+."
+title: "Virtual Threads & Structured Concurrency (Java 21+) — Java Interview Guide (2026)"
+description: "subgraph Virtual[\"Virtual Threads (Java 21+)\"] VT1[\"VThread 1(few KB)\"] & VT2[\"VThread 2\"] & VT3[\"VThread 1,000,000\"] VT1 -->|\"unmounts on I/O(carrier..."
 ---
 
 # Virtual Threads & Structured Concurrency (Java 21+)

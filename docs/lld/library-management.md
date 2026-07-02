@@ -1,4 +1,5 @@
 ---
+title: "Design a Library Management System — Low-Level Design Interview (2026)"
 description: "Design a Library Management System — complete OOP low-level design with class diagrams, Observer and Strategy patterns, Java implementation, and interview walkthrough."
 ---
 

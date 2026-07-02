@@ -1,4 +1,5 @@
 ---
+title: "Trees — Coding Interview (2026)"
 description: "Trees interview prep for FAANG — traversals, BST operations, 4 problem archetypes, solved walkthroughs (LC #98, #124, #236, #297), and 15 curated practice problems with Java code."
 ---
 

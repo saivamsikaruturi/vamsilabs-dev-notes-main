@@ -1,3 +1,8 @@
+---
+title: "Fork/Join Framework — Java Interview Guide (2026)"
+description: "The Fork/Join Framework (introduced in Java 7, package java.util.concurrent) is designed for divide-and-conquer parallelism -- break a large task into..."
+---
+
 # Fork/Join Framework
 
 !!! danger "Real-World Incident"

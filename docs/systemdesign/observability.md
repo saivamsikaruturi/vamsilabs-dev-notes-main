@@ -1,3 +1,8 @@
+---
+title: "Observability (Metrics, Logs, Traces) — System Design Interview (2026)"
+description: "Every production system design needs an observability story. Interviewers want to hear:"
+---
+
 # Observability (Metrics, Logs, Traces)
 
 !!! danger "Real Incident: Uber's 2019 Payment Outage"

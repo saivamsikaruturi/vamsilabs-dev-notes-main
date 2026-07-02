@@ -1,3 +1,8 @@
+---
+title: "🚀 Deployment Strategies — Microservices Interview (2026)"
+description: "subgraph T2[\"Time 2: Updating\"] B1([\"v2 ✅\"]) B2([\"v1 ✅\"]) B3([\"v1 ✅\"]) end"
+---
+
 # 🚀 Deployment Strategies
 
 > **Deploy microservices to production with zero downtime — blue-green, canary, rolling updates, and feature flags.**

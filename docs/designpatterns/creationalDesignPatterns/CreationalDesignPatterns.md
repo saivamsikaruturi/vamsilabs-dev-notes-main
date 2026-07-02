@@ -1,3 +1,8 @@
+---
+title: "Creational Design Patterns (2026)"
+description: "As systems grow, hardcoding object creation (new ConcreteClass()) everywhere leads to:"
+---
+
 # Creational Design Patterns
 
 > **Creational patterns abstract the instantiation process — they make a system independent of how its objects are created, composed, and represented.**

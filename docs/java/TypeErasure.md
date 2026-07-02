@@ -1,3 +1,8 @@
+---
+title: "Type Erasure & Generics Pitfalls — Java Interview Guide (2026)"
+description: "Type erasure is the process by which the Java compiler removes all generic type information at compile time and inserts explicit casts where needed. At..."
+---
+
 # Type Erasure & Generics Pitfalls
 
 !!! danger "The Silent Killer"

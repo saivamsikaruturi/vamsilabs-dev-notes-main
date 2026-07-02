@@ -1,3 +1,8 @@
+---
+title: "Maven — Java Interview Guide (2026)"
+description: "mvn install:install-file -DgroupId=oracle -DartifactId=ojdbc14 -Dpackaging=jar -Dversion=1.0 -Dfile=ojdbc14.jar -DgeneratePom=true"
+---
+
 # Maven
 
 ## Install artifacts into local repository

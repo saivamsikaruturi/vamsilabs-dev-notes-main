@@ -1,3 +1,8 @@
+---
+title: "Neural Networks & Deep Learning — AI/ML for Engineers (2026)"
+description: "A neural network is a function approximator. It takes inputs, applies a bunch of math, and produces outputs. That's it."
+---
+
 # Neural Networks & Deep Learning
 
 > **From a single neuron to ResNets — the complete, interview-ready guide to neural networks. Written so a fresher gets the "aha!" moment and a senior finds the gotchas they forgot.**

@@ -1,4 +1,5 @@
 ---
+title: "Performance & Production Engineering — Java — Java Interview Guide (2026)"
 description: "Java performance tuning and production debugging guide. Low latency patterns, JVM tuning, memory leaks, profiling tools, and real-world incident scenarios for senior interviews."
 ---
 

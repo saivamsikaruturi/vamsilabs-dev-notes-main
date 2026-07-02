@@ -1,3 +1,8 @@
+---
+title: "Stream API — Functional Data Processing — Java Streams (2026)"
+description: "The Stream API (introduced in Java 8) provides a declarative, functional approach to processing collections of data. Instead of writing imperative..."
+---
+
 # Stream API — Functional Data Processing
 
 The Stream API (introduced in Java 8) provides a **declarative, functional approach** to processing collections of data. Instead of writing imperative loops, you describe *what* you want — filter, transform, aggregate — and the framework handles the *how*. Streams are the most frequently asked Java topic at FAANG interviews because they test functional thinking, API fluency, and understanding of lazy evaluation.

@@ -1,3 +1,8 @@
+---
+title: "Java Networking — Java Interview Guide (2026)"
+description: "Java provides a rich set of classes in java.net and java.nio.channels for building networked applications -- from simple client-server sockets to..."
+---
+
 # Java Networking
 
 Java provides a rich set of classes in `java.net` and `java.nio.channels` for building networked applications -- from simple client-server sockets to high-performance non-blocking servers. Networking is a frequent interview topic because it ties together I/O, concurrency, and protocol knowledge.

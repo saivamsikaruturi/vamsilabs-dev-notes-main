@@ -1,3 +1,8 @@
+---
+title: "🏭 Factory Method Design Pattern — Design Patterns Java (2026)"
+description: "EmailNotification ..|> Notification SmsNotification ..|> Notification PushNotification ..|> Notification EmailNotificationFactory --|>..."
+---
+
 # 🏭 Factory Method Design Pattern
 
 > **Define an interface for creating an object, but let subclasses decide which class to instantiate.**

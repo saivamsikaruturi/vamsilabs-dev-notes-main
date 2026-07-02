@@ -1,3 +1,8 @@
+---
+title: "Connection Pooling — System Design Interview (2026)"
+description: "Connection pooling is critical whenever your application talks to databases, caches, or external services. Interviewers want to hear:"
+---
+
 # Connection Pooling
 
 !!! danger "Real Incident: Heroku's Connection Limit Crisis"

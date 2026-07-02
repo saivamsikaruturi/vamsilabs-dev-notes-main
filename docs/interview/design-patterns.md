@@ -1,3 +1,8 @@
+---
+title: "Top 30 Design Patterns Interview Questions & Answers (2026)"
+description: "Design patterns are proven, reusable solutions to common software design problems. They are not finished code but templates that describe how to solve..."
+---
+
 # Top 30 Design Patterns Interview Questions & Answers
 
 ---

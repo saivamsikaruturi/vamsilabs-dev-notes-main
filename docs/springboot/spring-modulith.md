@@ -1,3 +1,8 @@
+---
+title: "Spring Modulith — The Modular Monolith — Spring Boot Interview Guide (2026)"
+description: "@Test void verifyModuleStructure() { ApplicationModules modules = ApplicationModules.of(ShopApplication.class); modules.verify(); // 💥 FAILS if any..."
+---
+
 # Spring Modulith — The Modular Monolith
 
 > **Get the simplicity of a monolith with the clean boundaries of microservices — decompose later when you actually need to, not because of hype.**

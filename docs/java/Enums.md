@@ -1,3 +1,8 @@
+---
+title: "Enums in Java — Java Interview Guide (2026)"
+description: "Enums represent a fixed set of constants. They're type-safe, can have fields, methods, and constructors, and are one of the most underused features in..."
+---
+
 # Enums in Java
 
 Enums represent a **fixed set of constants**. They're type-safe, can have fields, methods, and constructors, and are one of the most underused features in Java.

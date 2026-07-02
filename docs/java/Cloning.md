@@ -1,3 +1,8 @@
+---
+title: "Cloning in Java — Shallow vs Deep Copy — Java Interview Guide (2026)"
+description: "Cloning creates a copy of an object. Java provides Object.clone(), but it's a tricky API with well-known pitfalls. Understanding shallow vs deep copy..."
+---
+
 # Cloning in Java — Shallow vs Deep Copy
 
 Cloning creates a **copy of an object**. Java provides `Object.clone()`, but it's a tricky API with well-known pitfalls. Understanding shallow vs deep copy is essential for interviews.

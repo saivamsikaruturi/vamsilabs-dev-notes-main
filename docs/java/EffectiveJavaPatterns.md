@@ -1,3 +1,8 @@
+---
+title: "Effective Java Patterns — Java Interview Guide (2026)"
+description: "// of — aggregation factory Set faceCards = EnumSet.of(JACK, QUEEN, KING);"
+---
+
 # Effective Java Patterns
 
 !!! danger "Production Bugs Prevented"

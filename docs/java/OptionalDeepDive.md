@@ -1,3 +1,8 @@
+---
+title: "Optional Deep Dive — Java Interview Guide (2026)"
+description: "// 2. ofNullable() — safely wraps a possibly-null value Optional maybeName = Optional.ofNullable(getUserName()); // could be empty"
+---
+
 # Optional Deep Dive
 
 !!! danger "The Billion Dollar Mistake"

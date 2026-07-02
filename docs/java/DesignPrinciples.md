@@ -1,3 +1,8 @@
+---
+title: "Design Principles — Java Interview Guide (2026)"
+description: "DRY is about eliminating knowledge duplication, not just code duplication. If a business rule, algorithm, or configuration exists in multiple places,..."
+---
+
 # Design Principles
 
 !!! tip "Beyond SOLID"

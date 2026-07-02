@@ -1,3 +1,8 @@
+---
+title: "JPA Specifications, Criteria API & Query by Example — Spring Boot Interview Guide (2026)"
+description: "The Specification interface wraps a single predicate. You compose multiple specifications to build complex queries dynamically."
+---
+
 # JPA Specifications, Criteria API & Query by Example
 
 > **Build dynamic, type-safe queries without drowning in string concatenation. Replace 100-line if-else JPQL builders with composable predicates.**

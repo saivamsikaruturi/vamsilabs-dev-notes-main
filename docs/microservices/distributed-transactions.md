@@ -1,3 +1,8 @@
+---
+title: "Distributed Transactions — Saga, 2PC, Outbox Pattern, Idempotency (System Design 2026)"
+description: "Master distributed transactions for microservices interviews — Saga choreography vs orchestration, 2-Phase Commit pitfalls, Transactional Outbox pattern, idempotency keys, eventual consistency. Java code + real failure modes."
+---
+
 # 🔄 Distributed Transactions
 
 > **Maintain data consistency across multiple microservices — when one service's database update depends on another service succeeding.**

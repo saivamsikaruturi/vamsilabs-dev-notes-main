@@ -1,3 +1,8 @@
+---
+title: "Distributed Transactions — System Design Interview (2026)"
+description: "The moment you say \"microservices\" in a system design interview, the interviewer will probe:"
+---
+
 # Distributed Transactions
 
 !!! danger "Real Incident: eBay's 2PC Meltdown, Early 2000s"

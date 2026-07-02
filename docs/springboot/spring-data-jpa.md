@@ -1,4 +1,5 @@
 ---
+title: "Spring Data JPA — Spring Boot Interview Guide (2026)"
 description: "Complete Spring Data JPA guide — repositories, query methods, @Query, pagination, auditing, and performance optimization for production applications."
 ---
 

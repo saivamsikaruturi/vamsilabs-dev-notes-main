@@ -1,3 +1,8 @@
+---
+title: "Try-With-Resources & AutoCloseable — Deep Dive — Java Interview Guide (2026)"
+description: "The old way required verbose finally blocks with null checks and nested try-catch:"
+---
+
 # Try-With-Resources & AutoCloseable — Deep Dive
 
 > **"The most dangerous line of code is the one you forgot to write — and in Java, that's usually `resource.close()`."**

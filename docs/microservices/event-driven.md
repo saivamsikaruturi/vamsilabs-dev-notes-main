@@ -1,4 +1,5 @@
 ---
+title: "⚡ Event-Driven Architecture — Microservices Interview (2026)"
 description: "Event driven architecture explained — event sourcing, CQRS, message brokers, eventual consistency, and building loosely coupled scalable microservices."
 ---
 

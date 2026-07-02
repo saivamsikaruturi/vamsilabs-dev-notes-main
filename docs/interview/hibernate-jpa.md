@@ -1,4 +1,5 @@
 ---
+title: "Top 35 Hibernate & JPA Interview Questions & Answers (2026)"
 description: "Top 35 Hibernate & JPA interview questions with detailed answers — caching, lazy loading, N+1 problem, locking, and Spring Data JPA. Asked at Amazon, Google, Flipkart."
 ---
 

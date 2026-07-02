@@ -1,3 +1,8 @@
+---
+title: "Spring Boot Events — The Complete Guide (2026)"
+description: "Spring Events are the most underused feature in Spring Boot. Engineers reach for Kafka when they need a simple in-process pub-sub. Events sit right in..."
+---
+
 # Spring Boot Events — The Complete Guide
 
 Spring Events are the most underused feature in Spring Boot. Engineers reach for Kafka when they need a simple in-process pub-sub. Events sit right in the middle — loose coupling within a single service, no external infrastructure needed. One service publishes "something happened," zero or more listeners react independently. The publisher never knows who is listening. That is the entire contract.

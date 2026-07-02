@@ -1,3 +1,8 @@
+---
+title: "Java 22+ Stream Gatherers — Java Interview Guide (2026)"
+description: "A Gatherer is a custom intermediate operation for streams, just as a Collector is a custom terminal operation. Gatherers let you transform, filter,..."
+---
+
 # Java 22+ Stream Gatherers
 
 !!! tip "Why This Matters"

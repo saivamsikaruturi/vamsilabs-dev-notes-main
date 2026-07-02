@@ -1,3 +1,8 @@
+---
+title: ":feather: Flyweight Design Pattern — Design Patterns Java (2026)"
+description: "You're building a game with a forest of 1,000,000 trees. Each tree has:"
+---
+
 # :feather: Flyweight Design Pattern
 
 > **Use sharing to support large numbers of fine-grained objects efficiently by separating intrinsic (shared) state from extrinsic (unique) state.**

@@ -1,3 +1,8 @@
+---
+title: "Java Logging (SLF4J, Logback, Log4j2) — Java Interview Guide (2026)"
+description: "Logging is a critical production concern that most developers underestimate until something breaks at 2 AM. The Java ecosystem has a layered logging..."
+---
+
 # Java Logging (SLF4J, Logback, Log4j2)
 
 Logging is a **critical production concern** that most developers underestimate until something breaks at 2 AM. The Java ecosystem has a layered logging architecture: a **facade** (SLF4J) that decouples your code from the **implementation** (Logback, Log4j2). This page covers the full stack -- from architecture to structured logging for modern observability.

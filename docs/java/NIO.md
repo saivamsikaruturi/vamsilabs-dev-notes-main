@@ -1,3 +1,8 @@
+---
+title: "Java I/O & NIO — Java Interview Guide (2026)"
+description: "The original Java I/O model is stream-based and blocking. Every read/write call blocks the thread until the operation completes."
+---
+
 # Java I/O & NIO
 
 !!! info "Why I/O Knowledge Matters for Backend Roles"

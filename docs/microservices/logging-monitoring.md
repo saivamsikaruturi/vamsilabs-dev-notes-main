@@ -1,3 +1,8 @@
+---
+title: "📊 Logging, Monitoring & Distributed Tracing — Microservices Interview (2026)"
+description: "subgraph Collection[\"Collection Layer\"] OTC{{\"OpenTelemetry Collector\"}} FB{{\"Filebeat / Fluentd\"}} end"
+---
+
 # 📊 Logging, Monitoring & Distributed Tracing
 
 > **Achieve full observability across microservices — correlate logs, traces, and metrics to diagnose issues in seconds, not hours.**

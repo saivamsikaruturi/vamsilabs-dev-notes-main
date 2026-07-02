@@ -1,5 +1,6 @@
 ---
-description: "Consistent hashing explained — how distributed systems like DynamoDB and Cassandra distribute data across nodes with minimal redistribution on scaling."
+title: "Consistent Hashing — System Design (2026)"
+description: "Every time you say \"let's distribute data across N servers\" in a system design interview, the interviewer is waiting for you to explain HOW. If you say..."
 ---
 
 # Consistent Hashing

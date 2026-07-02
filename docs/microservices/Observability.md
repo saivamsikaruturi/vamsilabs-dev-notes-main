@@ -1,3 +1,8 @@
+---
+title: "📊 Observability — Microservices Interview (2026)"
+description: "Structured, searchable records of discrete events."
+---
+
 # 📊 Observability
 
 > **Understanding the internal state of your distributed system through Logs, Metrics, and Traces — the three pillars of observability.**

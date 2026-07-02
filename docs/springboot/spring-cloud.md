@@ -1,3 +1,8 @@
+---
+title: "Spring Cloud Ecosystem — Spring Boot Interview Guide (2026)"
+description: "subgraph INFRA[\"Infrastructure\"] SD[\"Eureka\n(Discovery)\"] CFG[\"Config Server\"] CB[\"Resilience4j\n(Circuit Breaker)\"] end"
+---
+
 # Spring Cloud Ecosystem
 
 > **The toolkit that turns a collection of Spring Boot apps into a resilient, self-healing distributed system.**

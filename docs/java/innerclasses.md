@@ -1,3 +1,8 @@
+---
+title: "Inner Classes in Java — Java Interview Guide (2026)"
+description: "Inner classes are classes defined inside another class. They're used for encapsulation, logical grouping, and implementing callbacks/listeners."
+---
+
 # Inner Classes in Java
 
 Inner classes are classes defined **inside another class**. They're used for encapsulation, logical grouping, and implementing callbacks/listeners.

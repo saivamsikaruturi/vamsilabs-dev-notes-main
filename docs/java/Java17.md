@@ -1,3 +1,8 @@
+---
+title: "Java 17 — LTS Features That Changed the Game — Java Interview Guide (2026)"
+description: "Java 17 is the current Long-Term Support release and the minimum version for Spring Boot 3.x and Spring Framework 6.x. Every FAANG interview in 2024+..."
+---
+
 # Java 17 — LTS Features That Changed the Game
 
 Java 17 is the **current Long-Term Support** release and the minimum version for Spring Boot 3.x and Spring Framework 6.x. Every FAANG interview in 2024+ expects you to know these features.

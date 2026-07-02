@@ -1,3 +1,8 @@
+---
+title: "Spring AMQP & RabbitMQ — Spring Boot Interview Guide (2026)"
+description: "public static final String ORDER_EXCHANGE = \"order-exchange\"; public static final String ORDER_QUEUE = \"order-processing\"; public static final String..."
+---
+
 # Spring AMQP & RabbitMQ
 
 > **Reliable messaging with RabbitMQ and Spring Boot — exchanges, bindings, publisher confirms, dead-letter exchanges, and production-grade error handling.**

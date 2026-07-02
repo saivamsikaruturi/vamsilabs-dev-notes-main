@@ -1,3 +1,8 @@
+---
+title: "API Design (2026)"
+description: "Why cursor > offset at scale? OFFSET 10000 still scans 10000 rows then discards them. Cursor/keyset jumps directly to the right position."
+---
+
 # API Design
 
 !!! danger "Real Incident: Fintech Startup, 2016"

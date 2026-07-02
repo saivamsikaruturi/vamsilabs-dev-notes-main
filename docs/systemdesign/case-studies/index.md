@@ -1,3 +1,8 @@
+---
+title: "System Design Case Studies (2026)"
+description: "Each case study combines the building blocks from other pages (partitioning, replication, CDN, message queues, caching, sharding, circuit breakers)..."
+---
+
 # System Design Case Studies
 
 Each case study combines the building blocks from other pages (partitioning, replication, CDN, message queues, caching, sharding, circuit breakers) into a complete end-to-end system design. Structured as condensed 35-minute interview answers.

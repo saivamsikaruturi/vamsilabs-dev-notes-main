@@ -1,3 +1,8 @@
+---
+title: "Java Database Connectivity (JDBC) — Java Interview Guide (2026)"
+description: "JDBC is Java's standard API for connecting to relational databases. It provides a vendor-neutral interface for executing SQL, processing results, and..."
+---
+
 # Java Database Connectivity (JDBC)
 
 JDBC is Java's standard API for connecting to relational databases. It provides a **vendor-neutral** interface for executing SQL, processing results, and managing transactions. Every enterprise Java application — from Spring Boot microservices to legacy monoliths — uses JDBC under the hood. Understanding JDBC internals is essential for interviews because it reveals how ORMs like Hibernate actually work, and why connection pooling, prepared statements, and transaction isolation matter at scale.

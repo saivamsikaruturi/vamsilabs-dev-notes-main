@@ -1,3 +1,8 @@
+---
+title: "Pattern Matching in Java (16-21+) — Java Interview Guide (2026)"
+description: "// ✅ After: pattern variable bound in the check (Java 16+) public String format(Object obj) { if (obj instanceof String s) { return \"String[\" +..."
+---
+
 # Pattern Matching in Java (16-21+)
 
 > **"Pattern matching transforms Java from an object-oriented language that fights you at every turn into one that flows with your intent — fewer casts, fewer nulls, fewer bugs."**

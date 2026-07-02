@@ -1,3 +1,8 @@
+---
+title: "Java Service Provider Interface (SPI) & ServiceLoader — Java Interview Guide (2026)"
+description: "SPI (Service Provider Interface) = a pattern where a framework defines an interface, and third parties provide implementations that are discovered at..."
+---
+
 # Java Service Provider Interface (SPI) & ServiceLoader
 
 > **"Make the framework extensible without modifying the framework."** — Joshua Bloch, *Effective Java*

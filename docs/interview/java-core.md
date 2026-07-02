@@ -1,3 +1,8 @@
+---
+title: "Top 50 Core Java Interview Questions & Answers (2026)"
+description: "This page is a rapid-fire reference for the most frequently asked Core Java interview questions. Each answer is kept concise yet complete enough to use..."
+---
+
 # Top 50 Core Java Interview Questions & Answers
 
 This page is a rapid-fire reference for the most frequently asked **Core Java** interview questions. Each answer is kept concise yet complete enough to use in a real interview. Expand any question to reveal the answer. Use this as a last-minute revision guide or a self-assessment checklist before your next Java interview.

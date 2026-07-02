@@ -1,3 +1,8 @@
+---
+title: ":deciduous_tree: Composite Design Pattern — Design Patterns Java (2026)"
+description: "File ..|> FileSystemComponent : implements Directory ..|> FileSystemComponent : implements Directory o-- FileSystemComponent : contains 0..* ```"
+---
+
 # :deciduous_tree: Composite Design Pattern
 
 > **Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.**

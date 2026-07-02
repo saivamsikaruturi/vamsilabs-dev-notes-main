@@ -1,3 +1,8 @@
+---
+title: "Behavioral Interview Guide — Amazon Leadership Principles (2026)"
+description: "By Vamsi Karuturi | Backend Engineer @ Salesforce | topmate.io/vamsi_krishna13"
+---
+
 # Behavioral Interview Guide — Amazon Leadership Principles
 
 **By Vamsi Karuturi** | Backend Engineer @ Salesforce | [topmate.io/vamsi_krishna13](https://topmate.io/vamsi_krishna13)

@@ -1,4 +1,5 @@
 ---
+title: "Spring Boot Testing (2026)"
 description: "The definitive guide to Spring Boot testing — unit tests, slice tests, @SpringBootTest, Testcontainers, security testing, async testing, WireMock, and production-grade best practices."
 ---
 

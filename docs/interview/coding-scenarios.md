@@ -1,4 +1,5 @@
 ---
+title: "Coding Scenarios & Challenges — Java — FAANG Interview (2026)"
 description: "Java coding interview scenarios and challenges. 'What's wrong with this code?' puzzles, real-world coding problems, Big O analysis, and take-home assignment patterns."
 ---
 

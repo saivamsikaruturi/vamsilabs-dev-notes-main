@@ -1,4 +1,5 @@
 ---
+title: "E-Commerce Platform (Amazon Scale) — System Design Interview (2026)"
 description: "Design an e-commerce platform at Amazon scale — system design interview walkthrough covering inventory management, order state machines, search ranking, cart merging, and scaling to 50K orders/sec on Prime Day."
 ---
 

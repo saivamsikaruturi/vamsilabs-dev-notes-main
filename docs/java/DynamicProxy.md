@@ -1,3 +1,8 @@
+---
+title: "Dynamic Proxy & Reflection-Based Patterns — Java Interview Guide (2026)"
+description: "Dynamic proxies let you intercept method calls at runtime without modifying source code. They are the backbone of Spring AOP, MyBatis mappers, Retrofit..."
+---
+
 # Dynamic Proxy & Reflection-Based Patterns
 
 Dynamic proxies let you **intercept method calls at runtime without modifying source code**. They are the backbone of Spring AOP, MyBatis mappers, Retrofit HTTP clients, and virtually every framework that "magically" adds cross-cutting behavior. This is a favorite topic in senior-level interviews because it tests deep understanding of the JVM, reflection, and framework internals.

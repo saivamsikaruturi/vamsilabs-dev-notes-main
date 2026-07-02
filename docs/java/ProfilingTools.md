@@ -1,3 +1,8 @@
+---
+title: "Java Profiling Tools — Java Interview Guide (2026)"
+description: "JFR is a zero-overhead event-based profiling framework built into the JVM (HotSpot). It was made free and open-source in Java 11 (backported to..."
+---
+
 # Java Profiling Tools
 
 !!! danger "Production War Story"

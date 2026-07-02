@@ -1,3 +1,8 @@
+---
+title: "Top 40 SQL Interview Questions & Answers (2026)"
+description: "Why: This separation enforces a clear boundary between structure changes (DDL, which auto-commit in most RDBMS) and data manipulation (DML, which is..."
+---
+
 # Top 40 SQL Interview Questions & Answers
 
 ---

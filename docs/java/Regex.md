@@ -1,3 +1,8 @@
+---
+title: "Java Regular Expressions — Java Interview Guide (2026)"
+description: "Regular expressions (regex) are a powerful pattern-matching language used for searching, validating, and manipulating text. Java's java.util.regex..."
+---
+
 # Java Regular Expressions
 
 Regular expressions (regex) are a powerful pattern-matching language used for searching, validating, and manipulating text. Java's `java.util.regex` package provides a robust regex engine based on Perl-style patterns. Regex is a frequent topic in interviews — interviewers test both your ability to write patterns and your understanding of the underlying engine.

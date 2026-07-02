@@ -1,5 +1,6 @@
 ---
-description: "Model Context Protocol (MCP) explained — how AI agents connect to tools, APIs, and data sources. Architecture, implementation, and real-world use cases."
+title: "Model Context Protocol (MCP) — AI/ML for Engineers (2026)"
+description: "Every AI tool has its own integration. Slack has one API. GitHub has another. Your database has a third. You end up writing glue code for every single..."
 ---
 
 # Model Context Protocol (MCP)

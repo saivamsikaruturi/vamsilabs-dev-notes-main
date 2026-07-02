@@ -1,3 +1,8 @@
+---
+title: "Design Ticketmaster/BookMyShow Ticket Booking System (System Design Interview)"
+description: "Design a ticket booking system like Ticketmaster or BookMyShow — system design covering seat reservation locks, optimistic concurrency, queue-based load shedding for high-demand events, payment idempotency, and preventing double-booking."
+---
+
 # Ticket Booking System (Ticketmaster / BookMyShow)
 
 ---

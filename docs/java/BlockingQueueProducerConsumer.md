@@ -1,3 +1,8 @@
+---
+title: "BlockingQueue & Producer-Consumer Pattern — Java Interview Guide (2026)"
+description: "java.util.concurrent.BlockingQueue extends Queue and adds blocking semantics: threads wait (block) rather than getting null or throwing exceptions when..."
+---
+
 # BlockingQueue & Producer-Consumer Pattern
 
 > "The producer-consumer pattern is the backbone of every message-driven system. Get the queue wrong, and you get either data loss or memory exhaustion — there is no in-between."

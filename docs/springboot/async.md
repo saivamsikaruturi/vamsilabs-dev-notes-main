@@ -1,3 +1,8 @@
+---
+title: "Spring Boot @Async — The Complete Guide (2026)"
+description: "Without @Async, every operation in a request runs sequentially on the same thread. Sending a confirmation email takes 3 seconds? Your API response..."
+---
+
 # Spring Boot @Async — The Complete Guide
 
 > **You add `@Async` to a method and expect magic. But then: "Why is my @Async method running on the main thread?" or "Why did my exception disappear into a void?" or "My app crashed with OutOfMemoryError after adding @Async." These are the questions that separate engineers who understand async from those who copy annotations.**

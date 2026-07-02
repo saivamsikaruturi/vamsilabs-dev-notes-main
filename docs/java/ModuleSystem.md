@@ -1,3 +1,8 @@
+---
+title: "Java Platform Module System (JPMS) — Java Interview Guide (2026)"
+description: "subgraph Solutions[\"JPMS Solutions\"] S1[\"Strongencapsulation\"] S2[\"Reliableconfiguration\"] S3[\"Smaller runtimeimages (jlink)\"] end"
+---
+
 # Java Platform Module System (JPMS)
 
 > **Classpath hell: two JARs ship `com.utils.Config` — the classloader picks one arbitrarily, and your app explodes at runtime with `NoClassDefFoundError` or silent wrong behavior.**

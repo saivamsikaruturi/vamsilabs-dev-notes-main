@@ -1,3 +1,8 @@
+---
+title: "🗄️ Data Management Patterns — Microservices Interview (2026)"
+description: "Query across services by calling multiple APIs and joining in-memory:"
+---
+
 # 🗄️ Data Management Patterns
 
 > **Handle data across microservices — each service owns its database, but you still need consistency, queries across services, and data synchronization.**

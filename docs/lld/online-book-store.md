@@ -1,4 +1,5 @@
 ---
+title: "Design an Online Bookstore — Low-Level Design Interview (2026)"
 description: "Design an Online Bookstore — complete OOP low-level design with repository pattern, cart operations, checkout flow, Java implementation, and interview walkthrough."
 ---
 

@@ -1,3 +1,8 @@
+---
+title: "🧪 Testing Microservices — Microservices Interview (2026)"
+description: "Test business logic in isolation — no Spring context, no database:"
+---
+
 # 🧪 Testing Microservices
 
 > **Test distributed systems effectively — from unit tests to contract tests to full end-to-end flows across services.**

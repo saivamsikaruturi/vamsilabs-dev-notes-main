@@ -1,3 +1,8 @@
+---
+title: "💾 Memento Design Pattern — Design Patterns Java (2026)"
+description: "You need to implement undo, snapshots, or rollback, but:"
+---
+
 # 💾 Memento Design Pattern
 
 > **Without violating encapsulation, capture and externalize an object's internal state so that the object can be restored to this state later.**

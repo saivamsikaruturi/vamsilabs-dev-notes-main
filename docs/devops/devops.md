@@ -1,3 +1,8 @@
+---
+title: "DevOps — DevOps Guide (2026)"
+description: "DevOps is a culture, set of practices, and collection of tools that increases an organization's ability to deliver applications and services at high..."
+---
+
 # DevOps
 
 !!! tip "Why DevOps Matters in Interviews"

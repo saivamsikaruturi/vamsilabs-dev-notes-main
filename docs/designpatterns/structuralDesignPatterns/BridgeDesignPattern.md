@@ -1,3 +1,8 @@
+---
+title: ":bridge_at_night: Bridge Design Pattern — Design Patterns Java (2026)"
+description: "OpenGLRenderer ..|> Renderer : implements SVGRenderer ..|> Renderer : implements Circle --|> Shape : extends Square --|> Shape : extends Shape o--..."
+---
+
 # :bridge_at_night: Bridge Design Pattern
 
 > **Decouple an abstraction from its implementation so that the two can vary independently.**

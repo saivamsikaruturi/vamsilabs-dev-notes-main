@@ -1,3 +1,8 @@
+---
+title: "Spring Expression Language (SpEL) — Spring Boot Interview Guide (2026)"
+description: "@Value(\"#{environment['SPRING_PROFILES_ACTIVE']}\") private String activeProfile; ```"
+---
+
 # Spring Expression Language (SpEL)
 
 > A powerful expression language for querying and manipulating objects at runtime. SpEL supports property access, method invocation, string templating, and conditional logic -- all within Spring annotations and XML configuration.

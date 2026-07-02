@@ -1,3 +1,8 @@
+---
+title: "LinkedHashMap Internals & LRU Cache — Java Interview Guide (2026)"
+description: "LinkedHashMap extends HashMap and adds a doubly-linked list that threads through all entries. This overlay preserves either insertion order (default)..."
+---
+
 # LinkedHashMap Internals & LRU Cache
 
 > **LeetCode #146 — LRU Cache is the single most asked LinkedList/HashMap question at FAANG companies.** Google, Meta, Amazon, and Microsoft have all asked it in phone screens and on-sites. Mastering this one problem demonstrates HashMap internals, doubly-linked list manipulation, and O(1) design thinking.

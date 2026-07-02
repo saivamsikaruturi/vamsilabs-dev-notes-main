@@ -1,3 +1,8 @@
+---
+title: "Fail-Fast vs Fail-Safe Iterators — Java Interview Guide (2026)"
+description: "FF ---|\"ArrayList, HashMap,HashSet\"| COL1[\"StandardCollections\"] FS ---|\"ConcurrentHashMap,CopyOnWriteArrayList\"| COL2[\"ConcurrentCollections\"]"
+---
+
 # Fail-Fast vs Fail-Safe Iterators
 
 > **"The best time to catch a concurrent modification bug is at compile time. The second best time is immediately at runtime via ConcurrentModificationException — not silently corrupting your data."**

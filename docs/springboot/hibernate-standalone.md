@@ -1,3 +1,8 @@
+---
+title: "Hibernate Deep Dive — Sessions, Caching & HQL — Spring Boot Interview Guide (2026)"
+description: "try (Session session = sessionFactory.openSession()) { Transaction tx = session.beginTransaction(); session.persist(new Order(\"ORD-001\",..."
+---
+
 # Hibernate Deep Dive — Sessions, Caching & HQL
 
 > **Production Incident:** An e-commerce platform experienced 10x database load during a flash sale. Root cause: missing second-level cache configuration and N+1 queries loading product images. A single Hibernate configuration change reduced DB calls from 50,000/sec to 5,000/sec.

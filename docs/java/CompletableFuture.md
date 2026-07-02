@@ -1,4 +1,5 @@
 ---
+title: "CompletableFuture — Async Programming in Java — Java Interview Guide (2026)"
 description: "Master CompletableFuture in Java — async composition, exception handling, thenApply vs thenCompose, and real-world patterns for non-blocking microservices."
 ---
 

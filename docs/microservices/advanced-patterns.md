@@ -1,3 +1,8 @@
+---
+title: "Advanced Microservices Patterns — Microservices Interview (2026)"
+description: "You have a legacy monolith that can't be rewritten overnight. Business can't stop while you rebuild. You need to migrate incrementally without downtime."
+---
+
 # Advanced Microservices Patterns
 
 > **Beyond the basics — patterns that solve real problems in production distributed systems.**

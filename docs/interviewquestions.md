@@ -1,3 +1,8 @@
+---
+title: "Interview Preparation Strategy (2026)"
+description: "A structured approach to cracking FAANG and top-tier tech interviews. This guide covers the meta-strategy — what to study, how to practice, and how to..."
+---
+
 # Interview Preparation Strategy
 
 A structured approach to cracking FAANG and top-tier tech interviews. This guide covers the meta-strategy — what to study, how to practice, and how to perform on the day.

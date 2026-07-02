@@ -1,3 +1,8 @@
+---
+title: "Computer Networks — Networking (2026)"
+description: "A deep understanding of networking is essential for building secure, high-performance distributed systems — and critical for security product..."
+---
+
 # Computer Networks
 
 A deep understanding of networking is essential for building secure, high-performance distributed systems — and critical for security product development where you intercept, inspect, and protect network traffic at every layer.

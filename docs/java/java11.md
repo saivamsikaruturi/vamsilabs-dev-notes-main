@@ -1,3 +1,8 @@
+---
+title: "Java 11 — LTS Features You Should Know — Java Interview Guide (2026)"
+description: "Java 11 is the first Long-Term Support release after Java 8. Most enterprises migrated from Java 8 directly to Java 11. It removed several deprecated..."
+---
+
 # Java 11 — LTS Features You Should Know
 
 Java 11 is the first **Long-Term Support** release after Java 8. Most enterprises migrated from Java 8 directly to Java 11. It removed several deprecated modules and added practical API improvements.

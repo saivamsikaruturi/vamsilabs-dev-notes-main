@@ -1,3 +1,8 @@
+---
+title: "🎮 Command Design Pattern — Design Patterns Java (2026)"
+description: "You need to issue requests to objects without knowing:"
+---
+
 # 🎮 Command Design Pattern
 
 > **Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations.**

@@ -1,3 +1,8 @@
+---
+title: "🧬 Prototype Design Pattern — Design Patterns Java (2026)"
+description: "Employee ..|> Prototype Employee *-- Address : contains ShapePrototypeRegistry o-- Prototype : stores"
+---
+
 # 🧬 Prototype Design Pattern
 
 > **Create new objects by copying an existing instance (prototype) rather than building from scratch.**

@@ -1,3 +1,8 @@
+---
+title: "Network Security & Threat Detection — Networking (2026)"
+description: "This section bridges networking fundamentals with real-world security product development — the kind of work done at Microsoft Defender, CrowdStrike,..."
+---
+
 # Network Security & Threat Detection
 
 This section bridges networking fundamentals with real-world security product development — the kind of work done at Microsoft Defender, CrowdStrike, and Palo Alto Networks.

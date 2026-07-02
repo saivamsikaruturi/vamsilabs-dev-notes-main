@@ -1,4 +1,5 @@
 ---
+title: "Docker — DevOps Guide (2026)"
 description: "Docker tutorial — containers, images, Dockerfile best practices, networking, volumes, Docker Compose, and CI/CD pipeline integration for developers."
 ---
 

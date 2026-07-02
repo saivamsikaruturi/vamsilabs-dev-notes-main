@@ -1,3 +1,8 @@
+---
+title: "Ruby Fundamentals (2026)"
+description: "Ruby is a dynamic, interpreted, object-oriented programming language designed for developer happiness and productivity. Created by Yukihiro \"Matz\"..."
+---
+
 # Ruby Fundamentals
 
 > **A dynamic, interpreted language optimized for developer happiness — powers Shopify, GitHub, Airbnb, and Stripe's early backends.**

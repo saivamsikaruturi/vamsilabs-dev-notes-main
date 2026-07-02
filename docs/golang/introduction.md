@@ -1,3 +1,8 @@
+---
+title: "Go (Golang) (2026)"
+description: "// Explicit declaration var timeout time.Duration = 30 * time.Second"
+---
+
 # Go (Golang)
 
 > **A statically typed, compiled language designed for simplicity, concurrency, and building production services at scale.**

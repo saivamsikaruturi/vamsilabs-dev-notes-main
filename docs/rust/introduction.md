@@ -1,3 +1,8 @@
+---
+title: "Rust Programming Language (2026)"
+description: "Rust is a systems programming language focused on safety, speed, and concurrency — without a garbage collector."
+---
+
 # Rust Programming Language
 
 > **Memory safety without garbage collection — powers Cloudflare Workers, Discord's backend, Dropbox's sync engine, and the Linux kernel.**

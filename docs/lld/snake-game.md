@@ -1,4 +1,5 @@
 ---
+title: "Design the Snake Game — Low-Level Design Interview (2026)"
 description: "Design the Snake Game — complete OOP low-level design with state machine, queue-based snake body, collision detection, Java implementation, and interview walkthrough."
 ---
 

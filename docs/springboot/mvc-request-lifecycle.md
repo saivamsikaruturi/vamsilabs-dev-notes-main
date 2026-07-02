@@ -1,3 +1,8 @@
+---
+title: "Spring MVC Request Lifecycle — Spring Boot Interview Guide (2026)"
+description: "Every single HTTP request that hits your Spring Boot application goes through the same pipeline. In interviews, when they ask \"what happens when a..."
+---
+
 # Spring MVC Request Lifecycle
 
 Every single HTTP request that hits your Spring Boot application goes through the same pipeline. In interviews, when they ask "what happens when a request hits `/api/orders`?" — they want you to trace it from the TCP socket to the JSON response. Most candidates say "DispatcherServlet routes it to the controller." That's like saying "the car drives to the destination" — technically true, but tells me you've never looked under the hood.

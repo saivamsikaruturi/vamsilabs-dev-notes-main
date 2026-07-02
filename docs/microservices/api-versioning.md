@@ -1,3 +1,8 @@
+---
+title: "🔢 API Versioning Strategies — Microservices Interview (2026)"
+description: "subgraph Gateway[\"API Gateway\"] R[\"🔀 Version Router\"] end"
+---
+
 # 🔢 API Versioning Strategies
 
 > **Evolve your microservice APIs without breaking existing consumers — using URI paths, headers, query params, and content negotiation to manage multiple API versions simultaneously.**

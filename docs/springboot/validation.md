@@ -1,3 +1,8 @@
+---
+title: "Validation and Data Binding — Spring Boot Interview Guide (2026)"
+description: "JSR 380 is the Java standard for declarative constraint validation. Spring Boot auto-configures a Validator when spring-boot-starter-validation is on..."
+---
+
 # Validation and Data Binding
 
 > **Validate input at the boundary. Reject bad data before it reaches business logic using Bean Validation, custom validators, and Spring's binding infrastructure.**

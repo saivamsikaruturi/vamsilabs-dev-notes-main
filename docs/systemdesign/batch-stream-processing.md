@@ -1,3 +1,8 @@
+---
+title: "Batch vs Stream Processing — System Design Interview (2026)"
+description: "Nearly every large-scale system generates data that needs processing — analytics, recommendations, fraud detection, ETL. Interviewers want to hear:"
+---
+
 # Batch vs Stream Processing
 
 !!! danger "Real Incident: LinkedIn Real-Time Activity Processing"

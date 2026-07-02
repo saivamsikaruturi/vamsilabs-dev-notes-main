@@ -1,3 +1,8 @@
+---
+title: "Spring Batch — Spring Boot Interview Guide (2026)"
+description: "The core processing model. Reads items one at a time, processes them, then writes in chunks (batches). Each chunk = one transaction."
+---
+
 # Spring Batch
 
 > **Enterprise-grade batch processing framework — handles restart, retry, skip, and chunk-based transactions for millions of records.**

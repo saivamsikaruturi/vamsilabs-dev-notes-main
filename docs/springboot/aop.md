@@ -1,3 +1,8 @@
+---
+title: "Spring AOP Interview Guide — Proxies, Pointcuts, @Transactional Internals (2026)"
+description: "Master Spring AOP for interviews — how proxies wrap beans, why self-invocation breaks @Transactional and @Cacheable, JDK vs CGLIB proxies, custom @LogExecutionTime annotations. Real Spring Boot examples from production."
+---
+
 # Spring AOP — The Complete Interview Guide
 
 AOP is that topic where interviewers love to go deep. "How does `@Transactional` actually work?" — that's an AOP question. "Why doesn't my `@Cacheable` method work when called from the same class?" — AOP again. "Can Spring intercept private methods?" — AOP. Let me explain how Spring creates proxies, how advice chains execute, and why understanding this single concept unlocks answers to dozens of interview questions.

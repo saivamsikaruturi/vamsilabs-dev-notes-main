@@ -1,3 +1,8 @@
+---
+title: "Kotlin Fundamentals (2026)"
+description: "Kotlin is a statically-typed, JVM-based programming language developed by JetBrains. It is fully interoperable with Java and is the preferred language..."
+---
+
 # Kotlin Fundamentals
 
 > **Java's modern successor on the JVM — null-safe, concise, and coroutine-powered. The language of Android and increasingly server-side microservices.**

@@ -1,3 +1,8 @@
+---
+title: "Immutable Classes in Java — Java Interview Guide (2026)"
+description: "An immutable object cannot be modified after creation. Immutability is a cornerstone of safe concurrent programming, clean design, and reliable HashMap..."
+---
+
 # Immutable Classes in Java
 
 An immutable object **cannot be modified after creation**. Immutability is a cornerstone of safe concurrent programming, clean design, and reliable HashMap keys.

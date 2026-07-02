@@ -1,3 +1,8 @@
+---
+title: "java.lang.Object Class Methods — Java Interview Guide (2026)"
+description: "Every class in Java implicitly extends Object. Its 11 methods form the foundation of identity, synchronization, and lifecycle management in the JVM."
+---
+
 # java.lang.Object Class Methods
 
 Every class in Java implicitly extends `Object`. Its 11 methods form the foundation of identity, synchronization, and lifecycle management in the JVM.

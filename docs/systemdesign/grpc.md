@@ -1,3 +1,8 @@
+---
+title: "gRPC & Protocol Buffers — System Design Interview (2026)"
+description: "Any system design with internal microservice communication should consider gRPC. Interviewers want to hear:"
+---
+
 # gRPC & Protocol Buffers
 
 !!! danger "Real Incident: Google's Internal Migration"

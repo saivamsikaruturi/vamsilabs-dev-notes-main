@@ -1,3 +1,8 @@
+---
+title: "Memory Leaks & Profiling in Java — Java Interview Guide (2026)"
+description: "A memory leak in Java happens when objects are no longer needed but still referenced, preventing the garbage collector from reclaiming them. Over time,..."
+---
+
 # Memory Leaks & Profiling in Java
 
 A memory leak in Java happens when objects are **no longer needed but still referenced**, preventing the garbage collector from reclaiming them. Over time, this leads to `OutOfMemoryError` and service crashes.

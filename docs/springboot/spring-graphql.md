@@ -1,3 +1,8 @@
+---
+title: "GraphQL with Spring — Spring Boot Interview Guide (2026)"
+description: "Spring for GraphQL (since Spring Boot 3.x) follows a schema-first philosophy: you define your API contract in .graphqls files, then implement resolvers..."
+---
+
 # GraphQL with Spring
 
 > A REST API returns 50 fields for a User endpoint. Your mobile app needs 3. Every screen requires 4 separate calls. Bandwidth bleeds, latency stacks, and your backend team maintains 12 "slim" DTOs per entity. GraphQL eliminates this: one query, exact data, zero waste.

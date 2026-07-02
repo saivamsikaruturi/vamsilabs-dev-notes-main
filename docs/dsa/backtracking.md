@@ -1,4 +1,5 @@
 ---
+title: "Backtracking — Coding Interview (2026)"
 description: "Backtracking — FAANG interview patterns for permutations, combinations, subsets, constraint satisfaction, and N-Queens with Java templates, decision tree diagrams, and pruning techniques."
 ---
 

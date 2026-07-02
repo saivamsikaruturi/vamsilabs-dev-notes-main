@@ -1,3 +1,8 @@
+---
+title: "🏗️ Abstract Factory Design Pattern — Design Patterns Java (2026)"
+description: "DarkThemeFactory ..|> UIFactory LightThemeFactory ..|> UIFactory DarkButton ..|> Button LightButton ..|> Button DarkCheckbox ..|> Checkbox..."
+---
+
 # 🏗️ Abstract Factory Design Pattern
 
 > **Provide an interface for creating families of related objects without specifying their concrete classes.**

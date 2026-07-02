@@ -1,3 +1,8 @@
+---
+title: "Spring Boot Profiles (2026)"
+description: "Profiles are how Spring Boot says \"run this config in dev, that config in prod.\" Sounds simple. But then you get questions like \"what happens when two..."
+---
+
 # Spring Boot Profiles
 
 Profiles are how Spring Boot says "run this config in dev, that config in prod." Sounds simple. But then you get questions like "what happens when two profiles are active and both define the same property?" or "how do you activate a profile inside a test without affecting other tests?" — and suddenly it's not so simple anymore.

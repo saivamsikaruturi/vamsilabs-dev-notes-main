@@ -1,3 +1,8 @@
+---
+title: "Developer Keyboard Shortcuts — IntelliJ, VS Code, Terminal Cheat Sheet (2026)"
+description: "Curated cheat sheet of keyboard shortcuts for IntelliJ IDEA, VS Code, macOS terminal, and Git — the ones I actually use daily as a Java engineer."
+---
+
 # Shortcuts
 
 ## Intellij IDEA

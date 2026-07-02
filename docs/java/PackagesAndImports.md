@@ -1,3 +1,8 @@
+---
+title: "Java Packages, Imports & Classpath — Java Interview Guide (2026)"
+description: "// ❌ Wrong: uppercase letters, hyphens, starting with numbers package com.My-Company.2Project; // compilation error"
+---
+
 # Java Packages, Imports & Classpath
 
 > **"A well-structured package hierarchy is the first sign of a well-designed system — get it wrong and you'll fight your own codebase for years."**

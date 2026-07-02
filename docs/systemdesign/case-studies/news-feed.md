@@ -1,3 +1,8 @@
+---
+title: "Design a News Feed System — Twitter/Facebook Scale (System Design Interview)"
+description: "Design a news feed like Twitter or Facebook — system design interview walkthrough covering fan-out-on-write vs fan-out-on-read, hybrid strategies for celebrity users, timeline ranking, and scaling to billions of users."
+---
+
 # News Feed (Twitter/Facebook)
 
 !!! danger "Real Incident: Twitter's Flock Fan-out Meltdown, October 2012"

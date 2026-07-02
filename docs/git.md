@@ -1,3 +1,8 @@
+---
+title: "Git for Developers — Commands, Workflows & Interview Questions (2026)"
+description: "Git is the universal version control system in modern software development. Whether you are a junior developer or a principal engineer, interviewers..."
+---
+
 # Git
 
 ## Why Git Knowledge Matters

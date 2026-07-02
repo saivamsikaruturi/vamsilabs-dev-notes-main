@@ -1,5 +1,6 @@
 ---
-description: "Master OOPs concepts in Java — encapsulation, inheritance, polymorphism, and abstraction explained with real-world examples and interview questions."
+title: "Object-Oriented Programming in Java — Java Interview Guide (2026)"
+description: "Before OOP, large programs were written as collections of functions operating on shared global data. This worked fine for small programs, but at scale..."
 ---
 
 # Object-Oriented Programming in Java

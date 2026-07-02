@@ -1,3 +1,8 @@
+---
+title: "🚄 gRPC Communication — Microservices Interview (2026)"
+description: "option java_multiple_files = true; option java_package = \"com.example.order.grpc\";"
+---
+
 # 🚄 gRPC Communication
 
 > **High-performance, strongly-typed inter-service communication using Protocol Buffers — faster than REST, with streaming support and code generation.**

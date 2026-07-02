@@ -1,3 +1,8 @@
+---
+title: "Spring HATEOAS — Hypermedia-Driven REST APIs — Spring Boot Interview Guide (2026)"
+description: "Leonard Richardson defined four levels of REST maturity. HATEOAS is Level 3 — the highest level."
+---
+
 # Spring HATEOAS — Hypermedia-Driven REST APIs
 
 > **The Problem:** Your REST API returns flat JSON. Clients hardcode URLs, break on every path change, and have no idea what actions are available. HATEOAS makes APIs self-documenting and evolvable — clients follow links instead of constructing URLs.

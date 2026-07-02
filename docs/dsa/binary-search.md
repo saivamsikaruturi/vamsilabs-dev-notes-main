@@ -1,4 +1,5 @@
 ---
+title: "Binary Search — Coding Interview (2026)"
 description: "Binary Search interview guide for FAANG — 5 variants, answer-space binary search, off-by-one prevention, solved walkthroughs with Java code, and 15 practice problems covering rotated arrays, lower/upper bound, and optimization."
 ---
 

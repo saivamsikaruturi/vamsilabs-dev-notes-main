@@ -1,4 +1,5 @@
 ---
+title: "🚪 API Gateway Pattern — Microservices Interview (2026)"
 description: "API gateway pattern explained — routing, authentication, rate limiting, and request aggregation for microservices with Spring Cloud Gateway examples."
 ---
 

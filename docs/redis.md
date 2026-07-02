@@ -1,3 +1,8 @@
+---
+title: "Redis — System Design (2026)"
+description: "Redis = an in-memory data structure store. Not just key-value — it supports lists, sets, sorted sets, hashes, streams, and more. Think of it as a..."
+---
+
 # Redis
 
 !!! danger "Real Incident: Twitter, 2013"

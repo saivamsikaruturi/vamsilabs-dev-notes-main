@@ -1,3 +1,8 @@
+---
+title: "N+1 Problem & JPA/Hibernate Internals — Spring Boot Interview Guide (2026)"
+description: "The N+1 problem is the most common JPA performance killer. It happens when your code triggers 1 query for the parent entity, then N additional queries..."
+---
+
 # N+1 Problem & JPA/Hibernate Internals
 
 > **The difference between a 50ms response and a 12-second timeout is often just one missing JOIN FETCH.**

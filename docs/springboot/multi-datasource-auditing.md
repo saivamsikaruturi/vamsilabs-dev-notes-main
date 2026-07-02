@@ -1,3 +1,8 @@
+---
+title: "Multiple DataSources & JPA Auditing — Spring Boot Interview Guide (2026)"
+description: "@Primary @Bean(name = \"primaryDataSource\") @ConfigurationProperties(prefix = \"spring.datasource.primary\") public DataSource primaryDataSource() {..."
+---
+
 # Multiple DataSources & JPA Auditing
 
 > **Configure multiple databases and automatically track who changed what, when — essential for enterprise applications with read-write split, multi-tenancy, or compliance requirements.**

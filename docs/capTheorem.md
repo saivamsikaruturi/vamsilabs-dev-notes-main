@@ -1,4 +1,5 @@
 ---
+title: "CAP Theorem — System Design (2026)"
 description: "CAP theorem explained — consistency, availability, and partition tolerance trade-offs in distributed systems with real-world examples from GitHub and DynamoDB."
 ---
 

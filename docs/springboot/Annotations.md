@@ -1,4 +1,5 @@
 ---
+title: "Spring Boot Annotations — Interview Deep Dive (2026)"
 description: "The ultimate Spring Boot annotations interview prep — @Component, @Service, @Configuration, @Transactional and 40+ annotations explained with internal mechanics, gotchas, and real production examples."
 ---
 

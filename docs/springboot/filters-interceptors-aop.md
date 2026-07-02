@@ -1,3 +1,8 @@
+---
+title: "Filters vs Interceptors vs AOP — Spring Boot Interview Guide (2026)"
+description: "This is the centerpiece. Every HTTP request passes through these layers in order — and the response flows back in reverse."
+---
+
 # Filters vs Interceptors vs AOP
 
 > **Cross-cutting concerns live in layers. Put your logic in the wrong layer, and you'll spend days debugging something that should have taken minutes.**

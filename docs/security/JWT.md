@@ -1,3 +1,8 @@
+---
+title: "JSON Web Tokens (JWT) — Security Guide (2026)"
+description: "JWT (RFC 7519) is an open standard that defines a compact, URL-safe way to represent claims between two parties. The token is digitally signed so it..."
+---
+
 # JSON Web Tokens (JWT)
 
 > **The stateless, compact, self-contained token format that powers modern API authentication and authorization across distributed systems.**

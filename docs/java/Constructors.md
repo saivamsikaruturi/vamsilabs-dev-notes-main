@@ -1,3 +1,8 @@
+---
+title: "Constructors in Java — Java Interview Guide (2026)"
+description: "A constructor is a special method that initializes an object when it's created. It has the same name as the class and no return type."
+---
+
 # Constructors in Java
 
 A constructor is a special method that **initializes an object** when it's created. It has the same name as the class and no return type.

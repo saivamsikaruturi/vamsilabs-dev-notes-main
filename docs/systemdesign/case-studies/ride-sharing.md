@@ -1,3 +1,8 @@
+---
+title: "Design Uber/Lyft Ride Sharing System (System Design Interview Walkthrough)"
+description: "Design a ride-sharing system like Uber or Lyft — system design interview covering H3 hexagonal spatial indexing, driver-rider matching, surge pricing, location ingestion at 1.7M updates/sec, and decoupled write/read paths."
+---
+
 # Ride Sharing (Uber/Lyft)
 
 !!! danger "Real Incident: Uber's New Year's Eve Outage, 2015"

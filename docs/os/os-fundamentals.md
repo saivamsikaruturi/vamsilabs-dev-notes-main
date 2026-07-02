@@ -1,3 +1,8 @@
+---
+title: "Operating System Fundamentals — Operating Systems (2026)"
+description: "Understanding OS internals is foundational for security product development — EDR agents operate at the kernel/driver level, hooking system calls,..."
+---
+
 # Operating System Fundamentals
 
 Understanding OS internals is foundational for security product development — EDR agents operate at the kernel/driver level, hooking system calls, monitoring process behavior, and protecting against rootkits.

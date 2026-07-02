@@ -1,3 +1,8 @@
+---
+title: "Scoped Values & Structured Concurrency (Java 21+) — Java Interview Guide (2026)"
+description: "// 1M virtual threads × 1 ThreadLocal value = 1M objects retained // ThreadLocal.remove() is often forgotten → MEMORY LEAK // Child threads don't..."
+---
+
 # Scoped Values & Structured Concurrency (Java 21+)
 
 > **ThreadLocal leaks with virtual threads — 1M virtual threads x 1 ThreadLocal = OOM.** Scoped Values and Structured Concurrency are the modern replacements designed for the virtual thread era.

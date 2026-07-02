@@ -1,4 +1,5 @@
 ---
+title: "Two Pointers & Sliding Window — Coding Interview (2026)"
 description: "Two Pointers and Sliding Window patterns for FAANG interviews — templates, visual diagrams, solved walkthroughs (LC #3, #11, #15, #76), common mistakes, and 15 practice problems in Java."
 ---
 

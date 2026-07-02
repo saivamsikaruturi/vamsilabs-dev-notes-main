@@ -1,3 +1,8 @@
+---
+title: "Data Structures & Algorithms — 12 Patterns for FAANG Coding Interviews (2026)"
+description: "After enough problems, you realize there are really only about 12-15 patterns. Everything else is a variation. Here's what I've seen ranked by how..."
+---
+
 # Data Structures & Algorithms
 
 > These are my notes from grinding ~300 LeetCode problems and reading through 3,700+ problem statements. I've distilled what actually matters for FAANG interviews — the patterns that keep showing up, the data structures you need cold, and the problems worth your time.

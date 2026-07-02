@@ -1,5 +1,6 @@
 ---
-description: "Complete guide to Java 8 features — lambda expressions, Stream API, Optional, functional interfaces, and default methods with practical examples."
+title: "Java 8 — The Most Important Java Release — Java Interview Guide (2026)"
+description: "Java 8 introduced functional programming to Java. Lambdas, Streams, and Optional are used in every modern Java codebase. This is the version most..."
 ---
 
 # Java 8 — The Most Important Java Release

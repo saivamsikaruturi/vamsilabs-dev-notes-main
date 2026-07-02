@@ -1,3 +1,8 @@
+---
+title: "Java Coding Interview Questions (2026)"
+description: "A comprehensive collection of 100+ real coding problems asked in technical interviews — organized by topic with optimal solutions and complexity..."
+---
+
 # Java Coding Interview Questions
 
 A comprehensive collection of 100+ real coding problems asked in technical interviews — organized by topic with optimal solutions and complexity analysis. All solutions available in the [:fontawesome-brands-github: Java-Practice](https://github.com/saivamsikaruturi/Java-Practice) repository.

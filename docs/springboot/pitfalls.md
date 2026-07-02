@@ -1,3 +1,8 @@
+---
+title: "Common Pitfalls & Debugging Guide (2026)"
+description: "The #1 source of subtle bugs in Spring Boot applications."
+---
+
 # Common Pitfalls & Debugging Guide
 
 > **The bugs that burn hours in production — know them before they burn you.**

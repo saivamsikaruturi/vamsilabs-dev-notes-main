@@ -1,3 +1,8 @@
+---
+title: "Reflection in Java — Java Interview Guide (2026)"
+description: "Reflection allows you to inspect and manipulate classes, methods, fields, and constructors at runtime. It's the engine behind Spring's dependency..."
+---
+
 # Reflection in Java
 
 Reflection allows you to **inspect and manipulate classes, methods, fields, and constructors at runtime**. It's the engine behind Spring's dependency injection, JPA's entity mapping, and JUnit's test discovery.

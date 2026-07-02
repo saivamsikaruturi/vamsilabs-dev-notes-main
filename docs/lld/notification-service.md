@@ -1,4 +1,5 @@
 ---
+title: "Design a Notification Service — Low-Level Design Interview (2026)"
 description: "Design a Notification Service — complete OOP low-level design with multi-channel delivery, template rendering, rate limiting, Java implementation, and interview walkthrough."
 ---
 

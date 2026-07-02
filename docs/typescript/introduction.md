@@ -1,3 +1,8 @@
+---
+title: "TypeScript (2026)"
+description: "TypeScript is a strongly-typed superset of JavaScript that compiles to plain JavaScript. It has become the industry standard for large-scale frontend..."
+---
+
 # TypeScript
 
 ## Why TypeScript Matters

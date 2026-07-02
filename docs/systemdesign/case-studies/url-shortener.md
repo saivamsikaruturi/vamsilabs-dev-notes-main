@@ -1,4 +1,5 @@
 ---
+title: "URL Shortener (bit.ly) — System Design Interview (2026)"
 description: "Design a URL shortener like bit.ly — system design interview walkthrough covering encoding, database schema, caching strategy, and scaling to billions of links."
 ---
 

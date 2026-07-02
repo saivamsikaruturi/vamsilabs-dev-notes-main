@@ -1,3 +1,8 @@
+---
+title: "Java 21+ Features (LTS) — Java Interview Guide (2026)"
+description: "Immutable data carriers — replace 90% of POJO boilerplate."
+---
+
 # Java 21+ Features (LTS)
 
 > **The most significant Java release in a decade — virtual threads, pattern matching, records maturity, sealed types, and sequenced collections.**

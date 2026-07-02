@@ -1,4 +1,5 @@
 ---
+title: "Design Splitwise (Expense Sharing) — Low-Level Design Interview (2026)"
 description: "Design Splitwise (Expense Sharing) — complete OOP low-level design with Strategy pattern, balance graph simplification, settlement algorithm, Java implementation, and interview walkthrough."
 ---
 

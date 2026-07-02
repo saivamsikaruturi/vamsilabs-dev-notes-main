@@ -1,4 +1,5 @@
 ---
+title: "Strings in Java — Java Interview Guide (2026)"
 description: "Deep dive into Java strings — String Pool, immutability, StringBuilder vs StringBuffer, comparison methods, and common interview questions explained."
 ---
 

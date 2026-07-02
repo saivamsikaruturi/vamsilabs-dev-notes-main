@@ -1,3 +1,8 @@
+---
+title: "Entity-to-DTO Mapping — Spring Boot Interview Guide (2026)"
+description: "With componentModel = \"spring\", MapStruct generates a Spring @Component. Inject it anywhere:"
+---
+
 # Entity-to-DTO Mapping
 
 > **Never expose JPA entities directly in your API. Use DTOs to decouple your persistence model from your API contract — preventing accidental data leaks, lazy-loading explosions, and tight coupling.**

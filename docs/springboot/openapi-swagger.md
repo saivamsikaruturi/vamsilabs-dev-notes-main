@@ -1,3 +1,8 @@
+---
+title: "OpenAPI & API Documentation (springdoc) — Spring Boot Interview Guide (2026)"
+description: "That's it. Visit http://localhost:8080/swagger-ui.html — your entire API is documented automatically."
+---
+
 # OpenAPI & API Documentation (springdoc)
 
 > **Auto-generate interactive API documentation from your code — the industry standard for API-first development.**

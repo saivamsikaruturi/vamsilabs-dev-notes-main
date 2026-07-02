@@ -1,4 +1,5 @@
 ---
+title: "Search Autocomplete (Google Suggest) — System Design Interview (2026)"
 description: "Design a search autocomplete system like Google Suggest — system design interview walkthrough covering trie data structures, frequency ranking, exponential decay, offline pipelines, and scaling to 100K QPS."
 ---
 

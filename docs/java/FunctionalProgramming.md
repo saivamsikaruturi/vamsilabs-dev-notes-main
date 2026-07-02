@@ -1,5 +1,6 @@
 ---
-description: "Learn functional programming in Java — lambdas, pure functions, immutability, Optional, and functional interfaces with interview-focused examples."
+title: "Functional Programming in Java — Java Interview Guide (2026)"
+description: "A functional interface has exactly one abstract method (SAM — Single Abstract Method). The @FunctionalInterface annotation is optional but recommended..."
 ---
 
 # Functional Programming in Java

@@ -1,3 +1,8 @@
+---
+title: "HTTPS & TLS — System Design (2026)"
+description: "HTTPS = HTTP + TLS encryption. Every byte between client and server is encrypted so nobody in the middle can read or tamper with it."
+---
+
 # HTTPS & TLS
 
 !!! danger "Real Incident: Firesheep, 2010"

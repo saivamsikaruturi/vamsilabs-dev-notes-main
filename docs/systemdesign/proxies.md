@@ -1,3 +1,8 @@
+---
+title: "Proxies — System Design Interview (2026)"
+description: "Proxies are rarely the main topic, but they appear in EVERY system design:"
+---
+
 # Proxies
 
 !!! danger "Real Incident: Cloudflare Outage, July 2019"

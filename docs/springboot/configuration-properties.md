@@ -1,3 +1,8 @@
+---
+title: "@ConfigurationProperties — Spring Boot Interview Guide (2026)"
+description: "private String host = \"smtp.example.com\"; private int port = 587; private boolean starttls = true;"
+---
+
 # @ConfigurationProperties
 
 > Type-safe, validated, IDE-friendly configuration binding. The cleanest way to externalize and structure application settings in Spring Boot.

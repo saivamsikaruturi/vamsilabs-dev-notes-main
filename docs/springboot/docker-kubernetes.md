@@ -1,3 +1,8 @@
+---
+title: "Docker & Kubernetes with Spring Boot (2026)"
+description: "EXPOSE 8080 ENTRYPOINT [\"java\", \ \"-XX:+UseContainerSupport\", \ \"-XX:MaxRAMPercentage=75.0\", \ \"org.springframework.boot.loader.launch.JarLauncher\"] ```"
+---
+
 # Docker & Kubernetes with Spring Boot
 
 > **Containerize once, deploy everywhere — from local Docker to production Kubernetes clusters with confidence.**

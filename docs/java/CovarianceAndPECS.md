@@ -1,3 +1,8 @@
+---
+title: "Covariance, Contravariance & PECS — Java Interview Guide (2026)"
+description: "In OOP, Dog extends Animal. You'd expect List to be substitutable for List. But Java generics say no — and for good reason."
+---
+
 # Covariance, Contravariance & PECS
 
 > "If you remember only one rule about Java generics, let it be PECS: **Producer Extends, Consumer Super**."

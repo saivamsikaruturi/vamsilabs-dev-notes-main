@@ -1,3 +1,8 @@
+---
+title: "String Pool & String Internals — Java Interview Guide (2026)"
+description: "Bonus bug: A separate team spent 3 days debugging why their cache lookups failed. Root cause: comparing user IDs with == instead of .equals() — worked..."
+---
+
 # String Pool & String Internals
 
 > **"Strings account for 25-40% of heap in typical Java applications. Understanding their internals is not optional — it's survival." — JVM Performance Engineers**

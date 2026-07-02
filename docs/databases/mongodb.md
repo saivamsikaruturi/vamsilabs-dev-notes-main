@@ -1,3 +1,8 @@
+---
+title: "MongoDB — Document Database Deep Dive — Database Guide (2026)"
+description: "subgraph Mongo[\"Document (MongoDB)\"] direction TB D1[\"orders collection{ customer: {...}, items: [...]}\"] end"
+---
+
 # MongoDB — Document Database Deep Dive
 
 > **Why Netflix Chose MongoDB:** Netflix migrated their content metadata from Oracle to MongoDB to handle 200M+ subscribers with unpredictable content schemas. Each title has different attributes (TV series have seasons/episodes; movies have directors/runtime). A rigid relational schema couldn't keep up with weekly schema changes. MongoDB's flexible document model solved this.

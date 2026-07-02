@@ -1,3 +1,8 @@
+---
+title: "Spring Boot Caching — The Complete Production Guide (2026)"
+description: "Caching is deceptively simple to add — @Cacheable and done. But in production, caching is where most subtle bugs live. Cache invalidation is one of the..."
+---
+
 # Spring Boot Caching — The Complete Production Guide
 
 Caching is deceptively simple to add — `@Cacheable` and done. But in production, caching is where most subtle bugs live. Cache invalidation is one of the "two hard things in computer science" for a reason. When do you use `@CachePut` vs `@CacheEvict`? What happens during a cache stampede? Why is your `@Cacheable` not working when called from the same class? Let me walk you through it...

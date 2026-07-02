@@ -1,4 +1,5 @@
 ---
+title: "Design an ATM System — Low-Level Design Interview (2026)"
 description: "Design an ATM System — complete OOP low-level design with State Machine pattern, Chain of Responsibility for cash dispensing, class diagrams, and Java implementation."
 ---
 
