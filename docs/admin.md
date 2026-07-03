@@ -6,6 +6,8 @@ hide:
 
 <div class="vtn-admin-panel" id="admin-panel">
 
+<h1 style="position:absolute; left:-9999px;">Admin Dashboard</h1>
+
 <div class="vtn-admin-header">
   <h2>Admin Dashboard</h2>
   <span id="admin-status" style="font-size: 0.8rem; color: var(--vtn-text-muted);">Checking access...</span>

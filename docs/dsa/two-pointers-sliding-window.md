@@ -3,8 +3,6 @@ title: "Two Pointers & Sliding Window — Coding Interview (2026)"
 description: "Two Pointers and Sliding Window patterns for FAANG interviews — templates, visual diagrams, solved walkthroughs (LC #3, #11, #15, #76), common mistakes, and 15 practice problems in Java."
 ---
 
-# Two Pointers & Sliding Window
-
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">DSA Pattern</span>
 <h1 style="font-size: 2.2rem !important;">Two Pointers & Sliding Window</h1>

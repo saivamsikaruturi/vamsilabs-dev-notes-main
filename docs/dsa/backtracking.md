@@ -3,8 +3,6 @@ title: "Backtracking — Coding Interview (2026)"
 description: "Backtracking — FAANG interview patterns for permutations, combinations, subsets, constraint satisfaction, and N-Queens with Java templates, decision tree diagrams, and pruning techniques."
 ---
 
-# Backtracking
-
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">Pattern</span>
 <h1 style="font-size: 2.2rem !important;">Backtracking</h1>

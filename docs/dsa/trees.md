@@ -3,8 +3,6 @@ title: "Trees — Coding Interview (2026)"
 description: "Trees interview prep for FAANG — traversals, BST operations, 4 problem archetypes, solved walkthroughs (LC #98, #124, #236, #297), and 15 curated practice problems with Java code."
 ---
 
-# Trees
-
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">DSA Pattern</span>
 <h1 style="font-size: 2.2rem !important;">Trees — The Recursive Backbone</h1>

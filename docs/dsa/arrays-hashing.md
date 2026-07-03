@@ -3,8 +3,6 @@ title: "Arrays & Hashing — Coding Interview (2026)"
 description: "Arrays & Hashing — the most foundational FAANG interview pattern. Complete guide with HashMap internals, prefix sums, reusable Java templates, solved LeetCode walkthroughs, and pattern recognition for Two Sum, Group Anagrams, Subarray Sum Equals K."
 ---
 
-# Arrays & Hashing
-
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">Pattern #1</span>
 <h1 style="font-size: 2.2rem !important;">Arrays & Hashing</h1>

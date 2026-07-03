@@ -3,8 +3,6 @@ title: "Graphs — Coding Interview (2026)"
 description: "Complete graph algorithms interview prep for FAANG — BFS, DFS, topological sort, Union-Find, Dijkstra's with Java templates, mermaid diagrams, and solved LeetCode walkthroughs."
 ---
 
-# Graphs
-
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">Interview Prep</span>
 <h1 style="font-size: 2.2rem !important;">Graph Algorithms Mastery</h1>

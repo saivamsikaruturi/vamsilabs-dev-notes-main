@@ -1,30 +1,86 @@
 ---
-title: "12 Coding Patterns to Crack FAANG DSA Interviews (2026) — Java LeetCode Solutions"
-description: "Master Data Structures & Algorithms with 12 coding patterns covering 300+ LeetCode problems. Two Pointers, Sliding Window, Binary Search, DP, Graphs — Java code, diagrams, FAANG interview prep by Salesforce engineer."
+title: "DSA Without the Pain — 12 Patterns in Plain English, Java Code (2026)"
+description: "You don't need to love algorithms to get value out of DSA. Learn the 12 patterns that show up in real code and interviews, explained in plain English by a Salesforce engineer."
 ---
 
-# 12 DSA Coding Patterns for FAANG Interviews — LeetCode in Java
+# DSA Without the Pain
 
-<div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
-<span class="vtn-tag">Interview Prep</span>
-<h1 style="font-size: 2.2rem !important;">DSA Pattern Mastery</h1>
-<p class="vtn-subtitle">From 300+ LeetCode problems distilled into 12 patterns that actually matter for FAANG interviews. Each page has diagrams, Java code, solved walkthroughs, and the mistakes that cost offers.</p>
-<div class="vtn-stats">
-<div class="vtn-stat"><span class="vtn-stat-number">12</span><span class="vtn-stat-label">Patterns</span></div>
-<div class="vtn-stat"><span class="vtn-stat-number">80+</span><span class="vtn-stat-label">Problems</span></div>
-<div class="vtn-stat"><span class="vtn-stat-number">300+</span><span class="vtn-stat-label">LeetCode Solved</span></div>
-</div>
-</div>
+The code you're already writing is doing DSA — you're just doing it badly. That `for` loop inside another `for` loop that scans your list of users to find duplicates? That's an O(n²) pattern. Swap it for a `HashSet` and your code runs 1000x faster with three fewer lines. That's it. That's DSA.
+
+You don't have to love algorithms. You just have to recognize a handful of patterns when they show up. This page teaches you those patterns using real code you'd actually write, not toy problems from a textbook.
 
 ---
 
-## The Pattern Map
+## The One Trick That Pays for This Whole Page
 
-After grinding 300+ problems, you realize there are really only 12 patterns. Everything else is a variation. Here's the dependency graph — study in this order:
+Here's a bug I've fixed dozens of times in production Java code:
+
+```java
+// Slow — O(n²). Fine at 100 users. Dies at 10,000.
+List<User> duplicates = new ArrayList<>();
+for (User a : users) {
+    for (User b : users) {
+        if (a != b && a.getEmail().equals(b.getEmail())) {
+            duplicates.add(a);
+        }
+    }
+}
+```
+
+The fix:
+
+```java
+// Fast — O(n). Same result, 1000x faster at scale.
+Set<String> seen = new HashSet<>();
+List<User> duplicates = new ArrayList<>();
+for (User u : users) {
+    if (!seen.add(u.getEmail())) {
+        duplicates.add(u);
+    }
+}
+```
+
+That's **one pattern** — "use a HashSet for O(1) lookups." Just knowing this pattern exists is the difference between code that scales and code that doesn't. There are about 11 more like it. That's the whole point of DSA.
+
+---
+
+## What This Actually Gets You
+
+| You Want... | DSA Gives You |
+|---|---|
+| **Better production code** | Loops that don't fall over at scale, queries that don't time out, code reviews you don't dread |
+| **A raise / promotion** | Senior engineers get paid to spot O(n²) in a PR. Juniors write it. |
+| **To pass FAANG interviews** | The 12 patterns cover ~65% of what they ask. There's no shortcut around this one. |
+| **To stop feeling stupid** | Debugging weird behavior in HashMap, understanding why your recursion blew the stack, why sort is slow — this is all DSA in disguise |
+
+If none of those move you, you can close this tab guilt-free. If any of them do — keep reading.
+
+---
+
+## The 5-Minute Start
+
+If you read only one thing on this site, read **[Arrays & Hashing](arrays-hashing.md)**. Two things will happen:
+
+1. You'll walk away with 2–3 patterns you can use in production code tomorrow.
+2. You'll realize DSA is way less scary than it sounds.
+
+That page is designed to be finishable during a coffee break. It teaches:
+
+- **The HashSet trick** (the one above, generalized)
+- **Prefix sums** — how to answer "sum from index 5 to index 42" in O(1) instead of O(n)
+- **Frequency counting** — the pattern behind detecting anagrams, top-K anything, and half of all interview questions
+
+Come back for the rest when you're ready.
+
+---
+
+## The Full Pattern Map
+
+For the people who want the whole thing. Study top to bottom — later patterns build on earlier ones.
 
 ```mermaid
 flowchart TD
-    AH["Arrays & Hashing"] --> TP["Two Pointers &\nSliding Window"]
+    AH["Arrays & Hashing<br/>(start here)"] --> TP["Two Pointers &<br/>Sliding Window"]
     AH --> BS["Binary Search"]
     AH --> SQ["Stacks & Queues"]
     TP --> LL["Linked Lists"]
@@ -32,11 +88,11 @@ flowchart TD
     BS --> T
     T --> G["Graphs"]
     AH --> HP["Heaps & Greedy"]
-    G --> DP["Dynamic Programming"]
+    G --> DP["Dynamic Programming<br/>(don't start here)"]
     T --> BT["Backtracking"]
     G --> BT
 
-    style AH fill:#DCFCE7,stroke:#16A34A,stroke-width:2px,color:#14532D
+    style AH fill:#DCFCE7,stroke:#16A34A,stroke-width:3px,color:#14532D
     style TP fill:#DBEAFE,stroke:#2563EB,stroke-width:2px,color:#1E3A5F
     style BS fill:#DBEAFE,stroke:#2563EB,stroke-width:2px,color:#1E3A5F
     style SQ fill:#DBEAFE,stroke:#2563EB,stroke-width:2px,color:#1E3A5F
@@ -48,110 +104,92 @@ flowchart TD
     style BT fill:#FEE2E2,stroke:#DC2626,stroke-width:2px,color:#7F1D1D
 ```
 
+The **green** box is where everyone starts. **Blue** is the core 4 that cover most of what you'll see day-to-day. **Yellow** is the "senior engineer" tier. **Red** is where FAANG interviews live — save these for last.
+
 ---
 
-## Pattern Frequency in Interviews
+## Pattern-by-Pattern: What You Actually Learn
 
-| Pattern | Frequency | Where It Shows Up | Page |
+| Pattern | Real-World Use | Interview Frequency | Deep Dive |
 |---|---|---|---|
-| **Arrays & Hashing** | :material-fire:{.fire} Very High | Two Sum, prefix sums, frequency counting, grouping | [Arrays & Hashing](arrays-hashing.md) |
-| **Two Pointers** | :material-fire:{.fire} Very High | Sorted data, pairs, palindromes, in-place operations | [Two Pointers & Sliding Window](two-pointers-sliding-window.md) |
-| **Sliding Window** | :material-fire:{.fire} High | Longest/shortest subarray, substring constraints | [Two Pointers & Sliding Window](two-pointers-sliding-window.md) |
-| **Binary Search** | :material-fire:{.fire} High | Sorted data, search on answer space, rotated arrays | [Binary Search](binary-search.md) |
-| **Stacks & Queues** | :material-trending-up: Medium-High | Parentheses, monotonic patterns, next greater element | [Stacks & Queues](stacks-queues.md) |
-| **Linked Lists** | :material-trending-up: Medium | Reversal, cycle detection, merge operations | [Linked Lists](linked-lists.md) |
-| **Trees** | :material-trending-up: Medium-High | Traversals, BST validation, path problems, LCA | [Trees](trees.md) |
-| **Graphs** | :material-trending-up: Medium | BFS/DFS, topological sort, shortest path, components | [Graphs](graphs.md) |
-| **Dynamic Programming** | :material-fire:{.fire} Very High | Optimization, counting, string matching, knapsack | [Dynamic Programming](dynamic-programming.md) |
-| **Heaps & Greedy** | :material-trending-up: Medium | Top-K, scheduling, interval problems, merge K sorted | [Heaps & Greedy](heaps-greedy.md) |
-| **Backtracking** | :material-trending-neutral: Medium | Permutations, combinations, constraint satisfaction | [Backtracking](backtracking.md) |
+| **Arrays & Hashing** | Deduping users, counting API hits by endpoint, "find X in a list" | Very High | [→ Start here](arrays-hashing.md) |
+| **Two Pointers** | Comparing two sorted lists, in-place array cleanup, palindrome checks | Very High | [→ Two Pointers & Sliding Window](two-pointers-sliding-window.md) |
+| **Sliding Window** | Rate limiting, "requests in the last 60s", moving averages | High | [→ Same page](two-pointers-sliding-window.md) |
+| **Binary Search** | Finding a version that broke a test, database index lookups, `TreeMap` internals | High | [→ Binary Search](binary-search.md) |
+| **Stacks & Queues** | Undo/redo, matching brackets, BFS crawlers, print job order | Medium-High | [→ Stacks & Queues](stacks-queues.md) |
+| **Linked Lists** | LRU cache internals, task schedulers, `LinkedList` in Java | Medium | [→ Linked Lists](linked-lists.md) |
+| **Trees** | Filesystem hierarchies, DOM, autocomplete, `TreeMap`/`TreeSet` | Medium-High | [→ Trees](trees.md) |
+| **Graphs** | Social networks, dependency resolution (`npm install`), route finding | Medium | [→ Graphs](graphs.md) |
+| **Dynamic Programming** | Optimal choices with overlap: pricing, path costs, string diffs | Very High (in interviews) | [→ Dynamic Programming](dynamic-programming.md) |
+| **Heaps & Greedy** | Priority queues, "top 10 slowest queries", scheduling | Medium | [→ Heaps & Greedy](heaps-greedy.md) |
+| **Backtracking** | Sudoku solvers, generating permutations, constraint satisfaction | Medium | [→ Backtracking](backtracking.md) |
 
 ---
 
-## How to Use These Pages
+## The "Am I Doing This Wrong?" Cheat Sheet
 
-Each topic page follows the same structure:
+Look at the size of your input. That's how you know if your solution is fast enough. No memorization needed — read the constraint, pick the pattern:
 
-1. **Core Concept** — Visual explanation with mermaid diagrams
-2. **Pattern Recognition** — "When you see X, think Y" signals
-3. **Templates** — Reusable Java code you can adapt to any problem
-4. **Solved Walkthroughs** — 2-3 problems solved step-by-step with thought process
-5. **Common Mistakes** — The errors that cost people offers
-6. **Practice Problems** — Curated list ranked by ROI
-
----
-
-## Complexity Quick Reference
-
-### Time Complexity Intuition
-
-!!! tip "What Each Complexity Feels Like at Scale (n = 10^6)"
-    | Complexity | Operations | Can You Use It? | Example |
-    |---|---|---|---|
-    | O(1) | 1 | Always | HashMap lookup |
-    | O(log n) | 20 | Always | Binary search |
-    | O(n) | 10^6 | Always | Single pass |
-    | O(n log n) | 2 × 10^7 | Usually fine | Sorting |
-    | O(n²) | 10^12 | **TLE** for n > 10^4 | Nested loops |
-    | O(2^n) | Heat death | **TLE** for n > 20 | Brute force subsets |
-    | O(n!) | Bigger heat death | **TLE** for n > 10 | Permutations |
-
-### Constraint-to-Complexity Mapping
-
-This is the cheat code for contests: **look at `n` in the constraints, and work backward to the acceptable time complexity.**
-
-| Constraint on `n` | Target Complexity | Typical Patterns |
+| If your input has... | Your code must be at most... | Which usually means... |
 |---|---|---|
-| n ≤ 10 | O(n!) or O(2^n) | Backtracking, bitmask DP |
-| n ≤ 20 | O(2^n) | Bitmask DP, meet-in-middle |
-| n ≤ 500 | O(n³) | Floyd-Warshall, interval DP |
-| n ≤ 5,000 | O(n²) | Nested loops, 2D DP |
-| n ≤ 10^5 | O(n log n) | Sorting + binary search, divide & conquer |
-| n ≤ 10^6 | O(n) | Two pointers, sliding window, hash map |
-| n ≤ 10^9 | O(log n) or O(1) | Binary search on answer, math |
+| Under 10 items | Anything works | Don't overthink it |
+| Up to 500 items | O(n³) is fine | Nested loops still OK |
+| Up to 5,000 items | O(n²) is the limit | Nested loops start to hurt |
+| Up to 100,000 items | O(n log n) | Sort first, then walk it |
+| Up to 1,000,000 items | O(n) | One pass. HashMap. Two pointers. |
+| Up to 1,000,000,000 items | O(log n) | Binary search |
+
+If you write a nested loop over a list of 100,000 users, that's 10 billion iterations. Your code will hang. This table tells you when to stop and pick a better pattern.
 
 ---
 
-## Data Structure Operations — Master Table
+## Data Structures You Should Know Cold
 
-| Structure | Access | Search | Insert | Delete | When to Use |
-|---|---|---|---|---|---|
-| Array | O(1) | O(n) | O(n) | O(n) | Index-based access, contiguous data |
-| Sorted Array | O(1) | O(log n) | O(n) | O(n) | Binary search needed |
-| HashMap | — | O(1) avg | O(1) avg | O(1) avg | O(1) lookup, frequency counting |
-| TreeMap | — | O(log n) | O(log n) | O(log n) | Sorted keys, range queries |
-| Linked List | O(n) | O(n) | O(1)* | O(1)* | Frequent insert/delete at known position |
-| Stack | O(n) | O(n) | O(1) | O(1) | LIFO, undo, parsing, monotonic patterns |
-| Queue | O(n) | O(n) | O(1) | O(1) | BFS, FIFO processing |
-| Heap | — | O(n) | O(log n) | O(log n) | Top-K, running median, merge K |
-| BST (balanced) | — | O(log n) | O(log n) | O(log n) | Sorted order, rank queries |
-| Trie | — | O(m) | O(m) | O(m) | Prefix matching, autocomplete |
-| Union-Find | — | O(α(n)) | O(α(n)) | — | Connected components, cycle detection |
+Just five. That's it. The rest are variations.
 
----
-
-## Study Plan
-
-### 4-Week FAANG Sprint
-
-| Week | Focus | Topics | Problems/Day |
+| Structure | Java Class | Use When... | Speed |
 |---|---|---|---|
-| **1** | Foundations | Arrays & Hashing, Two Pointers, Sliding Window | 3-4 |
-| **2** | Core Patterns | Binary Search, Stacks, Linked Lists, Trees | 3-4 |
-| **3** | Advanced | Graphs, DP (1D + 2D), Heaps & Greedy | 2-3 |
-| **4** | Hard Patterns | DP (advanced), Backtracking, Mixed/Contest problems | 2-3 |
+| **HashMap** | `HashMap<K,V>` | You need O(1) "does this key exist?" or "get value for key" | Fast |
+| **HashSet** | `HashSet<T>` | You need O(1) "have I seen this?" | Fast |
+| **TreeMap** | `TreeMap<K,V>` | You need HashMap features **plus** sorted keys / range queries | Slower but sorted |
+| **ArrayDeque** | `ArrayDeque<T>` | You need a stack (`push`/`pop`) or queue (`offer`/`poll`) | Fast |
+| **PriorityQueue** | `PriorityQueue<T>` | You need "give me the smallest/largest so far" | O(log n) |
 
-!!! warning "The 80/20 Rule"
-    The first 5 patterns (Arrays & Hashing, Two Pointers, Sliding Window, Binary Search, Trees) cover ~65% of what you'll see in real interviews. If you're short on time, nail these before touching DP or Graphs.
+Master these five and you've covered ~80% of what you'll ever need. The rest ([full data structure operations table](arrays-hashing.md#data-structure-operations)) is optimization.
 
 ---
 
-## What Each Page Contains That Others Don't
+## How to Actually Learn This
 
-Every site has a "Two Sum uses a HashMap" explanation. Here's what makes these pages different:
+I've watched people bounce off DSA their entire careers. Here's what works and what doesn't:
 
-- **The "why this works" intuition** — not just the code, but the mental model that lets you adapt it to unseen problems
-- **Step-by-step thought process** — showing the dead ends and pivots, not just the clean final solution
-- **Mermaid diagrams** — visual walkthroughs of how data structures change as the algorithm runs
-- **Interview mistakes with specific consequences** — "if you do X, the interviewer thinks Y"
-- **Constraint-based pattern selection** — how to pick the right approach in 30 seconds by reading the problem constraints
+### Doesn't work
+
+- **Reading LeetCode solutions**. You'll understand each one and remember none. Zero pattern recognition transfers.
+- **Doing 300 problems randomly**. You'll get faster at problems that look exactly like the ones you did. Everything else stays hard.
+- **Watching YouTube playlists at 2x speed**. Feels productive. Isn't.
+
+### Works
+
+- **Learn one pattern, then solve 3–5 problems using only that pattern.** You're training pattern-recognition, not memorization.
+- **Explain the pattern out loud before coding.** If you can't say it in one sentence, you don't understand it yet.
+- **When you get stuck, look at the pattern name, not the solution.** If someone tells you "use two pointers here," that's usually enough to unblock you. Peek at that, not the full code.
+
+### The 4-week sprint (if you have a FAANG interview soon)
+
+| Week | Focus | You Should Feel |
+|---|---|---|
+| 1 | Arrays & Hashing, Two Pointers, Sliding Window | "Oh, this isn't so bad." |
+| 2 | Binary Search, Stacks, Linked Lists, Trees | "I can see the patterns now." |
+| 3 | Graphs, DP (1D), Heaps & Greedy | "OK the interview questions are just recombinations." |
+| 4 | DP (2D+), Backtracking, mock interviews | Ready. |
+
+The first 5 patterns cover roughly 65% of real interview questions. If you're short on time, nail those and go.
+
+---
+
+## Ready?
+
+Start with **[Arrays & Hashing →](arrays-hashing.md)**. It's the smallest step and the biggest payoff. If that page doesn't hook you, DSA isn't for you and that's fine — you can build plenty of things without ever solving a graph problem.
+
+But if it clicks, welcome. The rest of this section is written for you.

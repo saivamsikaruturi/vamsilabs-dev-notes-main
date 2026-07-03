@@ -3,8 +3,6 @@ title: "Stacks & Queues — Coding Interview (2026)"
 description: "Stacks & Queues for FAANG interviews — monotonic stack patterns, sliding window deque, solved walkthroughs for Largest Rectangle in Histogram, and 15 curated practice problems with Java implementations."
 ---
 
-# Stacks & Queues
-
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">DSA Pattern</span>
 <h1 style="font-size: 2.2rem !important;">Stacks & Queues</h1>

@@ -3,8 +3,6 @@ title: "Linked Lists — Coding Interview (2026)"
 description: "Master Linked List problems for FAANG interviews — 5 core techniques (dummy head, two pointers, reversal, merge, in-place), Floyd's cycle detection proof, LRU Cache, and 12 must-solve problems with Java code."
 ---
 
-# Linked Lists
-
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">DSA Pattern</span>
 <h1 style="font-size: 2.2rem !important;">Linked List Mastery</h1>

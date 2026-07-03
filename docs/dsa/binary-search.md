@@ -3,8 +3,6 @@ title: "Binary Search — Coding Interview (2026)"
 description: "Binary Search interview guide for FAANG — 5 variants, answer-space binary search, off-by-one prevention, solved walkthroughs with Java code, and 15 practice problems covering rotated arrays, lower/upper bound, and optimization."
 ---
 
-# Binary Search
-
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">Pattern #3</span>
 <h1 style="font-size: 2.2rem !important;">Binary Search — Beyond Sorted Arrays</h1>

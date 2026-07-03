@@ -3,8 +3,6 @@ title: "Heaps & Greedy Algorithms — LeetCode 347, Top K Problems, Java Solutio
 description: "Master Heaps (Priority Queue) and Greedy algorithms for FAANG coding interviews — LeetCode 347 Top K Frequent Elements, interval scheduling, merge K sorted lists. Java code + complexity analysis. Pattern-based approach."
 ---
 
-# Heaps & Greedy Algorithms — Top K & Scheduling Problems
-
 <div class="vtn-hero" style="margin-left: 0; margin-right: 0; padding: 2.5rem 2rem;">
 <span class="vtn-tag">Pattern</span>
 <h1 style="font-size: 2.2rem !important;">Heaps & Greedy</h1>

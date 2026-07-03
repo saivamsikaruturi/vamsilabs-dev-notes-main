@@ -178,3 +178,638 @@ status = 301
 from = "/systemdesign/summaries/*"
 to = "/systemdesign/cheat-sheet/"
 status = 301
+
+# Case-normalization redirects: lowercase → canonical mixed-case URLs.
+# Google was indexing case-variants as separate pages, splitting authority.
+# 126 files have mixed-case names; this consolidates them.
+
+[[redirects]]
+from = "/distributedcaching/"
+to = "/distributedCaching/"
+status = 301
+
+[[redirects]]
+from = "/captheorem/"
+to = "/capTheorem/"
+status = 301
+
+[[redirects]]
+from = "/cqrs/"
+to = "/CQRS/"
+status = 301
+
+[[redirects]]
+from = "/microservices/servicediscovery/"
+to = "/microservices/ServiceDiscovery/"
+status = 301
+
+[[redirects]]
+from = "/microservices/observability/"
+to = "/microservices/Observability/"
+status = 301
+
+[[redirects]]
+from = "/microservices/apigateway/"
+to = "/microservices/APIGATEWAY/"
+status = 301
+
+[[redirects]]
+from = "/microservices/circuitbreaker/"
+to = "/microservices/CircuitBreaker/"
+status = 301
+
+[[redirects]]
+from = "/microservices/sagadesignpattern/"
+to = "/microservices/SagaDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/microservices/interservicecommunication/"
+to = "/microservices/InterServiceCommunication/"
+status = 301
+
+[[redirects]]
+from = "/microservices/asynccommunicationusingkafka/"
+to = "/microservices/AsyncCommunicationUsingKafka/"
+status = 301
+
+[[redirects]]
+from = "/springboot/springboot3/"
+to = "/springboot/SpringBoot3/"
+status = 301
+
+[[redirects]]
+from = "/springboot/autoconfiguration/"
+to = "/springboot/AutoConfiguration/"
+status = 301
+
+[[redirects]]
+from = "/springboot/springioc/"
+to = "/springboot/SpringIOC/"
+status = 301
+
+[[redirects]]
+from = "/springboot/annotations/"
+to = "/springboot/Annotations/"
+status = 301
+
+[[redirects]]
+from = "/security/jwt/"
+to = "/security/JWT/"
+status = 301
+
+[[redirects]]
+from = "/java/comparablecomparator/"
+to = "/java/ComparableComparator/"
+status = 301
+
+[[redirects]]
+from = "/java/blockingqueueproducerconsumer/"
+to = "/java/BlockingQueueProducerConsumer/"
+status = 301
+
+[[redirects]]
+from = "/java/javabasics/"
+to = "/java/JavaBasics/"
+status = 301
+
+[[redirects]]
+from = "/java/linkedhashmaplru/"
+to = "/java/LinkedHashMapLRU/"
+status = 301
+
+[[redirects]]
+from = "/java/executors/"
+to = "/java/Executors/"
+status = 301
+
+[[redirects]]
+from = "/java/exceptionhandling/"
+to = "/java/ExceptionHandling/"
+status = 301
+
+[[redirects]]
+from = "/java/collectorsandparallelstreams/"
+to = "/java/CollectorsAndParallelStreams/"
+status = 301
+
+[[redirects]]
+from = "/java/networking/"
+to = "/java/Networking/"
+status = 301
+
+[[redirects]]
+from = "/java/optionaldeepdive/"
+to = "/java/OptionalDeepDive/"
+status = 301
+
+[[redirects]]
+from = "/java/collections/"
+to = "/java/Collections/"
+status = 301
+
+[[redirects]]
+from = "/java/enumsetandenummap/"
+to = "/java/EnumSetAndEnumMap/"
+status = 301
+
+[[redirects]]
+from = "/java/trywithresources/"
+to = "/java/TryWithResources/"
+status = 301
+
+[[redirects]]
+from = "/java/castingandinstanceof/"
+to = "/java/CastingAndInstanceof/"
+status = 301
+
+[[redirects]]
+from = "/java/typeerasure/"
+to = "/java/TypeErasure/"
+status = 301
+
+[[redirects]]
+from = "/java/jvmtuning/"
+to = "/java/JVMTuning/"
+status = 301
+
+[[redirects]]
+from = "/java/threadlocalandsyncaids/"
+to = "/java/ThreadLocalAndSyncAids/"
+status = 301
+
+[[redirects]]
+from = "/java/accessmodifiers/"
+to = "/java/AccessModifiers/"
+status = 301
+
+[[redirects]]
+from = "/java/referencetypes/"
+to = "/java/ReferenceTypes/"
+status = 301
+
+[[redirects]]
+from = "/java/modernjava/"
+to = "/java/ModernJava/"
+status = 301
+
+[[redirects]]
+from = "/java/passbyvalue/"
+to = "/java/PassByValue/"
+status = 301
+
+[[redirects]]
+from = "/java/serialization/"
+to = "/java/Serialization/"
+status = 301
+
+[[redirects]]
+from = "/java/patternmatching/"
+to = "/java/PatternMatching/"
+status = 301
+
+[[redirects]]
+from = "/java/regex/"
+to = "/java/Regex/"
+status = 301
+
+[[redirects]]
+from = "/java/constructors/"
+to = "/java/Constructors/"
+status = 301
+
+[[redirects]]
+from = "/java/strings/"
+to = "/java/Strings/"
+status = 301
+
+[[redirects]]
+from = "/java/java21/"
+to = "/java/Java21/"
+status = 301
+
+[[redirects]]
+from = "/java/generics/"
+to = "/java/Generics/"
+status = 301
+
+[[redirects]]
+from = "/java/javamemorymodel/"
+to = "/java/JavaMemoryModel/"
+status = 301
+
+[[redirects]]
+from = "/java/daemonthreadsandlifecycle/"
+to = "/java/DaemonThreadsAndLifecycle/"
+status = 301
+
+[[redirects]]
+from = "/java/reactivestreams/"
+to = "/java/ReactiveStreams/"
+status = 301
+
+[[redirects]]
+from = "/java/multithreading/"
+to = "/java/MultiThreading/"
+status = 301
+
+[[redirects]]
+from = "/java/serviceloaderspi/"
+to = "/java/ServiceLoaderSPI/"
+status = 301
+
+[[redirects]]
+from = "/java/concurrentcollections/"
+to = "/java/ConcurrentCollections/"
+status = 301
+
+[[redirects]]
+from = "/java/jvm/"
+to = "/java/Jvm/"
+status = 301
+
+[[redirects]]
+from = "/java/annotations/"
+to = "/java/Annotations/"
+status = 301
+
+[[redirects]]
+from = "/java/equalshashcode/"
+to = "/java/EqualsHashCode/"
+status = 301
+
+[[redirects]]
+from = "/java/datetime/"
+to = "/java/DateTime/"
+status = 301
+
+[[redirects]]
+from = "/java/bigdecimalprecision/"
+to = "/java/BigDecimalPrecision/"
+status = 301
+
+[[redirects]]
+from = "/java/thisandsuper/"
+to = "/java/thisandSuper/"
+status = 301
+
+[[redirects]]
+from = "/java/concurrenthashmapinternals/"
+to = "/java/ConcurrentHashMapInternals/"
+status = 301
+
+[[redirects]]
+from = "/java/covarianceandpecs/"
+to = "/java/CovarianceAndPECS/"
+status = 301
+
+[[redirects]]
+from = "/java/filehandling/"
+to = "/java/FileHandling/"
+status = 301
+
+[[redirects]]
+from = "/java/java17/"
+to = "/java/Java17/"
+status = 301
+
+[[redirects]]
+from = "/java/profilingtools/"
+to = "/java/ProfilingTools/"
+status = 301
+
+[[redirects]]
+from = "/java/markerinterfaces/"
+to = "/java/MarkerInterfaces/"
+status = 301
+
+[[redirects]]
+from = "/java/varargsandheappollution/"
+to = "/java/VarargsAndHeapPollution/"
+status = 301
+
+[[redirects]]
+from = "/java/forkjoinframework/"
+to = "/java/ForkJoinFramework/"
+status = 301
+
+[[redirects]]
+from = "/java/logging/"
+to = "/java/Logging/"
+status = 301
+
+[[redirects]]
+from = "/java/interfaces/"
+to = "/java/Interfaces/"
+status = 301
+
+[[redirects]]
+from = "/java/volatileatomics/"
+to = "/java/VolatileAtomics/"
+status = 301
+
+[[redirects]]
+from = "/java/enums/"
+to = "/java/Enums/"
+status = 301
+
+[[redirects]]
+from = "/java/scopedvaluesstructuredconcurrency/"
+to = "/java/ScopedValuesStructuredConcurrency/"
+status = 301
+
+[[redirects]]
+from = "/java/virtualthreads/"
+to = "/java/VirtualThreads/"
+status = 301
+
+[[redirects]]
+from = "/java/immutableclasses/"
+to = "/java/ImmutableClasses/"
+status = 301
+
+[[redirects]]
+from = "/java/staticandfinal/"
+to = "/java/StaticAndFinal/"
+status = 301
+
+[[redirects]]
+from = "/java/java8/"
+to = "/java/Java8/"
+status = 301
+
+[[redirects]]
+from = "/java/overloadingvsoverriding/"
+to = "/java/OverloadingVsOverriding/"
+status = 301
+
+[[redirects]]
+from = "/java/memoryleaks/"
+to = "/java/MemoryLeaks/"
+status = 301
+
+[[redirects]]
+from = "/java/javabasics2/"
+to = "/java/JavaBasics2/"
+status = 301
+
+[[redirects]]
+from = "/java/jdbc/"
+to = "/java/JDBC/"
+status = 301
+
+[[redirects]]
+from = "/java/objectclassmethods/"
+to = "/java/ObjectClassMethods/"
+status = 301
+
+[[redirects]]
+from = "/java/classloaders/"
+to = "/java/ClassLoaders/"
+status = 301
+
+[[redirects]]
+from = "/java/streamgatherers/"
+to = "/java/StreamGatherers/"
+status = 301
+
+[[redirects]]
+from = "/java/functionalprogramming/"
+to = "/java/FunctionalProgramming/"
+status = 301
+
+[[redirects]]
+from = "/java/locks/"
+to = "/java/Locks/"
+status = 301
+
+[[redirects]]
+from = "/java/cloning/"
+to = "/java/Cloning/"
+status = 301
+
+[[redirects]]
+from = "/java/hashmapinternals/"
+to = "/java/HashMapInternals/"
+status = 301
+
+[[redirects]]
+from = "/java/packagesandimports/"
+to = "/java/PackagesAndImports/"
+status = 301
+
+[[redirects]]
+from = "/java/priorityqueueandheap/"
+to = "/java/PriorityQueueAndHeap/"
+status = 301
+
+[[redirects]]
+from = "/java/javaagents/"
+to = "/java/JavaAgents/"
+status = 301
+
+[[redirects]]
+from = "/java/completablefuture/"
+to = "/java/CompletableFuture/"
+status = 301
+
+[[redirects]]
+from = "/java/concurrencypatterns/"
+to = "/java/ConcurrencyPatterns/"
+status = 301
+
+[[redirects]]
+from = "/java/effectivejavapatterns/"
+to = "/java/EffectiveJavaPatterns/"
+status = 301
+
+[[redirects]]
+from = "/java/stringmethods/"
+to = "/java/StringMethods/"
+status = 301
+
+[[redirects]]
+from = "/java/stringpoolinternals/"
+to = "/java/StringPoolInternals/"
+status = 301
+
+[[redirects]]
+from = "/java/recordsandsealedclasses/"
+to = "/java/RecordsAndSealedClasses/"
+status = 301
+
+[[redirects]]
+from = "/java/reflection/"
+to = "/java/Reflection/"
+status = 301
+
+[[redirects]]
+from = "/java/failfastfailsafe/"
+to = "/java/FailFastFailSafe/"
+status = 301
+
+[[redirects]]
+from = "/java/nio/"
+to = "/java/NIO/"
+status = 301
+
+[[redirects]]
+from = "/java/diffcollections/"
+to = "/java/DiffCollections/"
+status = 301
+
+[[redirects]]
+from = "/java/garbagecollection/"
+to = "/java/GarbageCollection/"
+status = 301
+
+[[redirects]]
+from = "/java/wrapperclasses/"
+to = "/java/WrapperClasses/"
+status = 301
+
+[[redirects]]
+from = "/java/security/"
+to = "/java/Security/"
+status = 301
+
+[[redirects]]
+from = "/java/dynamicproxy/"
+to = "/java/DynamicProxy/"
+status = 301
+
+[[redirects]]
+from = "/java/modulesystem/"
+to = "/java/ModuleSystem/"
+status = 301
+
+[[redirects]]
+from = "/java/designprinciples/"
+to = "/java/DesignPrinciples/"
+status = 301
+
+[[redirects]]
+from = "/java/iteratoranditerable/"
+to = "/java/IteratorAndIterable/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/structuraldesignpatterns/compositedesignpattern/"
+to = "/designpatterns/structuralDesignPatterns/CompositeDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/structuraldesignpatterns/bridgedesignpattern/"
+to = "/designpatterns/structuralDesignPatterns/BridgeDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/structuraldesignpatterns/flyweightdesignpattern/"
+to = "/designpatterns/structuralDesignPatterns/flyweightdesignpattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/structuraldesignpatterns/facadedesignpattern/"
+to = "/designpatterns/structuralDesignPatterns/facadedesignpattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/structuraldesignpatterns/adapterdesignpattern/"
+to = "/designpatterns/structuralDesignPatterns/AdapterDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/structuraldesignpatterns/proxydesignpattern/"
+to = "/designpatterns/structuralDesignPatterns/Proxydesignpattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/structuraldesignpatterns/decoratordesignpattern/"
+to = "/designpatterns/structuralDesignPatterns/DecoratorDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/mediatordp/"
+to = "/designpatterns/behaviouralDesignPatterns/MediatorDp/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/statedp/"
+to = "/designpatterns/behaviouralDesignPatterns/StateDp/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/chainofresponsibilitydesignpattern/"
+to = "/designpatterns/behaviouralDesignPatterns/ChainOfResponsibilityDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/iterator/"
+to = "/designpatterns/behaviouralDesignPatterns/Iterator/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/interpreter/"
+to = "/designpatterns/behaviouralDesignPatterns/Interpreter/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/templatedp/"
+to = "/designpatterns/behaviouralDesignPatterns/TemplateDp/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/observerdesignpattern/"
+to = "/designpatterns/behaviouralDesignPatterns/ObserverDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/commanddp/"
+to = "/designpatterns/behaviouralDesignPatterns/CommandDp/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/visitordp/"
+to = "/designpatterns/behaviouralDesignPatterns/VisitorDp/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/mementodp/"
+to = "/designpatterns/behaviouralDesignPatterns/MementoDp/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/behaviouraldesignpatterns/strategydp/"
+to = "/designpatterns/behaviouralDesignPatterns/StrategyDp/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/creationaldesignpatterns/abstractfactorydesignpattern/"
+to = "/designpatterns/creationalDesignPatterns/AbstractFactoryDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/creationaldesignpatterns/prototypedesignpattern/"
+to = "/designpatterns/creationalDesignPatterns/PrototypeDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/creationaldesignpatterns/creationaldesignpatterns/"
+to = "/designpatterns/creationalDesignPatterns/CreationalDesignPatterns/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/creationaldesignpatterns/factorydesignpattern/"
+to = "/designpatterns/creationalDesignPatterns/FactoryDesignPattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/creationaldesignpatterns/singletondesignpattern/"
+to = "/designpatterns/creationalDesignPatterns/singletondesignpattern/"
+status = 301
+
+[[redirects]]
+from = "/designpatterns/creationaldesignpatterns/builderdesignpattern/"
+to = "/designpatterns/creationalDesignPatterns/BuilderDesignPattern/"
+status = 301
+

@@ -1,4 +1,4 @@
-## NEO4J
+# Neo4j — Graph Database Cypher Query Guide
 
 ## Creating a node
 

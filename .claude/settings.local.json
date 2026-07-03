@@ -171,7 +171,12 @@
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --screenshot=/tmp/mobile6-fold.png --window-size=390,844 --no-sandbox http://127.0.0.1:8001)",
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --screenshot=/tmp/mobile7-fold.png --window-size=390,844 --no-sandbox http://127.0.0.1:8001)",
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --screenshot=/tmp/mobile7-spring.png --window-size=390,2400 --no-sandbox http://127.0.0.1:8001/interview/spring-boot-questions/)",
-      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --screenshot=/tmp/mobile8-fold.png --window-size=390,844 --no-sandbox http://127.0.0.1:8001)"
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --screenshot=/tmp/mobile8-fold.png --window-size=390,844 --no-sandbox http://127.0.0.1:8001)",
+      "Bash(shuf)",
+      "Bash(xargs -I {} bash -c 'basename {} .md')",
+      "Bash(mkdocs --version)",
+      "Bash(mkdir -p ~/.claude/skills/karpathy-guidelines)",
+      "Bash(cp ~/.claude/plugins/marketplaces/karpathy-skills/skills/karpathy-guidelines/SKILL.md ~/.claude/skills/karpathy-guidelines/SKILL.md)"
     ]
   }
 }
